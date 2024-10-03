@@ -35,6 +35,7 @@
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
                 <li class="nav-item">
+
                     <a class="nav-link menu-link" href="{{ route('admin.role.index') }}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Xe khách</span>
                     </a>
@@ -54,17 +55,34 @@
                                     sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.role.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="{{ route('admin.role.create') }}" class="nav-link"></a>
+                            </li> <!-- end Dashboard Menu -->
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="#sidebarRoom" data-bs-toggle="collapse"
+                                    role="button" aria-expanded="false" aria-controls="sidebarRoom">
+                                    <i class="ri-layout-3-line"></i>
+                                    <span data-key="t-layouts">Liên Hệ</span>
+
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarRoom">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.contacts.index') }}" class="nav-link"
+                                                data-key="t-horizontal">Danh
+                                                sách</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.contacts.create') }}" class="nav-link"
+                                                data-key="t-horizontal">Thêm mới</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                         </ul>
                     </div>
-                </li>
-            </ul>
+                    <!-- Sidebar -->
         </div>
-        <!-- Sidebar -->
-    </div>
 
-    <div class="sidebar-background"></div>
-</div>
-<!-- Left Sidebar End -->
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
