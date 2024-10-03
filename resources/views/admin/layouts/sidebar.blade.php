@@ -43,29 +43,21 @@
                     <a class="nav-link menu-link" href="#sidebarRoom" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarRoom">
                         <i class="ri-layout-3-line"></i>
-<<<<<<< HEAD
                         <span data-key="t-layouts">Liên Hệ</span>
-=======
-                        <span data-key="t-layouts">Phòng</span>
->>>>>>> e45c32a2a3c60f0d0742f72e4f09b7ba7998d022
 
+                        <span data-key="t-layouts">Phòng</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarRoom">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-<<<<<<< HEAD
-                                <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal">Danh
+
+                                <a href="{{ route('admin.contacts.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh
                                     sách</a>
                             </li>
+
                             <li class="nav-item">
                                 <a href="{{ route('admin.contacts.create') }}" class="nav-link"
-=======
-                                <a href="" class="nav-link" data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link"
->>>>>>> e45c32a2a3c60f0d0742f72e4f09b7ba7998d022
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
@@ -101,12 +93,10 @@
                     <div class="collapse menu-dropdown" id="sidebarService">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -121,12 +111,10 @@
                     <div class="collapse menu-dropdown" id="sidebarPromotions">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -140,12 +128,10 @@
                     <div class="collapse menu-dropdown" id="sidebarBanner">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -160,12 +146,10 @@
                     <div class="collapse menu-dropdown" id="sidebarUser">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -180,8 +164,7 @@
                     <div class="collapse menu-dropdown" id="sidebarPayment">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                     </div>
