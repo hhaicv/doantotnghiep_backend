@@ -33,6 +33,7 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request)
     {
         $data = $request->all();
+       
         $model = Contact::query()->create($data);
         if ($model) {
             return redirect()->back()->with('success', 'Bạn thêm thành công');
