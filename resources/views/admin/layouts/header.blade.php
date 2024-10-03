@@ -358,7 +358,7 @@
 
                                 <div class="d-block dropdown-item dropdown-item-cart text-wrap px-3 py-2">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('theme/admin/assets/images/products/img-2.png') }}"
+                                        <img src="{{ asset('theme/admin/assets/images/users/ebe4.jpg') }}"
                                             class="me-3 rounded-circle avatar-sm p-2 bg-light" alt="user-pic">
                                         <div class="flex-grow-1">
                                             <h6 class="mt-0 mb-1 fs-14">
@@ -807,7 +807,7 @@
                         aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user"
-                                src=" " alt="Header Avatar">
+                                src=" {{ asset('theme/admin/assets/images/users/ebe4.j') }}" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                                    </span>
