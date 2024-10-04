@@ -28,37 +28,47 @@
 
     <div id="scrollbar">
         <div class="container-fluid">
-
+            {{-- // div cấm xóa --}}
             <div id="two-column-menu">
+
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
+                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
-                </li> <!-- end Dashboard Menu -->
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarRoom" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarRoom">
+                    <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarContacts">
                         <i class="ri-layout-3-line"></i>
+<<<<<<< HEAD
 
                         <span data-key="t-layouts">Liên Hệ</span>
 
                         <span data-key="t-layouts">Phòng</span>
 
 
+=======
+                        <span data-key="t-layouts">Liên Hệ</span>
+>>>>>>> b0e74ed34f6d330a91b732d6d68e6bf37da72131
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarRoom">
+                    <div class="collapse menu-dropdown" id="sidebarContacts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
+<<<<<<< HEAD
 
                                 <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal">Danh
+=======
+                                <a href="{{ route('admin.contacts.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh
+>>>>>>> b0e74ed34f6d330a91b732d6d68e6bf37da72131
                                     sách</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.contacts.create') }}" class="nav-link"
+<<<<<<< HEAD
 
                                 <a href="" class="nav-link" data-key="t-horizontal">Danh
                                     sách</a>
@@ -66,11 +76,34 @@
                             <li class="nav-item">
                                 <a href="" class="nav-link"
 
+=======
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarRoles" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarRoles">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Chức Vụ</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarRoles">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.roles.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh
+                                    sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.roles.create') }}" class="nav-link"
+>>>>>>> b0e74ed34f6d330a91b732d6d68e6bf37da72131
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+<<<<<<< HEAD
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarProduct" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarProduct">
@@ -184,9 +217,10 @@
                         </ul>
                     </div>
                 </li>
+=======
+>>>>>>> b0e74ed34f6d330a91b732d6d68e6bf37da72131
             </ul>
         </div>
-        <!-- Sidebar -->
     </div>
 
     <div class="sidebar-background"></div>

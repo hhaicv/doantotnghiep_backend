@@ -46,7 +46,7 @@
                 <label for="fullnameInput" class="form-label">Phone</label>
                 <input type="number" class="form-control" id="icon" name="phone" placeholder="Nhập số điện thoại">
             </div>
-            <div class="col-md-6">
+            <div class="col">
                 <label for="exampleFormControlTextarea5" class="form-label">Mô tả</label>
                 <textarea class="form-control" placeholder="Mô tả chi tiết" id="exampleFormControlTextarea5" name="message" rows="2"></textarea>
             </div>
@@ -56,7 +56,6 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{{ route('admin.contacts.index') }}" class="btn btn-success">Quay lại</a>
                 </div>
-
             </div>
         </form>
     </div>

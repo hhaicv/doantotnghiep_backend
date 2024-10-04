@@ -3,7 +3,10 @@
 
 use App\Http\Controllers\ContactController;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b0e74ed34f6d330a91b732d6d68e6bf37da72131
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+<<<<<<< HEAD
     return view('welcome');
 });
 
@@ -27,4 +31,11 @@ Route::resource('contacts', ContactController::class);
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->name('dashboard');
+=======
+
+    return view('welcome');
+});
+
+
+>>>>>>> b0e74ed34f6d330a91b732d6d68e6bf37da72131
 
