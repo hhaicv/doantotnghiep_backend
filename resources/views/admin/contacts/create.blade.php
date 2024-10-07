@@ -1,6 +1,6 @@
 @extends('admin.layouts.mater')
 @section('title')
-    Thêm mới Tiện Ích
+    Thêm mới Liên Hệ
 @endsection
 @section('content')
     <div class="row" style="margin-bottom: 20px">
@@ -43,13 +43,18 @@
                 <input type="email" class="form-control" id="icon" name="email" placeholder="Nhập email">
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Phone</label>
+                <label for="fullnameInput" class="form-label">Số điện thoại</label>
                 <input type="number" class="form-control" id="icon" name="phone" placeholder="Nhập số điện thoại">
             </div>
-            <div class="col">
-                <label for="exampleFormControlTextarea5" class="form-label">Mô tả</label>
+            <div class="col-md-6">
+                <label for="fullnameInput" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" id="icon" name="title" placeholder="Nhập số tiêu đề">
+            </div>
+            <div class="col-md-6">
+                <label for="exampleFormControlTextarea5" class="form-label">Nội Dung</label>
                 <textarea class="form-control" placeholder="Mô tả chi tiết" id="exampleFormControlTextarea5" name="message" rows="2"></textarea>
             </div>
+            <input type="hidden" name="is_active" value="0">
 
             <div class="col-12">
                 <div class="text-end">

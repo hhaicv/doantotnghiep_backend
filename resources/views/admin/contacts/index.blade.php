@@ -1,7 +1,7 @@
 @extends('admin.layouts.mater')
 
 @section('title')
-    Danh sách Tiện Ích
+    Danh sách Liên Hệ
 @endsection
 
 @section('content')
@@ -42,11 +42,13 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Tiện Ích</th>
+                                <th>Họ Tên</th>
                                 <th>Email</th>
-                                <th>Phone</th>
-                                <th>Massage</th>
-                                <th>Thời gian</th>
+                                <th>Số điện thoại</th>
+                                <th>Tiêu đề</th>
+                                <th>Nội dung</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -57,15 +59,33 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
+                                    <td>{{ $item->title }}</td>
                                     <td>{{ $item->message }}</td>
-                                    <td>{{ $item->created_at }}</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
+                                                {{ $item->is_active ? 'checked' : '' }}
+                                                {{ $item->is_active ? 'disabled' : '' }}>
+                                            <!-- Vô hiệu hóa checkbox nếu đã liên hệ -->
+                                            <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
+                                                {{ $item->is_active ? 'Đã liên hệ' : 'Chưa liên hệ' }}
+                                            </label>
+                                           
+                                        </div>
+
+                                    </td>
+                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
-                                            <form action="{{ route('admin.contacts.destroy', $item->id) }}" method="post">
+                                            <form id="deleteFormContacts{{ $item->id }}"
+                                                action="{{ route('admin.contacts.destroy', $item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" style="border: none; background: white" onclick="return confirm('Bạn có muốn xóa không???')"
-                                                    class="link-danger"><i class="ri-delete-bin-5-line"></i></button>
+                                                <button type="button" style="border: none; background: white"
+                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
+                                                    <i class="ri-delete-bin-5-line"></i>
+                                                </button>
                                             </form>
                                         </div>
                                     </td>
@@ -107,5 +127,77 @@
                 [0, 'desc']
             ]
         });
+    </script>
+    <script>
+        document.querySelectorAll('.form-check-input').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var isChecked = this.checked ? 1 : 0;
+                var itemId = this.getAttribute('data-id'); // Lấy ID từ thuộc tính data-id
+
+                fetch(`/admin/status-contacts/${itemId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            is_active: isChecked
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            // Cập nhật label hoặc badge sau khi thay đổi trạng thái
+                            var label = this.nextElementSibling; // Lấy label kế tiếp checkbox
+                            label.textContent = isChecked ? 'Đã liên hệ' :
+                            'Chưa liên hệ'; // Cập nhật nội dung
+
+                            // Nếu đã chuyển sang trạng thái "Đã liên hệ", vô hiệu hóa checkbox
+                            if (isChecked) {
+                                this.disabled = true; // Vô hiệu hóa checkbox
+                            }
+                        } else {
+                            alert('Cập nhật trạng thái thất bại.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+
+        function confirmDelete(id) {
+            if (confirm('Bạn có muốn xóa không???')) {
+                let form = document.getElementById('deleteFormContacts' + id);
+
+                // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
+                fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        },
+                        body: new URLSearchParams(new FormData(form))
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Đã xóa thành công!');
+                            // Nếu muốn, có thể xóa dòng hiện tại trong bảng mà không cần reload trang
+                            form.closest('tr').remove();
+                        } else {
+                            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                    });
+            }
+        }
     </script>
 @endsection

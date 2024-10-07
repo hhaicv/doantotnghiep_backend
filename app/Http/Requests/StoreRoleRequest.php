@@ -23,14 +23,16 @@ class StoreRoleRequest extends FormRequest
     {
         return [
 
-            'name_role' => ['required', 'string', 'max:255'],
+            'name_role' => ['required', 'string', 'min:4', 'max:255'],
             'description' => ['required', 'string'],
         ];
     }
     public function messages(): array
     {
         return [
-            'name_role.required' => 'Tên bắt buộc phải nhập',
+            'name_role.required' => 'Tên là bắt buộc.',
+            'name_role.min' => 'Tên phải có ít nhất 4 ký tự.',
+            'name_role.max' => 'Tên không được vượt quá 255 ký tự.',
             'description.required' => 'Mô tả bắt buộc phải nhập',
         ];
     }

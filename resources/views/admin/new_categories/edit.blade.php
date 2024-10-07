@@ -31,29 +31,29 @@
         </div>
     @endif
     <div class="card">
-        <form action="{{ route('admin.roles.update', $model) }}" method="POST" class="row g-3 p-5">
+        <form action="{{ route('admin.new_categories.update', $data) }}" method="POST" class="row g-3 p-5">
             @csrf
             @method('PUT')
-            <div class="col-md-12">
-                <label for="fullnameInput" class="form-label">Tên quyền</label>
-                <input type="text" class="form-control" id="name_role" name="name_role" value="{{ $model->name_role }}">
+            <div class="col-md-6">
+                <label for="fullnameInput" class="form-label">Tên danh mục</label>
+                <input type="text" class="form-control" name="name" value="{{ $data->name }}">
             </div>
-            <div class="col-md-12">
-                <label for="exampleFormControlTextarea5" class="form-label">Mô tả</label>
-                <textarea class="form-control" id="exampleFormControlTextarea5" name="description" rows="2">{{ $model->description }}</textarea>
+            <div class="col-md-6">
+                <label for="exampleFormControlTextarea5" class="form-label">Mô tả danh mục</label>
+                <textarea class="form-control" name="description" rows="2">{{ $data->description }}</textarea>
             </div>
             <div class="form-check form-switch form-switch-primary mt-3">
                 <input type="hidden" name="is_active" value="0">
-                <input class="form-check-input" type="checkbox" role="switch" id="CheckRoles" name="is_active"
-                    {{ $model->is_active ? 'checked' : '' }} value="1" onchange="toggleLabel()">
-                <label class="form-check-label" id="statusLabel" for="CheckRoles">
-                    {{ $model->is_active ? 'On' : 'Off' }}
+                <input class="form-check-input" type="checkbox" role="switch" id="CheckNewCategory" name="is_active"
+                    {{ $data->is_active ? 'checked' : '' }} value="1" onchange="toggleLabel()">
+                <label class="form-check-label" id="statusLabel" for="CheckNewCategory">
+                    {{ $data->is_active ? 'On' : 'Off' }}
                 </label>
             </div>
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ route('admin.roles.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="{{ route('admin.new_categories.index') }}" class="btn btn-success">Quay lại</a>
                 </div>
             </div>
         </form>
@@ -61,7 +61,7 @@
     <script>
         // JavaScript để cập nhật nhãn khi bật/tắt checkbox
         function toggleLabel() {
-            var checkbox = document.getElementById('CheckRoles');
+            var checkbox = document.getElementById('CheckNewCategory');
             var label = document.getElementById('statusLabel');
 
             if (checkbox.checked) {

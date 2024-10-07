@@ -40,6 +40,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarNewCategory" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarNewCategory">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Danh mục tin tức</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarNewCategory">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.new_categories.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh
+                                    sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.new_categories.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarContacts">
                         <i class="ri-layout-3-line"></i>

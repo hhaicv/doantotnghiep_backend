@@ -15,7 +15,12 @@ class Contact extends Model
         'name',
         'email',
         'phone',
-        'message'
+        'title',
+        'message',
+        'is_active'
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 }

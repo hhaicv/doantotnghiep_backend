@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRoleRequest extends FormRequest
+class UpdateNew_CatagoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,16 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
 
-            'name_role' => ['required', 'string', 'min:4', 'max:255'],
+            'name' => ['required', 'string', 'min:6', 'max:255'],
             'description' => ['required', 'string'],
         ];
     }
     public function messages(): array
     {
         return [
-            'name_role.required' => 'Tên là bắt buộc.',
-            'name_role.min' => 'Tên phải có ít nhất 4 ký tự.',
-            'name_role.max' => 'Tên không được vượt quá 255 ký tự.',
+            'name.required' => 'Tên là bắt buộc.',
+            'name.min' => 'Tên phải có ít nhất 6 ký tự.',
+            'name.max' => 'Tên không được vượt quá 255 ký tự.',
             'description.required' => 'Mô tả bắt buộc phải nhập',
         ];
     }

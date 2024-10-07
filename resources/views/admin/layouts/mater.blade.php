@@ -7,6 +7,8 @@
     <meta charset="utf-8" />
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
@@ -14,7 +16,7 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-   
+
     <script src="https://kit.fontawesome.com/24d8b82fa8.js" crossorigin="anonymous"></script>
     @yield('style-libs')
     <!-- Layout config Js -->
@@ -37,8 +39,8 @@
 
         @include('admin.layouts.header');
 
-       
-       
+
+
         @include('admin.layouts.sidebar')
 
         <div class="vertical-overlay"></div>
@@ -73,7 +75,7 @@
         </div>
     </div>
 
-  
+
     <!-- JAVASCRIPT -->
     <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>

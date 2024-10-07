@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -71,6 +72,22 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         $contact->delete();
-        return back()->with('message','Xóa Thành Công');
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->route('admin.contacts.index')->with('success', 'Contacts deleted successfully');
+    }
+    public function statusContact(Request $request, $id)
+    {
+        // Tìm bản ghi theo ID
+        $contact = Contact::findOrFail($id);
+
+        // Cập nhật trạng thái 'is_active'
+        $contact->is_active = $request->input('is_active');
+        $contact->save(); // Lưu thay đổi vào cơ sở dữ liệu
+
+        // Trả về phản hồi JSON cho client
+        return response()->json(['success' => true]);
     }
 }

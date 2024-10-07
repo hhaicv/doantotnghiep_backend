@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -32,9 +33,9 @@ class RoleController extends Controller
     {
         $data = $request->all();
         $res = Role::create($data);
-        if($res){
+        if ($res) {
             return redirect()->back()->with('success', 'thêm thành công');
-        }else{
+        } else {
             return redirect()->back()->with('success', 'thêm không thành công');
         }
     }
@@ -78,6 +79,23 @@ class RoleController extends Controller
     {
         $data = Role::query()->findOrFail($id);
         $data->delete();
-        return back();
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->route('admin.roles.index')->with('success', 'Roles deleted successfully');
+    }
+
+    public function statusRole(Request $request, $id)
+    {
+        // Tìm bản ghi theo ID
+        $role = Role::findOrFail($id);
+
+        // Cập nhật trạng thái 'is_active'
+        $role->is_active = $request->input('is_active');
+        $role->save(); // Lưu thay đổi vào cơ sở dữ liệu
+
+        // Trả về phản hồi JSON cho client
+        return response()->json(['success' => true]);
     }
 }
