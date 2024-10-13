@@ -29,6 +29,101 @@
     <link href="{{ asset('theme/admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .choices__list--multiple .choices__item {
+            background-color: #405189 !important;
+            border: 1px solid #004a5c;
+        }
+
+        .category-item {
+            display: inline-block;
+            /* Allows block-level formatting for each category */
+            background-color: #f0f0f0;
+            /* Background color for categories */
+            color: #333;
+            /* Text color */
+            padding: 5px 10px;
+            /* Padding for spacing */
+            margin: 5px;
+            /* Space between categories */
+            border-radius: 5px;
+            /* Rounded corners */
+            font-size: 14px;
+            /* Font size */
+            transition: background-color 0.3s;
+            /* Transition effect */
+        }
+
+        .category-item:hover {
+            background-color: #e0e0e0;
+            /* Darker background on hover */
+        }
+
+        .filepond-container {
+            background: #f8f9fa;
+            border-radius: 5px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .choices[data-type*=select-multiple] .choices__list--dropdown .choices__list,
+        .choices[data-type*=text] .choices__list--dropdown .choices__list {
+            padding: 20px;
+
+        }
+
+        .file-drop-area {
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .file-drop-area:hover {
+            background: #e9ecef;
+        }
+
+        .file-drop-message {
+            color: #6c757d;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .browse {
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+
+
+        .file-preview-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .file-preview-item img {
+            width: 300px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-remove-btn {
+            background: #405189;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+    </style>
 
 </head>
 
@@ -84,12 +179,13 @@
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
 
+
     @yield('script-libs')
 
-<!-- App js -->
-<script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
+    <!-- App js -->
+    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
 
-@yield('scripts')
+    @yield('scripts')
 </body>
 
 </html>

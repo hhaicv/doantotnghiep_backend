@@ -6,19 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class New_Catagory extends Model
+class Information extends Model
 {
     use HasFactory;
+
     use SoftDeletes;
 
     protected $fillable = [
-        "name",
-        "description",
-        "is_active"
+        'title',
+        'summary',
+        'content',
+        'thumbnail_image'
     ];
-
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
-
+    public function newCategories()
+    {
+        return $this->belongsToMany(NewCategory::class);
+    }
 }
