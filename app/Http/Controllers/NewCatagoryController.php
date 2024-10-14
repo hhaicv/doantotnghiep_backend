@@ -7,7 +7,6 @@ use App\Http\Requests\StoreNew_CatagoryRequest;
 use App\Http\Requests\UpdateNew_CatagoryRequest;
 use Illuminate\Http\Request;
 
-
 class NewCatagoryController extends Controller
 {
 
@@ -46,9 +45,7 @@ class NewCatagoryController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(UpdateNew_CatagoryRequest $request, string $id)
     {
         $data = New_Catagory::query()->findOrFail($id);
@@ -61,9 +58,7 @@ class NewCatagoryController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(string $id)
     {
         $data = New_Catagory::query()->findOrFail($id);
