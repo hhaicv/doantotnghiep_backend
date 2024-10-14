@@ -7,11 +7,8 @@ use App\Http\Requests\StoreNewCategoryRequest;
 use App\Http\Requests\UpdateNewCategoryRequest;
 use Illuminate\Http\Request;
 
-<<<<<<< HEAD:app/Http/Controllers/NewCatagoryController.php
-class NewCatagoryController extends Controller
-=======
+
 class NewCategoryController extends Controller
->>>>>>> 80668b92a4a31b4cb41479696d89bc36314ff9fe:app/Http/Controllers/NewCategoryController.php
 {
     const PATH_VIEW = 'admin.new_categories.';
     public function index()
@@ -49,15 +46,7 @@ class NewCategoryController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-<<<<<<< HEAD:app/Http/Controllers/NewCatagoryController.php
-    
-    public function update(UpdateNew_CatagoryRequest $request, string $id)
-=======
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateNewCategoryRequest $request, string $id)
->>>>>>> 80668b92a4a31b4cb41479696d89bc36314ff9fe:app/Http/Controllers/NewCategoryController.php
     {
         $data = NewCategory::query()->findOrFail($id);
         $model = $request->all();
@@ -69,11 +58,6 @@ class NewCategoryController extends Controller
         }
     }
 
-<<<<<<< HEAD:app/Http/Controllers/NewCatagoryController.php
-    
-=======
-
->>>>>>> 80668b92a4a31b4cb41479696d89bc36314ff9fe:app/Http/Controllers/NewCategoryController.php
     public function destroy(string $id)
     {
         $data = NewCategory::query()->findOrFail($id);
