@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\New_Catagory;
-use App\Http\Requests\StoreNew_CatagoryRequest;
-use App\Http\Requests\UpdateNew_CatagoryRequest;
+use App\Models\NewCategory;
+use App\Http\Requests\StoreNewCategoryRequest;
+use App\Http\Requests\UpdateNewCategoryRequest;
 use Illuminate\Http\Request;
 
+<<<<<<< HEAD:app/Http/Controllers/NewCatagoryController.php
 class NewCatagoryController extends Controller
+=======
+class NewCategoryController extends Controller
+>>>>>>> 80668b92a4a31b4cb41479696d89bc36314ff9fe:app/Http/Controllers/NewCategoryController.php
 {
-
     const PATH_VIEW = 'admin.new_categories.';
     public function index()
     {
-        $data = New_Catagory::query()->get();
+        $data = NewCategory::query()->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -28,10 +31,10 @@ class NewCatagoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNew_CatagoryRequest $request)
+    public function store(StoreNewCategoryRequest $request)
     {
         $data = $request->all();
-        $model = New_Catagory::query()->create($data);
+        $model = NewCategory::query()->create($data);
         if ($model) {
             return redirect()->back()->with('success', 'Bạn thêm thành công');
         } else {
@@ -39,16 +42,24 @@ class NewCatagoryController extends Controller
         }
     }
 
+
     public function edit(string $id)
     {
-        $data = New_Catagory::query()->findOrFail($id);
+        $data = NewCategory::query()->findOrFail($id);
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
+<<<<<<< HEAD:app/Http/Controllers/NewCatagoryController.php
     
     public function update(UpdateNew_CatagoryRequest $request, string $id)
+=======
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateNewCategoryRequest $request, string $id)
+>>>>>>> 80668b92a4a31b4cb41479696d89bc36314ff9fe:app/Http/Controllers/NewCategoryController.php
     {
-        $data = New_Catagory::query()->findOrFail($id);
+        $data = NewCategory::query()->findOrFail($id);
         $model = $request->all();
         $res = $data->update($model);
         if ($res) {
@@ -58,10 +69,14 @@ class NewCatagoryController extends Controller
         }
     }
 
+<<<<<<< HEAD:app/Http/Controllers/NewCatagoryController.php
     
+=======
+
+>>>>>>> 80668b92a4a31b4cb41479696d89bc36314ff9fe:app/Http/Controllers/NewCategoryController.php
     public function destroy(string $id)
     {
-        $data = New_Catagory::query()->findOrFail($id);
+        $data = NewCategory::query()->findOrFail($id);
         $data->delete();
         if (request()->ajax()) {
             return response()->json(['success' => true]);
@@ -73,7 +88,7 @@ class NewCatagoryController extends Controller
     public function statusNewCategory(Request $request, $id)
     {
         // Tìm bản ghi theo ID
-        $category = New_Catagory::findOrFail($id); // Thay 'Category' bằng model phù hợp
+        $category = NewCategory::findOrFail($id); // Thay 'Category' bằng model phù hợp
 
         // Cập nhật trạng thái 'is_active'
         $category->is_active = $request->input('is_active');
