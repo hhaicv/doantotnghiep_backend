@@ -6,7 +6,10 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
 use App\Http\Controllers\RoleController;
+
 use App\Http\Controllers\RouteController;
+
+
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->as('admin.')->group(function () {
@@ -30,5 +33,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('information',InformationController::class);
     Route::resource('routes', RouteController::class);
     Route::post('/status-route/{id}', [RouteController::class, 'statusRoute']);
+
 
 });
