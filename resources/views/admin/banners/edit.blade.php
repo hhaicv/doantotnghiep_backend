@@ -51,14 +51,6 @@
                 <label for="end_date">Ngày kết thúc</label>
                 <input type="date" name="end_date" id="end_date" class="form-control" value="{{ $model->end_date}}">
             </div>
-            <div class="form-check form-switch form-switch-primary mt-3">
-                <input type="hidden" name="is_active" value="0">
-                <input class="form-check-input" type="checkbox" role="switch" id="CheckBanners" name="is_active"
-                    {{ $model->is_active ? 'checked' : '' }} value="1" onchange="toggleLabel()">
-                <label class="form-check-label" id="statusLabel" for="CheckBanners">
-                    {{ $model->is_active ? 'On' : 'Off' }}
-                </label>
-            </div>
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Update</button>
@@ -67,17 +59,4 @@
             </div>
         </form>
     </div>
-    <script>
-        // JavaScript để cập nhật nhãn khi bật/tắt checkbox
-        function toggleLabel() {
-            var checkbox = document.getElementById('CheckBanners');
-            var label = document.getElementById('statusLabel');
-
-            if (checkbox.checked) {
-                label.textContent = 'On';
-            } else {
-                label.textContent = 'Off';
-            }
-        }
-    </script>
 @endsection

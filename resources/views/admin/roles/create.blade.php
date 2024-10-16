@@ -42,13 +42,13 @@
                 <textarea class="form-control" placeholder="Mô tả chi tiết về quyền" id="exampleFormControlTextarea5" name="description"
                     rows="2"></textarea>
             </div>
-            
-            <div class="form-check form-switch form-switch-primary mt-3">
+
+            {{-- <div class="form-check form-switch form-switch-primary mt-3">
                 <input type="hidden" name="is_active" value="0">
                 <input class="form-check-input" type="checkbox" role="switch" id="CheckRole" name="is_active"
                     checked value="1">
                 <label class="form-check-label" for="CheckRole">On</label>
-            </div>
+            </div> --}}
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -57,7 +57,7 @@
             </div>
         </form>
     </div>
-    <script>
+    {{-- <script>
         const checkbox = document.getElementById('CheckRole');
         const label = document.querySelector('label[for="CheckRole"]');
 
@@ -71,5 +71,5 @@
                 label.textContent = 'Off';
             }
         });
-    </script>
+    </script> --}}
 @endsection

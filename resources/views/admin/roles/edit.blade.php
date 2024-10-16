@@ -42,14 +42,14 @@
                 <label for="exampleFormControlTextarea5" class="form-label">Mô tả</label>
                 <textarea class="form-control" id="exampleFormControlTextarea5" name="description" rows="2">{{ $model->description }}</textarea>
             </div>
-            <div class="form-check form-switch form-switch-primary mt-3">
+            {{-- <div class="form-check form-switch form-switch-primary mt-3">
                 <input type="hidden" name="is_active" value="0">
                 <input class="form-check-input" type="checkbox" role="switch" id="CheckRoles" name="is_active"
                     {{ $model->is_active ? 'checked' : '' }} value="1" onchange="toggleLabel()">
                 <label class="form-check-label" id="statusLabel" for="CheckRoles">
                     {{ $model->is_active ? 'On' : 'Off' }}
                 </label>
-            </div>
+            </div> --}}
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Update</button>
@@ -58,7 +58,7 @@
             </div>
         </form>
     </div>
-    <script>
+    {{-- <script>
         // JavaScript để cập nhật nhãn khi bật/tắt checkbox
         function toggleLabel() {
             var checkbox = document.getElementById('CheckRoles');
@@ -70,5 +70,5 @@
                 label.textContent = 'Off';
             }
         }
-    </script>
+    </script> --}}
 @endsection

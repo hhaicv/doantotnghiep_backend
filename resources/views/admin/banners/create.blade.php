@@ -49,13 +49,6 @@
                 <label for="end_date">Ngày kết thúc</label>
                 <input type="date" name="end_date" id="end_date" class="form-control" required>
             </div>
-
-            <div class="form-check form-switch form-switch-primary mt-3">
-                <input type="hidden" name="is_active" value="0">
-                <input class="form-check-input" type="checkbox" role="switch" id="CheckBanner" name="is_active"
-                    checked value="1">
-                <label class="form-check-label" for="CheckBanner">On</label>
-            </div>
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -64,19 +57,5 @@
             </div>
         </form>
     </div>
-    <script>
-        const checkbox = document.getElementById('CheckBanner');
-        const label = document.querySelector('label[for="CheckBanner"]');
-
-        // Cập nhật label và giá trị khi checkbox thay đổi
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                this.value = '1'; // Khi bật, giá trị là 1
-                label.textContent = 'On';
-            } else {
-                this.value = '0'; // Khi tắt, giá trị là 0
-                label.textContent = 'Off';
-            }
-        });
-    </script>
+  
 @endsection
