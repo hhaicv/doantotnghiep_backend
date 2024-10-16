@@ -136,6 +136,26 @@
                         </ul>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarBuses" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarBuses">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Loại xe</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarBuses">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.buses.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.buses.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

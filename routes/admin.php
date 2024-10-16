@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\BusesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
@@ -15,9 +16,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('contacts', ContactController::class);
     Route::resource('roles', RoleController::class);
 
+    Route::resource('buses', BusesController::class);
+    Route::post('/status-buses/{id}', [BusesController::class, 'statusBuses']);
+
     Route::resource('banners', BannerController::class);
-    Route::post('/status-roles/{id}', [RoleController::class, 'statusRole']);
-    Route::post('/status-contacts/{id}', [ContactController::class, 'statusContact']);
     Route::post('/status-banners/{id}', [BannerController::class, 'statusBanner']);
 
     Route::resource('new_categories',NewCategoryController::class);
