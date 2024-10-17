@@ -136,7 +136,25 @@
                         </ul>
                     </div>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarRoutes" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarRoutes">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Tuyến đường</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarRoutes">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.routes.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.routes.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarBuses" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarBuses">

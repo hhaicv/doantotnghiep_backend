@@ -1,7 +1,7 @@
 @extends('admin.layouts.mater')
 
 @section('title')
-    Danh sách xe 
+    Danh sách xe
 @endsection
 @section('content')
     <div class="row">
@@ -55,7 +55,7 @@
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ $item->total_seats }}</td>
                                     <td>{{ number_format($item->fare_multiplier, 3) }} VND</td>
-                                    <td>{{ $item->description }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 30) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"

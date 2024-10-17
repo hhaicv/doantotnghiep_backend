@@ -59,8 +59,8 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->title }}</td>
-                                    <td>{{ $item->message }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->title, 30) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->message, 30) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -71,9 +71,7 @@
                                             <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
                                                 {{ $item->is_active ? 'Đã liên hệ' : 'Chưa liên hệ' }}
                                             </label>
-                                           
                                         </div>
-
                                     </td>
                                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                     <td>
@@ -155,7 +153,7 @@
                             // Cập nhật label hoặc badge sau khi thay đổi trạng thái
                             var label = this.nextElementSibling; // Lấy label kế tiếp checkbox
                             label.textContent = isChecked ? 'Đã liên hệ' :
-                            'Chưa liên hệ'; // Cập nhật nội dung
+                                'Chưa liên hệ'; // Cập nhật nội dung
 
                             // Nếu đã chuyển sang trạng thái "Đã liên hệ", vô hiệu hóa checkbox
                             if (isChecked) {

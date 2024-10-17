@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('admin.routes.create') }}">Thêm mới tuyến đường</a>
+                    <a class="btn btn-primary mb-3" href="{{ route('admin.routes.create') }}">Thêm mới</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -46,9 +46,9 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->route_name }}</td>
-                                    <td>{{ $item->start_route }}</td>
-                                    <td>{{ $item->end_route }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->route_name, 20) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->start_route, 20) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->end_route, 20) }}</td>
                                     <td>{{ $item->execution_time }}</td>
                                     <td>{{ $item->base_fare_per_km }}</td>
                                     <td>{{ $item->distance_km }}</td>

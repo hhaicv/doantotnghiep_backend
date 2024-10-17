@@ -17,12 +17,12 @@ class RouteFactory extends Factory
     public function definition(): array
     {
         return [
-            'route_name' => $this->faker->text(20), 
-            'start_route' => $this->faker->text(20),
-            'end_route' => $this->faker->text(20), 
-            'execution_time' => $this->faker->numberBetween(1, 200), 
-            'base_fare_per_km' => $this->faker->randomFloat(2, 10, 100), 
-            'distance_km' => $this->faker->randomFloat(2, 1, 100), 
+            'route_name' => $this->faker->text(50),
+            'start_route' => $this->faker->text(50),
+            'end_route' => $this->faker->text(50),
+            'execution_time' => $this->faker->numberBetween(1, 200),
+            'base_fare_per_km' => $this->faker->randomFloat(2, 10, 100),
+            'distance_km' => $this->faker->randomFloat(2, 1, 100),
         ];
     }
 }
