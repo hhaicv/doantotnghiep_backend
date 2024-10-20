@@ -174,6 +174,25 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarStops" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarStops">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Điểm dừng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarStops">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.stops.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.stops.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

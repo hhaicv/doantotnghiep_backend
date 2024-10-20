@@ -11,7 +11,7 @@ class StoreStopRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class StoreStopRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'stop_name' => ['required', 'string', 'min:6', 'max:255'],
+            'description' => ['required', 'string'],
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'stop_name.required' => 'Tên là bắt buộc.',
+            'stop_name.min' => 'Tên phải có ít nhất 6 ký tự.',
+            'stop_name.max' => 'Tên không được vượt quá 255 ký tự.',
+            'description.required' => 'Mô tả bắt buộc phải nhập',
         ];
     }
 }

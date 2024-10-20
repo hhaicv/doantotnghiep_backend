@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable(); // Cho phép giá trị NULL
             $table->foreign('parent_id')->references('id')->on('stops')->onDelete('cascade');
             $table->boolean('is_active')->default(true);
+            $table->text('description');
             $table->softDeletes();
             $table->timestamps();
         });
