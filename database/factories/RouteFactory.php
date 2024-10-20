@@ -17,12 +17,15 @@ class RouteFactory extends Factory
     public function definition(): array
     {
         return [
-            'route_name' => $this->faker->text(50),
-            'start_route' => $this->faker->text(50),
-            'end_route' => $this->faker->text(50),
-            'execution_time' => $this->faker->numberBetween(1, 200),
-            'base_fare_per_km' => $this->faker->randomFloat(2, 10, 100),
-            'distance_km' => $this->faker->randomFloat(2, 1, 100),
+            'route_name' => $this->faker->city . ' - ' . $this->faker->city,
+            'start_route' => $this->faker->city,
+            'end_route' => $this->faker->city,
+            'execution_time' => $this->faker->time,
+            'base_fare_per_km' => $this->faker->randomFloat(2, 10, 100), // Giá từ 10-100
+            'distance_km' => $this->faker->randomFloat(2, 50, 500), // Khoảng cách từ 50-500 km
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

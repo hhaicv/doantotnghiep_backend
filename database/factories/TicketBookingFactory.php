@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Route;
+use App\Models\Stop;
+use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +21,15 @@ class TicketBookingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::factory(), // Tạo mới user
+            'route_id' => Route::factory(), // Tạo mới tuyến đường
+            'start_stop_id' => Stop::factory(), // Điểm lên xe
+            'end_stop_id' => Stop::factory(), // Điểm xuống xe
+            'trip_id' => Trip::factory(), // Chuyến xe
+            'status' => 'Booked',
+            'payment_status' => 'Pending',
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

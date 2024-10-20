@@ -32,13 +32,12 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Image</th>
+                                <th>Hình ảnh</th>
                                 <th>Tên xe</th>
                                 <th>Tài xế</th>
                                 <th>Biển số xe</th>
                                 <th>SĐT</th>
                                 <th>Tổng ghế</th>
-                                <th>Giá vé</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
@@ -48,14 +47,13 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image)}}" alt="" width="100px" height="100px"></td>
+                                    <td><img src="{{ Storage::url($item->image)}}" alt="" style="width: 170px;height: 100px;object-fit: cover"></td>
                                     <td>{{ $item->name_bus }}</td>
                                     <td>{{ $item->model }}</td>
                                     <td>{{ $item->license_plate }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ $item->total_seats }}</td>
-                                    <td>{{ number_format($item->fare_multiplier, 3) }} VND</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 30) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 20) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"

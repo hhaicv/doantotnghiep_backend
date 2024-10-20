@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('status', ['Booked', 'Cancelled']);
             $table->enum('payment_status', ['Pending', 'Paid', 'Failed']);
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
             $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->foreign('end_stop_id')->references('id')->on('stops')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

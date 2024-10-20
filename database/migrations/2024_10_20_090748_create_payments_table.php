@@ -19,11 +19,12 @@ return new class extends Migration
             $table->enum('payment_status', ['Success', 'Failed']);
             $table->string('transaction_id')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('booking_id')->references('id')->on('ticket_bookings')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

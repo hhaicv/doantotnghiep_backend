@@ -11,19 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('information_images', function (Blueprint $table) {
+        Schema::create('bus_seats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('information_id')->constrained('information')->onDelete('cascade');
-            $table->string('image_url'); // Đường dẫn hình ảnh
+            $table->unsignedBigInteger('bus_id');
+            $table->char('seat_name', 1);
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('bus_id')->references('id')->on('buses')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('information_images');
+        Schema::dropIfExists('bus_seats');
     }
 };

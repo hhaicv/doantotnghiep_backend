@@ -159,7 +159,7 @@
                     <a class="nav-link menu-link" href="#sidebarBuses" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarBuses">
                         <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Loại xe</span>
+                        <span data-key="t-layouts">Xe</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarBuses">
                         <ul class="nav nav-sm flex-column">

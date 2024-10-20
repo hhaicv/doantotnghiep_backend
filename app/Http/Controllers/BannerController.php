@@ -19,16 +19,16 @@ class BannerController extends Controller
         return view(self::PATH_VIEW. __FUNCTION__, compact('data'));
     }
 
-    
+
     public function create()
     {
         return view(self::PATH_VIEW . __FUNCTION__);
     }
 
-   
+
     public function store(StoreBannerRequest $request)
     {
-       
+
         $data = $request->except('image_url');
 
         if ($request->hasFile('image_url')) {
@@ -41,24 +41,24 @@ class BannerController extends Controller
         } else {
             return redirect()->back()->with('danger', 'Banner không được thêm thành công');
         }
-        
-       
+
+
     }
 
-   
+
     public function show(Banner $banner)
     {
         //
     }
 
-    
+
     public function edit(string $id)
     {
         $model = Banner::query()->findOrFail($id);
         return view(self::PATH_VIEW . __FUNCTION__, compact('model'));
     }
 
-    
+
     public function update(UpdateBannerRequest $request, string $id)
     {
         $data = Banner::query()->findOrFail($id);
@@ -73,7 +73,7 @@ class BannerController extends Controller
         if ($request->hasFile('image_url') && $image && Storage::exists($image)) {
             Storage::delete($image);
         }
-        
+
         if ($res) {
             return redirect()->back()->with('success', 'Banner được sửa thành công');
         } else {
@@ -81,7 +81,7 @@ class BannerController extends Controller
         }
     }
 
-    
+
     public function destroy(string $id)
     {
         $data = Banner::query()->findOrFail($id);
@@ -90,7 +90,6 @@ class BannerController extends Controller
             return response()->json(['success' => true]);
         }
         return redirect()->route('admin.banners.index')->with('success', 'Banner deleted successfully');
-    
     }
 
     public function statusBanner(Request $request, $id)

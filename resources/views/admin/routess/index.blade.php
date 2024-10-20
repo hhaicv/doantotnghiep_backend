@@ -36,8 +36,8 @@
                                 <th>Điểm bắt đầu</th>
                                 <th>Điểm kết thúc</th>
                                 <th>Thời gian</th>
-                                <th>Hệ số</th>
                                 <th>Chiều Dài</th>
+                                <th>Mô tả</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
@@ -50,8 +50,8 @@
                                     <td>{{ \Illuminate\Support\Str::limit($item->start_route, 20) }}</td>
                                     <td>{{ \Illuminate\Support\Str::limit($item->end_route, 20) }}</td>
                                     <td>{{ $item->execution_time }}</td>
-                                    <td>{{ $item->base_fare_per_km }}</td>
-                                    <td>{{ $item->distance_km }}</td>
+                                    <td>{{ $item->distance_km}}</td>
+                                    <td>{{ $item->description}}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"

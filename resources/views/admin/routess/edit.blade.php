@@ -34,42 +34,37 @@
         <form action="{{ route('admin.routes.update', $data) }}" method="POST" class="row g-3 p-5">
             @csrf
             @method('PUT')
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="fullnameInput" class="form-label">Tên tuyến đường</label>
                 <input type="text" class="form-control" name="route_name" value="{{ $data->route_name }}">
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Điểm bắt đầu</label>
-                <input type="text" class="form-control" name="start_route" value="{{ $data->start_route}}">
+                <input type="text" class="form-control" name="start_route" value="{{ $data->start_route }}">
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Điểm kết thúc</label>
-                <input type="text" class="form-control" name="end_route" value="{{ $data->end_route}}">
+                <input type="text" class="form-control" name="end_route" value="{{ $data->end_route }}">
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Thời gian</label>
-                <input type="text" class="form-control" name="execution_time" value="{{ $data->execution_time}}">
-            </div>
-            <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Hệ số</label>
-                <input type="text" class="form-control" name="base_fare_per_km" value="{{ $data->base_fare_per_km}}">
+                <input type="text" class="form-control" name="execution_time" value="{{ $data->execution_time }}">
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Chiều dài</label>
-                <input type="text" class="form-control" name="distance_km" value="{{ $data->distance_km}}">
+                <input type="text" class="form-control" name="distance_km" value="{{ $data->distance_km }}">
             </div>
-            {{-- <div class="col-md-6">
-                <label for="exampleFormControlTextarea5" class="form-label">Mô tả danh mục</label>
-                <textarea class="form-control" name="description" rows="2">{{ $data->description }}</textarea>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <label for="exampleFormControlTextarea5" class="form-label">Mô tả xe</label>
+                    </div>
+                    <div class="card-body">
+                        <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px"
+                            name="description">{{ $data->description }}</textarea>
+                    </div><!-- end card-body -->
+                </div><!-- end card -->
             </div>
-            <div class="form-check form-switch form-switch-primary mt-3">
-                <input type="hidden" name="is_active" value="0">
-                <input class="form-check-input" type="checkbox" role="switch" id="CheckNewCategory" name="is_active"
-                    {{ $data->is_active ? 'checked' : '' }} value="1" onchange="toggleLabel()">
-                <label class="form-check-label" id="statusLabel" for="CheckNewCategory">
-                    {{ $data->is_active ? 'On' : 'Off' }}
-                </label>
-            </div> --}}
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Update</button>

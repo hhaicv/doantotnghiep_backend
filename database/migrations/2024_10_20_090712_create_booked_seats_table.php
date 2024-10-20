@@ -11,24 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trips', function (Blueprint $table) {
+        Schema::create('booked_seats', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('route_id');
+            $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('bus_id');
-            $table->date('trip_date');
-            $table->time('departure_time');
+            $table->unsignedBigInteger('trip_id');
+            $table->char('seat_name', 1);
+            $table->boolean('is_available')->default(false);
             $table->timestamps();
-            $table->boolean('is_active')->default(true);
-            $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
+            $table->softDeletes();
+            $table->foreign('booking_id')->references('id')->on('ticket_bookings')->onDelete('cascade');
             $table->foreign('bus_id')->references('id')->on('buses')->onDelete('cascade');
+            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
+
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('trips');
+        Schema::dropIfExists('booked_seats');
     }
 };

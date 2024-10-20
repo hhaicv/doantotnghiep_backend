@@ -33,7 +33,7 @@
     <div class="card">
         <form action="{{ route('admin.routes.store') }}" method="POST" class="row g-3 p-5">
             @csrf
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="fullnameInput" class="form-label">Tên tuyến đường</label>
                 <input type="text" class="form-control" name="route_name" placeholder="Nhập tên tuyến đường">
             </div>
@@ -50,23 +50,20 @@
                 <input type="text" class="form-control" name="execution_time" placeholder="Nhập thời gian">
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Hệ số</label>
-                <input type="text" class="form-control" name="base_fare_per_km" placeholder="Nhập hệ số">
-            </div>
-            <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Chiều dài</label>
                 <input type="text" class="form-control" name="distance_km" placeholder="Nhập chiều dài tuyến đường">
             </div>
-            {{-- <div class="col-md-6">
-                <label for="exampleFormControlTextarea5" class="form-label">Mô tả danh mục</label>
-                <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2"></textarea>
-            </div> --}}
-            {{-- <div class="form-check form-switch form-switch-primary mt-3">
-                <input type="hidden" name="is_active" value="0">
-                <input class="form-check-input" type="checkbox" role="switch" id="CheckNewCategory" name="is_active"
-                    checked value="1">
-                <label class="form-check-label" for="CheckNewCategory">On</label>
-            </div> --}}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <label for="exampleFormControlTextarea5" class="form-label">Mô tả xe</label>
+                    </div>
+                    <div class="card-body">
+                        <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px"
+                            name="description" placeholder=" Viết mô tả xe ở đây..."></textarea>
+                    </div><!-- end card-body -->
+                </div><!-- end card -->
+            </div>
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>

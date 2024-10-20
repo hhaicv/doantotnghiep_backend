@@ -17,7 +17,9 @@ class PaymentMethodFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'method_name' => $this->faker->randomElement(['MoMo', 'VNPAY']),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

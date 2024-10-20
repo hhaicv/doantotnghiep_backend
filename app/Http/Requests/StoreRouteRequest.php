@@ -25,9 +25,9 @@ class StoreRouteRequest extends FormRequest
             'route_name' => ['required', 'string', 'min:6', 'max:255'],
             'start_route' => ['required', 'string', 'min:6', 'max:255'],
             'end_route' => ['required', 'string', 'min:6', 'max:255'],
-            'execution_time' => ['required', 'date_format:H:i'],
-            'base_fare_per_km' => ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
-            'distance_km' =>  ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/']
+            'execution_time' => ['required', 'numeric'],
+            'distance_km' =>  ['required', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
+            'description' =>  ['required'],
         ];
     }
     public function messages(): array
@@ -37,6 +37,8 @@ class StoreRouteRequest extends FormRequest
             'route_name.required' => 'Tên là bắt buộc.',
             'route_name.min' => 'Tên phải nhiều hơn 6 ký tự.',
             'route_name.max' => 'Tên phải ít hơn 255 kí tự.',
+
+            'description.required' => 'Mô tả là bắt buộc.',
 
 
             'start_route.required' => 'Điểm bắt đầu là bắt buộc.',
@@ -50,7 +52,7 @@ class StoreRouteRequest extends FormRequest
 
 
             'execution_time.required' => 'Thời gian bắt buộc phải nhập.',
-            'execution_time.date_format' => 'Thời gian bắt buộc phải là định dạng H:i.',
+            'execution_time.numeric' => 'Thời gian bắt buộc phải là số.',
 
 
             'base_fare_per_km.required' => 'Hệ số bắt buộc phải nhập.',

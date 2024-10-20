@@ -17,7 +17,11 @@ class StopFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'stop_name' => $this->faker->city,
+            'parent_id' => null, // Giả sử không có cha (có thể cập nhật sau)
+            'is_active' => $this->faker->boolean,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
             $table->string('route_name');
-             $table->string('start_route');
+            $table->string('start_route');
             $table->string('end_route');
-             $table->string('execution_time');
-            $table->decimal('base_fare_per_km', 8, 2); 
-            $table->decimal('distance_km', 8, 2);      
+            $table->integer('execution_time');
+            $table->decimal('distance_km', 8, 2);
             $table->boolean('is_active')->default(true);
+            $table->text('description');
             $table->softDeletes();
             $table->timestamps();
         });

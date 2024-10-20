@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\BannerController;
-use App\Http\Controllers\BusesController;
+use App\Http\Controllers\BusController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
@@ -20,8 +20,8 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('contacts', ContactController::class);
     Route::resource('roles', RoleController::class);
 
-    Route::resource('buses', BusesController::class);
-    Route::post('/status-buses/{id}', [BusesController::class, 'statusBuses']);
+    Route::resource('buses', BusController::class);
+    Route::post('/status-buses/{id}', [BusController::class, 'statusBuses']);
 
     Route::resource('banners', BannerController::class);
     Route::post('/status-banners/{id}', [BannerController::class, 'statusBanner']);
@@ -33,6 +33,4 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('information',InformationController::class);
     Route::resource('routes', RouteController::class);
     Route::post('/status-route/{id}', [RouteController::class, 'statusRoute']);
-
-
 });

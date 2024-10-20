@@ -62,12 +62,6 @@
                 <label for="start_date">Số lượng ghế</label>
                 <input type="number" name="total_seats" id="total_seats" class="form-control"
                     placeholder="Nhập số lượng ghế">
-                <label class="form-label" for="fare_multiplier">Giá vé</label>
-                <div class="input-group has-validation mb-3">
-                    <input type="number" class="form-control" name="fare_multiplier" min="0"
-                        max="99999" step="0.001" placeholder="Nhập giá vé (VND)">
-                    <span class="input-group-text" id="fare_multiplier">VND</span>
-                </div>
             </div>
             <div class="col-md-12">
                 <div class="card">
@@ -75,12 +69,12 @@
                         <label for="exampleFormControlTextarea5" class="form-label">Mô tả xe</label>
                     </div>
                     <div class="card-body">
-                        <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px" name="description"
+                        <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px" name="description"
                             placeholder=" Viết mô tả xe ở đây..."></textarea>
                     </div><!-- end card-body -->
                 </div><!-- end card -->
             </div>
-            
+
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>

@@ -4,16 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Route extends Model
 {
     use HasFactory;
+
+    use SoftDeletes;
     protected $fillable = [
         "route_name",
         "start_route",
         "end_route",
         "execution_time",
-        "base_fare_per_km",
+        "description",
         "distance_km",
         "is_active"
     ];
