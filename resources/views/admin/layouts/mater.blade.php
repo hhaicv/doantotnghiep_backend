@@ -19,6 +19,8 @@
 
     <script src="https://kit.fontawesome.com/24d8b82fa8.js" crossorigin="anonymous"></script>
     @yield('style-libs')
+
+
     <!-- Layout config Js -->
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
     <!-- Bootstrap Css -->
@@ -34,7 +36,6 @@
             background-color: #405189 !important;
             border: 1px solid #004a5c;
         }
-
         .category-item {
             display: inline-block;
             /* Allows block-level formatting for each category */

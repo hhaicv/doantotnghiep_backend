@@ -15,21 +15,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('route_id');
             $table->unsignedBigInteger('bus_id');
-            $table->date('trip_date');
             $table->time('departure_time');
             $table->enum('direction', ['outbound', 'return']); // Thêm cột direction
             $table->timestamps();
             $table->softDeletes();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
             $table->foreign('bus_id')->references('id')->on('buses')->onDelete('cascade');
         });
     }
 
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('trips');
