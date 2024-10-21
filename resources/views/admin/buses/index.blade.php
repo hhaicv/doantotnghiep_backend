@@ -48,7 +48,7 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image)}}" alt="" width="100px" height="100px"></td>
+                                    <td><img src="{{ Storage::url($item->image)}}" alt="" width="120px" height="80px"></td>
                                     <td>{{ $item->name_bus }}</td>
                                     <td>{{ $item->model }}</td>
                                     <td>{{ $item->license_plate }}</td>

@@ -38,8 +38,8 @@
                 <input type="text" class="form-control" id="name_bus" name="name_bus" placeholder="Nhập tên xe ">
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Tên tài xế</label>
-                <input type="text" class="form-control" id="model" name="model" placeholder="Nhập tên tài xế ">
+                <label for="fullnameInput" class="form-label">Hãng xe</label>
+                <input type="text" class="form-control" id="model" name="model" placeholder="Nhập tên hãng xe">
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Biển số xe</label>
@@ -62,11 +62,10 @@
                 <label for="start_date">Số lượng ghế</label>
                 <input type="number" name="total_seats" id="total_seats" class="form-control"
                     placeholder="Nhập số lượng ghế">
-                <label class="form-label" for="fare_multiplier">Giá vé</label>
-                <div class="input-group has-validation mb-3">
+                <br>
+                <label class="form-label" for="fare_multiplier">Hệ số xe</label>
                     <input type="number" class="form-control" name="fare_multiplier" min="0"
-                        max="99999" step="0.001" placeholder="Nhập giá vé (VND)">
-                    <span class="input-group-text" id="fare_multiplier">VND</span>
+                        max="99999" step="0.001" placeholder="Nhập hệ số xe">
                 </div>
             </div>
             <div class="col-md-12">

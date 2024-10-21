@@ -38,10 +38,10 @@ class StoreBusesRequest extends FormRequest
             'name_bus.required' => 'Tên xe không được để trống.',
             'name_bus.max' => 'Tên xe không được trên 255 kí tự',
 
-            'model.required' => 'Tên người lái không được để trống.',
-            'model.max' => 'Tên người lái không được trên 255.',
+            'model.required' => 'Hãng xe không được để trống.',
+            'model.max' => 'Hãng xe không được trên 255.',
 
-            'fare_multiplier.required' => 'Giá vé xe không được để trống.',
+            'fare_multiplier.required' => 'Hệ số xe không được để trống.',
             'license_plate.required' => 'Biển số xe không được để trống.',
 
             'total_seats.required' => 'Số ghế không được bỏ trống.',
