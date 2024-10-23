@@ -19,8 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'phone',
+        'address',
         'email',
         'password',
+        'role_id',
+        'is_active',
     ];
 
     /**
@@ -41,5 +45,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean', 
     ];
+    public function role()
+    {
+        return $this->belongsTo(Role::class); // Mỗi User thuộc về một Role
+    }
 }

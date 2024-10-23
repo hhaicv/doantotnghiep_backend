@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\ContactController;
@@ -12,7 +13,12 @@ use App\Http\Controllers\StopController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->as('admin.')->group(function () {
+Route::get('admin/login', [AdminController::class, 'showAdminLoginForm'])->name('admin.login');
+Route::post('admin/login', [AdminController::class, 'adminLogin'])->name('admin.login.submit');
+
+Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
+    // Route::post('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
@@ -39,5 +45,5 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
-
 });
+

@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BannerController;
+use App\Http\Controllers\Api\BusController;
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\RouteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +19,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('logout', [AuthController::class, 'logout']);
+
 });
+
+Route::apiResource('banners', BannerController::class);
+Route::apiResource('contacts', ContactController::class);
+Route::patch('contacts/{id}/status', [ContactController::class, 'statusContact']);
+Route::apiResource('routes', RouteController::class);
+Route::patch('routes/{id}/status', [RouteController::class, 'statusRoute']);
+Route::apiResource('buses', BusController::class);
+

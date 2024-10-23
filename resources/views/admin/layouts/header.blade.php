@@ -848,8 +848,14 @@
                                 class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle" data-key="t-logout"> {{ __('Logout') }}</span></a>
 
-                        <form id="logout-form" action="" method="POST" class="d-none">
+                                <form method="POST" action="{{ route('logout') }}">
                             @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
                         </form>
                     </div>
                 </div>
