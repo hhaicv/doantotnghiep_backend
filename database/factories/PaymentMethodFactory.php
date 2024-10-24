@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Buses>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PaymentMethod>
  */
-class BusesFactory extends Factory
+class PaymentMethodFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,9 @@ class BusesFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'method_name' => $this->faker->randomElement(['MoMo', 'VNPAY']),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

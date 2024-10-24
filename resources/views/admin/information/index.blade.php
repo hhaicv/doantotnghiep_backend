@@ -46,7 +46,7 @@
                                     <td>{{ $item->id }}</td>
                                     <td><img width="80px" src="{{ Storage::url($item->thumbnail_image) }}" alt="">
                                     </td>
-                                    <td>{{ $item->title }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->title, 30) }}</td>
                                     <td>
                                         @if ($item->newCategories->isEmpty())
                                             <span>No Categories</span>

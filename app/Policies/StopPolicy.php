@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Buses;
+use App\Models\Stop;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class BusesPolicy
+class StopPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class BusesPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Buses $buses): bool
+    public function view(User $user, Stop $stop): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class BusesPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Buses $buses): bool
+    public function update(User $user, Stop $stop): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class BusesPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Buses $buses): bool
+    public function delete(User $user, Stop $stop): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class BusesPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Buses $buses): bool
+    public function restore(User $user, Stop $stop): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class BusesPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Buses $buses): bool
+    public function forceDelete(User $user, Stop $stop): bool
     {
         //
     }

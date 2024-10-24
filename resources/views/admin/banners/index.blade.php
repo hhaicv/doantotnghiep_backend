@@ -45,7 +45,7 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td><img src="{{ Storage::url($item->image_url)}}" alt="" width="100px" height="100px"></td>
-                                    <td>{{ $item->link }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->link, 30) }}</td>
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
                                     <td>

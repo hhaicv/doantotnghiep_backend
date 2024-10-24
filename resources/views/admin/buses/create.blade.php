@@ -74,12 +74,12 @@
                         <label for="exampleFormControlTextarea5" class="form-label">Mô tả xe</label>
                     </div>
                     <div class="card-body">
-                        <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px" name="description"
+                        <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px" name="description"
                             placeholder=" Viết mô tả xe ở đây..."></textarea>
                     </div><!-- end card-body -->
                 </div><!-- end card -->
             </div>
-            
+
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>

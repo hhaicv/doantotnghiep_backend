@@ -4,20 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Buses extends Model
+class Stop extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'name_bus',
-        'model',
-        'fare_multiplier',
-        'license_plate',
-        'total_seats',
-        'image',
-        'phone',
+
+    use SoftDeletes;
+
+    protected $fillable=[
+
+        'stop_name',
         'description',
-        'is_active',
+        'is_active'
     ];
 
     protected $casts = [

@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('information_images', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('information_id')->constrained('information')->onDelete('cascade');
-            $table->string('image_url'); // Đường dẫn hình ảnh
+            $table->enum('method_name', ['MoMo', 'VNPAY']);
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('information_images');
+        Schema::dropIfExists('payment_methods');
     }
 };

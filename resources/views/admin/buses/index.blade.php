@@ -1,7 +1,7 @@
 @extends('admin.layouts.mater')
 
 @section('title')
-    Danh sách xe 
+    Danh sách xe
 @endsection
 @section('content')
     <div class="row">
@@ -32,13 +32,12 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Image</th>
+                                <th>Hình ảnh</th>
                                 <th>Tên xe</th>
                                 <th>Tài xế</th>
                                 <th>Biển số xe</th>
                                 <th>SĐT</th>
                                 <th>Tổng ghế</th>
-                                <th>Giá vé</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
@@ -54,8 +53,7 @@
                                     <td>{{ $item->license_plate }}</td>
                                     <td>{{ $item->phone }}</td>
                                     <td>{{ $item->total_seats }}</td>
-                                    <td>{{ number_format($item->fare_multiplier, 3) }} VND</td>
-                                    <td>{{ $item->description }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 20) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"

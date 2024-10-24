@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateBusesRequest extends FormRequest
+class UpdateBusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class UpdateBusesRequest extends FormRequest
 
             'name_bus' => ['required', 'string','max:255'],
             'model' => ['required', 'string','max:255'],
-            'fare_multiplier' => ['required'],
             'license_plate' => ['required' ,'string'],
             'total_seats' => ['required', 'max:100'],
             'phone' => ['required', 'numeric', 'digits_between:8,15'],
@@ -41,7 +40,6 @@ class UpdateBusesRequest extends FormRequest
             'model.required' => 'Hãng xe không được để trống.',
             'model.max' => 'Hãng xe không được trên 255.',
 
-            'fare_multiplier.required' => 'Hệ số xe không được để trống.',
             'license_plate.required' => 'Biển số xe không được để trống.',
 
             'total_seats.required' => 'Số ghế không được bỏ trống.',

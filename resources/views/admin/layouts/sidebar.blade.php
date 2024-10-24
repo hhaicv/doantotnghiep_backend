@@ -136,12 +136,30 @@
                         </ul>
                     </div>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarRoutes" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarRoutes">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Tuyến đường</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarRoutes">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.routes.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.routes.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarBuses" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarBuses">
                         <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Loại xe</span>
+                        <span data-key="t-layouts">Xe</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarBuses">
                         <ul class="nav nav-sm flex-column">
@@ -151,6 +169,82 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.buses.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarStops" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarStops">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Điểm dừng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarStops">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.stops.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.stops.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarTrips" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarTrips">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Chuyến xe</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarTrips">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.trips.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.trips.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarBusSeats" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarBusSeats">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Ghế xe</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarBusSeats">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.bus_seats.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.bus_seats.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarReviews" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarReviews">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Đánh giá</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarReviews">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.reviews.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.reviews.create') }}" class="nav-link"
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
