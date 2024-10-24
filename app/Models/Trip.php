@@ -22,6 +22,8 @@ class Trip extends Model
         'is_active' => 'boolean',
     ];
 
+
+    // kh biết nó là gì dùng như nào
     public function route()
     {
         return $this->belongsTo(Route::class);

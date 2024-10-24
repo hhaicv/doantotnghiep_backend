@@ -23,6 +23,8 @@ class TripController extends Controller
      */
     public function create()
     {
+
+        // cái này là do anh check đk thôi em kh quan tâm nhé
         $buses = Bus::query()->where('is_active', false)->get();
         $routes = Route::query()->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('buses', 'routes'));
