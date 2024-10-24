@@ -810,9 +810,9 @@
                                 src=" {{ asset('theme/admin/assets/images/users/ebe4.j') }}" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                                   </span>
+                                </span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">
-                                   </span>
+                                </span>
                             </span>
                         </span>
                     </button>
@@ -842,21 +842,16 @@
                         <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
                                 class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Lock screen</span></a>
-                        <a class="dropdown-item" href=""
-                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i
-                                class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle" data-key="t-logout"> {{ __('Logout') }}</span></a>
+                        <a class="dropdown-item" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle" data-key="t-logout">{{ __('Logout') }}</span>
+                        </a>
 
-                                <form method="POST" action="{{ route('logout') }}">
+                        <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
                             @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
                         </form>
+
                     </div>
                 </div>
             </div>
