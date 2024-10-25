@@ -9,6 +9,7 @@ use App\Http\Controllers\RoleController;
 
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
+use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,4 +41,5 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
 
+    Route::resource('tickets', TicketBookingController::class);
 });

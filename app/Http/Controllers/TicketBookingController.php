@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
+use PHPUnit\Framework\Attributes\Ticket;
 
 class TicketBookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    const PATH_VIEW = "admin.tickets.";
     public function index()
     {
-        //
+        $data = TicketBooking::query()->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     /**
