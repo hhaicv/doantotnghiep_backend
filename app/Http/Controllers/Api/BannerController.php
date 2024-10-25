@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers\Api;
 
@@ -37,7 +37,21 @@ class BannerController extends Controller
     {
         try {
             $data = $request->validated();
-            $banner = Banner::create($data);
+
+            // Handle file upload if there is any image file
+            if ($request->hasFile('image_url')) {
+                $file = $request->file('image_url');
+                $path = $file->store('banners', 'public'); // Save the image in storage/app/public/banners
+                $data['image_url'] = $path;
+            }
+
+            $banner = Banner::create([
+                'image_url' => $data['image_url'],
+                'link' => $data['link'],
+                'start_date' => $data['start_date'],
+                'end_date' => $data['end_date'],
+                'status' => $data['status'] ?? 1, // default status is 1 (active)
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -94,7 +108,21 @@ class BannerController extends Controller
             }
 
             $data = $request->validated();
-            $banner->update($data);
+
+            // Handle file upload for updating image
+            if ($request->hasFile('image_url')) {
+                $file = $request->file('image_url');
+                $path = $file->store('banners', 'public');
+                $data['image_url'] = $path;
+            }
+
+            $banner->update([
+                'image_url' => $data['image_url'] ?? $banner->image_url,
+                'link' => $data['link'] ?? $banner->link,
+                'start_date' => $data['start_date'] ?? $banner->start_date,
+                'end_date' => $data['end_date'] ?? $banner->end_date,
+                'status' => $data['status'] ?? $banner->status,
+            ]);
 
             return response()->json([
                 'success' => true,

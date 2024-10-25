@@ -11,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin/login', [AdminController::class, 'showAdminLoginForm'])->name('admin.login');
@@ -45,5 +46,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
+
+    Route::resource('users', UserController::class);
+    Route::post('users/{id}/status', [UserController::class, 'statusUser']);
+
 });
 
