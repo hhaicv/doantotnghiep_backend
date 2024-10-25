@@ -23,9 +23,9 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        $trips = Trip::query()->get();
+        // $trips = Trip::query()->get();
         $users = User::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('users', 'trips'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('users'));
     }
 
     /**
