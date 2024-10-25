@@ -11,9 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class BannerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(): JsonResponse
     {
         try {
@@ -29,19 +27,15 @@ class BannerController extends Controller
             ], 500); // 500 Internal Server Error
         }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+  
     public function store(StoreBannerRequest $request): JsonResponse
     {
         try {
             $data = $request->validated();
 
-            // Handle file upload if there is any image file
             if ($request->hasFile('image_url')) {
                 $file = $request->file('image_url');
-                $path = $file->store('banners', 'public'); // Save the image in storage/app/public/banners
+                $path = $file->store('banners', 'public'); 
                 $data['image_url'] = $path;
             }
 
@@ -50,7 +44,7 @@ class BannerController extends Controller
                 'link' => $data['link'],
                 'start_date' => $data['start_date'],
                 'end_date' => $data['end_date'],
-                'status' => $data['status'] ?? 1, // default status is 1 (active)
+                'status' => $data['status'] ?? 1, 
             ]);
 
             return response()->json([
@@ -65,9 +59,7 @@ class BannerController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show($id): JsonResponse
     {
         try {
@@ -92,9 +84,7 @@ class BannerController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(UpdateBannerRequest $request, $id): JsonResponse
     {
         try {
@@ -109,7 +99,6 @@ class BannerController extends Controller
 
             $data = $request->validated();
 
-            // Handle file upload for updating image
             if ($request->hasFile('image_url')) {
                 $file = $request->file('image_url');
                 $path = $file->store('banners', 'public');
@@ -136,9 +125,7 @@ class BannerController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy($id): JsonResponse
     {
         try {
