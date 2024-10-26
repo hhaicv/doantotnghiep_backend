@@ -9,6 +9,8 @@ use App\Http\Controllers\RoleController;
 
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\PromotionUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->as('admin.')->group(function () {
@@ -35,4 +37,8 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('stops', StopController::class);
     Route::post('/status-stop/{id}', [StopController::class, 'statusStop']);
+
+Route::resource('promotions', PromotionController::class);
+Route::post('/status-promotion/{id}', [PromotionController::class, 'statusPromotion']);
+
 });
