@@ -88,12 +88,15 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="new_customer_only" id="newCustomerOnly" value="1">
-                <label class="form-check-label" for="newCustomerOnly">Chỉ áp dụng cho khách hàng mới</label>
-            </div>
-            <input type="hidden" name="new_customer_only" value="0">
-        
+            {{-- <label for="user_ids">Chọn Người Dùng</label>
+            <select name="user_ids[]" id="user_ids" class="form-control" multiple>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}" {{ isset($data) && $data->users->contains($user->id) ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
+         --}}
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>

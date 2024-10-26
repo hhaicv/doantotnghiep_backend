@@ -42,25 +42,25 @@ class PromotionController extends Controller
     public function store(StorePromotionRequest $request)
     {
 
-    $userId = $request->input('user_id');
-    $user = User::find($userId);
+        $userIds = $request->input('user_ids'); // Mảng các user ID
 
-    // Kiểm tra nếu người dùng đã tồn tại
-    if ($user && $user->created_at < now()->subMonths(1)) {
-        return redirect()->back()->with('error', 'Mã khuyến mãi không áp dụng cho người dùng cũ.');
-    }
-    $startDate = $request->input('start_date');
-    $endDate = $request->input('end_date');
-
-    if ($startDate >= $endDate) {
-        return redirect()->back()->with('error', 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc.');
-    }
-        $data = $request->all();
+        // Kiểm tra ngày bắt đầu và kết thúc
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        if ($startDate >= $endDate) {
+            return redirect()->back()->with('error', 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc.');
+        }
+    
+        $data = $request->except('user_ids');
         $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0;
-
-        $data = $request->all();
-        $model = Promotion::query()->create($data);
-        if ($model) {
+    
+        // Tạo khuyến mãi
+        $promotion = Promotion::create($data);
+    
+        if ($promotion) {
+            // Gắn người dùng vào khuyến mãi
+            $promotion->users()->sync($userIds);
+    
             return redirect()->back()->with('success', 'Bạn thêm thành công');
         } else {
             return redirect()->back()->with('danger', 'Bạn không thêm thành công');
@@ -76,7 +76,7 @@ class PromotionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource.   
      */
     public function edit(string $id)
     {
@@ -92,22 +92,23 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, string $id)
     {
-        $data = Promotion::query()->findOrFail($id);
-        $userId = $request->input('user_id');
-        $user = User::find($userId);
+        $promotion = Promotion::findOrFail($id);
+
+        $userIds = $request->input('user_ids'); // Mảng các user ID
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
     
-        // Kiểm tra nếu người dùng đã tồn tại
-        if ($user && $user->created_at < now()->subMonths(1)) {
-            return redirect()->back()->with('error', 'Mã khuyến mãi không áp dụng cho người dùng cũ.');
+        if ($startDate >= $endDate) {
+            return redirect()->back()->with('error', 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc.');
         }
-        $data = Promotion::query()->findOrFail($id);
-        $model = $request->all();
-        $res = $data->update($model);
-        if ($res) {
-            return redirect()->back()->with('success', 'Danh mục khuyến mãi  được sửa thành công');
-        } else {
-            return redirect()->back()->with('danger', 'Danh mục khuyến mãi  không sửa thành công');
-        }
+    
+        $data = $request->except('user_ids');
+        $promotion->update($data);
+    
+        // Cập nhật người dùng liên kết với khuyến mãi này
+        $promotion->users()->sync($userIds);
+    
+        return redirect()->back()->with('success', 'Danh mục khuyến mãi được sửa thành công');
     }
 
     /**

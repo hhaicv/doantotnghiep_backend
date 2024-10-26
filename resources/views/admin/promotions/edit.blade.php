@@ -91,12 +91,14 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-check form-switch">
-                <!-- Kiểm tra nếu new_customer_only là 1 thì checkbox sẽ được "checked" -->
-                <input class="form-check-input" type="checkbox" name="new_customer_only" id="newCustomerOnly" value="1" 
-                       {{ $data->new_customer_only == 1 ? 'checked' : '' }}>
-                <label class="form-check-label" for="newCustomerOnly">Chỉ áp dụng cho khách hàng mới</label>
-            </div>
+            <label for="user_ids">Chọn Người Dùng</label>
+            <select name="user_ids[]" id="user_ids" class="form-control" multiple>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}" {{ isset($data) && $data->users->contains($user->id) ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
             <!-- Nút submit và quay lại -->
             <div class="col-12">
                 <div class="text-end">

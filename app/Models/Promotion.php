@@ -33,6 +33,6 @@ class Promotion extends Model
         return $this->hasMany(PromotionUser::class, 'id_promotion');
     }
     public function users() {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class, 'promotion_user');
     }
 }
