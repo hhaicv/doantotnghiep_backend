@@ -97,6 +97,7 @@
             </div><!-- end card-body -->
         </div><!-- end card -->
     </div>
+    <input type="hidden" name="is_active" value="0">
     <div class="col-12">
         <div class="text-end">
             <button type="submit" class="btn btn-primary">Submit</button>

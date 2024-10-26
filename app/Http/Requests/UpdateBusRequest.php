@@ -25,7 +25,6 @@ class UpdateBusRequest extends FormRequest
 
             'name_bus' => ['required', 'string','max:255'],
             'model' => ['required', 'string','max:255'],
-            'image' => ['required'],
             'license_plate' => ['required' ,'string'],
             'gps_code' => ['required' ,'string'],
             'total_seats' => ['required', 'max:100'],
@@ -44,7 +43,6 @@ class UpdateBusRequest extends FormRequest
 
             'model.required' => 'Tên người lái không được để trống.',
             'model.max' => 'Tên người lái không được trên 255.',
-            'image.required' => 'Hình ảnh không được để trống.',
             'name_bus.max' => 'Tên xe không được trên 255 kí tự',
             'model.required' => 'Hãng xe không được để trống.',
             'model.max' => 'Hãng xe không được trên 255.',
