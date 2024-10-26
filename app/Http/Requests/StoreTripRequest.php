@@ -11,7 +11,11 @@ class StoreTripRequest extends FormRequest
      */
     public function authorize(): bool
     {
+<<<<<<< HEAD
         return false;
+=======
+        return true;
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 
     /**
@@ -22,7 +26,19 @@ class StoreTripRequest extends FormRequest
     public function rules(): array
     {
         return [
+<<<<<<< HEAD
             //
+=======
+            'departure_time' => ['required'],
+           
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'departure_time.required' => 'Thời gian là bắt buộc.'
+
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
         ];
     }
 }

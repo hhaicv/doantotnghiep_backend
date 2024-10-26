@@ -25,6 +25,11 @@ class StoreBannerRequest extends FormRequest
 
             'image_url' => ['required'],
             'link' => ['required', 'string'],
+<<<<<<< HEAD
+=======
+            'start_date' => ['required'],
+            'end_date'=> ['required'],
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
         ];
     }
     public function messages(): array
@@ -32,6 +37,11 @@ class StoreBannerRequest extends FormRequest
         return [
             'image_url.required' => 'Ảnh không được để trống.',
             'link.required' => 'Link không được để trống.',
+<<<<<<< HEAD
+=======
+            'start_date' => 'chọn ngày bắt đầu',
+            'end_date'=>  'chọn ngày kết thúc',
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
         ];
     }
 }

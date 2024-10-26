@@ -10,6 +10,7 @@
             </div>
         </div>
     </div>
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -19,6 +20,8 @@
             </ul>
         </div>
     @endif
+
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -35,11 +38,24 @@
             @csrf
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Tên danh mục</label>
+
                 <input type="text" class="form-control" name="name" placeholder="Nhập danh mục">
             </div>
             <div class="col-md-6">
                 <label for="exampleFormControlTextarea5" class="form-label">Mô tả danh mục</label>
                 <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2"></textarea>
+                <input type="text" class="form-control" name="name" placeholder="Nhập danh mục" value="{{ old('name') }}">
+                @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-md-6">
+                <label for="exampleFormControlTextarea5" class="form-label">Mô tả danh mục</label>
+                <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2" >{{ old('description') }}</textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+
             </div>
             <div class="col-12">
                 <div class="text-end">

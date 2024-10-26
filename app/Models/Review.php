@@ -6,29 +6,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Route extends Model
+class Review extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
+
     protected $fillable = [
-        "route_name",
-        "start_route",
-        "end_route",
-        "execution_time",
-        "description",
-        "distance_km",
+        "trip_id",
+        "user_id",
+        "rating",
+        "comment",
         "is_active"
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
     ];
-<<<<<<< HEAD
-=======
-    public function stages()
+
+    public function trip()
     {
-        return $this->hasMany(Stage::class);
+        return $this->belongsTo(Trip::class, 'trip_id');
     }
->>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

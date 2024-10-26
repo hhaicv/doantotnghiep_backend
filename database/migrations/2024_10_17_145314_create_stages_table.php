@@ -18,7 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('end_stop_id');
             $table->integer('stage_order');
             $table->decimal('fare', 10, 2);
+<<<<<<< HEAD
             $table->decimal('distance_km', 10, 2);
+=======
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
             $table->softDeletes();
 
             $table->timestamps();

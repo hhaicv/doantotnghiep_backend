@@ -11,7 +11,11 @@ class StoreStageRequest extends FormRequest
      */
     public function authorize(): bool
     {
+<<<<<<< HEAD
         return false;
+=======
+        return true;
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 
     /**

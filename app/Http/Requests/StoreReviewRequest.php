@@ -4,18 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateBusSeatRequest extends FormRequest
+class StoreReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-<<<<<<< HEAD
-        return false;
-=======
         return true;
->>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 
     /**
@@ -26,7 +22,20 @@ class UpdateBusSeatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
+            
+            'rating' => 'required',
+            'comment' => 'required | max:255',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            
+            'rating' => 'Bạn yêu thích chúng tôi bao nhiêu',
+            'comment' => 'Nhận xét không được để trống',
+            'comment.max' => 'Nhận xét không được vượt quá 255 ký tự.',
+
         ];
     }
 }

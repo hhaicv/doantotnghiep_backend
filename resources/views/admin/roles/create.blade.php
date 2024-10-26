@@ -10,6 +10,7 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -19,6 +20,8 @@
             </ul>
         </div>
     @endif
+=======
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -34,6 +37,7 @@
         <form action="{{ route('admin.roles.store') }}" method="POST" class="row g-3 p-5">
             @csrf
             <div class="col-md-6">
+<<<<<<< HEAD
                 <label for="fullnameInput" class="form-label">Tên quyền</label>
                 <input type="text" class="form-control" id="name_role" name="name_role" placeholder="Nhập tên quyền...">
             </div>
@@ -49,6 +53,21 @@
                     checked value="1">
                 <label class="form-check-label" for="CheckRole">On</label>
             </div> --}}
+=======
+                <label for="name_role" class="form-label">Tên quyền</label>
+                <input type="text" class="form-control" id="name_role" name="name_role" placeholder="Nhập tên quyền..." value="{{ old('name_role') }}">
+                @error('name_role')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-md-6">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" placeholder="Mô tả chi tiết về quyền" id="description" name="description" rows="2">{{ old('description') }}</textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -56,6 +75,7 @@
                 </div>
             </div>
         </form>
+<<<<<<< HEAD
     </div>
     {{-- <script>
         const checkbox = document.getElementById('CheckRole');
@@ -72,4 +92,9 @@
             }
         });
     </script> --}}
+=======
+        
+    </div>
+
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
 @endsection

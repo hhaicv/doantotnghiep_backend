@@ -194,6 +194,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
+
                     <a class="nav-link menu-link" href="#sidebarPromotions" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarPromotions">
                         <i class="ri-layout-3-line"></i>
@@ -207,6 +208,58 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.promotions.create') }}" class="nav-link"
+                    <a class="nav-link menu-link" href="#sidebarTrips" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarTrips">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Chuyến xe</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarTrips">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.trips.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.trips.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarBusSeats" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarBusSeats">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Ghế xe</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarBusSeats">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.bus_seats.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.bus_seats.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarReviews" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarReviews">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Đánh giá</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarReviews">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.reviews.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.reviews.create') }}" class="nav-link"
+
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>

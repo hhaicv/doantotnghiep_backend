@@ -19,6 +19,11 @@
 
     <script src="https://kit.fontawesome.com/24d8b82fa8.js" crossorigin="anonymous"></script>
     @yield('style-libs')
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     <!-- Layout config Js -->
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
     <!-- Bootstrap Css -->
@@ -34,7 +39,10 @@
             background-color: #405189 !important;
             border: 1px solid #004a5c;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
         .category-item {
             display: inline-block;
             /* Allows block-level formatting for each category */

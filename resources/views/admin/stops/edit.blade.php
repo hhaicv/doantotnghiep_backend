@@ -31,6 +31,7 @@
         </div>
     @endif
     <div class="card">
+<<<<<<< HEAD
         <form action="{{ route('admin.stops.update', $data->id) }}" method="POST" class="row g-3 p-5">
             @csrf
             @method('PUT')
@@ -78,10 +79,27 @@
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Cập nhật</button>
+=======
+        <form action="{{ route('admin.stops.update', $data) }}" method="POST" class="row g-3 p-5">
+            @csrf
+            @method('PUT')
+            <div class="col-md-6">
+                <label for="fullnameInput" class="form-label">Tên điểm dừng</label>
+                <input type="text" class="form-control" name="stop_name" value="{{ $data->stop_name }}">
+            </div>
+            <div class="col-md-6">
+                <label for="exampleFormControlTextarea5" class="form-label">Mô tả </label>
+                <textarea class="form-control" name="description" rows="2">{{ $data->description }}</textarea>
+            </div>
+            <div class="col-12">
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Update</button>
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
                     <a href="{{ route('admin.stops.index') }}" class="btn btn-success">Quay lại</a>
                 </div>
             </div>
         </form>
+<<<<<<< HEAD
         
     </div>
 @endsection
@@ -112,3 +130,7 @@
         filterChildStops();
     };
 </script>
+=======
+    </div>
+@endsection
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56

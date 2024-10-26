@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BusSeat;
 use App\Http\Requests\StoreBusSeatRequest;
 use App\Http\Requests\UpdateBusSeatRequest;
+<<<<<<< HEAD
 
 class BusSeatController extends Controller
 {
@@ -14,6 +15,19 @@ class BusSeatController extends Controller
     public function index()
     {
         //
+=======
+use App\Models\Bus;
+use Illuminate\Http\Request;
+
+class BusSeatController extends Controller
+{
+    const PATH_VIEW = 'admin.bus_seats.';
+
+    public function index()
+    {
+        $data = BusSeat::with(['bus'])->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 
     /**
@@ -21,7 +35,12 @@ class BusSeatController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
         //
+=======
+        $buses = Bus::query()->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('buses'));
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 
     /**
@@ -29,7 +48,22 @@ class BusSeatController extends Controller
      */
     public function store(StoreBusSeatRequest $request)
     {
+<<<<<<< HEAD
         //
+=======
+        $data = $request->all();
+        $model = BusSeat::query()->create($data);
+        if ($model) {
+            $bus = Bus::find($model->bus_id); // Tìm xe tương ứng
+            if ($bus) {
+                $bus->is_active = true; // Hoặc là bạn có thể tạo một trường mới để đánh dấu
+                $bus->save(); // Lưu thay đổi vào cơ sở dữ liệu
+            }
+            return redirect()->back()->with('success', 'Bạn thêm thành công');
+        } else {
+            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+        }
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 
     /**
@@ -51,16 +85,53 @@ class BusSeatController extends Controller
     /**
      * Update the specified resource in storage.
      */
+<<<<<<< HEAD
     public function update(UpdateBusSeatRequest $request, BusSeat $busSeat)
     {
         //
+=======
+    public function update(UpdateBusSeatRequest $request, string $id)
+    {
+        $data = BusSeat::query()->findOrFail($id);
+        $model = $request->all();
+        $res = $data->update($model);
+        if ($res) {
+            return redirect()->back()->with('success', 'Chuyến xe được sửa thành công');
+        } else {
+            return redirect()->back()->with('danger', 'Chuyến xe không sửa thành công');
+        }
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 
     /**
      * Remove the specified resource from storage.
      */
+<<<<<<< HEAD
     public function destroy(BusSeat $busSeat)
     {
         //
+=======
+    public function destroy(string $id)
+    {
+        $data = BusSeat::query()->findOrFail($id);
+        $data->delete();
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+        return redirect()->route('admin.bus_seats.index')->with('success', 'bus_seats deleted successfully');
+    }
+
+    public function statusTrip(Request $request, $id)
+    {
+        // Tìm bản ghi theo ID
+        $role = BusSeat::findOrFail($id);
+
+        // Cập nhật trạng thái 'is_active'
+        $role->is_active = $request->input('is_active');
+        $role->save(); // Lưu thay đổi vào cơ sở dữ liệu
+
+        // Trả về phản hồi JSON cho client
+        return response()->json(['success' => true]);
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
     }
 }

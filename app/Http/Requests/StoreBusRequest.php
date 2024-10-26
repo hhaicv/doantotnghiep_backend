@@ -28,6 +28,10 @@ class StoreBusRequest extends FormRequest
             'image' => ['required'],
             'license_plate' => ['required' ,'string'],
             'total_seats' => ['required', 'max:100'],
+<<<<<<< HEAD
+=======
+            'fare_multiplier' => ['required', 'max:10'],
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
             'phone' => ['required', 'numeric', 'digits_between:8,15'],
             'description' => ['required','string', 'max:255'],
         ];
@@ -39,14 +43,25 @@ class StoreBusRequest extends FormRequest
             'image.required' => 'Hình ảnh không được để trống.',
             'name_bus.max' => 'Tên xe không được trên 255 kí tự',
 
+<<<<<<< HEAD
             'model.required' => 'Tên người lái không được để trống.',
             'model.max' => 'Tên người lái không được trên 255.',
+=======
+            'model.required' => 'Hãng xe không được để trống.',
+            'model.max' => 'Hãng xe không được trên 255.',
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
 
             'license_plate.required' => 'Biển số xe không được để trống.',
 
             'total_seats.required' => 'Số ghế không được bỏ trống.',
             'total_seats.max' => 'Số ghế không để quá 100.',
 
+<<<<<<< HEAD
+=======
+            'fare_multiplier.required' => 'Hệ số xe không được bỏ trống.',
+            'fare_multiplier.max' => 'Hệ số xe không để quá 10.',
+            
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
             'phone.required' => 'Số điện thoại là bắt buộc.',
             'phone.numeric' => 'Số điện thoại phải là một số.',
             'phone.digits_between' => 'Số điện thoại phải có từ 8 đến 15 chữ số.',

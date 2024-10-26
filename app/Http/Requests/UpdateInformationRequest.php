@@ -31,6 +31,7 @@ class UpdateInformationRequest extends FormRequest
     public function messages(): array
     {
         return [
+<<<<<<< HEAD
             'title.required' => 'Tiêu đề là bắt buộc.',
             'title.min' => 'Tiêu đề phải có ít nhất 6 ký tự.',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
@@ -40,4 +41,16 @@ class UpdateInformationRequest extends FormRequest
             'content.required' => 'Nội dung bắt buộc phải nhập',
         ];
     }
+=======
+            'title.required' => 'Bắt buộc phải nhập tiêu đề ',
+            'title.min' => 'Tiêu đề phải có ít nhất 6 ký tự.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'summary.required' => 'Tóm tắt không được bỏ trống ',
+            'summary.min' => 'Tóm tắt phải có ít nhất 6 ký tự.',
+            'summary.max' => 'Tóm tắt không được vượt quá 255 ký tự.',
+            'content.required' => 'Nội dung không được bỏ trống',
+        ];
+    }
+    
+>>>>>>> 5e72f5bd298277e513369229af78157ad3271f56
 }
