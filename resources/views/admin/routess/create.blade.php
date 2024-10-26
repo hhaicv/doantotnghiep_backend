@@ -10,15 +10,6 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -39,27 +30,42 @@
                         <div class="col-md-12">
                             <label for="fullnameInput" class="form-label">Tên tuyến đường</label>
                             <input type="text" class="form-control mt-2" name="route_name"
-                                placeholder="Nhập tên tuyến đường">
+                                placeholder="Nhập tên tuyến đường" value="{{ old('route_name') }}">
+                            @error('route_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm bắt đầu</label>
                             <input type="text" class="form-control mt-2" name="start_route"
-                                placeholder="Nhập điểm bắt đầu">
+                                placeholder="Nhập điểm bắt đầu" value="{{ old('start_route') }}">
+                            @error('start_route')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm kết thúc</label>
                             <input type="text" class="form-control mt-2" name="end_route"
-                                placeholder="Nhập điểm kết thúc">
+                                placeholder="Nhập điểm kết thúc" value="{{ old('end_route') }}">
+                            @error('end_route')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Thời gian</label>
                             <input type="text" class="form-control mt-2" name="execution_time"
-                                placeholder="Nhập thời gian">
+                                placeholder="Nhập thời gian" value="{{ old('execution_time') }}">
+                            @error('execution_time')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Chiều dài</label>
                             <input type="text" class="form-control mt-2" name="distance_km"
-                                placeholder="Nhập chiều dài tuyến đường">
+                                placeholder="Nhập chiều dài tuyến đường" value="{{ old('distance_km') }}">
+                            @error('distance_km')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-12 mt-2">
                             <div class="card">
@@ -68,9 +74,12 @@
                                 </div>
                                 <div class="card-body">
                                     <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px"
-                                        name="description" placeholder=" Viết mô tả xe ở đây..."></textarea>
-                                </div><!-- end card-body -->
-                            </div><!-- end card -->
+                                        name="description" placeholder=" Viết mô tả xe ở đây...">{{ old('description') }}</textarea>
+                                </div>
+                                @error('description')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -89,8 +98,8 @@
                                     <div class="row">
                                         <div class="col">
                                             <label class="form-label pb-2" for="input-from-stop-1">Điểm đi 1</label>
-                                            <select name="start_stop_id[]" class="form-control from-stop" style="width: 90%;"
-                                                id="input-from-stop-1" onchange="filterToStops(this)">
+                                            <select name="start_stop_id[]" class="form-control from-stop"
+                                                style="width: 90%;" id="input-from-stop-1" onchange="filterToStops(this)">
                                                 <?php foreach ($stops as $stop) { ?>
                                                 <option value="<?php echo $stop['id']; ?>"><?php echo $stop['stop_name']; ?></option>
                                                 <?php } ?>
@@ -107,8 +116,8 @@
                                         </div>
                                         <div class="col">
                                             <label class="form-label pb-2" for="input-price-1">Giá</label>
-                                            <input type="text" name="fare[]" placeholder="Giá vé" class="form-control"
-                                                style="width: 90%;" id="input-price-1" />
+                                            <input type="text" name="fare[]" placeholder="Giá vé"
+                                                class="form-control" style="width: 90%;" id="input-price-1" />
                                         </div>
                                         <div class="col">
                                             <label class="form-label pb-2" for="input-order-1">Thứ tự</label>
@@ -220,5 +229,4 @@
 
             </div>
     </form>
-
 @endsection

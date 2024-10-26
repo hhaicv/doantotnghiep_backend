@@ -7,23 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Stage extends Model
+class PromotionUser extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
 
+
+
+
+    protected $primaryKey = 'id';
+
     protected $fillable = [
-        "route_id",
-        "start_stop_id",
-        "end_stop_id",
-        "stage_order",
-        "fare",
-        "is_active"
+        'user_id',
+        'promotion_id',
+        'used_at',
+
     ];
 
-    public function route()
+    public function promotion()
     {
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(Promotion::class, 'id_promotion');
     }
 }

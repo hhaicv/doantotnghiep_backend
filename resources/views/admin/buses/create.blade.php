@@ -35,27 +35,44 @@
             @csrf
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Tên xe</label>
-                <input type="text" class="form-control" id="name_bus" name="name_bus" placeholder="Nhập tên xe ">
+
+                <input type="text" class="form-control" id="name_bus" name="name_bus" placeholder="Nhập tên xe "
+                    value="{{ old('name_bus') }}">
+                @error('name_bus')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Hãng xe</label>
-                <input type="text" class="form-control" id="model" name="model" placeholder="Nhập tên hãng xe">
+                <input type="text" class="form-control" id="model" name="model" placeholder="Nhập tên hãng xe"
+                    value="{{ old('model') }}">
+                @error('model')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Biển số xe</label>
                 <input type="text" class="form-control" id="license_plate" name="license_plate"
-                    placeholder="Nhập biển số xe ">
+                    placeholder="Nhập biển số xe " value="{{ old('license_plate') }}">
+                @error('license_plate')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
-
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Số điện thoại</label>
-                <input type="number" class="form-control" id="icon" name="phone" placeholder="Nhập số điện thoại">
+                <input type="number" class="form-control" id="icon" name="phone" placeholder="Nhập số điện thoại"
+                    value="{{ old('phone') }}">
+                @error('phone')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+
             </div>
             <div class="col mt-6">
                 <div class="filepond-container">
                     <h5>Image</h5>
                     <div class="file-drop-area" id="file-drop-area">
                         <input type="file" name="image" id="file-input" accept="image/*" multiple>
+
                         <div id="file-preview"></div>
                     </div>
                 </div>
@@ -80,7 +97,6 @@
             </div><!-- end card-body -->
         </div><!-- end card -->
     </div>
-
     <div class="col-12">
         <div class="text-end">
             <button type="submit" class="btn btn-primary">Submit</button>

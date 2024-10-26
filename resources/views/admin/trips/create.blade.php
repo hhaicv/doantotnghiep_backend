@@ -10,15 +10,7 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -37,7 +29,8 @@
                 <label for="fullnameInput" class="form-label">Tuyến đường</label>
                 <select class="form-select" aria-label="Default select example" name="route_id">
                     @foreach ($routes as $route)
-                        <option value="{{ $route->id }}" {{ old('route_id') == $route->id ? 'selected' : '' }}>{{ $route->route_name }}</option>
+                        <option value="{{ $route->id }}" {{ old('route_id') == $route->id ? 'selected' : '' }}>
+                            {{ $route->route_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -45,14 +38,18 @@
                 <label for="fullnameInput" class="form-label">Xe</label>
                 <select class="form-select" aria-label="Default select example" name="bus_id">
                     @foreach ($buses as $bus)
-                        <option value="{{ $bus->id }}" {{ old('bus_id') == $bus->id ? 'selected' : '' }}>{{ $bus->name_bus }} - {{ $bus->license_plate }}</option>
+                        <option value="{{ $bus->id }}" {{ old('bus_id') == $bus->id ? 'selected' : '' }}>
+                            {{ $bus->name_bus }} - {{ $bus->license_plate }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-2">
                 <label for="exampleFormControlTextarea5" class="form-label">Thời gian khởi hành</label>
-                <input type="text" class="form-control" name="departure_time" placeholder="hh:mm"
-                    id="cleave-time-format" value="{{ old('departure_time') }}">
+                <input type="text" class="form-control" name="departure_time" placeholder="hh:mm" id="cleave-time-format"
+                    value="{{ old('departure_time') }}">
+                @error('departure_time')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-12">
                 <div class="text-end">
@@ -106,5 +103,4 @@
             blocks: [0, 3, 3, 4]
         }));
     </script>
-
 @endsection

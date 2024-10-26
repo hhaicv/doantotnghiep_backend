@@ -22,13 +22,7 @@ class StoreTripRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'departure_time' => ['required']
-        ];
-    }
-    public function messages(): array
-    {
-        return [
-            'departure_time.required' => 'Thời gian là bắt buộc.'
+            //
         ];
     }
 }

@@ -15,7 +15,11 @@ class StopController extends Controller
      */
     public function index()
     {
+
+        $data = Stop::with('children')->whereNull('parent_id')->get();
+
         $data = Stop::query()->get();
+
         return view( self::PATH_VIEW. __FUNCTION__, compact('data'));
     }
 
@@ -24,7 +28,9 @@ class StopController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+
+        $parents = Stop::whereNull('parent_id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__,compact('parents'));
     }
 
     /**
@@ -49,7 +55,11 @@ class StopController extends Controller
     public function edit(string $id)
     {
         $data = Stop::query()->findOrFail($id);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+
+        $children = Stop::whereNotNull('parent_id')->get();
+        $parents = Stop::with('children')->whereNull('parent_id')->get(); // Lấy các điểm dừng cha kèm children
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data','parents','children'));
+
     }
 
     /**

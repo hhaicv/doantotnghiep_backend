@@ -1,12 +1,14 @@
-<?php
+<!-- <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Bus;
+use Illuminate\Http\Request;
 use App\Models\BusSeat;
 use App\Http\Requests\StoreBusSeatRequest;
 use App\Http\Requests\UpdateBusSeatRequest;
-use App\Models\Bus;
-use Illuminate\Http\Request;
+
+
+
 
 class BusSeatController extends Controller
 {
@@ -32,6 +34,7 @@ class BusSeatController extends Controller
      */
     public function store(StoreBusSeatRequest $request)
     {
+
         $data = $request->all();
         $model = BusSeat::query()->create($data);
         if ($model) {
@@ -65,6 +68,7 @@ class BusSeatController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(UpdateBusSeatRequest $request, string $id)
     {
         $data = BusSeat::query()->findOrFail($id);
@@ -77,9 +81,6 @@ class BusSeatController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $data = BusSeat::query()->findOrFail($id);
@@ -102,4 +103,4 @@ class BusSeatController extends Controller
         // Trả về phản hồi JSON cho client
         return response()->json(['success' => true]);
     }
-}
+} 

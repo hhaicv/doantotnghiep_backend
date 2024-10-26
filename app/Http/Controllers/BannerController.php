@@ -13,6 +13,7 @@ class BannerController extends Controller
     const PATH_VIEW = 'admin.banners.';
     const PATH_UPLOAD = 'banners';
 
+
     public function index()
     {
         $data = Banner::query()->get();

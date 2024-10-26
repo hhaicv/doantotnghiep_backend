@@ -11,7 +11,7 @@ class UpdateTripRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,13 +22,7 @@ class UpdateTripRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'departure_time' => ['required']
-        ];
-    }
-    public function messages(): array
-    {
-        return [
-            'departure_time.required' => 'Thời gian là bắt buộc.'
+            //
         ];
     }
 }

@@ -19,8 +19,6 @@
 
     <script src="https://kit.fontawesome.com/24d8b82fa8.js" crossorigin="anonymous"></script>
     @yield('style-libs')
-
-
     <!-- Layout config Js -->
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
     <!-- Bootstrap Css -->

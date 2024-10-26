@@ -12,12 +12,20 @@ class Stop extends Model
 
     use SoftDeletes;
 
-    protected $fillable=[
 
-        'stop_name',
-        'description',
-        'is_active'
-    ];
+    protected $fillable = ['stop_name', 'parent_id', 'is_active', 'description'];
+
+    // Quan hệ con
+    public function children()
+    {
+        return $this->hasMany(Stop::class, 'parent_id');
+    }
+
+    // Quan hệ cha
+    public function parent()
+    {
+        return $this->belongsTo(Stop::class, 'parent_id');
+    }
 
     protected $casts = [
         'is_active' => 'boolean',

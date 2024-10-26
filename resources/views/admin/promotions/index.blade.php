@@ -1,18 +1,18 @@
 @extends('admin.layouts.mater')
 
 @section('title')
-    Danh sách xe
+    Danh sách khuyến mãi
 @endsection
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Loại xe</h4>
+                <h4 class="mb-sm-0">Danh mục</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Loại xe</li>
+                        <li class="breadcrumb-item active">Danh mục khuyến mãi</li>
                     </ol>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('admin.buses.create') }}">Thêm mới xe</a>
+                    <a class="btn btn-primary mb-3" href="{{ route('admin.promotions.create') }}">Thêm mới khuyến mãi</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -32,13 +32,13 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Hình ảnh</th>
-                                <th>Xe</th>
-                                <th>Tài xế</th>
-                                <th>Mã GPS</th>
-                                <th>SĐT</th>
+                                <th>Người dùng</th>
+                                <th>Mã giảm giá </th>
                                 <th>Mô tả</th>
-                                <th>Trạng thái</th>
+                                <th>Giảm giá</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày bắt kết thúc</th>
+                                <th>Dùng cho khách hàng mới</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -46,30 +46,33 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image)}}" alt="" style="width: 170px;height: 100px;object-fit: cover"></td>
-                                    <td><p>  {{ $item->license_plate }} - {{ $item->total_seats }} Chỗ</p>
-                                        {{ $item->name_bus }}
-                                    </td>
-                                    <td>{{ $item->model }}</td>
-                                    <td>{{ $item->gps_code }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 20) }}</td>
-                                    <td>
+                                    <td>{{ $item->users->name }}</td>
+                                    <td>{{ $item->code }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
+                                    <td>{{ $item->discount }} % </td>
+                                    <td>{{ $item->start_date }}</td> 
+                                    <td>{{ $item->end_date }}</td>
+                                    <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td>
+                                    
+                                  
+                                    {{-- <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                 id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
-                                                {{ $item->is_active ? 'checked' : '' }}>
+                                                {{ $item->new_customer_only ? 'checked' : '' }}>
                                             <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
-                                                {{ $item->is_active ? 'On' : 'Off' }}
+                                                {{ $item->new_customer_only ? 'On' : 'Off' }}
                                             </label>
                                         </div>
-                                    </td>
+                                    </td> --}}
+                                    {{-- <td>{{ $item->created_at->format('d/m/Y') }}</td> --}}
                                     <td>
                                         <div class="hstack gap-3 fs-15">
-                                            <a href="{{ route('admin.buses.edit', $item->id) }}" class="link-primary"><i
-                                                    class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormBuses{{ $item->id }}"
-                                                action="{{ route('admin.buses.destroy', $item->id) }}" method="post">
+                                            <a href="{{ route('admin.promotions.edit', $item->id) }}"
+                                                class="link-primary"><i class="ri-settings-4-line"></i></a>
+                                            <form id="deleteFormPromotion{{ $item->id }}"
+                                                action="{{ route('admin.promotions.destroy', $item->id) }}"
+                                                method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" style="border: none; background: white"
@@ -123,17 +126,15 @@
             checkbox.addEventListener('change', function() {
                 var isChecked = this.checked ? 1 : 0;
                 var itemId = this.getAttribute('data-id'); // Lấy ID từ thuộc tính data-id
-                console.log(itemId);
 
-
-                fetch(`/admin/status-buses/${itemId}`, {
+                fetch(`/admin/status-promotion/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         body: JSON.stringify({
-                            is_active: isChecked
+                            new_customer_only: isChecked
                         })
                     })
                     .then(response => {
@@ -157,7 +158,7 @@
 
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {
-                let form = document.getElementById('deleteFormBuses' + id);
+                let form = document.getElementById('deleteFormPromotion' + id);
 
                 // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {

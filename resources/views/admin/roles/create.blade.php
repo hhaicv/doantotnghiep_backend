@@ -25,8 +25,10 @@
         <form action="{{ route('admin.roles.store') }}" method="POST" class="row g-3 p-5">
             @csrf
             <div class="col-md-6">
+
                 <label for="name_role" class="form-label">Tên quyền</label>
-                <input type="text" class="form-control" id="name_role" name="name_role" placeholder="Nhập tên quyền..." value="{{ old('name_role') }}">
+                <input type="text" class="form-control" id="name_role" name="name_role" placeholder="Nhập tên quyền..."
+                    value="{{ old('name_role') }}">
                 @error('name_role')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -38,6 +40,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -45,7 +48,5 @@
                 </div>
             </div>
         </form>
-        
     </div>
-
 @endsection

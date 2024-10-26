@@ -180,6 +180,44 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarPromotion" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarPromotion">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Khuyến mại</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarPromotion">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.promotions.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.promotions.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarReviews" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarReviews">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Đánh giá</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarReviews">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.reviews.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.reviews.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTickets" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarTickets">
                         <i class="ri-layout-3-line"></i>

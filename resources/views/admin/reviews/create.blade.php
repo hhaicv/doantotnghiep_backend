@@ -25,15 +25,15 @@
     <div class="card">
         <form action="{{ route('admin.reviews.store') }}" method="POST" class="row g-3 p-5">
             @csrf
-            {{-- <div class="col-md-6">
-                <label for="trip_id" class="form-label">Chuyến xe</label>
+            <div class="col-md-6">
+                <label for="departure_time" class="form-label">Chuyến xe</label>
                 <select class="form-select" name="departure_time" aria-label="Default select example">
                     @foreach ($trips as $trip)
                         <option value="{{ $trip->id }}" {{ old('departure_time') == $trip->id ? 'selected' : '' }}>
                             {{ $trip->departure_time }}</option>
                     @endforeach
                 </select>
-            </div> --}}
+            </div>
             <div class="col-md-6">
                 <label for="user_id" class="form-label">Tên người dùng</label>
                 <select class="form-select" name="name" aria-label="Default select example">
