@@ -13,7 +13,15 @@ class Stop extends Model
     use SoftDeletes;
 
 
-    protected $fillable = ['stop_name', 'parent_id', 'is_active', 'description'];
+    protected $fillable = [
+        'stop_name',
+        'parent_id',
+        'longitude',
+        'latitude',
+        'image',
+        'is_active',
+        'description'
+    ];
 
     // Quan hệ con
     public function children()

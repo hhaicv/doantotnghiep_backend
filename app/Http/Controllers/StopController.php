@@ -6,20 +6,19 @@ use App\Models\Stop;
 use App\Http\Requests\StoreStopRequest;
 use App\Http\Requests\UpdateStopRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StopController extends Controller
 {
     const PATH_VIEW = 'admin.stops.';
+
+    const PATH_UPLOAD = 'stops';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $data = Stop::with('children')->whereNull('parent_id')->get();
-
-        $data = Stop::query()->get();
-
+        $data = Stop::whereNull('parent_id')->with('children')->get();
         return view( self::PATH_VIEW. __FUNCTION__, compact('data'));
     }
 
@@ -38,7 +37,12 @@ class StopController extends Controller
      */
     public function store(StoreStopRequest $request)
     {
-        $data = $request->all();
+        $data = $request->except('image');
+
+        if ($request->hasFile('image')) {
+            $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+        }
+
         $model = Stop::query()->create($data);
         if ($model) {
             return redirect()->back()->with('success', 'Bạn thêm thành công');
@@ -48,10 +52,6 @@ class StopController extends Controller
     }
 
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $data = Stop::query()->findOrFail($id);
@@ -67,9 +67,21 @@ class StopController extends Controller
      */
     public function update(UpdateStopRequest $request, string $id)
     {
+
         $data = Stop::query()->findOrFail($id);
-        $model = $request->all();
+
+
+        $model = $request->except('image');
+        if ($request->hasFile('image')) {
+            $model['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+        }
+        $image = $data->image;
         $res = $data->update($model);
+
+        if ($request->hasFile('image') && $image && Storage::exists($image)) {
+            Storage::delete($image);
+        }
+
         if ($res) {
             return redirect()->back()->with('success', 'Danh mục điểm dừng được sửa thành công');
         } else {
