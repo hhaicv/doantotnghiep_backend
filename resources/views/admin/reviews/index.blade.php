@@ -42,8 +42,7 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td></td>
-                                    {{-- <td>{{ $item->trip->departure_time }}</td> --}}
+                                    <td>{{ $item->trip->departure_time }} - {{ $item->trip->route->route_name }}</td>
                                     <td>{{ $item->user->name }}</td>
                                     <td>
                                         <div class="rating">

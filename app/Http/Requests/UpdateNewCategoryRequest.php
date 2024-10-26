@@ -30,7 +30,7 @@ class UpdateNewCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Tên là bắt buộc.',
+            'name.required' => 'Tên không được bỏ trống',
             'name.min' => 'Tên phải có ít nhất 6 ký tự.',
             'name.max' => 'Tên không được vượt quá 255 ký tự.',
             'description.required' => 'Mô tả bắt buộc phải nhập',

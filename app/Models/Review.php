@@ -10,6 +10,7 @@ class Review extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = [
         "trip_id",
         "user_id",
@@ -22,16 +23,13 @@ class Review extends Model
         'is_active' => 'boolean',
     ];
 
-    public function trips()
+    public function trip()
     {
-        return $this->belongsTo(Trip::class);
+        return $this->belongsTo(Trip::class, 'trip_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
-
-
-

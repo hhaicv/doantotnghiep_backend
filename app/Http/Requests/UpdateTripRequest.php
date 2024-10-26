@@ -22,7 +22,8 @@ class UpdateTripRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'departure_time' => ['required']
+            'departure_time' => ['required'],
+           
         ];
     }
     public function messages(): array

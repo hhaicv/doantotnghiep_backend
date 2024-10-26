@@ -25,6 +25,8 @@ class StoreBannerRequest extends FormRequest
 
             'image_url' => ['required'],
             'link' => ['required', 'string'],
+            'start_date' => ['required'],
+            'end_date'=> ['required'],
         ];
     }
     public function messages(): array
@@ -32,6 +34,8 @@ class StoreBannerRequest extends FormRequest
         return [
             'image_url.required' => 'Ảnh không được để trống.',
             'link.required' => 'Link không được để trống.',
+            'start_date' => 'chọn ngày bắt đầu',
+            'end_date'=>  'chọn ngày kết thúc',
         ];
     }
 }

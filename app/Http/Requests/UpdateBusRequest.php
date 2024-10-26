@@ -25,8 +25,10 @@ class UpdateBusRequest extends FormRequest
 
             'name_bus' => ['required', 'string','max:255'],
             'model' => ['required', 'string','max:255'],
+            'image' => ['required'],
             'license_plate' => ['required' ,'string'],
             'total_seats' => ['required', 'max:100'],
+            'fare_multiplier' => ['required', 'max:10'],
             'phone' => ['required', 'numeric', 'digits_between:8,15'],
             'description' => ['required','string', 'max:255'],
         ];
@@ -35,6 +37,7 @@ class UpdateBusRequest extends FormRequest
     {
         return [
             'name_bus.required' => 'Tên xe không được để trống.',
+            'image.required' => 'Hình ảnh không được để trống.',
             'name_bus.max' => 'Tên xe không được trên 255 kí tự',
 
             'model.required' => 'Hãng xe không được để trống.',
@@ -45,6 +48,9 @@ class UpdateBusRequest extends FormRequest
             'total_seats.required' => 'Số ghế không được bỏ trống.',
             'total_seats.max' => 'Số ghế không để quá 100.',
 
+            'fare_multiplier.required' => 'Hệ số xe không được bỏ trống.',
+            'fare_multiplier.max' => 'Hệ số xe không để quá 10.',
+            
             'phone.required' => 'Số điện thoại là bắt buộc.',
             'phone.numeric' => 'Số điện thoại phải là một số.',
             'phone.digits_between' => 'Số điện thoại phải có từ 8 đến 15 chữ số.',

@@ -10,15 +10,6 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -31,60 +22,82 @@
     @endif
 
     <div class="card">
-        <form action="{{ route('admin.information.store') }}" method="POST" class="row g-3 p-5"
-            enctype="multipart/form-data">
+        <form action="{{ route('admin.information.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-6">
                     <div class="col mb-3">
                         <label for="fullnameInput" class="form-label">Tiêu đề</label>
-                        <input type="text" class="form-control" name="title" placeholder="Nhập tiêu đề">
+                        <input type="text" class="form-control" name="title" placeholder="Nhập tiêu đề"
+                            value="{{ old('title') }}">
+                        @error('title')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <div class="col">
+                    <div class="col mb-3">
                         <label for="choices-multiple-remove-button" class="form-label text-muted">Danh mục tin tức</label>
                         <select id="choices-multiple-remove-button" name="newCategories[]"
                             placeholder="This is a placeholder" multiple>
                             @foreach ($newCategories as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
+                                <option value="{{ $id }}"
+                                    {{ in_array($id, old('newCategories', [])) ? 'selected' : '' }}>
+                                    {{ $name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
+
                     <div class="col mt-3">
                         <div class="filepond-container">
                             <h4>Hình ảnh</h4>
                             <div class="file-drop-area" id="file-drop-area">
-                                <input type="file" name="thumbnail_image" id="file-input" accept="image/*" multiple>
-                                <div id="file-preview"></div>
+                                <input type="file" name="thumbnail_image" id="file-input" accept="image/*">
+                                <div id="file-preview">
+                                    @if (old('thumbnail_image'))
+                                        <img src="{{ old('thumbnail_image') }}" class="img-thumbnail mt-2"
+                                            style="width: 100px;">
+                                    @endif
+                                </div>
                             </div>
                         </div>
+                        @error('thumbnail_image')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="col">
                         <label for="exampleFormControlTextarea5" class="form-label">Tóm tắt</label>
-                        <textarea name="summary" id="editor" placeholder="Tóm tắt ở đây..."></textarea>
+                        <textarea name="summary" id="editor" placeholder="Tóm tắt ở đây...">{{ old('summary') }}</textarea>
+                    </div>
+                    @error('summary')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="">
+                            <div class="card-header align-items-center d-flex">
+                                <label for="exampleFormControlTextarea5" class="form-label">Nội dung</label>
+                            </div>
+                            <div class="card-body">
+                                <textarea name="content" id="editor1" placeholder=" Nội dung ở đây...">{{ old('content') }}</textarea>
+                            </div>
+                            @error('content')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="">
-                        <div class="card-header align-items-center d-flex">
-                            <label for="exampleFormControlTextarea5" class="form-label">Nội dung</label>
-                        </div>
-                        <div class="card-body">
-                            <textarea name="content" id="editor1" placeholder=" Nội dung ở đây..."></textarea>
-                        </div><!-- end card-body -->
-                    </div><!-- end card -->
-                </div>
-            </div>
-            <div class="col-12">
+                <div class="col-12">
 
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ route('admin.information.index') }}" class="btn btn-success">Quay lại</a>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{{ route('admin.information.index') }}" class="btn btn-success">Quay lại</a>
+                    </div>
                 </div>
-            </div>
         </form>
     </div>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
@@ -186,7 +199,4 @@
             renderChoiceLimit: 5
         });
     </script>
-
-
-
 @endsection

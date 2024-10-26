@@ -32,16 +32,16 @@ class StoreInformationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'Tiêu đề là bắt buộc.',
+            'title.required' => 'Bắt buộc phải nhập tiêu đề ',
             'title.min' => 'Tiêu đề phải có ít nhất 6 ký tự.',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
-            'summary.required' => 'Tóm tắt là bắt buộc.',
+            'summary.required' => 'Tóm tắt không được bỏ trống ',
             'summary.min' => 'Tóm tắt phải có ít nhất 6 ký tự.',
             'summary.max' => 'Tóm tắt không được vượt quá 255 ký tự.',
-            'thumbnail_image.required' => 'Hình ảnh là bắt buộc.',
+            'thumbnail_image.required' => 'Hình ảnh không được bỏ trống ',
             'thumbnail_image.min' => 'Hình ảnh phải có ít nhất 6 ký tự.',
             'thumbnail_image.max' => 'Hình ảnh không được vượt quá 255 ký tự.',
-            'content.required' => 'Nội dung bắt buộc phải nhập',
+            'content.required' => 'Nội dung không được bỏ trống',
         ];
     }
 }

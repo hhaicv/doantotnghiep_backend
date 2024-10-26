@@ -28,6 +28,7 @@ class StoreBusRequest extends FormRequest
             'image' => ['required'],
             'license_plate' => ['required' ,'string'],
             'total_seats' => ['required', 'max:100'],
+            'fare_multiplier' => ['required', 'max:10'],
             'phone' => ['required', 'numeric', 'digits_between:8,15'],
             'description' => ['required','string', 'max:255'],
         ];
@@ -47,6 +48,9 @@ class StoreBusRequest extends FormRequest
             'total_seats.required' => 'Số ghế không được bỏ trống.',
             'total_seats.max' => 'Số ghế không để quá 100.',
 
+            'fare_multiplier.required' => 'Hệ số xe không được bỏ trống.',
+            'fare_multiplier.max' => 'Hệ số xe không để quá 10.',
+            
             'phone.required' => 'Số điện thoại là bắt buộc.',
             'phone.numeric' => 'Số điện thoại phải là một số.',
             'phone.digits_between' => 'Số điện thoại phải có từ 8 đến 15 chữ số.',

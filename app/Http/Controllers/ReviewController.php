@@ -7,14 +7,13 @@ use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
 use App\Models\Trip;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     const PATH_VIEW = 'admin.reviews.';
     public function index()
     {
-        $data = Review::query()->get();
+        $data = Review::with(['trip.route'])->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -23,9 +22,9 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        // $trips = Trip::query()->get();
-        $users = User::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('users'));
+        $trips = Trip::all();
+        $users = User::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('users', 'trips'));
     }
 
     /**
@@ -33,15 +32,20 @@ class ReviewController extends Controller
      */
     public function store(StoreReviewRequest $request)
     {
+        // Lấy tất cả dữ liệu từ request
         $data = $request->all();
+
+        // Tạo mới review
         $res = Review::create($data);
 
+        // Kiểm tra kết quả và phản hồi người dùng
         if ($res) {
             return redirect()->back()->with('success', 'Nhận xét thêm thành công');
         } else {
-            return redirect()->back()->with('success', 'Nhận xét thêm không thành công');
+            return redirect()->back()->with('error', 'Nhận xét thêm không thành công');
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -87,18 +91,5 @@ class ReviewController extends Controller
         }
 
         return redirect()->route('admin.reviews.index')->with('success', 'Review deleted successfully');
-    }
-
-    public function statusRole(Request $request,string $id)
-    {
-        // Tìm bản ghi theo ID
-        $role = Review::findOrFail($id);
-
-        // Cập nhật trạng thái 'is_active'
-        $role->is_active = $request->input('is_active');
-        $role->save(); // Lưu thay đổi vào cơ sở dữ liệu
-
-        // Trả về phản hồi JSON cho client
-        return response()->json(['success' => true]);
     }
 }
