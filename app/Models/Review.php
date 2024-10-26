@@ -6,24 +6,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Bus extends Model
+class Review extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
+
     protected $fillable = [
-        'name_bus',
-        'model',
-        'license_plate',
-        'total_seats',
-        'gps_code',
-        'image',
-        'phone',
-        'description',
-        'is_active',
+        "trip_id",
+        "user_id",
+        "rating",
+        "comment",
+        "is_active"
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class, 'trip_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

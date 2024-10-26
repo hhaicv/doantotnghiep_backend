@@ -39,6 +39,30 @@
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarExecutive" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarExecutive">
+                        <i data-feather="trello"></i>
+                        <span data-key="t-executive">Điều Hành</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarExecutive">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.buses.index') }}" class="nav-link" data-key="t-buses">Danh
+                                    sách xe</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.stops.index') }}" class="nav-link" data-key="t-stops">Điểm
+                                    dừng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.routes.index') }}" class="nav-link" data-key="t-routes">Tuyến
+                                    đường</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarNewCategory" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarNewCategory">
@@ -137,63 +161,6 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarRoutes" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarRoutes">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Tuyến đường</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarRoutes">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.routes.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.routes.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarBuses" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarBuses">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Xe</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarBuses">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.buses.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.buses.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarStops" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarStops">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Điểm dừng</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarStops">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.stops.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.stops.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTrips" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarTrips">
                         <i class="ri-layout-3-line"></i>
@@ -237,4 +204,6 @@
 
     <div class="sidebar-background"></div>
 </div>
+
+
 <!-- Left Sidebar End -->

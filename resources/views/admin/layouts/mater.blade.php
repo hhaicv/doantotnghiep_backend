@@ -36,6 +36,7 @@
             background-color: #405189 !important;
             border: 1px solid #004a5c;
         }
+
         .category-item {
             display: inline-block;
             /* Allows block-level formatting for each category */
@@ -170,8 +171,6 @@
             <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
         </div>
     </div>
-
-
     <!-- JAVASCRIPT -->
     <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
@@ -179,8 +178,7 @@
     <script src="{{ asset('theme/admin/assets/libs/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
-
-
+    <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
     @yield('script-libs')
 
     <!-- App js -->

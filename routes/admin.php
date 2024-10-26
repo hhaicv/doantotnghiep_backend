@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\BusSeatController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
-
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
 use App\Http\Controllers\TicketBookingController;
@@ -19,7 +20,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
     })->name('dashboard');
 
     Route::resource('contacts', ContactController::class);
+    Route::post('/status-contacts/{id}', [ContactController::class, 'statusContact']);
+
     Route::resource('roles', RoleController::class);
+    Route::post('/status-roles/{id}', [RoleController::class, 'statusRole']);
 
     Route::resource('buses', BusController::class);
     Route::post('/status-buses/{id}', [BusController::class, 'statusBuses']);
@@ -29,9 +33,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('new_categories',NewCategoryController::class);
     Route::post('/status-new-category/{id}', [App\Http\Controllers\NewCategoryController::class, 'statusNewCategory']);
-    Route::post('/status-roles/{id}', [RoleController::class, 'statusRole']);
-    Route::post('/status-contacts/{id}', [ContactController::class, 'statusContact']);
+
     Route::resource('information',InformationController::class);
+
     Route::resource('routes', RouteController::class);
     Route::post('/status-route/{id}', [RouteController::class, 'statusRoute']);
 
@@ -41,5 +45,12 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
 
+
     Route::resource('tickets', TicketBookingController::class);
+
+    Route::resource('bus_seats', BusSeatController::class);
+    Route::post('/status-bus-seat/{id}', [BusSeatController::class, 'statusBusSeat']);
+
+    Route::resource('reviews', ReviewController::class);
+
 });

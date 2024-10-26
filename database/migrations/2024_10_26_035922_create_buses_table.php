@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('buses', function (Blueprint $table) {
@@ -15,6 +17,7 @@ return new class extends Migration
             $table->string('model');
             $table->string('license_plate');
             $table->integer('total_seats');
+            $table->string('gps_code');
             $table->string('image');
             $table->string('phone', 15); // Đổi thành kiểu string
             $table->text('description');
@@ -24,6 +27,10 @@ return new class extends Migration
         });
     }
 
+
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('buses');

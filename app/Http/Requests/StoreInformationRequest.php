@@ -25,7 +25,7 @@ class StoreInformationRequest extends FormRequest
 
             'title' => ['required', 'string', 'min:6', 'max:255'],
             'summary' => ['required', 'string', 'min:6', 'max:255'],
-            'thumbnail_image' => ['required', 'string', 'min:6', 'max:255'],
+            'thumbnail_image' => ['required','image ','mimes:jpeg,png,jpg,gif,svg', 'max:255'],
             'content' => ['required', 'string'],
         ];
     }

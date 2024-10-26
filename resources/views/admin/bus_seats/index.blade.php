@@ -1,18 +1,18 @@
 @extends('admin.layouts.mater')
 
 @section('title')
-    Danh sách xe
+    Danh sách ghế xe
 @endsection
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Loại xe</h4>
+                <h4 class="mb-sm-0">Ghế xe</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Loại xe</li>
+                        <li class="breadcrumb-item active">Ghế xe</li>
                     </ol>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('admin.buses.create') }}">Thêm mới xe</a>
+                    <a class="btn btn-primary mb-3" href="{{ route('admin.bus_seats.create') }}">Thêm mới</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -32,12 +32,8 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Hình ảnh</th>
-                                <th>Xe</th>
-                                <th>Tài xế</th>
-                                <th>Mã GPS</th>
-                                <th>SĐT</th>
-                                <th>Mô tả</th>
+                                <th>Tên xe</th>
+                                <th>Tên ghế</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
@@ -46,14 +42,8 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image)}}" alt="" width="120px" height="80px"></td>
-                                    <td><p>  {{ $item->license_plate }} - {{ $item->total_seats }} Chỗ</p>
-                                        {{ $item->name_bus }}
-                                    </td>
-                                    <td>{{ $item->model }}</td>
-                                    <td>{{ $item->gps_code }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 20) }}</td>
+                                    <td>{{ $item->bus->name_bus }}</td>
+                                    <td>{{ $item->seat_name }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -66,10 +56,10 @@
                                     </td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
-                                            <a href="{{ route('admin.buses.edit', $item->id) }}" class="link-primary"><i
+                                            <a href="{{ route('admin.bus_seats.edit', $item->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormBuses{{ $item->id }}"
-                                                action="{{ route('admin.buses.destroy', $item->id) }}" method="post">
+                                            <form id="deleteFormBusSeat{{ $item->id }}"
+                                                action="{{ route('admin.bus_seats.destroy', $item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" style="border: none; background: white"
@@ -96,6 +86,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+
 @endsection
 
 @section('script-libs')
@@ -126,7 +118,7 @@
                 console.log(itemId);
 
 
-                fetch(`/admin/status-buses/${itemId}`, {
+                fetch(`/admin/status-bus-seat/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -154,10 +146,9 @@
                     .catch(error => console.error('Error:', error));
             });
         });
-
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {
-                let form = document.getElementById('deleteFormBuses' + id);
+                let form = document.getElementById('deleteFormBusSeat' + id);
 
                 // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {

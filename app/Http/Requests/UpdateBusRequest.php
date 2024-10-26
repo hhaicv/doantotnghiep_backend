@@ -25,7 +25,9 @@ class UpdateBusRequest extends FormRequest
 
             'name_bus' => ['required', 'string','max:255'],
             'model' => ['required', 'string','max:255'],
+            'image' => ['required'],
             'license_plate' => ['required' ,'string'],
+            'gps_code' => ['required' ,'string'],
             'total_seats' => ['required', 'max:100'],
             'phone' => ['required', 'numeric', 'digits_between:8,15'],
             'description' => ['required','string', 'max:255'],
@@ -35,11 +37,15 @@ class UpdateBusRequest extends FormRequest
     {
         return [
             'name_bus.required' => 'Tên xe không được để trống.',
+            'image.required' => 'Hình ảnh không được để trống.',
             'name_bus.max' => 'Tên xe không được trên 255 kí tự',
 
-            'model.required' => 'Tên người lái không được để trống.',
-            'model.max' => 'Tên người lái không được trên 255.',
+            'model.required' => 'Hãng xe không được để trống.',
+            'model.max' => 'Hãng xe không được trên 255.',
+
             'license_plate.required' => 'Biển số xe không được để trống.',
+
+            'gps_code.required' => 'Mã GPS không được để trống.',
 
             'total_seats.required' => 'Số ghế không được bỏ trống.',
             'total_seats.max' => 'Số ghế không để quá 100.',
