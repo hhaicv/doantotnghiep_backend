@@ -13,14 +13,14 @@ class PromotionUser extends Model
     use SoftDeletes;
 
 
-  
+
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'user_id',
         'promotion_id',
-         'used_at',
+        'used_at',
 
     ];
 

@@ -12,7 +12,16 @@ class Stop extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['stop_name', 'parent_id', 'is_active', 'description'];
+
+    protected $fillable = [
+        'stop_name',
+        'parent_id',
+        'longitude',
+        'latitude',
+        'image',
+        'is_active',
+        'description'
+    ];
 
     // Quan hệ con
     public function children()
@@ -25,7 +34,7 @@ class Stop extends Model
     {
         return $this->belongsTo(Stop::class, 'parent_id');
     }
-    
+
     protected $casts = [
         'is_active' => 'boolean',
     ];

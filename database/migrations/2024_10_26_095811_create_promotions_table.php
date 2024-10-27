@@ -14,18 +14,16 @@ return new class extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->text('description');
-            $table->decimal('discount', 8, 2);
+            $table->integer('discount');
             $table->date('start_date');
             $table->date('end_date');
-            $table->boolean('new_customer_only')->default(true);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
-            $table->foreignId('route_id')->constrained('routes')->onDelete('cascade'); 
-            $table->foreignId('bus_type_id')->constrained('buses')->onDelete('cascade'); 
-            $table->softDeletes();
+            $table->text('description');
+            $table->unsignedBigInteger('route_id');
+            $table->unsignedBigInteger('bus_type_id');
+            $table->boolean('new_customer_only')->default(0);
             $table->timestamps();
+            $table->softDeletes(); // Thêm dòng này để sử dụng soft deletes
         });
-        
     }
 
     /**

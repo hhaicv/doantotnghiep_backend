@@ -52,11 +52,11 @@
                                     <td>{{ $item->code }}</td>
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
                                     <td>{{ $item->discount }} % </td>
-                                    <td>{{ $item->start_date }}</td> 
+                                    <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
                                     <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td>
-                                    
-                                  
+
+
                                     {{-- <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -124,10 +124,11 @@
         });
     </script>
     <script>
-        document.querySelectorAll('.form-check-input').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                var isChecked = this.checked ? 1 : 0;
-                var itemId = this.getAttribute('data-id'); // Lấy ID từ thuộc tính data-id
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('form-check-input')) {
+                var checkbox = e.target;
+                var isChecked = checkbox.checked ? 1 : 0;
+                var itemId = checkbox.getAttribute('data-id');
 
                 fetch(`/admin/status-promotion/${itemId}`, {
                         method: 'POST',
@@ -136,7 +137,7 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         body: JSON.stringify({
-                            new_customer_only: isChecked
+                            is_active: isChecked
                         })
                     })
                     .then(response => {
@@ -147,15 +148,14 @@
                     })
                     .then(data => {
                         if (data.success) {
-                            // Cập nhật label hoặc badge sau khi thay đổi trạng thái
-                            var label = this.nextElementSibling; // Lấy label kế tiếp checkbox
-                            label.textContent = isChecked ? 'On' : 'Off'; // Cập nhật nội dung
+                            var label = checkbox.nextElementSibling;
+                            label.textContent = isChecked ? 'On' : 'Off';
                         } else {
                             alert('Cập nhật trạng thái thất bại.');
                         }
                     })
                     .catch(error => console.error('Error:', error));
-            });
+            }
         });
 
         function confirmDelete(id) {

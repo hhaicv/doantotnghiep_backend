@@ -53,12 +53,11 @@
                        min="{{ date('Y-m-d') }}">
             </div>
             <div class="col-md-6">
-                <label for="userSelect" class="form-label">Người dùng</label>
-                <select name="user_id" id="userSelect" class="form-control" required>
-                    <option value="">Chọn người dùng</option> <!-- Option mặc định -->
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                            {{ $user->name }} <!-- Hoặc bất kỳ thuộc tính nào bạn muốn hiển thị -->
+                <label for="user_ids">Chọn Người Dùng</label>
+                <select name="user_ids[]" id="user_ids" class="form-control" multiple>
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ isset($data) && $data->users->contains($user->id) ? 'selected' : '' }}>
+                            {{ $user->name }}
                         </option>
                     @endforeach
                 </select>

@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Storage;
 class BannerController extends Controller
 {
     const PATH_VIEW = 'admin.banners.';
-    const PATH_UPLOAD = 'admin.banners';
+    const PATH_UPLOAD = 'banners';
+
 
     public function index()
     {

@@ -11,7 +11,7 @@ class UpdateStageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

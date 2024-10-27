@@ -45,7 +45,8 @@
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Biển số xe</label>
-                <input type="text" class="form-control" id="license_plate" name="license_plate" value="{{ $model->license_plate}}">
+                <input type="text" class="form-control" id="license_plate" name="license_plate"
+                    value="{{ $model->license_plate }}">
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Số điện thoại</label>
@@ -70,6 +71,9 @@
                 <label for="start_date">Số lượng ghế</label>
                 <input type="number" name="total_seats" id="total_seats" class="form-control"
                     value="{{ $model->total_seats }}">
+                <br>
+                <label class="form-label" for="gps_code">Mã GPS</label>
+                <input type="text" class="form-control" name="gps_code" value="{{ $model->gps_code }}">
             </div>
             <div class="col-lg-12">
                 <div class="card">

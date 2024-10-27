@@ -18,9 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('end_stop_id');
             $table->integer('stage_order');
             $table->decimal('fare', 10, 2);
-            $table->decimal('distance_km', 10, 2);
             $table->softDeletes();
-
             $table->timestamps();
             $table->boolean('is_active')->default(true);
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');

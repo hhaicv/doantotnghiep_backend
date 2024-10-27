@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Route;
 use App\Http\Requests\StoreRouteRequest;
 use App\Http\Requests\UpdateRouteRequest;
+use App\Models\Stage;
+use App\Models\Stop;
 use Illuminate\Http\Request;
 
 class RouteController extends Controller
@@ -24,7 +26,8 @@ class RouteController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $stops = Stop::query()->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('stops'));
     }
 
     /**
@@ -32,18 +35,36 @@ class RouteController extends Controller
      */
     public function store(StoreRouteRequest $request)
     {
-        $data = $request->all();
+        $data = $request->except('start_stop_id', 'end_stop_id', 'fare', 'stage_order');
         $model = Route::query()->create($data);
+
         if ($model) {
+            // Lấy các thông tin điểm dừng từ yêu cầu
+            $startStops = $request->input('start_stop_id');
+            $endStops = $request->input('end_stop_id');
+            $fares = $request->input('fare');
+            $stageOrders = $request->input('stage_order');
+
+            // Kiểm tra xem có thông tin chặng không
+            if (is_array($startStops) && is_array($endStops) && is_array($fares) && is_array($stageOrders)) {
+                // Lưu vào bảng stage
+                foreach ($startStops as $index => $fromStopId) {
+                    $stageData = [
+                        'route_id' => $model->id, // ID của tuyến đường vừa tạo
+                        'start_stop_id' => $fromStopId,
+                        'end_stop_id' => $endStops[$index] ?? null, // Thêm kiểm tra để tránh lỗi
+                        'fare' => $fares[$index] ?? null, // Thêm kiểm tra để tránh lỗi
+                        'stage_order' => $stageOrders[$index] ?? null, // Thêm kiểm tra để tránh lỗi
+                    ];
+                    Stage::create($stageData);
+                }
+            }
             return redirect()->back()->with('success', 'Bạn thêm thành công');
         } else {
             return redirect()->back()->with('danger', 'Bạn không thêm thành công');
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Route $route)
     {
         //
@@ -54,28 +75,88 @@ class RouteController extends Controller
      */
     public function edit(string $id)
     {
+        $stops = Stop::query()->get();
         $data = Route::query()->findOrFail($id);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $stages = $data->stages; // Lấy ra các chặng của tuyến đường
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'stops', 'stages'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // public function update(UpdateRouteRequest $request, string $id)
+    // {
+    //     $data = Route::query()->findOrFail($id);
+    //     $model = $request->all();
+    //     $res = $data->update($model);
+    //     if ($res) {
+    //         return redirect()->back()->with('success', 'Chuyến xe được sửa thành công');
+    //     } else {
+    //         return redirect()->back()->with('danger', 'Chuyến xe không sửa thành công');
+    //     }
+    // }
+
     public function update(UpdateRouteRequest $request, string $id)
     {
         $data = Route::query()->findOrFail($id);
         $model = $request->all();
+
+        // Cập nhật thông tin của tuyến đường
         $res = $data->update($model);
+
         if ($res) {
+            // Cập nhật chặng
+            $this->updateStages($request, $data);
+
             return redirect()->back()->with('success', 'Chuyến xe được sửa thành công');
         } else {
             return redirect()->back()->with('danger', 'Chuyến xe không sửa thành công');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    protected function updateStages(Request $request, Route $route)
+    {
+        // Xử lý các chặng đã có
+        if ($request->has('start_stop_id') && $request->has('end_stop_id')) {
+            $startStops = $request->input('start_stop_id');
+            $endStops = $request->input('end_stop_id');
+            $fares = $request->input('fare');
+            $stageOrders = $request->input('stage_order');
+
+            // Cập nhật các chặng hiện có
+            foreach ($route->stages as $index => $stage) {
+                if (isset($startStops[$index]) && isset($endStops[$index])) {
+                    $stage->start_stop_id = $startStops[$index];
+                    $stage->end_stop_id = $endStops[$index];
+                    $stage->fare = $fares[$index];
+                    $stage->stage_order = $stageOrders[$index];
+                    $stage->save(); // Lưu lại chặng đã cập nhật
+                }
+            }
+
+            // Thêm các chặng mới
+            for ($i = count($route->stages); $i < count($startStops); $i++) {
+                if (!empty($startStops[$i]) && !empty($endStops[$i])) {
+                    $route->stages()->create([
+                        'start_stop_id' => $startStops[$i],
+                        'end_stop_id' => $endStops[$i],
+                        'fare' => $fares[$i],
+                        'stage_order' => $stageOrders[$i],
+                    ]);
+                }
+            }
+        }
+
+        // Xóa các chặng không còn trong form
+        $existingStageIds = $route->stages->pluck('id')->toArray();
+        $currentStageIds = array_filter(array_merge($request->input('stage_ids', []))); // Nhận các ID từ request
+
+        // Xóa các chặng không có trong form
+        foreach ($existingStageIds as $stageId) {
+            if (!in_array($stageId, $currentStageIds)) {
+                $route->stages()->find($stageId)->delete();
+            }
+        }
+    }
+
+
     public function destroy(string $id)
     {
         $data = Route::query()->findOrFail($id);
@@ -86,15 +167,15 @@ class RouteController extends Controller
 
         return redirect()->route('admin.routes.index')->with('success', 'Route deleted successfully');
     }
-   
-    public function statusRoute(Request $request,string $id)
+
+    public function statusRoute(Request $request, string $id)
     {
         // Tìm bản ghi theo ID
         $role = Route::findOrFail($id);
         // Cập nhật trạng thái 'is_active'
         $role->is_active = $request->input('is_active');
         // Lưu thay đổi vào cơ sở dữ liệu
-        $role->save(); 
+        $role->save();
         // Trả về phản hồi JSON cho client
         return response()->json(['success' => true]);
     }

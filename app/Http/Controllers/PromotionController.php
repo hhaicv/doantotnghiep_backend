@@ -42,28 +42,24 @@ class PromotionController extends Controller
     public function store(StorePromotionRequest $request)
     {
 
-        $userIds = $request->input('user_ids'); // Mảng các user ID
-
-        // Kiểm tra ngày bắt đầu và kết thúc
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        if ($startDate >= $endDate) {
-            return redirect()->back()->with('error', 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc.');
+        $userId = $request->input('user_id'); // Lấy user_id từ request
+        $data = $request->except('user_id'); // Lấy dữ liệu mà không bao gồm user_id
+    
+        // Kiểm tra nếu user_id không có giá trị
+        if (is_null($userId)) {
+            return redirect()->back()->with('error', 'User ID là bắt buộc.');
         }
     
-        $data = $request->except('user_ids');
         $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0;
+        
+        // Chèn dữ liệu vào bảng promotions
+        $data['user_id'] = $userId; // Thêm user_id vào dữ liệu
+        $model = Promotion::create($data);
     
-        // Tạo khuyến mãi
-        $promotion = Promotion::create($data);
-    
-        if ($promotion) {
-            // Gắn người dùng vào khuyến mãi
-            $promotion->users()->sync($userIds);
-    
-            return redirect()->back()->with('success', 'Bạn thêm thành công');
+        if ($model) {
+            return redirect()->back()->with('success', 'Bạn đã thêm thành công.');
         } else {
-            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+            return redirect()->back()->with('danger', 'Bạn không thể thêm thành công.');
         }
     }
 
@@ -94,18 +90,13 @@ class PromotionController extends Controller
     {
         $promotion = Promotion::findOrFail($id);
 
-        $userIds = $request->input('user_ids'); // Mảng các user ID
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-    
-        if ($startDate >= $endDate) {
-            return redirect()->back()->with('error', 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc.');
-        }
+        // Lấy mảng user_id từ request
+        $userIds = $request->input('user_ids');
     
         $data = $request->except('user_ids');
         $promotion->update($data);
     
-        // Cập nhật người dùng liên kết với khuyến mãi này
+        // Cập nhật người dùng liên kết với khuyến mãi
         $promotion->users()->sync($userIds);
     
         return redirect()->back()->with('success', 'Danh mục khuyến mãi được sửa thành công');

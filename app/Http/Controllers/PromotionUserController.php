@@ -16,9 +16,9 @@ class PromotionUserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {     $promotionUsers = PromotionUser::with('promotion')->get();
-        dd( $promotionUsers);
-        die();
+    {
+        $promotionUsers = PromotionUser::with('promotion')->get();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('promotionUsers'));
     }
 
@@ -29,7 +29,7 @@ class PromotionUserController extends Controller
     {
         $promotions = Promotion::all();
         $users = User::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('promotions','users'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('promotions', 'users'));
     }
 
     /**
@@ -51,7 +51,7 @@ class PromotionUserController extends Controller
      */
     public function show(PromotionUser $promotionUser)
     {
-       //
+        //
     }
 
     /**
@@ -61,7 +61,7 @@ class PromotionUserController extends Controller
     {
         $promotionUser = PromotionUser::findOrFail($id);
         $promotions = Promotion::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('promotions','promotionUser'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('promotions', 'promotionUser'));
     }
 
     /**

@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->enum('method_name', ['MoMo', 'VNPAY']);
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

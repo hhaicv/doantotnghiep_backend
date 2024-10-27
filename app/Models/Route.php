@@ -24,4 +24,9 @@ class Route extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function stages()
+    {
+        return $this->hasMany(Stage::class);
+    }
 }

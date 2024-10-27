@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('routes', function (Blueprint $table) {
+        Schema::create('promotion_users', function (Blueprint $table) {
             $table->id();
-            $table->string('route_name');
-            $table->string('start_route');
-            $table->string('end_route');
-            $table->integer('execution_time');
-            $table->decimal('distance_km', 8, 2);
-            $table->boolean('is_active')->default(true);
-            $table->text('description');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Thêm cột user_id và tạo khóa ngoại
+            $table->foreignId('promotion_id')->constrained('promotions')->onDelete('cascade'); // Thêm cột promotion_id và tạo khóa ngoại
+            $table->timestamp('used_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('routes');
+        Schema::dropIfExists('promotion_users');
     }
 };

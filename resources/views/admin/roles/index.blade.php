@@ -111,12 +111,11 @@
         });
     </script>
     <script>
-        document.querySelectorAll('.form-check-input').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                var isChecked = this.checked ? 1 : 0;
-                var itemId = this.getAttribute('data-id'); // Lấy ID từ thuộc tính data-id
-                console.log(itemId);
-
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('form-check-input')) {
+                var checkbox = e.target;
+                var isChecked = checkbox.checked ? 1 : 0;
+                var itemId = checkbox.getAttribute('data-id');
 
                 fetch(`/admin/status-roles/${itemId}`, {
                         method: 'POST',
@@ -136,15 +135,14 @@
                     })
                     .then(data => {
                         if (data.success) {
-                            // Cập nhật label hoặc badge sau khi thay đổi trạng thái
-                            var label = this.nextElementSibling; // Lấy label kế tiếp checkbox
-                            label.textContent = isChecked ? 'On' : 'Off'; // Cập nhật nội dung
+                            var label = checkbox.nextElementSibling;
+                            label.textContent = isChecked ? 'On' : 'Off';
                         } else {
                             alert('Cập nhật trạng thái thất bại.');
                         }
                     })
                     .catch(error => console.error('Error:', error));
-            });
+            }
         });
 
         function confirmDelete(id) {

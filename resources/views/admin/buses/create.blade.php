@@ -35,25 +35,44 @@
             @csrf
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Tên xe</label>
-                <input type="text" class="form-control" id="name_bus" name="name_bus" placeholder="Nhập tên xe ">
+
+                <input type="text" class="form-control" id="name_bus" name="name_bus" placeholder="Nhập tên xe "
+                    value="{{ old('name_bus') }}">
+                @error('name_bus')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Tên tài xế</label>
-                <input type="text" class="form-control" id="model" name="model" placeholder="Nhập tên tài xế ">
+                <label for="fullnameInput" class="form-label">Hãng xe</label>
+                <input type="text" class="form-control" id="model" name="model" placeholder="Nhập tên hãng xe"
+                    value="{{ old('model') }}">
+                @error('model')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Biển số xe</label>
-                <input type="text" class="form-control" id="license_plate" name="license_plate" placeholder="Nhập biển số xe ">
+                <input type="text" class="form-control" id="license_plate" name="license_plate"
+                    placeholder="Nhập biển số xe " value="{{ old('license_plate') }}">
+                @error('license_plate')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Số điện thoại</label>
-                <input type="number" class="form-control" id="icon" name="phone" placeholder="Nhập số điện thoại">
+                <input type="number" class="form-control" id="icon" name="phone" placeholder="Nhập số điện thoại"
+                    value="{{ old('phone') }}">
+                @error('phone')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+
             </div>
             <div class="col mt-6">
                 <div class="filepond-container">
                     <h5>Image</h5>
                     <div class="file-drop-area" id="file-drop-area">
                         <input type="file" name="image" id="file-input" accept="image/*" multiple>
+
                         <div id="file-preview"></div>
                     </div>
                 </div>
@@ -62,26 +81,30 @@
                 <label for="start_date">Số lượng ghế</label>
                 <input type="number" name="total_seats" id="total_seats" class="form-control"
                     placeholder="Nhập số lượng ghế">
+                <br>
+                <label class="form-label" for="fare_multiplier">Mã GPS</label>
+                <input type="text" class="form-control" name="gps_code" placeholder="Nhập mã GPS">
             </div>
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <label for="exampleFormControlTextarea5" class="form-label">Mô tả xe</label>
-                    </div>
-                    <div class="card-body">
-                        <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px" name="description"
-                            placeholder=" Viết mô tả xe ở đây..."></textarea>
-                    </div><!-- end card-body -->
-                </div><!-- end card -->
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <label for="exampleFormControlTextarea5" class="form-label">Mô tả xe</label>
             </div>
-
-            <div class="col-12">
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ route('admin.buses.index') }}" class="btn btn-success">Quay lại</a>
-                </div>
-            </div>
-        </form>
+            <div class="card-body">
+                <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px"
+                    name="description" placeholder=" Viết mô tả xe ở đây..."></textarea>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <input type="hidden" name="is_active" value="0">
+    <div class="col-12">
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ route('admin.buses.index') }}" class="btn btn-success">Quay lại</a>
+        </div>
+    </div>
+    </form>
     </div>
 
     <script>
