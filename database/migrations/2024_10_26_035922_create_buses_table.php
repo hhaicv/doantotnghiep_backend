@@ -11,25 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('routes', function (Blueprint $table) {
+        Schema::create('buses', function (Blueprint $table) {
             $table->id();
-            $table->string('route_name');
-            $table->string('start_route');
-            $table->string('end_route');
-            $table->integer('execution_time');
-            $table->decimal('distance_km', 8, 2);
-            $table->boolean('is_active')->default(true);
+            $table->string('name_bus');
+            $table->string('model');
+            $table->string('license_plate');
+            $table->integer('total_seats');
+            $table->string('gps_code');
+            $table->string('image');
+            $table->string('phone', 15); // Đổi thành kiểu string
             $table->text('description');
+            $table->boolean('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('routes');
+        Schema::dropIfExists('buses');
     }
 };

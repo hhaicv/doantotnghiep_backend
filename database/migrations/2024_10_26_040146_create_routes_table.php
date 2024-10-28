@@ -11,31 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_bookings', function (Blueprint $table) {
+        Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('route_id');
+            $table->string('route_name');
+            // Thiết lập id_start_route và id_end_route là khóa ngoại
             $table->unsignedBigInteger('start_stop_id');
             $table->unsignedBigInteger('end_stop_id');
-            $table->unsignedBigInteger('trip_id');
-            $table->enum('status', ['Booked', 'Cancelled']);
-            $table->enum('payment_status', ['Pending', 'Paid', 'Failed']);
-            $table->timestamps();
+            $table->integer('cycle');
+            $table->decimal('route_price', 10, 2);
+            $table->decimal('length', 10, 2);
+            $table->boolean('is_active')->default(true);
+            $table->text('description');
             $table->softDeletes();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
-            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
+            $table->timestamps();
             $table->foreign('start_stop_id')->references('id')->on('stops')->onDelete('cascade');
             $table->foreign('end_stop_id')->references('id')->on('stops')->onDelete('cascade');
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_bookings');
+        Schema::dropIfExists('routes');
     }
 };

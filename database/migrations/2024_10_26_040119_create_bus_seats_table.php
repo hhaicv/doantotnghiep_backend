@@ -11,22 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trips', function (Blueprint $table) {
+        Schema::create('bus_seats', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('route_id');
             $table->unsignedBigInteger('bus_id');
-            $table->time('departure_time');
-            $table->enum('direction', ['outbound', 'return']); // Thêm cột direction
+            $table->char('seat_name', 1);
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            $table->boolean('is_active')->default(false);
-            $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
             $table->foreign('bus_id')->references('id')->on('buses')->onDelete('cascade');
         });
     }
 
+
     public function down(): void
     {
-        Schema::dropIfExists('trips');
+        Schema::dropIfExists('bus_seats');
     }
 };

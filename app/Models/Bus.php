@@ -16,6 +16,7 @@ class Bus extends Model
         'model',
         'license_plate',
         'total_seats',
+        'gps_code',
         'image',
         'phone',
         'description',

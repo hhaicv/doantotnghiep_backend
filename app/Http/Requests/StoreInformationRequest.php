@@ -25,7 +25,7 @@ class StoreInformationRequest extends FormRequest
 
             'title' => ['required', 'string', 'min:6', 'max:255'],
             'summary' => ['required', 'string', 'min:6', 'max:255'],
-            'thumbnail_image' => ['required', 'string', 'min:6', 'max:255'],
+            'thumbnail_image' => ['required'],
             'content' => ['required', 'string'],
         ];
     }
@@ -39,8 +39,6 @@ class StoreInformationRequest extends FormRequest
             'summary.min' => 'Tóm tắt phải có ít nhất 6 ký tự.',
             'summary.max' => 'Tóm tắt không được vượt quá 255 ký tự.',
             'thumbnail_image.required' => 'Hình ảnh là bắt buộc.',
-            'thumbnail_image.min' => 'Hình ảnh phải có ít nhất 6 ký tự.',
-            'thumbnail_image.max' => 'Hình ảnh không được vượt quá 255 ký tự.',
             'content.required' => 'Nội dung bắt buộc phải nhập',
         ];
     }
