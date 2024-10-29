@@ -63,4 +63,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::post('/status-bus-seat/{id}', [BusSeatController::class, 'statusBusSeat']);
 
     Route::resource('reviews', ReviewController::class);
+
+    Route::get('/fetch-trips', [TicketBookingController::class, 'store'])->name('fetch.trips');
 });

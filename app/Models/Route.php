@@ -13,11 +13,12 @@ class Route extends Model
     use SoftDeletes;
     protected $fillable = [
         "route_name",
-        "start_route",
-        "end_route",
-        "execution_time",
+        "start_route_id",
+        "end_route_id",
+        "cycle",
         "description",
-        "distance_km",
+        "route_price",
+        "length",
         "is_active"
     ];
 
@@ -27,6 +28,9 @@ class Route extends Model
 
     public function stages()
     {
-        return $this->hasMany(Stage::class);
+        return $this->hasMany(Stage::class, 'route_id'); // Giả định rằng 'route_id' là khóa ngoại trong bảng stages
     }
+  
+
+
 }

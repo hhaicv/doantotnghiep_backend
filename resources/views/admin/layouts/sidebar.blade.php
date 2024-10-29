@@ -60,6 +60,29 @@
                                 <a href="{{ route('admin.routes.index') }}" class="nav-link" data-key="t-routes">Tuyến
                                     đường</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.trips.index') }}" class="nav-link" data-key="t-trips">Danh sách chuyến</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarTickets" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarTickets">
+                        <i class="ri-ticket-2-fill"></i>
+                        <span data-key="t-layouts">Đơn Hàng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarTickets">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.tickets.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Tạo vé</a>
+                            </li>
+                            {{-- <li class="nav-item">
+                                <a href="{{ route('admin.tickets.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>
@@ -83,8 +106,8 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarInformation" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarInformation">
+                    <a class="nav-link menu-link" href="#sidebarInformation" data-bs-toggle="collapse"
+                        role="button" aria-expanded="false" aria-controls="sidebarInformation">
                         <i class="ri-layout-3-line"></i>
                         <span data-key="t-layouts">Tin tức</span>
                     </a>
@@ -160,25 +183,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarTrips" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarTrips">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Chuyến xe</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarTrips">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.trips.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.trips.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarPromotion" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarPromotion">
@@ -217,25 +222,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarTickets" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarTickets">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Bán vé</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarTickets">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.tickets.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.tickets.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+
             </ul>
         </div>
     </div>

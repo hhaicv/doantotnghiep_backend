@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -30,7 +30,7 @@
                 <select class="form-select" name="departure_time" aria-label="Default select example">
                     @foreach ($trips as $trip)
                         <option value="{{ $trip->id }}" {{ old('departure_time') == $trip->id ? 'selected' : '' }}>
-                            {{ $trip->departure_time }}</option>
+                            {{ $trip->time_start }}</option>
                     @endforeach
                 </select>
             </div>

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('route_id');
             $table->unsignedBigInteger('start_stop_id');
             $table->unsignedBigInteger('end_stop_id');
-            $table->integer('stage_order');
             $table->decimal('fare', 10, 2);
             $table->softDeletes();
             $table->timestamps();

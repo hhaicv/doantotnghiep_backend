@@ -17,7 +17,6 @@ class Stage extends Model
         "route_id",
         "start_stop_id",
         "end_stop_id",
-        "stage_order",
         "fare",
         "is_active"
     ];
@@ -25,5 +24,20 @@ class Stage extends Model
     public function route()
     {
         return $this->belongsTo(Route::class);
+    }
+
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class, 'route_id'); // Hoặc 'trip_id' nếu có trường này
+    }
+    
+    public function startStop()
+    {
+        return $this->belongsTo(Stop::class, 'start_stop_id');
+    }
+
+    public function endStop()
+    {
+        return $this->belongsTo(Stop::class, 'end_stop_id');
     }
 }
