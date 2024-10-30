@@ -1,6 +1,7 @@
-<!-- <?php
+<?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Bus;
 use Illuminate\Http\Request;
 use App\Models\BusSeat;
@@ -103,4 +104,5 @@ class BusSeatController extends Controller
         // Trả về phản hồi JSON cho client
         return response()->json(['success' => true]);
     }
-} 
+}
+

@@ -46,9 +46,11 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>@foreach($users as $user)
-                                        <p>{{ $user->name }}</p>
-                                    @endforeach</td>
+                                    <td>
+                                        @foreach($item->users as $user)
+                                            {{ $user->name }}<br>
+                                        @endforeach
+                                    </td>
                                     <td>{{ $item->code }}</td>
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
                                     <td>{{ $item->discount }} % </td>

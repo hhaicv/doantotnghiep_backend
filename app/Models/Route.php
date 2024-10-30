@@ -29,4 +29,8 @@ class Route extends Model
     {
         return $this->hasMany(Stage::class);
     }
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class, 'promotion_route');
+    }
 }

@@ -43,8 +43,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     public function promotions()
-{
-    return $this->belongsToMany(Promotion::class, 'promotion_user');
-}
-
+    {
+        return $this->belongsToMany(Promotion::class, 'promotion_user', 'user_id', 'promotion_id');
+    }
 }
