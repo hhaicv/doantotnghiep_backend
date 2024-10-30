@@ -104,4 +104,5 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     // Route cho phân tích phương thức thanh toán
     Route::get('/statistics/payment-methods', [StatisticsController::class, 'paymentMethodStatistics'])->name('statistics.paymentMethods');
+    Route::get('/fetch-trips', [TicketBookingController::class, 'store'])->name('fetch.trips');
 });

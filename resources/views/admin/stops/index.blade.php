@@ -58,7 +58,7 @@
                                                 id="SwitchCheck{{ $parent->id }}" data-id="{{ $parent->id }}"
                                                 {{ $parent->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label"
-                                                for="SwitchCheck{{ $parent->id }}">{{ $parent->is_active ? 'Bật' : 'Tắt' }}</label>
+                                                for="SwitchCheck{{ $parent->id }}">{{ $parent->is_active ? 'On' : 'Off' }}</label>
                                         </div>
                                     </td>
                                     <td>
@@ -150,13 +150,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-    <script>
+    {{-- <script>
         new DataTable("#example", {
             order: [
                 [0, 'asc']
             ]
         });
-    </script>
+    </script> --}}
     <script>
         document.addEventListener('change', function(e) {
             if (e.target.classList.contains('form-check-input')) {

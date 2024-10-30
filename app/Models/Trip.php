@@ -14,7 +14,7 @@ class Trip extends Model
     protected $fillable = [
         "route_id",
         "bus_id",
-        "departure_time",
+        "time_start",
         "is_active"
     ];
 
@@ -22,7 +22,10 @@ class Trip extends Model
         'is_active' => 'boolean',
     ];
 
-
+    public function stages()
+    {
+        return $this->hasMany(Stage::class, 'route_id', 'route_id'); // 'route_id' là khóa ngoại trong bảng 'stages' liên kết với 'route_id' trong bảng 'trips'
+    }
     // kh biết nó là gì dùng như nào
     public function route()
     {
