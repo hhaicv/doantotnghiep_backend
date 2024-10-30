@@ -4,7 +4,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\BusController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\NewCategoryController;
 use App\Http\Controllers\Api\RouteController;
+use App\Http\Controllers\Api\InformationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +40,8 @@ Route::patch('contacts/{id}/status', [ContactController::class, 'statusContact']
 Route::apiResource('routes', RouteController::class);
 Route::patch('routes/{id}/status', [RouteController::class, 'statusRoute']);
 Route::apiResource('buses', BusController::class);
+Route::apiResource('new-categories', NewCategoryController::class);
+Route::patch('new-categories/{id}/status', [NewCategoryController::class, 'statusNewCategory']);
+Route::apiResource('information', InformationController::class);
+
 

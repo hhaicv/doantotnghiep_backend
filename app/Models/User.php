@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -50,5 +52,14 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class); // Mỗi User thuộc về một Role
+    }
+    public function tickets()
+    {
+        return $this->hasMany(TicketBooking::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }
