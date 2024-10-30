@@ -37,29 +37,58 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body row p-4">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label for="fullnameInput" class="form-label">Tên tuyến đường</label>
                             <input type="text" class="form-control mt-2" name="route_name"
                                 value="{{ $data->route_name }}">
+                            @error('route_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fullnameInput" class="form-label">Chu Kì</label>
+                            <input type="number" class="form-control mt-2" name="cycle" value="{{ $data->cycle }}">
+                            @error('cycle')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm bắt đầu</label>
-                            <input type="text" class="form-control mt-2" name="start_route"
-                                value="{{ $data->start_route }}">
+                            <select name="start_route_id" class="form-control" id="input-from-stop-1"
+                                onchange="updateEndStops()">
+                                <option value="">Chọn điểm bắt đầu</option>
+                                <?php foreach ($stops as $stop) { ?>
+                                <option value="<?php echo $stop['id']; ?>"
+                                    {{ old('start_route_id', $data->start_route_id) == $stop->id ? 'selected' : '' }}>
+                                    <?php echo $stop['stop_name']; ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm kết thúc</label>
-                            <input type="text" class="form-control mt-2" name="end_route" value="{{ $data->end_route }}">
+                            <select name="end_route_id" class="form-control" id="input-to-stop-1">
+                                <option value="">Chọn điểm kết thúc</option>
+                                <?php foreach ($stops as $stop) { ?>
+                                <option value="<?php echo $stop['id']; ?>"
+                                    {{ old('end_route_id', $data->end_route_id) == $stop->id ? 'selected' : '' }}>
+                                    <?php echo $stop['stop_name']; ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="fullnameInput" class="form-label mt-2">Thời gian</label>
-                            <input type="text" class="form-control mt-2" name="execution_time"
-                                value="{{ $data->execution_time }}">
+                            <label for="fullnameInput" class="form-label mt-2">Giá Tuyến</label>
+                            <input type="text" class="form-control mt-2" name="route_price"
+                                value="{{ $data->route_price }}">
+                            @error('route_price')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Chiều dài</label>
-                            <input type="text" class="form-control mt-2" name="distance_km"
-                                value="{{ $data->distance_km }}">
+                            <input type="text" class="form-control mt-2" name="length" value="{{ $data->length }}">
+                            @error('length')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-md-12 mt-2">
                             <div class="card">
@@ -104,7 +133,8 @@
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label class="form-label pb-2" for="input-to-stop-{{ $index + 1 }}">Điểm đến
+                                            <label class="form-label pb-2" for="input-to-stop-{{ $index + 1 }}">Điểm
+                                                đến
                                                 {{ $index + 1 }}</label>
                                             <select name="end_stop_id[]" class="form-control to-stop" style="width: 90%;"
                                                 id="input-to-stop-{{ $index + 1 }}">
@@ -118,16 +148,9 @@
                                         <div class="col">
                                             <label class="form-label pb-2"
                                                 for="input-price-{{ $index + 1 }}">Giá</label>
-                                            <input type="text" name="fare[]" placeholder="Giá vé" class="form-control"
-                                                style="width: 90%;" id="input-price-{{ $index + 1 }}"
-                                                value="<?php echo $stage->fare; ?>" />
-                                        </div>
-                                        <div class="col">
-                                            <label class="form-label pb-2" for="input-order-{{ $index + 1 }}">Thứ
-                                                tự</label>
-                                            <input type="text" name="stage_order[]" placeholder="Thứ tự dừng"
+                                            <input type="text" name="fare[]" placeholder="Giá vé"
                                                 class="form-control" style="width: 90%;"
-                                                id="input-order-{{ $index + 1 }}" value="<?php echo $stage->stage_order; ?>" />
+                                                id="input-price-{{ $index + 1 }}" value="<?php echo $stage->fare; ?>" />
                                         </div>
                                         <div class="col-1">
                                             <button type="button" style="margin-top: 35px" class="btn btn-danger"
@@ -183,10 +206,6 @@
                                     <div class="col">
                                         <label class="form-label pb-2" for="input-price-${stopIndex}">Giá</label>
                                         <input type="text" name="fare[]" placeholder="Giá vé" class="form-control" style="width: 90%;" id="input-price-${stopIndex}" />
-                                    </div>
-                                    <div class="col">
-                                        <label class="form-label pb-2" for="input-order-${stopIndex}">Thứ tự</label>
-                                        <input type="text" name="stage_order[]" placeholder="Thứ tự dừng" class="form-control" style="width: 90%;" id="input-order-${stopIndex}" />
                                     </div>
                                     <div class="col-1">
                                         <button type="button" class="btn btn-danger" style="margin-top: 35px" onclick="removeStop(this)">Xóa</button>

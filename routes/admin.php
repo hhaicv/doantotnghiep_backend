@@ -65,4 +65,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::resource('reviews', ReviewController::class);
     Route::get('/send-notification', [PromotionController::class, 'sendPromotionNotification']);
 
+
+    Route::get('/fetch-trips', [TicketBookingController::class, 'store'])->name('fetch.trips');
 });

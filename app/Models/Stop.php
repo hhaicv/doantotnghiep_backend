@@ -35,6 +35,9 @@ class Stop extends Model
         return $this->belongsTo(Stop::class, 'parent_id');
     }
 
+    // Trong mô hình Stop
+
+
     protected $casts = [
         'is_active' => 'boolean',
     ];

@@ -9,6 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
@@ -177,6 +182,8 @@
     <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
     <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
+
+
     @yield('script-libs')
 
     <!-- App js -->

@@ -33,9 +33,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Tên tuyến đường</th>
-                                <th>Điểm bắt đầu</th>
-                                <th>Điểm kết thúc</th>
-                                <th>Thời gian</th>
+                                <th>Các Chặng</th>
+                                <th>Chu Kỳ</th>
+                                <th>Giá Tuyến</th>
                                 <th>Chiều Dài</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
@@ -46,20 +46,85 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->route_name, 20) }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->start_route, 20) }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->end_route, 20) }}</td>
-                                    <td>{{ $item->execution_time }}</td>
-                                    <td>{{ $item->distance_km}}</td>
-                                    <td>{{ $item->description}}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->route_name, 30) }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#modal{{ $item->id }}">
+                                            Xem chi tiết
+                                        </button>
+                                    </td>
+                                    <div class="modal fade" id="modal{{ $item->id }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Danh sách điểm dừng
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="map-container">
+                                                        @php
+                                                            $firstStop = true; // Biến đánh dấu để không hiển thị mũi tên trước điểm đầu tiên
+                                                        @endphp
+                                                        @foreach ($item->stages as $stopId)
+                                                            @php
+                                                                // Tìm điểm dừng tương ứng với stopId
+                                                                $stop = $stops->firstWhere('id', $stopId);
+                                                            @endphp
+                                                            @if ($stop)
+                                                                @if (!$firstStop)
+                                                                    <div class="arrow">→</div>
+                                                                @endif
+                                                                <div class="stop">
+                                                                    {{ $stop->stop_name ?? 'N/A' }}
+                                                                </div>
+                                                                @php $firstStop = false; @endphp
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <style>
+                                        .map-container {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 10px;
+                                            flex-wrap: wrap;
+                                        }
+                                        .stop {
+                                            background-color: #f0f8ff;
+                                            border: 1px solid #007bff;
+                                            border-radius: 5px;
+                                            padding: 10px;
+                                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                            flex: 0 1 auto;
+                                            min-width: 150px;
+                                            text-align: center;
+                                        }
+                                        .arrow {
+                                            font-size: 24px;
+                                            line-height: 1;
+                                        }
+                                    </style>
+
+
+
+                                    <td>{{ $item->cycle }} phút</td>
+                                    <td>{{ number_format($item->route_price, 0, ',', '.') }} VND</td>
+                                    <td>{{ number_format($item->length, 0, ',', '.') }} KM</td>
+                                    <td>{{ $item->description }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                 id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
                                                 {{ $item->is_active ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
-                                                {{ $item->is_active ? 'On' : 'Off' }}
-                                            </label>
+                                            <label class="form-check-label"
+                                                for="SwitchCheck{{ $item->id }}">{{ $item->is_active ? 'On' : 'Off' }}</label>
                                         </div>
                                     </td>
                                     <td>
@@ -80,6 +145,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
             </div>

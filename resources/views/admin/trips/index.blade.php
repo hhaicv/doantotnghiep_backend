@@ -45,7 +45,7 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->departure_time)->format('H:i') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->time_start)->format('H:i') }}</td>
                                     <td>{{ $item->route->route_name }}</td>
                                     <td>{{ $item->bus->name_bus }}</td>
                                     <td>{{ $item->bus->total_seats }}</td>
