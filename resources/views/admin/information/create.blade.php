@@ -10,15 +10,6 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -31,14 +22,17 @@
     @endif
 
     <div class="card">
-        <form action="{{ route('admin.information.store') }}" method="POST" class="row g-3 p-5"
-            enctype="multipart/form-data">
+        <form action="{{ route('admin.information.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-6">
+                <div class="col md-6">
                     <div class="col mb-3">
                         <label for="fullnameInput" class="form-label">Tiêu đề</label>
-                        <input type="text" class="form-control" name="title" placeholder="Nhập tiêu đề">
+                        <input type="text" class="form-control" name="title" value="{{ old('title') }}"
+                            placeholder="Nhập tiêu đề">
+                        @error('title')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="col">
                         <label for="choices-multiple-remove-button" class="form-label text-muted">Danh mục tin tức</label>
@@ -49,20 +43,25 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col mt-3">
-                        <div class="filepond-container">
-                            <h4>Hình ảnh</h4>
-                            <div class="file-drop-area" id="file-drop-area">
-                                <input type="file" name="thumbnail_image" id="file-input" accept="image/*" multiple>
-                                <div id="file-preview"></div>
-                            </div>
+                    <div class="col md-6">
+                        <h5>Hình ảnh</h5>
+                        <div class="file-drop-area" id="file-drop-area">
+                            <input type="file" name="thumbnail_image" id="file-input" accept="image/*"
+                                value="{{ old('thumbnail_image') }}" multiple>
+                            <div id="file-preview"></div>
                         </div>
+                        @error('thumbnail_image')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="col">
                         <label for="exampleFormControlTextarea5" class="form-label">Tóm tắt</label>
-                        <textarea name="summary" id="editor" placeholder="Tóm tắt ở đây..."></textarea>
+                        <textarea name="summary" id="editor" placeholder="Tóm tắt ở đây...">{{ old('summary') }}</textarea>
+                        @error('summary')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -73,8 +72,11 @@
                             <label for="exampleFormControlTextarea5" class="form-label">Nội dung</label>
                         </div>
                         <div class="card-body">
-                            <textarea name="content" id="editor1" placeholder=" Nội dung ở đây..."></textarea>
+                            <textarea name="content" id="editor1" placeholder=" Nội dung ở đây...">{{ old('content') }}</textarea>
                         </div><!-- end card-body -->
+                        @error('content')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div><!-- end card -->
                 </div>
             </div>
@@ -186,7 +188,4 @@
             renderChoiceLimit: 5
         });
     </script>
-
-
-
 @endsection

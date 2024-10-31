@@ -10,15 +10,7 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -34,7 +26,11 @@
             @csrf
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Tên điểm dừng</label>
-                <input type="text" class="form-control" name="stop_name" placeholder="Nhập tên điểm dừng">
+                <input type="text" class="form-control" name="stop_name" value="{{ old('stop_name') }}"
+                    placeholder="Nhập tên điểm dừng">
+                @error('stop_name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="col-md-6">
@@ -49,26 +45,40 @@
 
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Kinh độ</label>
-                <input type="text" class="form-control" name="longitude" placeholder="Nhập kinh độ">
+                <input type="text" class="form-control" name="longitude" value="{{ old('longitude') }}"
+                    placeholder="Nhập kinh độ">
+                @error('longitude')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Vĩ độ</label>
-                <input type="text" class="form-control" name="latitude" placeholder="Nhập vĩ độ">
+                <input type="text" class="form-control" name="latitude" value="{{ old('latitude') }}"
+                    placeholder="Nhập vĩ độ">
+                @error('latitude')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col mt-3">
-                <div class="filepond-container">
-                    <h4>Hình ảnh</h4>
-                    <div class="file-drop-area" id="file-drop-area">
-                        <input type="file" name="image" id="file-input" accept="image/*" multiple>
+                    <h5>Hình ảnh</h5>
+                    <div class="file-drop-area" id="file-drop-area" >
+                        <input type="file" name="image" id="file-input" value="{{ old('image') }}" accept="image/*"
+                            multiple>
                         <div id="file-preview"></div>
                     </div>
-                </div>
+               
+                @error('image')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
                 <div class="col">
-                    <label for="exampleFormControlTextarea5" class="form-label">Mô tả</label>
-                    <textarea name="description" id="editor" placeholder="Mô tả"></textarea>
+                    <label for="exampleFormControlTextarea5" class="form-label" >Mô tả</label>
+                    <textarea name="description" id="editor" placeholder="Mô tả" >{{ old('description') }}</textarea>
+                    @error('description')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
