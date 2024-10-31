@@ -207,6 +207,7 @@
             const startStopId = document.getElementById('input-from-stop-1').value;
             const endStopId = document.getElementById('input-to-stop-1').value;
             const date = document.getElementById('datepicker').value;
+
             // Kiểm tra xem người dùng đã chọn điểm bắt đầu và điểm kết thúc chưa
             if (!startStopId || !endStopId || !date) {
                 Swal.fire({
@@ -293,10 +294,10 @@
                         fare: trip.fare,
                         date: trip.date,
                         start_stop_id: trip.start_stop_id,
-                        end_stop_id: trip.end_stop_id
+                        end_stop_id: trip.end_stop_id,
+                        start_name: trip.start_stop_name,
+                        end_name: trip.end_stop_name
                     };
-                    console.log('Thông tin đặt hàng:',
-                    orderDetails);
                     const queryString = new URLSearchParams(orderDetails).toString();
                     window.location.href = `/admin/tickets/create?${queryString}`;
                 };
@@ -311,9 +312,6 @@
                 resultsBody.appendChild(row);
             });
         }
-
-
-
 
         // Hàm định dạng thời gian
         function formatTime(timeString) {

@@ -64,5 +64,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('reviews', ReviewController::class);
 
-    Route::get('/fetch-trips', [TicketBookingController::class, 'store'])->name('fetch.trips');
+    Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
+
 });
