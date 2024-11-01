@@ -19,6 +19,8 @@ class TicketBookingController extends Controller
     {
 
         $data = Stop::query()->get();
+
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -33,6 +35,9 @@ class TicketBookingController extends Controller
         $startRouteId = $data['start_stop_id'];
         $endRouteId = $data['end_stop_id'];
         $date = $data['date'];
+        $currentTime = Carbon::now('Asia/Ho_Chi_Minh')->format('H:i');
+        $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
 
         // Lấy tên điểm bắt đầu và điểm kết thúc theo `id`
         $startStopName = Stop::where('id', $startRouteId)->value('stop_name');
@@ -47,6 +52,11 @@ class TicketBookingController extends Controller
                 $query->where('start_stop_id', $startRouteId)
                     ->where('end_stop_id', $endRouteId);
             })
+            ->when($date === $today, function ($query) use ($currentTime) {
+                // Nếu là ngày hôm nay, chỉ lấy các chuyến có time_start lớn hơn giờ hiện tại
+                return $query->where('time_start', '>', $currentTime);
+            })
+            ->orderBy('time_start', 'asc') // Sắp xếp theo time_start từ bé đến lớn
             ->get();
 
         // Map dữ liệu chuyến
@@ -85,7 +95,8 @@ class TicketBookingController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    public function store(Request $request) {
+    public function store(StoreTicketBookingRequest $request)
+    {
         dd($request->all());
         die();
     }

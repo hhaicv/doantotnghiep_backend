@@ -71,6 +71,29 @@
             margin-top: 4px;
             /* Khoảng cách giữa tên tuyến đường và tên xe */
         }
+
+        /* CSS cho nút button */
+        button {
+            background-color: #405189;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #37477a;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* Bóng đổ lớn hơn khi hover */
+            transform: translateY(-2px); /* Di chuyển nút lên một chút khi hover */        }
+
+        button:active {
+            background-color: #51629a;
+            /* Màu khi nhấn giữ nút */
+        }
     </style>
     <div class="row">
         <div class="col-12">

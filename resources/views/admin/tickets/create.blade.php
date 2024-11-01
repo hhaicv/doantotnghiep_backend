@@ -64,7 +64,8 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
-                            <li><button class="seat" type="submit"></button></li>
+                            <li><button class="seat" data-name="A19" data-trip-id="1" data-seat-status="available"
+                                data-seat-floor="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A7" data-trip-id="1" data-seat-status="available"
@@ -86,7 +87,8 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
-                            <li><button class="seat" type="submit"></button></li>
+                            <li><button class="seat" data-name="A20" data-trip-id="1" data-seat-status="available"
+                                data-seat-floor="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A13" data-trip-id="1" data-seat-status="available"
@@ -128,7 +130,8 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
-                            <li><button class="seat" type="submit"></button></li>
+                            <li><button class="seat" data-name="B19" data-trip-id="2" data-seat-status="available"
+                                data-seat-floor="2" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="B7" data-trip-id="2" data-seat-status="available"
@@ -150,7 +153,8 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
-                            <li><button class="seat" type="submit"></button></li>
+                            <li><button class="seat" data-name="B20" data-trip-id="2" data-seat-status="available"
+                                data-seat-floor="2" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="B13" data-trip-id="2" data-seat-status="available"
@@ -197,6 +201,14 @@
                 <div class="card-body checkout-tab">
                     <form action="{{ route('admin.tickets.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="trip_id" id="trip_id">
+                        <input type="hidden" name="bus_id" id="bus_id">
+                        <input type="hidden" name="route_id" id="route_id">
+                        <input type="hidden" name="time_start" id="time_start">
+                        <input type="hidden" name="fare" id="fare">
+                        <input type="hidden" name="date" id="date">
+                        <input type="hidden" name="name_seat" id="name_seat">
+
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
                             <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -261,20 +273,22 @@
                                         <div class="col">
                                             <p class="fs-5" id="selected-seats">...</p>
                                             <p class="fs-5" id="total-price">...</p>
-                                            <select name="location_start" class="form-select" aria-label="Default select example">
+                                            <select name="location_start" class="form-select"
+                                                aria-label="Default select example">
                                                 <option value="Tại bến">Tại bến</option>
                                                 <option value="Dọc đường">Dọc đường</option>
                                             </select>
-                                            <select name="id_start_stop" class="form-select mt-2" aria-label="Default select example"
-                                                id="start-stop">
+                                            <select name="id_start_stop" class="form-select mt-2"
+                                                aria-label="Default select example" id="start-stop">
                                                 <!-- ID và tên sẽ được cập nhật ở đây -->
                                             </select>
-                                            <select name="location_end" class="form-select mt-3" aria-label="Default select example">
-                                                <option value="1">Tại bến</option>
-                                                <option value="2">Dọc đường</option>
+                                            <select name="location_end" class="form-select mt-3"
+                                                aria-label="Default select example">
+                                                <option value="Tại bến">Tại bến</option>
+                                                <option value="Dọc đường">Dọc đường</option>
                                             </select>
-                                            <select name="id_end_stop" class="form-select mt-2" aria-label="Default select example"
-                                                id="end-stop">
+                                            <select name="id_end_stop" class="form-select mt-2"
+                                                aria-label="Default select example" id="end-stop">
                                                 <!-- ID và tên sẽ được cập nhật ở đây -->
                                             </select>
                                         </div>
@@ -294,17 +308,23 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="billinginfo-firstName" class="form-label">Họ tên</label>
-                                                <input type="text" name="name" class="form-control" id="billinginfo-firstName"
-                                                    placeholder="Nhập họ tên" value="">
+                                                <label for="billinginfo-name" class="form-label">Họ tên</label>
+                                                <input type="text" name="name" class="form-control"
+                                                    id="billinginfo-name" placeholder="Nhập họ tên" value="{{ old('name') }}">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="billinginfo-lastName" class="form-label">Số điện thoại</label>
-                                                <input type="text" name="phone" class="form-control" id="billinginfo-lastName"
-                                                    placeholder="Nhập số điện thoại" value="">
+                                                <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
+                                                <input type="text" name="phone" class="form-control"
+                                                    id="billinginfo-phone" placeholder="Nhập số điện thoại" value="{{ old('phone') }}">
+                                                @error('phone')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -314,21 +334,19 @@
                                             <div class="mb-3">
                                                 <label for="billinginfo-email" class="form-label">Email <span
                                                         class="text-muted">(Optional)</span></label>
-                                                <input type="email" name="email" class="form-control" id="billinginfo-email"
-                                                    placeholder="Nhập email">
+                                                <input type="email" name="email" class="form-control"
+                                                    id="billinginfo-email" placeholder="Nhập email" value="{{ old('email') }}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="billinginfo-address" class="form-label">Ghi chú</label>
-                                        <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú" rows="3"></textarea>
+                                        <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú" rows="3">{{old('note')}}</textarea>
                                     </div>
 
                                 </div>
                             </div>
-                            <!-- end tab pane -->
-
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
                                 <div>
@@ -339,7 +357,11 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="billinginfo-thucthu" class="form-label">Thực thu</label>
-                                            <input type="text" name="total_amount" class="form-control" id="billinginfo-thucthu" readonly>
+                                            <input type="text" name="total_amount" class="form-control"
+                                                id="billinginfo-thucthu" readonly>
+                                            @error('total_amount')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -358,37 +380,36 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="mb-3">
                                             <label for="billinginfo-email" class="form-label">Hình thức thanh toán</label>
-                                            <select name="payment_method" class="form-select" aria-label="Default select example">
+                                            <select name="payment_method" class="form-select"
+                                                aria-label="Default select example">
                                                 <option value="Thu tiền tại quầy">Thu tiền tại quầy</option>
-                                                <option value="Thanh toán trên xe">Thanh toán trên xe</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" type="checkbox" id="formCheck6" checked>
-                                            <label class="form-check-label" for="formCheck6">
-                                                Gửi vé điện tử qua Emali
+                                        <div class="form-check mb-3" id="emailCheckboxContainer" style="display: none;">
+                                            <input class="form-check-input" type="checkbox" id="formCheckEmail" checked>
+                                            <label class="form-check-label" for="formCheckEmail">
+                                                Gửi vé điện tử qua Email
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-check mb-3">
-                                            <input class="form-check-input" type="checkbox" id="formCheck6" checked>
-                                            <label class="form-check-label" for="formCheck6">
+                                            <input class="form-check-input" type="checkbox" id="formCheckZalo" checked>
+                                            <label class="form-check-label" for="formCheckZalo">
                                                 Gửi thông tin qua Zalo
                                             </label>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="d-flex align-items-start gap-3 mt-4">
 
                                     <button type="submit" class="btn btn-primary btn-label right ms-auto nexttab fs-5"
@@ -396,8 +417,6 @@
                                             class="ri-coins-fill label-icon align-middle fs-16 ms-2"></i>Thu tiền</button>
                                 </div>
                             </div>
-                            <!-- end tab pane -->
-
                             <div class="tab-pane fade" id="pills-finish" role="tabpanel"
                                 aria-labelledby="pills-finish-tab">
                                 <div class="text-center py-5">
@@ -427,9 +446,25 @@
         <!-- end col -->
     </div>
     <script>
-        // Lấy giá trị từ phần tử có id "total-price"
+        document.getElementById('billinginfo-email').addEventListener('input', function() {
+            const emailCheckboxContainer = document.getElementById('emailCheckboxContainer');
+            emailCheckboxContainer.style.display = this.value ? 'block' : 'none';
+        });
 
-
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, "\\$&");
+            const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        document.getElementById("trip_id").value = getParameterByName("trip_id");
+        document.getElementById("bus_id").value = getParameterByName("bus_id");
+        document.getElementById("route_id").value = getParameterByName("route_id");
+        document.getElementById("time_start").value = getParameterByName("time_start");
+        document.getElementById("fare").value = getParameterByName("fare");
+        document.getElementById("date").value = getParameterByName("date");
 
         function calculateRefund() {
             const thucThu = parseInt(document.getElementById('billinginfo-thucthu').value.replace(/\./g, '')) || 0;
@@ -478,9 +513,6 @@
 
         displayInfo();
 
-
-
-        // Lấy giá trị trip_id từ URL
         const params = new URLSearchParams(window.location.search);
         const tripId = params.get('trip_id');
 
@@ -521,6 +553,7 @@
 
                         // Cập nhật hiển thị ghế đã chọn
                         document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
+                        document.getElementById('name_seat').value = selectedSeats.join(', ');
 
                         // Tính tổng tiền
                         const totalPrice = selectedSeats.length * fare; // Tổng tiền
@@ -546,6 +579,8 @@
 
                     // Cập nhật hiển thị ghế đã chọn
                     document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
+
+                    document.getElementById('name_seat').value = selectedSeats.join(', ');
 
                     // Tính tổng tiền
                     const totalPrice = selectedSeats.length * fare; // Tổng tiền
