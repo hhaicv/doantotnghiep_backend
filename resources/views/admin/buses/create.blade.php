@@ -10,15 +10,6 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -67,15 +58,16 @@
                 @enderror
 
             </div>
-            <div class="col mt-6">
-                <div class="filepond-container">
-                    <h5>Image</h5>
-                    <div class="file-drop-area" id="file-drop-area">
-                        <input type="file" name="image" id="file-input" accept="image/*" multiple>
+            <div class="col mt-6" >
+                <h5>Image</h5>
+                <div class="file-drop-area" id="file-drop-area">
+                    <input type="file" name="image" id="file-input" accept="image/*" value="{{old('imgae')}}" multiple>
 
-                        <div id="file-preview"></div>
-                    </div>
+                    <div id="file-preview"></div>
                 </div>
+                @error('image')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
                 <label for="start_date">Số lượng ghế</label>

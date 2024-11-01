@@ -36,4 +36,9 @@ class Promotion extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function routes()
+    {
+        return $this->hasMany(Route::class, 'route_id');
+
+    }
 }
