@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
-use App\Models\Stage;
+
+use App\Models\PaymentMethod;
+
 use App\Models\Stop;
+use App\Models\TicketDetail;
 use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\Attributes\Ticket;
 use Carbon\Carbon;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TicketBookingController extends Controller
 {
@@ -91,15 +97,40 @@ class TicketBookingController extends Controller
 
     public function create()
     {
+        $methods = PaymentMethod::query()->get();
         $data = Stop::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'methods'));
     }
 
     public function store(StoreTicketBookingRequest $request)
     {
-        dd($request->all());
-        die();
+
+        DB::transaction(function () use ($request) {
+            // 1. Thêm thông tin người dùng vào bảng users
+            $userData = $request->only('name', 'phone', 'email');
+            $user = User::create($userData); // Tạo bản ghi user mới và lấy ID
+
+            // 2. Chuẩn bị và thêm thông tin vào bảng ticket_bookings
+            $ticketBookingData = $request->except('name', 'phone', 'email', 'name_seat', 'fare'); // Trừ name_seat và fare
+            $ticketBookingData['user_id'] = $user->id; // Gắn ID user vừa tạo
+            $ticketBooking = TicketBooking::create($ticketBookingData); // Tạo bản ghi ticket_booking mới và lấy ID
+
+            // 3. Thêm từng ghế vào bảng ticket_detail
+            $seatNames = explode(', ', $request->input('name_seat')); // Giả sử ghế được nhập cách nhau bằng dấu phẩy
+
+            foreach ($seatNames as $seatName) {
+                TicketDetail::create([
+                    'ticket_code' => strtoupper(Str::random(8)), // Mã vé ngẫu nhiên 8 ký tự
+                    'ticket_booking_id' => $ticketBooking->id, // ID của vé từ ticket_bookings
+                    'name_seat' => $seatName,
+                    'price' => $request->input('fare')
+                ]);
+            }
+        });
+
+        return view(self::PATH_VIEW . __FUNCTION__);
     }
+
 
 
 

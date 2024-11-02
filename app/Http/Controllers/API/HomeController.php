@@ -10,7 +10,21 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function index()
+    {
+        $data = Stop::query()->where('is_active', true)->get();
+        return response()->json($data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request) {}
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $request)
     {
         $data = $request->validate([
             'start_stop_id' => 'required|integer',
@@ -51,6 +65,7 @@ class HomeController extends Controller
 
             return [
                 'bus_id' => $trip->bus->id,
+                'bus_image' => $trip->bus->image,
                 'route_id' => $trip->route->id,
                 'trip_id' => $trip->id,
                 'time_start' => $trip->time_start,
@@ -71,19 +86,6 @@ class HomeController extends Controller
         }
 
         return response()->json($tripData);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**

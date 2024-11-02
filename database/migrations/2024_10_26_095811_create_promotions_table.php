@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('route_id');
             $table->unsignedBigInteger('bus_type_id');
             $table->boolean('new_customer_only')->default(0);
+            
             $table->timestamps();
             $table->softDeletes(); // Thêm dòng này để sử dụng soft deletes
         });

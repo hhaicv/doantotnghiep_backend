@@ -65,7 +65,7 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button class="seat" data-name="A19" data-trip-id="1" data-seat-status="available"
-                                data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A7" data-trip-id="1" data-seat-status="available"
@@ -88,7 +88,7 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button class="seat" data-name="A20" data-trip-id="1" data-seat-status="available"
-                                data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A13" data-trip-id="1" data-seat-status="available"
@@ -131,7 +131,7 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button class="seat" data-name="B19" data-trip-id="2" data-seat-status="available"
-                                data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="B7" data-trip-id="2" data-seat-status="available"
@@ -154,7 +154,7 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button class="seat" data-name="B20" data-trip-id="2" data-seat-status="available"
-                                data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="B13" data-trip-id="2" data-seat-status="available"
@@ -310,7 +310,8 @@
                                             <div class="mb-3">
                                                 <label for="billinginfo-name" class="form-label">Họ tên</label>
                                                 <input type="text" name="name" class="form-control"
-                                                    id="billinginfo-name" placeholder="Nhập họ tên" value="{{ old('name') }}">
+                                                    id="billinginfo-name" placeholder="Nhập họ tên"
+                                                    value="{{ old('name') }}">
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -321,7 +322,8 @@
                                             <div class="mb-3">
                                                 <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
                                                 <input type="text" name="phone" class="form-control"
-                                                    id="billinginfo-phone" placeholder="Nhập số điện thoại" value="{{ old('phone') }}">
+                                                    id="billinginfo-phone" placeholder="Nhập số điện thoại"
+                                                    value="{{ old('phone') }}">
                                                 @error('phone')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -335,14 +337,15 @@
                                                 <label for="billinginfo-email" class="form-label">Email <span
                                                         class="text-muted">(Optional)</span></label>
                                                 <input type="email" name="email" class="form-control"
-                                                    id="billinginfo-email" placeholder="Nhập email" value="{{ old('email') }}">
+                                                    id="billinginfo-email" placeholder="Nhập email"
+                                                    value="{{ old('email') }}">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="billinginfo-address" class="form-label">Ghi chú</label>
-                                        <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú" rows="3">{{old('note')}}</textarea>
+                                        <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú" rows="3">{{ old('note') }}</textarea>
                                     </div>
 
                                 </div>
@@ -357,9 +360,9 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="billinginfo-thucthu" class="form-label">Thực thu</label>
-                                            <input type="text" name="total_amount" class="form-control"
+                                            <input type="text" name="total_price" class="form-control"
                                                 id="billinginfo-thucthu" readonly>
-                                            @error('total_amount')
+                                            @error('total_price')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -384,9 +387,11 @@
                                     <div class="col-sm-12">
                                         <div class="mb-3">
                                             <label for="billinginfo-email" class="form-label">Hình thức thanh toán</label>
-                                            <select name="payment_method" class="form-select"
+                                            <select name="payment_method_id" class="form-select"
                                                 aria-label="Default select example">
-                                                <option value="Thu tiền tại quầy">Thu tiền tại quầy</option>
+                                                <?php foreach ($methods as $method) { ?>
+                                                <option value="<?php echo $method['id']; ?>"><?php echo $method['name']; ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>

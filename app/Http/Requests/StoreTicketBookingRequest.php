@@ -23,7 +23,7 @@ class StoreTicketBookingRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'total_amount' => ['required'],
+            'total_price' => ['required'],
             'phone' => ['required'],
         ];
     }
@@ -31,7 +31,7 @@ class StoreTicketBookingRequest extends FormRequest
     {
         return [
             'name.required' => 'Cần phải nhập tên hành khách.',
-            'total_amount.required' => 'Bạn cần chọn ghế để thanh toán.',
+            'total_price.required' => 'Bạn cần chọn ghế để thanh toán.',
             'phone.required' => 'Cần phải nhập số điện thoại.',
         ];
     }
