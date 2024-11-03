@@ -86,14 +86,14 @@
         </div>
         <div class="content">
             <p>Kính gửi Quý khách hàng,</p>
-            <p>Chúng tôi rất vui được chia sẻ chương trình khuyến mãi độc quyền với bạn!</p>
+            <p>Chúng tôi rất vui được chia sẻ chương trình khuyến mãi độc quyền với bạn !</p>
             <div class="promotion-info">
                 <p class="promotion-code">Mã khuyến mãi: {{ $promotion->code }}</p>
                 <p><strong>Phần trăm giảm giá:</strong> {{ $promotion->discount }}%</p>
                 <p><strong>Mô tả:</strong> {{ $promotion->description }}</p>
                 <p><strong>Ngày kết thúc:</strong> {{ $promotion->end_date }}</p>
             </div>
-            <a href="{{ route('admin.promotions.index') }}" class="button">Yêu cầu giảm giá của bạn ngay bây giờ</a> <!-- Điều chỉnh đường dẫn theo yêu cầu -->
+            <a href="{{ route('admin.promotions.index') }}" class="button">Yêu cầu giảm giá ngay bây giờ </a> <!-- Điều chỉnh đường dẫn theo yêu cầu -->
         </div>
         <div class="footer">
             <p>Cảm ơn bạn đã là một khách hàng có giá trị!</p>

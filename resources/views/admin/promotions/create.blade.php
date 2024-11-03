@@ -48,26 +48,22 @@
             </div>
             <div class="col-md-6">
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
-                <select class="form-control" name="route_id" id="routeSelect">
+                <select name="route_id" id="routeSelect" class="form-control" multiple>
                     <option value="">Chọn tuyến đường</option>
                     @foreach($routes as $route)
-                        <option value="{{ $route->id }}">{{ $route->route_name }}</option>
+                        <option value="{{ $route->id }}" 
+                            {{ isset($promotionRoute) && in_array($route->id, $promotionRoute) ? 'selected' : '' }}>
+                            {{ $route->route_name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
+            
+            
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
                 <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc" 
                        min="{{ date('Y-m-d') }}">
-            </div>
-            <div class="col-md-6">
-                <label for="busTypeSelect" class="form-label">Loại xe</label>
-                <select class="form-control" name="bus_type_id" id="busTypeSelect">
-                    <option value="">Chọn xe</option>
-                    @foreach($buses as $bus)
-                        <option value="{{ $bus->id }}">{{ $bus->name_bus }}</option>
-                    @endforeach
-                </select>
             </div> 
             <div class="col-md-6">
                 <label for="userSelect" class="form-label text-muted">Người dùng:</label>

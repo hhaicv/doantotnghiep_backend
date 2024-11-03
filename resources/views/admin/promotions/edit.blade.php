@@ -48,32 +48,21 @@
                        min="{{ date('Y-m-d') }}">
             </div>
             <div class="col-md-6">
-                <label for="routeSelect" class="form-label">Tuyến đường:</label>
-                <select class="form-control" name="route_id" id="routeSelect">
-                    <option value="">Chọn tuyến đường</option>
+                <label for="routeSelect" class="form-label">Tuyến đường</label>
+                <select name="routes[]" id="routeSelect" class="form-control" multiple>
                     @foreach($routes as $route)
-                    <option value="{{ $route->id }}" {{ $data->route_id == $route->id ? 'selected' : '' }}>
-                        {{ $route->route_name }}
-                    </option>
-                @endforeach
+                        <option value="{{ $route->id }}" {{ in_array($route->id, $promotionRoutes ?? []) ? 'selected' : '' }}>
+                            {{ $route->route_name }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
+            
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
                 <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc" 
                        id="endDateInput" min="{{ date('Y-m-d') }}" value="{{ $data->end_date }}">
             </div>
-            <div class="col-md-6">
-                <label for="busTypeSelect" class="form-label">Loại xe</label>
-                <select class="form-control" name="bus_type_id" id="busTypeSelect">
-                    <option value="">Chọn loại xe</option>
-                    @foreach($buses as $bus)
-                        <option value="{{ $bus->id }}" {{ $data->bus_type_id == $bus->id ? 'selected' : '' }}>
-                            {{ $bus->name_bus }}
-                        </option>
-                    @endforeach
-                </select>
-            </div> 
             <div class="col-md-6">
                 <label for="userSelect" class="form-label text-muted">Người dùng</label>
                 <select name="users[]" id="userSelect" class="form-control" multiple>
@@ -120,6 +109,14 @@
         const choices = new Choices(userSelect, {
             removeItemButton: true, // Thêm nút xóa cho mỗi mục đã chọn
             placeholderValue: "Chọn người dùng", // Placeholder
+            maxItemCount: 5, // Giới hạn số người dùng có thể chọn, nếu cần
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const userSelect = document.getElementById('routeSelect');
+        const choices = new Choices(userSelect, {
+            removeItemButton: true, // Thêm nút xóa cho mỗi mục đã chọn
+            placeholderValue: "Chọn tuyến đường", // Placeholder
             maxItemCount: 5, // Giới hạn số người dùng có thể chọn, nếu cần
         });
     });

@@ -37,6 +37,8 @@ class PromotionController extends Controller
         $routes = Route::all();
         $buses = Bus::all();
         $users = User::all();
+
+     
         return view(self::PATH_VIEW . __FUNCTION__, compact('routes', 'buses', 'users'));
     }
 
@@ -45,32 +47,37 @@ class PromotionController extends Controller
      */
     public function store(StorePromotionRequest $request)
     {
-        
+
         $data = $request->all();
-    $data['status'] = $request->has('status') ? 1 : 0; // Kiểm tra trạng thái checkbox
-    $promotion = Promotion::create($data);
+        $data['status'] = $request->has('status') ? 1 : 0; // Kiểm tra trạng thái checkbox
+        $promotion = Promotion::create($data);
 
-    // Gắn người dùng vào khuyến mãi
-    $userIds = $request->input('users', []);
-    $promotion->users()->attach($userIds);
+        // Gắn người dùng vào khuyến mãi
+        $userIds = $request->input('users', []);
+        $promotion->users()->attach($userIds);
 
-    // Kiểm tra nếu chọn gửi đến tất cả người dùng
-    if ($request->input('send_to_all')) { // Giả sử bạn có checkbox để chọn tất cả
-        $users = User::all(); // Lấy tất cả người dùng
-        foreach ($users as $user) {
-            Mail::to($user->email)->send(new PromotionAdded($promotion));
-        }
-    } else {
-        // Gửi email đến người dùng đã chọn
-        foreach ($userIds as $userId) {
-            $user = User::find($userId);
-            if ($user) {
+        // Gắn nhiều tuyến đường vào khuyến mãi
+        $routeIds = $request->input('routes', []);
+        $promotion->routes()->attach($routeIds);
+
+
+        // Kiểm tra nếu chọn gửi đến tất cả người dùng
+        if ($request->input('send_to_all')) { // Giả sử bạn có checkbox để chọn tất cả
+            $users = User::all(); // Lấy tất cả người dùng
+            foreach ($users as $user) {
                 Mail::to($user->email)->send(new PromotionAdded($promotion));
             }
+        } else {
+            // Gửi email đến người dùng đã chọn
+            foreach ($userIds as $userId) {
+                $user = User::find($userId);
+                if ($user) {
+                    Mail::to($user->email)->send(new PromotionAdded($promotion));
+                }
+            }
         }
-    }
 
-    return redirect()->route('admin.promotions.index')->with('success', 'Tạo khuyến mãi thành công và đã gửi email cho người dùng.');
+        return redirect()->route('admin.promotions.index')->with('success', 'Tạo khuyến mãi thành công và đã gửi email cho người dùng.');
     }
 
     /**
@@ -107,11 +114,20 @@ class PromotionController extends Controller
 
         // Cập nhật người dùng liên kết
         $promotion->users()->sync($request->input('users', []));
+        // Cập nhật tuyến đường liên kết
+        $promotion->routes()->sync($request->input('routes', []));
 
         return redirect()->route('admin.promotions.index')->with('success', 'Cập nhật khuyến mãi thành công');
     }
-
-
+    public function destroy(string $id)
+    {
+        $data = Promotion::query()->findOrFail($id);
+        $data->delete();
+        if (request()->ajax()) {
+            return response()->json(['success' => true]);
+        }
+        return redirect()->route('admin.promotions.index')->with('success', 'promotions deleted successfully');
+    }
     /**
      * Update promotion status.
      */
@@ -152,22 +168,20 @@ class PromotionController extends Controller
         return redirect()->back()->with('success', 'Người dùng đã được gắn cho khuyến mãi thành công');
     }
     public function sendPromotionNotification($userId = null)
-{
-    // Lấy khuyến mãi mới nhất
-    $promotion = Promotion::latest()->first();
+    {
+        // Lấy khuyến mãi mới nhất
+        $promotion = Promotion::latest()->first();
 
-    if (!$promotion) {
-        return response()->json(['status' => 'No promotions found'], 404);
+        if (!$promotion) {
+            return response()->json(['status' => 'No promotions found'], 404);
+        }
+
+        // Chuẩn bị dữ liệu khuyến mãi
+        $promotionData = [
+            'code' => $promotion->code,
+            'discount' => $promotion->discount,
+            'description' => $promotion->description,
+            'end_date' => $promotion->end_date,
+        ];
     }
-
-    // Chuẩn bị dữ liệu khuyến mãi
-    $promotionData = [
-        'code' => $promotion->code,
-        'discount' => $promotion->discount,
-        'description' => $promotion->description,
-        'end_date' => $promotion->end_date,
-    ];
-
-
-}
 }
