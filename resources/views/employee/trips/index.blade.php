@@ -1,31 +1,21 @@
 @extends('employee.layouts.mater')
 
 @section('title')
-    Danh sách Liên Hệ
+    Danh sách chuyến xe
 @endsection
-
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Liên Hệ</h4>
+                <h4 class="mb-sm-0">Chuyến xe</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Liên Hệ</li>
+                        <li class="breadcrumb-item active">Chuyến xe</li>
                     </ol>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            @if (session('message'))
-                <div class="alert alert-success" style="margin-bottom: 20px;">
-                    {{ session('message') }}
-                </div>
-            @endif
         </div>
     </div>
 
@@ -41,49 +31,31 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Họ Tên</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
-                                <th>Tiêu đề</th>
-                                <th>Nội dung</th>
+                                <th>Thời gian khởi hành</th>
+                                <th>Tuyến đường</th>
+                                <th>Xe</th>
+                                <th>Ghế</th>
+                                <th>Biển số xe</th>
                                 <th>Trạng thái</th>
-                                <th>Ngày tạo</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->title, 30) }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->message, 30) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->time_start)->format('H:i') }}</td>
+                                    <td>{{ $item->route->route_name }}</td>
+                                    <td>{{ $item->bus->name_bus }}</td>
+                                    <td>{{ $item->bus->total_seats }}</td>
+                                    <td>{{ $item->bus->license_plate }}</td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
+                                            <input class="form-check-input" type="checkbox" role="switch" disabled
                                                 id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
-                                                {{ $item->is_active ? 'checked' : '' }}
-                                                {{ $item->is_active ? 'disabled' : '' }}>
-                                            <!-- Vô hiệu hóa checkbox nếu đã liên hệ -->
+                                                {{ $item->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
-                                                {{ $item->is_active ? 'Đã liên hệ' : 'Chưa liên hệ' }}
+                                                {{ $item->is_active ? 'On' : 'Off' }}
                                             </label>
-                                        </div>
-                                    </td>
-                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <!-- <form id="deleteFormContacts{{ $item->id }}"
-                                                action="{{ route('admin.contacts.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -103,6 +75,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+
 @endsection
 
 @section('script-libs')
@@ -126,13 +100,14 @@
         });
     </script>
     <script>
-        document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('form-check-input')) {
-                var checkbox = e.target;
-                var isChecked = checkbox.checked ? 1 : 0;
-                var itemId = checkbox.getAttribute('data-id');
+        document.querySelectorAll('.form-check-input').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var isChecked = this.checked ? 1 : 0;
+                var itemId = this.getAttribute('data-id'); // Lấy ID từ thuộc tính data-id
+                console.log(itemId);
 
-                fetch(`/admin/status-contacts/${itemId}`, {
+
+                fetch(`/admin/status-trip/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -150,19 +125,19 @@
                     })
                     .then(data => {
                         if (data.success) {
-                            var label = checkbox.nextElementSibling;
-                            label.textContent = isChecked ? 'On' : 'Off';
+                            // Cập nhật label hoặc badge sau khi thay đổi trạng thái
+                            var label = this.nextElementSibling; // Lấy label kế tiếp checkbox
+                            label.textContent = isChecked ? 'On' : 'Off'; // Cập nhật nội dung
                         } else {
                             alert('Cập nhật trạng thái thất bại.');
                         }
                     })
                     .catch(error => console.error('Error:', error));
-            }
+            });
         });
-
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {
-                let form = document.getElementById('deleteFormContacts' + id);
+                let form = document.getElementById('deleteFormTrip' + id);
 
                 // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {

@@ -25,9 +25,8 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'phone' => 'required|digits:10', 
             'address' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email'. $this->route('user')->id,
+            'email' => 'required|email|unique:users,email,' . $this->route('user'), // Sửa lại ở đây
             'password' => 'required|min:8|confirmed', 
-            'name_role' => 'required|integer|exists:roles,id',
         ];
     }
     public function messages(): array
@@ -42,8 +41,6 @@ class UpdateUserRequest extends FormRequest
             'password.required' => 'Mật khẩu là bắt buộc.',
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
             'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
-            'name_role.required' => 'Vui lòng chọn quyền.',
-            'name_role.exists' => 'Quyền đã chọn không tồn tại.',
         ];
     }
 }

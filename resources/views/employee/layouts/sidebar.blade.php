@@ -49,24 +49,23 @@
                     <div class="collapse menu-dropdown" id="sidebarExecutive">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.buses.index') }}" class="nav-link" data-key="t-buses">Danh
+                                <a href="{{ route('employee.buses') }}" class="nav-link" data-key="t-buses">Danh
                                     sách xe</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.stops.index') }}" class="nav-link" data-key="t-stops">Điểm
+                                <a href="{{ route('employee.stops') }}" class="nav-link" data-key="t-stops">Điểm
                                     dừng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.routes.index') }}" class="nav-link" data-key="t-routes">Tuyến
+                                <a href="{{ route('employee.routes') }}" class="nav-link" data-key="t-routes">Tuyến
                                     đường</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.trips.index') }}" class="nav-link" data-key="t-trips">Danh sách chuyến</a>
+                                <a href="{{ route('employee.trips') }}" class="nav-link" data-key="t-trips">Danh sách chuyến</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTickets" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarTickets">
@@ -76,10 +75,9 @@
                     <div class="collapse menu-dropdown" id="sidebarTickets">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.tickets.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Tạo vé</a>
+                            <a href="{{ route('employee.tickets') }}" class="nav-link" data-key="t-horizontal">Tạo vé</a>
                             </li>
-
+                            
                 </li>
             </ul>
         </div>
@@ -93,7 +91,7 @@
             <div class="collapse menu-dropdown" id="sidebarInformation">
                 <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                        <a href="{{ route('admin.information.index') }}" class="nav-link"
+                        <a href="{{ route('employee.information') }}" class="nav-link"
                             data-key="t-horizontal">Danh
                             sách</a>
                     </li>

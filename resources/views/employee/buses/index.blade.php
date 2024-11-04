@@ -1,31 +1,21 @@
 @extends('employee.layouts.mater')
 
 @section('title')
-    Danh sách Liên Hệ
+    Danh sách xe
 @endsection
-
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Liên Hệ</h4>
+                <h4 class="mb-sm-0">Loại xe</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Liên Hệ</li>
+                        <li class="breadcrumb-item active">Loại xe</li>
                     </ol>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            @if (session('message'))
-                <div class="alert alert-success" style="margin-bottom: 20px;">
-                    {{ session('message') }}
-                </div>
-            @endif
         </div>
     </div>
 
@@ -41,49 +31,37 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Họ Tên</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
-                                <th>Tiêu đề</th>
-                                <th>Nội dung</th>
+                                <th>Hình ảnh</th>
+                                <th>Xe</th>
+                                <th>Tài xế</th>
+                                <th>Mã GPS</th>
+                                <th>SĐT</th>
+                                <th>Mô tả</th>
                                 <th>Trạng thái</th>
-                                <th>Ngày tạo</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
+                                    <td><img src="{{ Storage::url($item->image) }}" alt=""
+                                            style="width: 170px;height: 100px;object-fit: cover"></td>
+                                    <td>
+                                        <p> {{ $item->license_plate }} - {{ $item->total_seats }} Chỗ</p>
+                                        {{ $item->name_bus }}
+                                    </td>
+                                    <td>{{ $item->model }}</td>
+                                    <td>{{ $item->gps_code }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->title, 30) }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->message, 30) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 20) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
+                                            <input class="form-check-input" type="checkbox" role="switch" disabled
                                                 id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
-                                                {{ $item->is_active ? 'checked' : '' }}
-                                                {{ $item->is_active ? 'disabled' : '' }}>
-                                            <!-- Vô hiệu hóa checkbox nếu đã liên hệ -->
+                                                {{ $item->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
-                                                {{ $item->is_active ? 'Đã liên hệ' : 'Chưa liên hệ' }}
+                                                {{ $item->is_active ? 'On' : 'Off' }}
                                             </label>
-                                        </div>
-                                    </td>
-                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <!-- <form id="deleteFormContacts{{ $item->id }}"
-                                                action="{{ route('admin.contacts.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -132,7 +110,7 @@
                 var isChecked = checkbox.checked ? 1 : 0;
                 var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-contacts/${itemId}`, {
+                fetch(`/admin/status-buses/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -160,9 +138,10 @@
             }
         });
 
+
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {
-                let form = document.getElementById('deleteFormContacts' + id);
+                let form = document.getElementById('deleteFormBuses' + id);
 
                 // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {

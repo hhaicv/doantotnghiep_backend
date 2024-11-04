@@ -1,31 +1,21 @@
 @extends('employee.layouts.mater')
 
 @section('title')
-    Danh sách Liên Hệ
+    Danh sách tin tức
 @endsection
-
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Liên Hệ</h4>
+                <h4 class="mb-sm-0">Danh mục</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Liên Hệ</li>
+                        <li class="breadcrumb-item active">Danh sách tin tức</li>
                     </ol>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            @if (session('message'))
-                <div class="alert alert-success" style="margin-bottom: 20px;">
-                    {{ session('message') }}
-                </div>
-            @endif
         </div>
     </div>
 
@@ -34,6 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
+                    <a class="btn btn-primary mb-3" href="{{ route('admin.information.create') }}">Thêm mới tin tức</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -41,12 +32,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Họ Tên</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
+                                <th>Hình ảnh</th>
                                 <th>Tiêu đề</th>
-                                <th>Nội dung</th>
-                                <th>Trạng thái</th>
+                                <th>Danh mục</th>
+                                <th>Lượt xem</th>
                                 <th>Ngày tạo</th>
                                 <th>Action</th>
                             </tr>
@@ -55,28 +44,30 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->title, 30) }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->message, 30) }}</td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
-                                                {{ $item->is_active ? 'checked' : '' }}
-                                                {{ $item->is_active ? 'disabled' : '' }}>
-                                            <!-- Vô hiệu hóa checkbox nếu đã liên hệ -->
-                                            <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
-                                                {{ $item->is_active ? 'Đã liên hệ' : 'Chưa liên hệ' }}
-                                            </label>
-                                        </div>
+                                    <td><img width="80px" src="{{ Storage::url($item->thumbnail_image) }}" alt="">
                                     </td>
+                                    <td>{{ \Illuminate\Support\Str::limit($item->title, 30) }}</td>
+                                    <td>
+                                        @if ($item->newCategories->isEmpty())
+                                            <span>No Categories</span>
+                                        @else
+                                            @foreach ($item->newCategories as $category)
+                                                <div class="category-item">{{ $category->name }}</div>
+                                                <!-- Use a div for individual styling -->
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->views_count }}</td>
                                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
-                                            <!-- <form id="deleteFormContacts{{ $item->id }}"
-                                                action="{{ route('admin.contacts.destroy', $item->id) }}" method="post">
+                                            <a href="{{ route('admin.information.show', $item->id) }}"
+                                                class="link-primary"><i class="ri-file-paper-2-fill"></i></a>
+                                            <a href="{{ route('admin.information.edit', $item->id) }}"
+                                                class="link-primary"><i class="ri-settings-4-line"></i></a>
+                                            <!-- <form id="deleteFormInformation{{ $item->id }}"
+                                                action="{{ route('admin.information.destroy', $item->id) }}"
+                                                method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" style="border: none; background: white"
@@ -126,43 +117,9 @@
         });
     </script>
     <script>
-        document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('form-check-input')) {
-                var checkbox = e.target;
-                var isChecked = checkbox.checked ? 1 : 0;
-                var itemId = checkbox.getAttribute('data-id');
-
-                fetch(`/admin/status-contacts/${itemId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            is_active: isChecked
-                        })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            var label = checkbox.nextElementSibling;
-                            label.textContent = isChecked ? 'On' : 'Off';
-                        } else {
-                            alert('Cập nhật trạng thái thất bại.');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        });
-
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {
-                let form = document.getElementById('deleteFormContacts' + id);
+                let form = document.getElementById('deleteFormInformation' + id);
 
                 // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {

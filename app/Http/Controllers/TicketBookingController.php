@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
-use App\Models\Stage;
+
+use App\Models\PaymentMethod;
+
 use App\Models\Stop;
+use App\Models\TicketDetail;
 use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\Attributes\Ticket;
 use Carbon\Carbon;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TicketBookingController extends Controller
 {
@@ -19,20 +25,12 @@ class TicketBookingController extends Controller
     {
 
         $data = Stop::query()->get();
+
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-
-    public function create()
-    {
-        $data = Stop::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function uploadTicket(Request $request)
     {
         $data = $request->validate([
             'start_stop_id' => 'required|integer',
@@ -43,6 +41,13 @@ class TicketBookingController extends Controller
         $startRouteId = $data['start_stop_id'];
         $endRouteId = $data['end_stop_id'];
         $date = $data['date'];
+        $currentTime = Carbon::now('Asia/Ho_Chi_Minh')->format('H:i');
+        $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
+
+        // Lấy tên điểm bắt đầu và điểm kết thúc theo `id`
+        $startStopName = Stop::where('id', $startRouteId)->value('stop_name');
+        $endStopName = Stop::where('id', $endRouteId)->value('stop_name');
 
         // Lấy tất cả các chuyến có giai đoạn phù hợp
         $trips = Trip::with(['bus', 'route', 'stages' => function ($query) use ($startRouteId, $endRouteId) {
@@ -53,10 +58,15 @@ class TicketBookingController extends Controller
                 $query->where('start_stop_id', $startRouteId)
                     ->where('end_stop_id', $endRouteId);
             })
+            ->when($date === $today, function ($query) use ($currentTime) {
+                // Nếu là ngày hôm nay, chỉ lấy các chuyến có time_start lớn hơn giờ hiện tại
+                return $query->where('time_start', '>', $currentTime);
+            })
+            ->orderBy('time_start', 'asc') // Sắp xếp theo time_start từ bé đến lớn
             ->get();
 
         // Map dữ liệu chuyến
-        $tripData = $trips->map(function ($trip) use ($startRouteId, $endRouteId, $date) {
+        $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
             $stage = $trip->stages->first();
 
             return [
@@ -69,6 +79,8 @@ class TicketBookingController extends Controller
                 'name_bus' => $trip->bus->name_bus,
                 'total_seats' => $trip->bus->total_seats,
                 'date' => $date,
+                'start_stop_name' => $startStopName, // Tên điểm bắt đầu
+                'end_stop_name' => $endStopName,     // Tên điểm kết thúc
                 'start_stop_id' => $startRouteId,
                 'end_stop_id' => $endRouteId,
             ];
@@ -81,69 +93,64 @@ class TicketBookingController extends Controller
         return response()->json($tripData);
     }
 
-    // public function store(Request $request)
-    // {
-    //     $data = $request->validate([
-    //         'start_stop_id' => 'required|integer',
-    //         'end_stop_id' => 'required|integer',
-    //         'date' => 'required|date'
-    //     ]);
-
-    //     $startRouteId = $data['start_stop_id'];
-    //     $endRouteId = $data['end_stop_id'];
-    //     $date = $data['date'];
-    //     $currentTime = now()->format('H:i');
 
 
-    //     // Lấy tất cả các chuyến có giai đoạn phù hợp và thời gian khởi hành hợp lệ
-    //     $trips = Trip::with(['bus', 'route', 'stages' => function ($query) use ($startRouteId, $endRouteId) {
-    //         $query->where('start_stop_id', $startRouteId)
-    //             ->where('end_stop_id', $endRouteId);
-    //     }])
-    //         ->whereHas('stages', function ($query) use ($startRouteId, $endRouteId) {
-    //             $query->where('start_stop_id', $startRouteId)
-    //                 ->where('end_stop_id', $endRouteId);
-    //         })
-    //         // Thêm điều kiện thời gian khởi hành cho ngày hiện tại
-    //         ->when($date == today()->toDateString(), function ($query) use ($currentTime) {
-    //             $query->where('time_start', '>', $currentTime);
-    //         })
-    //         ->get();
+    public function create(Request $request)
+    {
+        // Lấy các thông tin từ query string
+        $trip_id = $request->query('trip_id');
+        $date = $request->query('date');
 
-    //     // Map dữ liệu chuyến
-    //     $tripData = $trips->map(function ($trip) use ($startRouteId, $endRouteId, $date, $currentTime) {
-    //         $stage = $trip->stages->first();
+        $methods = PaymentMethod::query()->get();
 
-    //         return [
-    //             'bus_id' => $trip->bus->id,
-    //             'route_id' => $trip->route->id,
-    //             'trip_id' => $trip->id,
-    //             'time_start' => $trip->time_start,
-    //             'route_name' => $trip->route->route_name,
-    //             'fare' => $stage ? $stage->fare : null,
-    //             'name_bus' => $trip->bus->name_bus,
-    //             'total_seats' => $trip->bus->total_seats,
-    //             'date' => $date,
-    //             'start_stop_id' => $startRouteId,
-    //             'end_stop_id' => $endRouteId,
-    //             'currentTime'=>$currentTime,
-    //         ];
-    //     });
+        $data = Stop::query()->get();
 
-    //     if ($tripData->isEmpty()) {
-    //         return response()->json(['message' => 'Không có chuyến nào.'], 404);
-    //     }
+        $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
+        $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+            $query->where('date', $date)
+                ->where('trip_id', $trip_id);
+        })->get();
 
-    //     return response()->json($tripData);
-    // }
+        $seatsStatus = [];
+        foreach ($seatsBooked as $seat) {
+            $seatsStatus[$seat->name_seat] = $seat->status;
+        }
+        return view(self::PATH_VIEW . 'create', compact('data', 'methods', 'trip', 'seatsStatus'));
+    }
+
+
+    public function store(StoreTicketBookingRequest $request)
+    {
+        DB::transaction(function () use ($request) {
+            $userData = $request->only('name', 'phone', 'email');
+            $user = User::create($userData); // Tạo bản ghi user mới và lấy ID
+
+            $ticketBookingData = $request->except('name', 'phone', 'email', 'name_seat', 'fare'); // Trừ name_seat và fare
+            $ticketBookingData['user_id'] = $user->id; // Gắn ID user vừa tạo
+
+            // Lấy danh sách ghế và tính tổng số lượng ghế
+            $seatNames = explode(', ', $request->input('name_seat')); // Ghế được nhập cách nhau bằng dấu phẩy
+            $totalTickets = count($seatNames); // Tính tổng số ghế
+
+            $ticketBookingData['total_tickets'] = $totalTickets; // Gắn tổng số ghế vào dữ liệu vé
+            $ticketBooking = TicketBooking::create($ticketBookingData); // Tạo bản ghi ticket_booking mới và lấy ID
+
+            foreach ($seatNames as $seatName) {
+                TicketDetail::create([
+                    'ticket_code' => strtoupper(Str::random(8)),
+                    'ticket_booking_id' => $ticketBooking->id,
+                    'name_seat' => $seatName,
+                    'price' => $request->input('fare'),
+                    'status' => 'booked'
+                ]);
+            }
+        });
+    }
 
 
 
 
 
-    /**
-     * Display the specified resource.
-     */
     public function show(TicketBooking $ticketBooking)
     {
         //

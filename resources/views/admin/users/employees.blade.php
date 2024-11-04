@@ -42,7 +42,7 @@ Danh sách tài khoản
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $item)
+                        @foreach ($employees as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->name}}</td>

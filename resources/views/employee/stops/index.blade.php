@@ -1,4 +1,4 @@
-@extends('admin.layouts.mater')
+@extends('employee.layouts.mater')
 
 @section('title')
     Danh sách điểm dừng
@@ -24,7 +24,6 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('admin.stops.create') }}">Thêm mới điểm dừng</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -38,7 +37,6 @@
                                 <th>Vĩ đỗ</th>
                                 <th>Mô tả</th>
                                 <th>Trạng Thái</th>
-                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,26 +51,11 @@
                                     <td>{{ \Illuminate\Support\Str::limit($parent->description, 50) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
+                                            <input class="form-check-input" type="checkbox" role="switch" disabled
                                                 id="SwitchCheck{{ $parent->id }}" data-id="{{ $parent->id }}"
                                                 {{ $parent->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label"
                                                 for="SwitchCheck{{ $parent->id }}">{{ $parent->is_active ? 'On' : 'Off' }}</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <a href="{{ route('admin.stops.edit', $parent->id) }}" class="link-primary"><i
-                                                    class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormStop{{ $parent->id }}"
-                                                action="{{ route('admin.stops.destroy', $parent->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" style="border: none; background: #d5d8e2"
-                                                    class="link-danger" onclick="confirmDelete({{ $parent->id }})">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -89,28 +72,11 @@
                                             <td>{{ \Illuminate\Support\Str::limit($child->description, 50) }}</td>
                                             <td>
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                    <input class="form-check-input" type="checkbox" role="switch" disabled
                                                         id="SwitchCheck{{ $child->id }}" data-id="{{ $child->id }}"
                                                         {{ $child->is_active ? 'checked' : '' }}>
                                                     <label class="form-check-label"
                                                         for="SwitchCheck{{ $child->id }}">{{ $child->is_active ? 'On' : 'Off' }}</label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="hstack gap-3 fs-15">
-                                                    <a href="{{ route('admin.stops.edit', $child->id) }}"
-                                                        class="link-primary"><i class="ri-settings-4-line"></i></a>
-                                                    <form id="deleteFormStop{{ $child->id }}"
-                                                        action="{{ route('admin.stops.destroy', $child->id) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" style="border: none; background: white"
-                                                            class="link-danger"
-                                                            onclick="confirmDelete({{ $child->id }})">
-                                                            <i class="ri-delete-bin-5-line"></i>
-                                                        </button>
-                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

@@ -64,11 +64,8 @@ Chỉnh sửa tài khoản
             <label for="roleInput" class="form-label">Quyền</label>
             <select class="form-select" id="name_role" name="name_role" required>
                 <option value="">Chọn quyền</option>
-                @foreach ($roles as $role)
-                <option value="{{ $role->name_role }}" {{ $model->name_role === $role->name_role ? 'selected' : '' }}>
-                    {{ ucfirst($role->name_role) }}
-                </option>
-                @endforeach
+                <option value="employee" {{ $model->type === 'isEmployee' ? 'selected' : '' }}>Nhân viên</option>
+                <option value="user" {{ $model->type === 'isUser' ? 'selected' : '' }}>Người dùng</option>
             </select>
         </div>
 

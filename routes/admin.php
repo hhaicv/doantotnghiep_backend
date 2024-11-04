@@ -13,7 +13,7 @@ use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StopController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\StatisticsController;  
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
@@ -68,5 +68,14 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('reviews', ReviewController::class);
 
-    Route::get('/fetch-trips', [TicketBookingController::class, 'store'])->name('fetch.trips');
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index'); // Danh sách tất cả người dùng
+        Route::get('/employees', [UserController::class, 'employeeIndex'])->name('employees'); // Danh sách nhân viên
+        Route::get('/customers', [UserController::class, 'userIndex'])->name('customers'); // Danh sách khách hàng
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); // Chỉnh sửa người dùng
+        Route::put('/{id}', [UserController::class, 'update'])->name('update'); // Cập nhật người dùng
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); // Xóa người dùng
+    });
+
+    Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
 });

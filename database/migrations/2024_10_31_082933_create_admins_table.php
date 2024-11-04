@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('name_role')->default('admin');
             $table->boolean('is_active')->default(true); 
-
             $table->rememberToken();
             $table->timestamps();
         });

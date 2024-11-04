@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('trip_id');
+            $table->unsignedBigInteger('user_id');
+            $table->integer('rating');
+            $table->text('comment');
+            $table->softDeletes();
+            $table->boolean('is_active')->default(false);
+            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
