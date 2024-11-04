@@ -848,7 +848,7 @@
                             <span class="align-middle" data-key="t-logout">{{ __('Logout') }}</span>
                         </a>
 
-                        <form id="logout-form" method="POST" action="{{ route('admin.logout') }}" style="display: none;">
+                        <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
                             @csrf
                         </form>
 

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-
 class AdminController extends Controller
 {
     public function showAdminLoginForm()
@@ -17,19 +16,21 @@ class AdminController extends Controller
 
     public function adminLogin(Request $request)
     {
+        // Validate yêu cầu đăng nhập
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
     
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
+        // Thử đăng nhập bằng guard 'admin'
+        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            $admin = Auth::guard('admin')->user();
     
-            if ($user->name_role === 'admin') {
+            // Kiểm tra xem người dùng có phải là admin không
+            if ($admin->name_role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } else {
-                Log::info('User details: ', (array)$user);
-                Auth::logout();
+                Auth::guard('admin')->logout();
                 return back()->withErrors([
                     'email' => 'Bạn không có quyền truy cập.',
                 ]);
@@ -41,6 +42,9 @@ class AdminController extends Controller
             'email' => 'Thông tin đăng nhập không chính xác.',
         ]);
     }
-    
-
+    public function logout()
+    {
+        Auth::guard('admin')->logout(); // Đăng xuất admin
+        return redirect()->route('admin.login')->with('success', 'Đăng xuất thành công!'); // Redirect về trang login
+    }
 }

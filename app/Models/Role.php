@@ -20,8 +20,8 @@ class Role extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
-    public function users()
+    public function Admins()
     {
-        return $this->hasMany(User::class); // Một Role có thể có nhiều User
+        return $this->hasMany(Admin::class); // Một Role có thể có nhiều admin
     }
 }

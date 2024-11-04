@@ -24,6 +24,7 @@ return new class extends Migration
         // Chèn dữ liệu vào bảng roles
         DB::table('roles')->insert([
             ['name_role' => 'admin', 'description' => 'Quản trị viên', 'created_at' => now()],
+            ['name_role' => 'employee', 'description' => 'Nhân viên', 'created_at' => now()],
             ['name_role' => 'user', 'description' => 'Người dùng', 'created_at' => now()],
         ]);
     }

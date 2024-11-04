@@ -19,24 +19,6 @@ class UserController extends Controller
     }
 
 
-    public function create()
-    {
-        $roles = Role::all();  
-        return view(self::PATH_VIEW . __FUNCTION__, compact('roles'));
-    }
-
-    public function store(StoreUserRequest $request)
-    {
-        $data = $request->all();
-        $data['name_role'] = $request->name_role; 
-        $user = User::create($data);
-
-        if ($user) {
-            return redirect()->back()->with('success', 'Người dùng được thêm thành công.');
-        } else {
-            return redirect()->back()->with('danger', 'Không thể thêm người dùng.');
-        }
-    }
 
     public function edit($id)
     {

@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
-
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens,HasFactory, Notifiable;
+    protected $guard = 'admin';
 
-    const TYPE_EMPLOYEE = "employee";
-    const TYPE_USER = "user";
 
     /**
      * The attributes that are mass assignable.
@@ -24,11 +22,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'phone',
-        'address',
         'email',
         'password',
-        'type',
+        'name_role',
         'is_active',
     ];
 
@@ -48,24 +44,12 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'is_active' => 'boolean', 
     ];
-    public function isEmployee(){
-        return $this->type == self::TYPE_EMPLOYEE;
-    }
-    public function isUser(){
-        return $this->type == self::TYPE_USER;
-    }
 
-    public function tickets()
-    {
-        return $this->hasMany(TicketBooking::class);
-    }
 
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
+    public function roles(){
+        return $this->belongsToMany(Role::class);
     }
 }
