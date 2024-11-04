@@ -22,4 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('stops', StopController::class);
+
 Route::apiResource('home', HomeController::class);
+
+

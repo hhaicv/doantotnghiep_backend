@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentMethod;
 use App\Models\Stop;
+use App\Models\TicketDetail;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -87,6 +89,8 @@ class HomeController extends Controller
 
         return response()->json($tripData);
     }
+
+   
 
     /**
      * Update the specified resource in storage.
