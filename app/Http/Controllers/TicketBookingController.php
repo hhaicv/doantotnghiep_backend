@@ -97,7 +97,9 @@ class TicketBookingController extends Controller
 
     public function create(Request $request)
     {
-        // Lấy các thông tin từ query string
+
+        // lấy chuyến theo ngày, lấy trạng th
+
         $trip_id = $request->query('trip_id');
         $date = $request->query('date');
 
@@ -106,6 +108,8 @@ class TicketBookingController extends Controller
         $data = Stop::query()->get();
 
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
+        $seatCount = $trip->bus->total_seats;
+
         $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
             $query->where('date', $date)
                 ->where('trip_id', $trip_id);
@@ -115,7 +119,7 @@ class TicketBookingController extends Controller
         foreach ($seatsBooked as $seat) {
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
-        return view(self::PATH_VIEW . 'create', compact('data', 'methods', 'trip', 'seatsStatus'));
+        return view(self::PATH_VIEW . 'create', compact('data', 'methods', 'trip', 'seatsStatus', 'seatCount'));
     }
 
 
