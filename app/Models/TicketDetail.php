@@ -13,6 +13,12 @@ class TicketDetail extends Model
         "ticket_code",
         "ticket_booking_id",
         "name_seat",
-        "price"
+        "price",
+        "status"
     ];
+
+    public function ticketBooking()
+    {
+        return $this->belongsTo(TicketBooking::class, 'ticket_booking_id');
+    }
 }

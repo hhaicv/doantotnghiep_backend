@@ -451,6 +451,40 @@
         <!-- end col -->
     </div>
     <script>
+        // Giả sử bạn đã nhận được mảng trạng thái ghế từ máy chủ
+        const seatStatusArray = @json($seatsStatus);
+
+
+        // Lặp qua từng ghế và cập nhật trạng thái
+        document.querySelectorAll('.seat').forEach(function(button) {
+            const seatName = button.getAttribute('data-name');
+
+            // Kiểm tra xem ghế có trong mảng trạng thái không
+            if (seatStatusArray[seatName]) {
+                const status = seatStatusArray[seatName];
+
+                // Cập nhật trạng thái ghế
+                button.setAttribute('data-seat-status', status); // Cập nhật thuộc tính status
+
+                // Thay đổi màu sắc dựa trên trạng thái
+                if (status === 'booked') {
+                    button.classList.add('booked'); // Thêm lớp booked
+                    button.classList.remove('selected'); // Bỏ lớp selected nếu có
+                } else {
+                    button.classList.remove('booked'); // Xóa lớp booked nếu không phải
+                }
+
+                // Cập nhật màu sắc cho ghế
+                if (status === 'available') {
+                    button.style.backgroundColor = '#4CAF50'; // Màu cho ghế có thể chọn
+                } else if (status === 'booked') {
+                    button.style.backgroundColor = '#f5c170'; // Màu cho ghế đã đặt
+                } else if (status === 'maintenance') {
+                    button.style.backgroundColor = '#e76966'; // Màu cho ghế bảo trì
+                }
+            }
+        });
+
         document.getElementById('billinginfo-email').addEventListener('input', function() {
             const emailCheckboxContainer = document.getElementById('emailCheckboxContainer');
             emailCheckboxContainer.style.display = this.value ? 'block' : 'none';
@@ -596,9 +630,21 @@
                         });
                     document.getElementById("billinginfo-thucthu").value = totalPrice;
                 } else if (seatStatus === 'booked') {
-                    alert('Ghế này đã được đặt.');
+                    Swal.fire({
+                    icon: 'warning',
+                    title: 'Thông báo',
+                    text: 'Ghế đã đươc đặt. Vui lòng chọn ghế khác!.',
+                    confirmButtonText: 'OK'
+                });
+                return;
                 } else if (seatStatus === 'maintenance') {
-                    alert('Ghế này đang trong tình trạng bảo trì.');
+                    Swal.fire({
+                    icon: 'warning',
+                    title: 'Thông báo',
+                    text: 'Ghế đang bảo trì đươc đặt. Vui lòng chọn ghế khác!.',
+                    confirmButtonText: 'OK'
+                });
+                return;
                 }
             });
         });

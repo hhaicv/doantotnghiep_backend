@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ticket_booking_id'); // ID của vé (foreign key từ ticket_bookings)
             $table->string('name_seat'); // Số ghế được đặt
             $table->decimal('price', 10, 2); // Giá vé cho ghế
+            $table->enum('status', ['available', 'selected','booked', 'lock'])->default('available');
             $table->timestamps(); // Thời gian tạo và cập nhật
 
             // Khóa ngoại

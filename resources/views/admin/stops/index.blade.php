@@ -42,7 +42,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Vòng lặp qua các điểm dừng cha --}}
                             @foreach ($data as $parent)
                                 <tr class="table-primary">
                                     <td>{{ $parent->id }}</td>
@@ -78,7 +77,6 @@
                                     </td>
                                 </tr>
 
-                                {{-- Vòng lặp qua các điểm dừng con của điểm dừng cha --}}
                                 @if ($parent->children->count())
                                     @foreach ($parent->children as $child)
                                         <tr>
@@ -86,7 +84,6 @@
                                             <td><img src="{{ Storage::url($child->image) }}" alt="" width="120px"
                                                     height="80px"></td>
                                             <td><span style="margin-left: 20px;">↳ {{ $child->stop_name }}</span></td>
-                                            {{-- Sử dụng ký hiệu khác và thụt lề --}}
                                             <td>{{ $child->longitude }}</td>
                                             <td>{{ $child->latitude }}</td>
                                             <td>{{ \Illuminate\Support\Str::limit($child->description, 50) }}</td>
@@ -129,11 +126,8 @@
 @endsection
 
 @section('style-libs')
-    <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
-    <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
@@ -197,7 +191,6 @@
             if (confirm('Bạn có muốn xóa không???')) {
                 let form = document.getElementById('deleteFormStop' + id);
 
-                // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {
                         method: 'POST',
                         headers: {

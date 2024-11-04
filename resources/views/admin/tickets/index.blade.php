@@ -12,23 +12,17 @@
 
         .time-cell {
             display: flex;
-            /* Sử dụng flexbox để căn chỉnh */
             align-items: center;
-            /* Căn giữa theo chiều dọc */
         }
 
         .time-cell i {
             margin-right: 5px;
-            /* Khoảng cách giữa biểu tượng và thời gian */
             color: #6c757d;
-            /* Màu cho biểu tượng */
         }
 
         .time-display {
             font-weight: bold;
-            /* Chữ đậm cho thời gian */
             color: #343a40;
-            /* Màu chữ cho thời gian */
         }
 
         .table {
@@ -52,27 +46,19 @@
         .time-cell {
             display: flex;
             align-items: center;
-            /* Căn giữa icon và giờ */
         }
 
         .route-cell {
             display: flex;
             flex-direction: column;
-            /* Đặt tên tuyến đường và tên xe theo cột */
         }
 
         .bus-name {
-
             font-size: 0.9em;
-            /* Kích thước chữ nhỏ hơn */
             color: #666;
-
-            /* Màu chữ nhạt hơn */
             margin-top: 4px;
-            /* Khoảng cách giữa tên tuyến đường và tên xe */
         }
 
-        /* CSS cho nút button */
         button {
             background-color: #405189;
             color: #ffffff;
@@ -84,15 +70,13 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         button:hover {
             background-color: #37477a;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* Bóng đổ lớn hơn khi hover */
-            transform: translateY(-2px); /* Di chuyển nút lên một chút khi hover */        }
-
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
         button:active {
             background-color: #51629a;
-            /* Màu khi nhấn giữ nút */
         }
     </style>
     <div class="row">
@@ -102,7 +86,6 @@
             </div>
         </div>
     </div>
-    <!-- end page title -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card" id="orderList">
@@ -161,9 +144,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <!--end col-->
                         </div>
-                        <!--end row-->
                     </form>
                 </div>
                 <div class="card-body pt-0 mt-5">
@@ -191,16 +172,12 @@
             </div>
 
         </div>
-        <!--end col-->
     </div>
 @endsection
 
 @section('style-libs')
-    <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
-    <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
@@ -213,13 +190,11 @@
             fromStopSelect.addEventListener('change', function() {
                 const selectedValue = fromStopSelect.value;
 
-                // Lặp qua tất cả các tùy chọn trong điểm kết thúc
                 for (let option of toStopSelect.options) {
-                    // Nếu tùy chọn trùng với điểm đã chọn, thì disable
                     if (option.value === selectedValue) {
-                        option.style.display = 'none'; // Ẩn điểm đã chọn
+                        option.style.display = 'none';
                     } else {
-                        option.style.display = ''; // Hiện các điểm còn lại
+                        option.style.display = '';
                     }
                 }
             });
@@ -231,7 +206,6 @@
             const endStopId = document.getElementById('input-to-stop-1').value;
             const date = document.getElementById('datepicker').value;
 
-            // Kiểm tra xem người dùng đã chọn điểm bắt đầu và điểm kết thúc chưa
             if (!startStopId || !endStopId || !date) {
                 Swal.fire({
                     icon: 'warning',
@@ -241,64 +215,58 @@
                 });
                 return;
             }
-            // Gửi yêu cầu fetch để lấy dữ liệu chuyến
             fetch(`/admin/fetch-trips?start_stop_id=${startStopId}&end_stop_id=${endStopId}&date=${date}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Có lỗi xảy ra khi tìm kiếm chuyến.");
                     }
-                    return response.json(); // Chuyển đổi phản hồi thành JSON
+                    return response.json();
                 })
                 .then(data => {
-                    console.log(data); // Log dữ liệu để kiểm tra
-                    displayTrips(data); // Gọi hàm hiển thị chuyến đi
+                    console.log(data);
+                    displayTrips(data);
                 })
                 .catch(error => {
-                    console.error(error); // Log lỗi
-                    alert(error.message); // Hiển thị thông báo lỗi
+                    console.error(error);
+                    alert(error.message);
                 });
         }
 
         function displayTrips(trips) {
             const resultsBody = document.querySelector('#orderTable tbody');
-            resultsBody.innerHTML = ''; // Xóa kết quả cũ
+            resultsBody.innerHTML = '';
 
             if (!Array.isArray(trips) || trips.length === 0) {
-                resultsBody.innerHTML = '<tr><td colspan="5">Không có chuyến nào.</td></tr>'; // Thông báo không có chuyến
+                resultsBody.innerHTML = '<tr><td colspan="5">Không có chuyến nào.</td></tr>';
                 return;
             }
 
             trips.forEach(trip => {
                 const row = document.createElement('tr');
 
-                // Tạo ô cho thời gian khởi hành
                 const timeCell = document.createElement('td');
                 timeCell.classList.add('time-cell');
                 const timeIcon = document.createElement('i');
-                timeIcon.className = 'fas fa-clock'; // Biểu tượng đồng hồ
+                timeIcon.className = 'fas fa-clock';
                 const timeDisplay = document.createElement('span');
                 timeDisplay.className = 'time-display';
-                timeDisplay.textContent = formatTime(trip.time_start); // Thời gian khởi hành
+                timeDisplay.textContent = formatTime(trip.time_start);
                 timeCell.appendChild(timeIcon);
                 timeCell.appendChild(timeDisplay);
 
-                // Tạo ô cho tên tuyến đường và tên xe
                 const routeCell = document.createElement('td');
                 const routeName = document.createElement('div');
-                routeName.textContent = trip.route_name; // Tên tuyến đường
+                routeName.textContent = trip.route_name;
                 const busName = document.createElement('div');
-                busName.textContent = trip.name_bus; // Tên xe
-                busName.classList.add('bus-name'); // Thêm class cho dễ dàng định dạng sau này
+                busName.textContent = trip.name_bus;
+                busName.classList.add('bus-name');
 
-                // Thêm tên tuyến đường và tên xe vào ô
                 routeCell.appendChild(routeName);
                 routeCell.appendChild(busName);
 
-                // Tạo ô cho số ghế
                 const seatsCell = document.createElement('td');
-                seatsCell.textContent = `${trip.total_seats} chỗ trống`; // Số ghế và chữ "Chỗ trống"
+                seatsCell.textContent = `${trip.total_seats} chỗ trống`;
 
-                // Tạo ô cho giá vé
                 const fareCell = document.createElement('td');
                 fareCell.textContent = formatCurrency(trip.fare); // Giá vé
 
@@ -335,16 +303,12 @@
                 resultsBody.appendChild(row);
             });
         }
-
-        // Hàm định dạng thời gian
         function formatTime(timeString) {
             const [hour, minute] = timeString.split(':');
             return `${hour}:${minute}`; // Chỉ hiển thị giờ và phút
         }
 
-        // Hàm định dạng giá tiền
         function formatCurrency(amount) {
-            // Chuyển đổi sang số nguyên để bỏ phần thập phân và định dạng
             const integerAmount = Math.floor(amount);
             return `${integerAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ`; // Định dạng với dấu phân cách hàng nghìn và thêm "VNĐ"
         }

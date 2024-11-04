@@ -95,41 +95,58 @@ class TicketBookingController extends Controller
 
 
 
-    public function create()
+    public function create(Request $request)
     {
+        // Lấy các thông tin từ query string
+        $trip_id = $request->query('trip_id');
+        $date = $request->query('date');
+
         $methods = PaymentMethod::query()->get();
+
         $data = Stop::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'methods'));
+
+        $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
+        $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+            $query->where('date', $date)
+                ->where('trip_id', $trip_id);
+        })->get();
+
+        $seatsStatus = [];
+        foreach ($seatsBooked as $seat) {
+            $seatsStatus[$seat->name_seat] = $seat->status;
+        }
+        return view(self::PATH_VIEW . 'create', compact('data', 'methods', 'trip', 'seatsStatus'));
     }
+
 
     public function store(StoreTicketBookingRequest $request)
     {
-
         DB::transaction(function () use ($request) {
-            // 1. Thêm thông tin người dùng vào bảng users
             $userData = $request->only('name', 'phone', 'email');
             $user = User::create($userData); // Tạo bản ghi user mới và lấy ID
 
-            // 2. Chuẩn bị và thêm thông tin vào bảng ticket_bookings
             $ticketBookingData = $request->except('name', 'phone', 'email', 'name_seat', 'fare'); // Trừ name_seat và fare
             $ticketBookingData['user_id'] = $user->id; // Gắn ID user vừa tạo
-            $ticketBooking = TicketBooking::create($ticketBookingData); // Tạo bản ghi ticket_booking mới và lấy ID
 
-            // 3. Thêm từng ghế vào bảng ticket_detail
-            $seatNames = explode(', ', $request->input('name_seat')); // Giả sử ghế được nhập cách nhau bằng dấu phẩy
+            // Lấy danh sách ghế và tính tổng số lượng ghế
+            $seatNames = explode(', ', $request->input('name_seat')); // Ghế được nhập cách nhau bằng dấu phẩy
+            $totalTickets = count($seatNames); // Tính tổng số ghế
+
+            $ticketBookingData['total_tickets'] = $totalTickets; // Gắn tổng số ghế vào dữ liệu vé
+            $ticketBooking = TicketBooking::create($ticketBookingData); // Tạo bản ghi ticket_booking mới và lấy ID
 
             foreach ($seatNames as $seatName) {
                 TicketDetail::create([
-                    'ticket_code' => strtoupper(Str::random(8)), // Mã vé ngẫu nhiên 8 ký tự
-                    'ticket_booking_id' => $ticketBooking->id, // ID của vé từ ticket_bookings
+                    'ticket_code' => strtoupper(Str::random(8)),
+                    'ticket_booking_id' => $ticketBooking->id,
                     'name_seat' => $seatName,
-                    'price' => $request->input('fare')
+                    'price' => $request->input('fare'),
+                    'status' => 'booked'
                 ]);
             }
         });
-
-        return view(self::PATH_VIEW . __FUNCTION__);
     }
+
 
 
 

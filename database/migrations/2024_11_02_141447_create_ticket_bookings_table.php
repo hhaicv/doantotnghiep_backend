@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('note')->nullable(); // Ghi chú, có thể null
             $table->date('date'); // Ngày đặt vé
             $table->decimal('total_price', 10, 2); // Tổng giá tiền cho tất cả các ghế
+            $table->integer('total_tickets'); 
             $table->timestamps(); // Thời gian tạo và cập nhật
 
             // Khóa ngoại

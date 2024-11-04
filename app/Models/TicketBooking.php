@@ -21,6 +21,7 @@ class TicketBooking extends Model
         "id_end_stop",
         "note",
         "date",
-        "total_price"
+        "total_price",
+        "total_tickets"
     ];
 }
