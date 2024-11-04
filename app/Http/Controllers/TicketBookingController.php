@@ -97,15 +97,19 @@ class TicketBookingController extends Controller
 
     public function create(Request $request)
     {
-        // Lấy các thông tin từ query string
+
+        // lấy chuyến theo ngày, lấy trạng th
+
         $trip_id = $request->query('trip_id');
         $date = $request->query('date');
 
         $methods = PaymentMethod::query()->get();
 
-        $data = Stop::query()->get();
+
 
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
+        $seatCount = $trip->bus->total_seats;
+
         $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
             $query->where('date', $date)
                 ->where('trip_id', $trip_id);
@@ -115,12 +119,13 @@ class TicketBookingController extends Controller
         foreach ($seatsBooked as $seat) {
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
-        return view(self::PATH_VIEW . 'create', compact('data', 'methods', 'trip', 'seatsStatus'));
+        return view(self::PATH_VIEW . 'create', compact( 'methods', 'seatsStatus', 'seatCount'));
     }
 
 
     public function store(StoreTicketBookingRequest $request)
     {
+
         DB::transaction(function () use ($request) {
             $userData = $request->only('name', 'phone', 'email');
             $user = User::create($userData); // Tạo bản ghi user mới và lấy ID
@@ -148,7 +153,10 @@ class TicketBookingController extends Controller
     }
 
 
-
+    public function list()
+    {
+        return view(self::PATH_VIEW . __FUNCTION__);
+    }
 
 
     public function show(TicketBooking $ticketBooking)

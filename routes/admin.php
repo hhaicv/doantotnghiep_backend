@@ -58,7 +58,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
 
     Route::resource('tickets', TicketBookingController::class);
-
+    Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
     Route::resource('bus_seats', BusSeatController::class);
     Route::post('/status-bus-seat/{id}', [BusSeatController::class, 'statusBusSeat']);
 
