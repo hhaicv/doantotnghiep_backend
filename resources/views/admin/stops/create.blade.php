@@ -38,14 +38,17 @@
                 <select class="form-select" name="parent_id" id="parent_stop">
                     <option value="">Điểm dừng cha</option>
                     @foreach ($parents as $stop)
-                        <option value="{{ $stop->id }}">{{ $stop->stop_name }}</option>
+                        <option value="{{ $stop->id }}" {{ old('parent_id') == $stop->id ? 'selected' : '' }}>
+                            {{ $stop->stop_name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
+            
 
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Kinh độ</label>
-                <input type="text" class="form-control" name="longitude" value="{{ old('longitude') }}"
+                <input type="number" class="form-control" name="longitude" value="{{ old('longitude') }}"
                     placeholder="Nhập kinh độ">
                 @error('longitude')
                     <span class="text-danger">{{ $message }}</span>
@@ -54,7 +57,7 @@
 
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Vĩ độ</label>
-                <input type="text" class="form-control" name="latitude" value="{{ old('latitude') }}"
+                <input type="number" class="form-control" name="latitude" value="{{ old('latitude') }}"
                     placeholder="Nhập vĩ độ">
                 @error('latitude')
                     <span class="text-danger">{{ $message }}</span>

@@ -45,20 +45,22 @@
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm bắt đầu</label>
-                            <select name="start_route_id" class="form-control" id="input-from-stop-1"
-                                onchange="updateEndStops()">
+                            <select name="start_route_id" class="form-control" id="input-from-stop-1" onchange="updateEndStops()">
                                 <option value="">Chọn điểm bắt đầu</option>
                                 <?php foreach ($stops as $stop) { ?>
-                                <option value="<?php echo $stop['id']; ?>"><?php echo $stop['stop_name']; ?></option>
+                                    <option value="<?php echo $stop['id']; ?>" <?php echo old('start_route_id') == $stop['id'] ? 'selected' : ''; ?>>
+                                        <?php echo $stop['stop_name']; ?>
+                                    </option>
                                 <?php } ?>
                             </select>
                         </div>
+                        
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm kết thúc</label>
                             <select name="end_route_id" class="form-control" id="input-to-stop-1">
                                 <option value="">Chọn điểm kết thúc</option>
                                 <?php foreach ($stops as $stop) { ?>
-                                <option value="<?php echo $stop['id']; ?>"><?php echo $stop['stop_name']; ?></option>
+                                <option value="<?php echo $stop['id']; ?>"<?php echo old('end_route_id') == $stop['id'] ? 'selected' : ''; ?>><?php echo $stop['stop_name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -86,10 +88,11 @@
                                 <div class="card-body">
                                     <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px"
                                         name="description" placeholder=" Viết mô tả xe ở đây...">{{ old('description') }}</textarea>
+
+                                    @error('description')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                @error('description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                     </div>

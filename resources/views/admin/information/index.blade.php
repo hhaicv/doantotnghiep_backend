@@ -44,7 +44,7 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img width="80px" src="{{ Storage::url($item->thumbnail_image) }}" alt="">
+                                    <td><img width="200px" height="140px" src="{{ Storage::url($item->thumbnail_image) }}" alt="">
                                     </td>
                                     <td>{{ \Illuminate\Support\Str::limit($item->title, 30) }}</td>
                                     <td>

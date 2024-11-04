@@ -22,7 +22,16 @@ class UpdateTripRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'start_time' => 'Không để trống thời gian bắt đầu',
+            'end_time' => 'Không để trống thời gian kết thúc',
         ];
     }
 }

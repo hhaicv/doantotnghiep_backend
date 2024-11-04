@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 class TripController extends Controller
 {
     const PATH_VIEW = 'admin.trips.';
+    
     public function index()
     {
         $data = Trip::with(['route', 'bus'])->get();
