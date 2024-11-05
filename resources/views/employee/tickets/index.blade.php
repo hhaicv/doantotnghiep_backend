@@ -215,7 +215,7 @@
                 });
                 return;
             }
-            fetch(`/admin/fetch-trips?start_stop_id=${startStopId}&end_stop_id=${endStopId}&date=${date}`)
+            fetch(`/employee/fetch-trips?start_stop_id=${startStopId}&end_stop_id=${endStopId}&date=${date}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Có lỗi xảy ra khi tìm kiếm chuyến.");
@@ -290,7 +290,7 @@
                         end_name: trip.end_stop_name
                     };
                     const queryString = new URLSearchParams(orderDetails).toString();
-                    window.location.href = `/admin/tickets/create?${queryString}`;
+                    window.location.href = `/employee/tickets/create?${queryString}`;
                 };
                 actionCell.appendChild(actionButton);
 
