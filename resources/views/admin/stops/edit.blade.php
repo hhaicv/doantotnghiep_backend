@@ -31,6 +31,10 @@
                 <input type="text" id="stopNameInput" class="form-control" name="stop_name"
                     value="{{ old('stop_name', $data->stop_name) }}" required>
             </div>
+            <div class="col-md-6">
+                <label for="fullnameInput" class="form-label">Kinh độ</label>
+                <input type="number" class="form-control" name="longitude" value="{{ $data->longitude }}">
+            </div>
             <div class="col-md-3">
                 <label for="parent_id" class="form-label">Điểm dừng cha (Tùy chọn):</label>
                 <select name="parent_id" id="parent_id" class="form-select" onchange="filterChildStops()">
@@ -58,15 +62,11 @@
             </div>
 
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Kinh độ</label>
-                <input type="number" class="form-control" name="longitude" value="{{ $data->longitude }}">
-            </div>
-
-            <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Vĩ độ</label>
                 <input type="number" class="form-control" name="latitude" value="{{ $data->latitude }}">
             </div>
             <div class="col-md-6 mt-3">
+                <h5>Hình ảnh</h5>
                 <div class="file-drop-area" id="file-drop-area">
                     @if ($data->image)
                         <div class="mb-3" id="current-image">
