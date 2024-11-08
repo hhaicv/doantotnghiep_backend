@@ -50,7 +50,7 @@
                                     <td><strong>{{ $parent->stop_name }}</strong></td>
                                     <td>{{ $parent->longitude }}</td>
                                     <td>{{ $parent->latitude }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($parent->description, 50) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit(strip_tags($parent->description), 50) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -79,14 +79,15 @@
 
                                 @if ($parent->children->count())
                                     @foreach ($parent->children as $child)
-                                        <tr>
+                                        <tr class="child-row">
                                             <td>{{ $child->id }}</td>
                                             <td><img src="{{ Storage::url($child->image) }}" alt="" width="120px"
                                                     height="80px"></td>
                                             <td><span style="margin-left: 20px;">↳ {{ $child->stop_name }}</span></td>
                                             <td>{{ $child->longitude }}</td>
                                             <td>{{ $child->latitude }}</td>
-                                            <td>{{ \Illuminate\Support\Str::limit($child->description, 50) }}</td>
+                                            <td>{{ \Illuminate\Support\Str::limit(strip_tags($child->description), 50) }}
+                                            </td>
                                             <td>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" role="switch"
@@ -152,6 +153,7 @@
         });
     </script> --}}
     <script>
+        
         document.addEventListener('change', function(e) {
             if (e.target.classList.contains('form-check-input')) {
                 var checkbox = e.target;
@@ -204,8 +206,17 @@
                     .then(data => {
                         if (data.success) {
                             alert('Đã xóa thành công!');
-                            // Nếu muốn, có thể xóa dòng hiện tại trong bảng mà không cần reload trang
-                            form.closest('tr').remove();
+
+                            // Tìm và xóa dòng cha
+                            const parentRow = form.closest('tr');
+                            parentRow.remove();
+
+                            // Xóa tất cả các dòng con liên quan đến dòng cha này
+                            let nextRow = parentRow.nextElementSibling;
+                            while (nextRow && nextRow.classList.contains('child-row')) {
+                                nextRow.remove();
+                                nextRow = parentRow.nextElementSibling; // Chuyển đến dòng tiếp theo
+                            }
                         } else {
                             alert('Có lỗi xảy ra. Vui lòng thử lại.');
                         }

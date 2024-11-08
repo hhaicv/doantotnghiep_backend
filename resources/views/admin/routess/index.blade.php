@@ -90,6 +90,10 @@
                                     </div>
 
                                     <style>
+                                         .modal-dialog {
+                                            margin-top: 70px; 
+                                            max-width: 70%;
+                                        }
                                         .map-container {
                                             display: flex;
                                             align-items: center;

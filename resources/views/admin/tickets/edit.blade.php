@@ -11,6 +11,7 @@
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-xxl-9">
             <div class="card" id="demo">
@@ -202,7 +203,4 @@
             <!--end card-->
         </div>
         <!--end col-->
-    </div>
-
-
 @endsection
