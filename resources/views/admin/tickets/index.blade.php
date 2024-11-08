@@ -265,7 +265,7 @@
                 routeCell.appendChild(busName);
 
                 const seatsCell = document.createElement('td');
-                seatsCell.textContent = `${trip.total_seats} chỗ trống`;
+                seatsCell.textContent = `${trip.available_seats}/${trip.total_seats} chỗ trống`;
 
                 const fareCell = document.createElement('td');
                 fareCell.textContent = formatCurrency(trip.fare); // Giá vé

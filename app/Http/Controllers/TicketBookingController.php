@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderTicket;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
@@ -68,6 +69,15 @@ class TicketBookingController extends Controller
         // Map dữ liệu chuyến
         $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
             $stage = $trip->stages->first();
+            $bookedSeatsCount = 0;
+
+            if ($trip->ticketBookings) {
+                // Đếm số ghế đã đặt theo chuyến và ngày
+                $bookedSeatsCount = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip) {
+                    $query->where('trip_id', $trip->id)
+                        ->where('date', $date);
+                })->count();
+            }
 
             return [
                 'bus_id' => $trip->bus->id,
@@ -78,9 +88,11 @@ class TicketBookingController extends Controller
                 'fare' => $stage ? $stage->fare : null,
                 'name_bus' => $trip->bus->name_bus,
                 'total_seats' => $trip->bus->total_seats,
+                'booked_seats_count' => $bookedSeatsCount, // Số ghế đã đặt
+                'available_seats' => $trip->bus->total_seats - $bookedSeatsCount, // Số ghế còn trống
                 'date' => $date,
-                'start_stop_name' => $startStopName, // Tên điểm bắt đầu
-                'end_stop_name' => $endStopName,     // Tên điểm kết thúc
+                'start_stop_name' => $startStopName,
+                'end_stop_name' => $endStopName,
                 'start_stop_id' => $startRouteId,
                 'end_stop_id' => $endRouteId,
             ];
@@ -94,7 +106,6 @@ class TicketBookingController extends Controller
     }
 
 
-
     public function create(Request $request)
     {
 
@@ -104,8 +115,6 @@ class TicketBookingController extends Controller
         $date = $request->query('date');
 
         $methods = PaymentMethod::query()->get();
-
-
 
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
         $seatCount = $trip->bus->total_seats;
@@ -119,57 +128,69 @@ class TicketBookingController extends Controller
         foreach ($seatsBooked as $seat) {
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
-        return view(self::PATH_VIEW . 'create', compact( 'methods', 'seatsStatus', 'seatCount'));
+        return view(self::PATH_VIEW . 'create', compact('methods', 'seatsStatus', 'seatCount'));
     }
-
 
     public function store(StoreTicketBookingRequest $request)
     {
+        return DB::transaction(function () use ($request) {
+            $ticketBookingData = $request->except('name_seat', 'fare');
+            $seatNames = explode(', ', $request->input('name_seat'));
+            $totalTickets = count($seatNames);
 
-        DB::transaction(function () use ($request) {
-            $userData = $request->only('name', 'phone', 'email');
-            $user = User::create($userData); // Tạo bản ghi user mới và lấy ID
+            $orderCode = strtoupper(Str::random(8));
+            $ticketBookingData['order_code'] = $orderCode;
+            $ticketBookingData['total_tickets'] = $totalTickets;
 
-            $ticketBookingData = $request->except('name', 'phone', 'email', 'name_seat', 'fare'); // Trừ name_seat và fare
-            $ticketBookingData['user_id'] = $user->id; // Gắn ID user vừa tạo
+            // Thiết lập status của TicketBooking dựa trên payment_method_id
+            $ticketBookingData['status'] = $request->input('payment_method_id') == 1
+                ? TicketBooking::PAYMENT_STATUS_PAID
+                : TicketBooking::PAYMENT_STATUS_UNPAID;
 
-            // Lấy danh sách ghế và tính tổng số lượng ghế
-            $seatNames = explode(', ', $request->input('name_seat')); // Ghế được nhập cách nhau bằng dấu phẩy
-            $totalTickets = count($seatNames); // Tính tổng số ghế
-
-            $ticketBookingData['total_tickets'] = $totalTickets; // Gắn tổng số ghế vào dữ liệu vé
-            $ticketBooking = TicketBooking::create($ticketBookingData); // Tạo bản ghi ticket_booking mới và lấy ID
+            $ticketBooking = TicketBooking::create($ticketBookingData);
 
             foreach ($seatNames as $seatName) {
+                $ticketCode = $totalTickets == 1 ? $orderCode : strtoupper(Str::random(8));
+
                 TicketDetail::create([
-                    'ticket_code' => strtoupper(Str::random(8)),
+                    'ticket_code' => $ticketCode,
                     'ticket_booking_id' => $ticketBooking->id,
                     'name_seat' => $seatName,
                     'price' => $request->input('fare'),
                     'status' => 'booked'
                 ]);
             }
+
+            event(new OrderTicket($ticketBooking));
+            return redirect()->back()->with('success', 'Đặt vé thành công!');
         });
     }
 
 
+
+
     public function list()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $data = TicketBooking::with(['route', 'paymentMethod', 'trip'])->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-
-    public function show(TicketBooking $ticketBooking)
+    public function show(string $id)
     {
-        //
+        $data = TicketBooking::query()
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod'])
+            ->findOrFail($id);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(TicketBooking $ticketBooking)
     {
-        //
+        $data = TicketBooking::query()->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     /**

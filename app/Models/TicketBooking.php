@@ -9,19 +9,74 @@ class TicketBooking extends Model
 {
     use HasFactory;
 
+    const PAYMENT_STATUSES = [
+        'unpaid' => 'Chưa thanh toán',
+        'paid' => 'Đã thanh toán',
+        'failed' => 'Thất bại',
+        'overdue' => 'Quá hạn',
+        'refunded' => 'Hoàn tiền'
+    ];
+
+
+    const PAYMENT_STATUS_UNPAID = 'unpaid';
+    const PAYMENT_STATUS_PAID = 'paid';
+    const PAYMENT_STATUS_FAILED = 'failed';
+    const PAYMENT_STATUS_OVERDUE = 'overdue';
+    const PAYMENT_STATUS_REFUNDED = 'refunded';
+
     protected $fillable = [
         "trip_id",
         "bus_id",
         "route_id",
         "user_id",
+        "name",
+        "phone",
+        "email",
         "payment_method_id",
+        "order_code",
         "location_start",
         "id_start_stop",
         "location_end",
         "id_end_stop",
         "note",
         "date",
+        "status",
         "total_price",
         "total_tickets"
     ];
+
+
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class, 'trip_id');
+    }
+
+    // Định nghĩa quan hệ với Bus
+    public function bus()
+    {
+        return $this->belongsTo(Bus::class, 'bus_id');
+    }
+
+    // Định nghĩa quan hệ với Route
+    public function route()
+    {
+        return $this->belongsTo(Route::class, 'route_id');
+    }
+
+    // Định nghĩa quan hệ với User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // Định nghĩa quan hệ với PaymentMethod
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
+    }
+
+    public function ticketDetails()
+    {
+        return $this->hasMany(TicketDetail::class, 'ticket_booking_id');
+    }
 }

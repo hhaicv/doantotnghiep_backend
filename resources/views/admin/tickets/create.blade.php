@@ -36,6 +36,18 @@
 
         }
     </style>
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
+    @endif
+
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
@@ -484,15 +496,6 @@
                                         Thanh toán
                                     </button>
                                 </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link fs-15 p-3" id="pills-finish-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-finish" type="button" role="tab"
-                                        aria-controls="pills-finish" aria-selected="false">
-                                        <i
-                                            class="ri-checkbox-circle-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                                        Thông báo
-                                    </button>
-                                </li>
                             </ul>
                         </div>
 
@@ -548,21 +551,8 @@
                                     <h5 class="mb-1">Thông tin khách hàng</h5>
                                     <p class="text-muted mb-4">Vui lòng nhập đầy đủ thông tin</p>
                                 </div>
-
                                 <div>
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="mb-3">
-                                                <label for="billinginfo-name" class="form-label">Họ tên</label>
-                                                <input type="text" name="name" class="form-control"
-                                                    id="billinginfo-name" placeholder="Nhập họ tên"
-                                                    value="{{ old('name') }}">
-                                                @error('name')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
@@ -574,8 +564,18 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="billinginfo-name" class="form-label">Họ tên</label>
+                                                <input type="text" name="name" class="form-control"
+                                                    id="billinginfo-name" placeholder="Nhập họ tên"
+                                                    value="{{ old('name') }}">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="mb-3">
@@ -587,7 +587,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="mb-3">
                                         <label for="billinginfo-address" class="form-label">Ghi chú</label>
                                         <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú"
@@ -595,6 +594,7 @@
                                     </div>
 
                                 </div>
+                                
                             </div>
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
@@ -673,23 +673,7 @@
                                             class="ri-coins-fill label-icon align-middle fs-16 ms-2"></i>Thu tiền</button>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="pills-finish" role="tabpanel"
-                                aria-labelledby="pills-finish-tab">
-                                <div class="text-center py-5">
 
-                                    <div class="mb-4">
-                                        <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
-                                            colors="primary:#0ab39c,secondary:#405189"
-                                            style="width:120px;height:120px"></lord-icon>
-                                    </div>
-                                    <h5>Cảm ơn ! Đơn hàng đã được tạo thành công !</h5>
-                                    <p class="text-muted">Quý khách sẽ nhận được email vé và thông tin chi tiết.</p>
-
-                                    <h3 class="fw-semibold">Mã vé: <ae href="apps-ecommerce-order-details.html"
-                                            class="text-decoration-underline">VZ2451</ae>
-                                    </h3>
-                                </div>
-                            </div>
                             <!-- end tab pane -->
                         </div>
                         <!-- end tab content -->

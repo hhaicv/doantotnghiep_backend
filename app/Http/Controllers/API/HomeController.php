@@ -28,6 +28,7 @@ class HomeController extends Controller
      */
     public function show(Request $request)
     {
+
         $data = $request->validate([
             'start_stop_id' => 'required|integer',
             'end_stop_id' => 'required|integer',
@@ -65,9 +66,18 @@ class HomeController extends Controller
         $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
             $stage = $trip->stages->first();
 
+            // Đếm số ghế đã đặt
+            $bookedSeatsCount = 0;
+
+            if ($trip->ticketBookings) {
+                // Đếm số ghế đã đặt dựa trên các ticket_booking_id
+                $bookedSeatsCount = TicketDetail::whereIn('ticket_booking_id', $trip->ticketBookings->pluck('id'))
+                    ->count();
+            }
+
+
             return [
                 'bus_id' => $trip->bus->id,
-                'bus_image' => $trip->bus->image,
                 'route_id' => $trip->route->id,
                 'trip_id' => $trip->id,
                 'time_start' => $trip->time_start,
@@ -75,9 +85,11 @@ class HomeController extends Controller
                 'fare' => $stage ? $stage->fare : null,
                 'name_bus' => $trip->bus->name_bus,
                 'total_seats' => $trip->bus->total_seats,
+                'booked_seats_count' => $bookedSeatsCount, // Số ghế đã đặt
+                'available_seats' => $trip->bus->total_seats - $bookedSeatsCount, // Số ghế còn trống
                 'date' => $date,
-                'start_stop_name' => $startStopName, // Tên điểm bắt đầu
-                'end_stop_name' => $endStopName,     // Tên điểm kết thúc
+                'start_stop_name' => $startStopName,
+                'end_stop_name' => $endStopName,
                 'start_stop_id' => $startRouteId,
                 'end_stop_id' => $endRouteId,
             ];
@@ -90,7 +102,7 @@ class HomeController extends Controller
         return response()->json($tripData);
     }
 
-   
+
 
     /**
      * Update the specified resource in storage.
