@@ -78,7 +78,6 @@
                 @enderror
             </div>
             <!-- Tuyến đường -->
-            <!-- Tuyến đường -->
             <div class="col-md-6">
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
                 <select class="form-control" name="route_id" id="routeSelect">
