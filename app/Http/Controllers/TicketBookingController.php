@@ -167,8 +167,6 @@ class TicketBookingController extends Controller
     }
 
 
-
-
     public function list()
     {
         $data = TicketBooking::with(['route', 'paymentMethod', 'trip'])->get();

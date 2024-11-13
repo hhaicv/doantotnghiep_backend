@@ -39,6 +39,7 @@ class TicketBooking extends Model
         "location_end",
         "id_end_stop",
         "note",
+        "time_start",
         "date",
         "status",
         "total_price",

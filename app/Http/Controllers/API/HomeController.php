@@ -60,7 +60,7 @@ class HomeController extends Controller
                 return $query->where('time_start', '>', $currentTime);
             })
             ->orderBy('time_start', 'asc') // Sắp xếp theo time_start từ bé đến lớn
-            ->get();
+            ->paginate(5);
 
         // Map dữ liệu chuyến
         $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
@@ -74,7 +74,6 @@ class HomeController extends Controller
                 $bookedSeatsCount = TicketDetail::whereIn('ticket_booking_id', $trip->ticketBookings->pluck('id'))
                     ->count();
             }
-
 
             return [
                 'bus_id' => $trip->bus->id,

@@ -30,25 +30,36 @@ class SendNotification implements ShouldQueue
         $startStop = Stop::find($ticketBooking->id_start_stop);
         $endStop = Stop::find($ticketBooking->id_end_stop);
 
+
+
+        // Kiểm tra sự tồn tại của các điểm dừng
+        $startLocation = $startStop ? $startStop->stop_name : 'N/A';
+        $endLocation = $endStop ? $endStop->stop_name : 'N/A';
+
         $data = [
             'order_code' => $ticketBooking->order_code,
             'date' => $ticketBooking->date,
             'note' => $ticketBooking->note,
-
             'created_at' => $ticketBooking->created_at,
             'paymentMethod' => $ticketBooking->paymentMethod,
-            'start_location' => $startStop->name ?? 'N/A',
-            'end_location' => $endStop->name ?? 'N/A',
-            'route' => $ticketBooking->route->name ?? 'N/A',
+            'start_location' => $startLocation,
+            'end_location' => $endLocation,
+            'route' => $ticketBooking->route->route_name,
             'time_start' => $ticketBooking->time_start,
-            'bus' => $ticketBooking->bus->license_plate ?? 'N/A',
-            'ticket_details' => $ticketBooking->ticketDetails,
+            'bus' => $ticketBooking->bus->license_plate ,
+            'phone_bus' => $ticketBooking->bus->phone ,
+            'code_ticket' => $ticketBooking->ticketDetails->ticket_code ,
+            'email' => $ticketBooking->email,
+            'name' => $ticketBooking->name,
+            'phone' => $ticketBooking->phone,
+            'seat' => $ticketBooking->ticketDetails->name_seat
         ];
-
+        // Gửi email
         Mail::send('mail', $data, function ($message) use ($data) {
-            $message->to($data['ticketBooking']->email, $data['ticketBooking']->name)
+            $message->to($data['email'], $data['name'])
                     ->subject('Thông tin đơn hàng');
         });
     }
+
 
 }

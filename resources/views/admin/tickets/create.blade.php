@@ -583,7 +583,7 @@
                                                         class="text-muted">(Optional)</span></label>
                                                 <input type="email" name="email" class="form-control"
                                                     id="billinginfo-email" placeholder="Nhập email"
-                                                    value="{{ old('email') }}">
+                                                  >
                                             </div>
                                         </div>
                                     </div>
@@ -594,7 +594,7 @@
                                     </div>
 
                                 </div>
-                                
+
                             </div>
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
