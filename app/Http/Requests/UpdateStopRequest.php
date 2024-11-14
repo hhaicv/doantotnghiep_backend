@@ -23,9 +23,6 @@ class UpdateStopRequest extends FormRequest
     {
         return [
             'stop_name' => ['required', 'string', 'min:6', 'max:255'],
-            'longitude' => ['required'],
-            'latitude' => ['required'],
-
             'description' => ['required', 'string'],
         ];
     }
@@ -33,8 +30,7 @@ class UpdateStopRequest extends FormRequest
     {
         return [
             'stop_name.required' => 'Tên là bắt buộc.',
-            'longitude.required' => 'Kinh độ là bắt buộc.',
-            'latitude.required' => 'Vĩ độ là bắt buộc.',
+            
             'stop_name.min' => 'Tên phải có ít nhất 6 ký tự.',
             'stop_name.max' => 'Tên không được vượt quá 255 ký tự.',
             'description.required' => 'Mô tả bắt buộc phải nhập',

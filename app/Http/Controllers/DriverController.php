@@ -77,13 +77,10 @@ class DriverController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
 
     public function update(UpdateDriverRequest $request, string $id)
     {
+
 
         $data = Driver::query()->findOrFail($id);
 

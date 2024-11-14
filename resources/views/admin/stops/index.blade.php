@@ -34,8 +34,6 @@
                                 <th>ID</th>
                                 <th>Hình ảnh</th>
                                 <th>Tên điểm dừng</th>
-                                <th>Kinh độ</th>
-                                <th>Vĩ đỗ</th>
                                 <th>Mô tả</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành động</th>
@@ -48,8 +46,7 @@
                                     <td><img src="{{ Storage::url($parent->image) }}" alt="" width="120px"
                                             height="80px"></td>
                                     <td><strong>{{ $parent->stop_name }}</strong></td>
-                                    <td>{{ $parent->longitude }}</td>
-                                    <td>{{ $parent->latitude }}</td>
+                                    
                                     <td>{{ \Illuminate\Support\Str::limit(strip_tags($parent->description), 50) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
@@ -84,8 +81,7 @@
                                             <td><img src="{{ Storage::url($child->image) }}" alt="" width="120px"
                                                     height="80px"></td>
                                             <td><span style="margin-left: 20px;">↳ {{ $child->stop_name }}</span></td>
-                                            <td>{{ $child->longitude }}</td>
-                                            <td>{{ $child->latitude }}</td>
+                                        
                                             <td>{{ \Illuminate\Support\Str::limit(strip_tags($child->description), 50) }}
                                             </td>
                                             <td>
