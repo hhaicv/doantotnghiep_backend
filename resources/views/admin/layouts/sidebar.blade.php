@@ -225,12 +225,12 @@
         <hr>
         <li class="menu-title"><span data-key="t-menu">Thống kê</span></li>
         <li class="nav-item">
-            <a class="nav-link menu-link" href="#sidebarAdmins" data-bs-toggle="collapse" role="button"
+            <a class="nav-link menu-link" href="#sidebarStatistical" data-bs-toggle="collapse" role="button"
                 aria-expanded="false" aria-controls="sidebarAdmins">
                 <i class="ri-layout-3-line"></i>
                 <span data-key="t-layouts">Thống kê</span>
             </a>
-            <div class="collapse menu-dropdown" id="sidebarAdmins">
+            <div class="collapse menu-dropdown" id="sidebarStatistical">
                 <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
                         <a href="{{ route('admin.users.employees') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
@@ -249,7 +249,7 @@
             <div class="collapse menu-dropdown" id="sidebarAdmins">
                 <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                        <a href="{{ route('admin.users.employees') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                        <a href="{{ route('admin.admins.index') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                     </li>
                 </ul>
             </div>

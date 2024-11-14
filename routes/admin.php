@@ -77,5 +77,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); // Xóa người dùng
     });
 
+    Route::resource('admins', App\Http\Controllers\AdminController::class);
+
     Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
 });
