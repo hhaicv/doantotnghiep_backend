@@ -63,34 +63,43 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td
-                        style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                        {{ $code_ticket }}
-                    </td>
-                    <td
-                        style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                        {{ $start_location }}
-                    </td>
-                    <td
-                        style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                        {{ $end_location }}</td>
-                    <td
-                        style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                        {{ $route }}</td>
-                    <td
-                        style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                        {{ $time_start }} - {{ $date }}</td>
-                    <td
-                        style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                        {{ $phone_bus - $bus }}</td>
-                    <td
-                        style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                        {{ $name_seat }}</td>
+                @foreach ($ticket_details as $ticketDetail)
 
-                </tr>
-
+                    <tr>
+                        <td
+                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+                            {{-- {{ $ticketDetail['ticket_code'] }} --}}
+                        </td>
+                        <td
+                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+                            {{ $start_location }}
+                        </td>
+                        <td
+                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+                            {{ $end_location }}
+                        </td>
+                        <td
+                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
+                            {{ $route }}
+                        </td>
+                        <td
+                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
+                            {{ $ticketDetail['time_start'] }} - {{ $date }}
+                        </td>
+                        <td
+                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
+                            {{ $phone_bus }} - {{ $bus }}
+                        </td>
+                        <td
+                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
+                            {{-- {{ $ticketDetail['seat_name'] }} --}}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
         </table>
+
+
         <p style="margin-top: 0px; margin-bottom: 20px;color: #222222;">Vui lòng trả lời email này nếu có bất kì câu hỏi
             nào.
             Cảm ơn!</p>

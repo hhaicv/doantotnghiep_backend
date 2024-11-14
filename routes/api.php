@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\HomeController;
+use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\StopController;
 use App\Http\Controllers\API\TripController;
 use Illuminate\Http\Request;
@@ -25,4 +26,6 @@ Route::apiResource('stops', StopController::class);
 
 Route::apiResource('home', HomeController::class);
 
+Route::get('vnpay/return',[OrderController::class, 'paymentReturn'])->name('vnpay.return');
 
+Route::post('orders', [OrderController::class, 'order']);
