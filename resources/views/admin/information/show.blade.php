@@ -41,13 +41,14 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="flex-shrink-0">
+                            <a href="{{ route('admin.information.index') }}" class="btn btn-success">Danh sách</a>
+                            {{-- <div class="flex-shrink-0">
                                 <div>
                                     <a href="{{ route('admin.information.edit', $data->id) }}" class="btn btn-light"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                             class="ri-pencil-fill align-bottom"></i></a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
                             <div class="text-muted">( {{ $data->views_count }} lượt xem )</div>

@@ -19,6 +19,7 @@ class StopController extends Controller
     public function index()
     {
         $data = Stop::whereNull('parent_id')->with('children')->get();
+
         return view( self::PATH_VIEW. __FUNCTION__, compact('data'));
     }
 

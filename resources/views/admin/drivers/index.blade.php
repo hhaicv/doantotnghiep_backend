@@ -1,18 +1,18 @@
 @extends('admin.layouts.mater')
 
 @section('title')
-    Danh sách xe
+    Danh sách Tài xế
 @endsection
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Loại xe</h4>
+                <h4 class="mb-sm-0">Danh mục</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Loại xe</li>
+                        <li class="breadcrumb-item active">Danh sách tài xế</li>
                     </ol>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('admin.buses.create') }}">Thêm mới xe</a>
+                    <a class="btn btn-primary mb-3" href="{{ route('admin.drivers.create') }}">Thêm mới tài xế</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -32,11 +32,12 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Tên</th>
                                 <th>Hình ảnh</th>
-                                <th>Xe</th>
-                                <th>Tài xế</th>
-                                <th>Mã GPS</th>
-                                <th>SĐT</th>
+                                <th>Ngày sinh</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Địa chỉ</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
@@ -45,15 +46,13 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image) }}" alt=""
-                                            style="width: 170px;height: 100px;object-fit: cover"></td>
-                                    <td>
-                                        <p> {{ $item->license_plate }} - {{ $item->total_seats }} Chỗ</p>
-                                        {{ $item->name_bus }}
-                                    </td>
-                                    <td>{{ $item->model }}</td>
-                                    <td>{{ $item->gps_code }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td><img width="100px" height="70px" src="{{ Storage::url($item->profile_image) }}"
+                                            alt="Hình tài xế"></td>
+                                    <td>{{ $item->date_of_birth->format('d/m/Y') }}</td>
                                     <td>{{ $item->phone }}</td>
+                                    <td>{{ $item->email }}</td>
+                                    <td>{{ $item->address }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -66,10 +65,12 @@
                                     </td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
-                                            <a href="{{ route('admin.buses.edit', $item->id) }}" class="link-primary"><i
+                                            <a href="{{ route('admin.drivers.show', $item->id) }}" class="link-primary"><i
+                                                    class="ri-file-paper-2-fill"></i></a>
+                                            <a href="{{ route('admin.drivers.edit', $item->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormBuses{{ $item->id }}"
-                                                action="{{ route('admin.buses.destroy', $item->id) }}" method="post">
+                                            <form id="deleteFormDriver{{ $item->id }}"
+                                                action="{{ route('admin.drivers.destroy', $item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" style="border: none; background: white"
@@ -94,7 +95,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
@@ -118,71 +118,71 @@
             ]
         });
     </script>
-    <script>
-        document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('form-check-input')) {
-                var checkbox = e.target;
-                var isChecked = checkbox.checked ? 1 : 0;
-                var itemId = checkbox.getAttribute('data-id');
+   <script>
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('form-check-input')) {
+            var checkbox = e.target;
+            var isChecked = checkbox.checked ? 1 : 0;
+            var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-buses/${itemId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            is_active: isChecked
-                        })
+            fetch(`/admin/status-drivers/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        is_active: isChecked
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            var label = checkbox.nextElementSibling;
-                            label.textContent = isChecked ? 'On' : 'Off';
-                        } else {
-                            alert('Cập nhật trạng thái thất bại.');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        });
-
-
-        function confirmDelete(id) {
-            if (confirm('Bạn có muốn xóa không???')) {
-                let form = document.getElementById('deleteFormBuses' + id);
-
-                // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
-                fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        },
-                        body: new URLSearchParams(new FormData(form))
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Đã xóa thành công!');
-                            // Nếu muốn, có thể xóa dòng hiện tại trong bảng mà không cần reload trang
-                            form.closest('tr').remove();
-                        } else {
-                            alert('Có lỗi xảy ra. Vui lòng thử lại.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Có lỗi xảy ra. Vui lòng thử lại.');
-                    });
-            }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        var label = checkbox.nextElementSibling;
+                        label.textContent = isChecked ? 'On' : 'Off';
+                    } else {
+                        alert('Cập nhật trạng thái thất bại.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
-    </script>
+    });
+
+
+    function confirmDelete(id) {
+        if (confirm('Bạn có muốn xóa không???')) {
+            let form = document.getElementById('deleteFormDriver' + id);
+
+            // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
+            fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    body: new URLSearchParams(new FormData(form))
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Đã xóa thành công!');
+                        // Nếu muốn, có thể xóa dòng hiện tại trong bảng mà không cần reload trang
+                        form.closest('tr').remove();
+                    } else {
+                        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                });
+        }
+    }
+</script>
 @endsection

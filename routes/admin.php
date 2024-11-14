@@ -5,6 +5,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusSeatController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
 use App\Http\Controllers\RoleController;
@@ -42,6 +43,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('buses', BusController::class);
     Route::post('/status-buses/{id}', [BusController::class, 'statusBuses']);
 
+    Route::resource('drivers', DriverController::class);
+    Route::post('/status-drivers/{id}', [DriverController::class, 'statusDriver']);
+
     Route::resource('banners', BannerController::class);
     Route::post('/status-banners/{id}', [BannerController::class, 'statusBanner']);
 
@@ -62,7 +66,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
 
     Route::resource('tickets', TicketBookingController::class);
-
+    Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
     Route::resource('bus_seats', BusSeatController::class);
     Route::post('/status-bus-seat/{id}', [BusSeatController::class, 'statusBusSeat']);
 
@@ -80,4 +84,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('admins', App\Http\Controllers\AdminController::class);
 
     Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
+    Route::get('/thanks', [TicketBookingController::class, 'thanks'])->name('thanks');
+    Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
+
 });

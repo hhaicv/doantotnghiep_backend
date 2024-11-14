@@ -35,12 +35,13 @@
             </div>
             <div class="col-md-6">
                 <label for="discountInput" class="form-label">Discount (%)</label>
-                <input type="text" class="form-control" name="discount" value="{{ old('discount') }}"
-                    placeholder="Nhập %">
+                <input type="number" class="form-control" name="discount" id="discountInput" value="{{ old('discount') }}"
+                    placeholder="Nhập %" min="1" max="100" oninput="validateDiscount()">
                 @error('discount')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="startDateInput" class="form-label">Ngày bắt đầu</label>
                 <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}"
@@ -60,7 +61,7 @@
             </div>
             <div class="col-md-6">
                 <label for="userSelect" class="form-label">Người dùng</label>
-                <select name="user_id" id="userSelect" class="form-control" >
+                <select name="user_id" id="userSelect" class="form-control">
                     <option value="">Chọn người dùng</option> <!-- Option mặc định -->
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
@@ -82,7 +83,9 @@
                 <select class="form-control" name="route_id" id="routeSelect">
                     <option value="">Chọn tuyến đường</option>
                     @foreach ($routes as $route)
-                        <option value="{{ $route->id }}">{{ $route->route_name }}</option>
+                        <option value="{{ $route->id }}" {{ old('route_id') == $route->id ? 'selected' : '' }}>
+                            {{ $route->route_name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -93,7 +96,9 @@
                 <select class="form-control" name="bus_type_id" id="busTypeSelect">
                     <option value="">Chọn xe</option>
                     @foreach ($buses as $bus)
-                        <option value="{{ $bus->id }}">{{ $bus->name_bus }}</option>
+                        <option value="{{ $bus->id }}" {{ old('bus_type_id') == $bus->id ? 'selected' : '' }}>
+                            {{ $bus->name_bus }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -115,6 +120,19 @@
     </div>
 @endsection
 
+<script>
+    function validateDiscount() {
+        const discountInput = document.getElementById('discountInput');
+        let value = parseInt(discountInput.value);
+
+        // Kiểm tra giá trị nếu nằm ngoài khoảng 1-100
+        if (value < 1) {
+            discountInput.value = 1;
+        } else if (value > 100) {
+            discountInput.value = 100;
+        }
+    }
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const startDateInput = document.getElementById('startDateInput');

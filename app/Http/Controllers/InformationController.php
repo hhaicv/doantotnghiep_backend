@@ -18,8 +18,7 @@ class InformationController extends Controller
     {
         $data = Information::query()->get();
 
-        $newCategories = NewCategory::all(); // Retrieve all categories (optional if needed for filters)
-
+        $newCategories = NewCategory::all(); 
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'newCategories'));
     }
