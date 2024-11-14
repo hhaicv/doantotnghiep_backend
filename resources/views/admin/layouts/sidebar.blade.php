@@ -53,6 +53,9 @@
                                     sách xe</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('admin.drivers.index') }}" class="nav-link" data-key="t-buses">Tài xế</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('admin.stops.index') }}" class="nav-link" data-key="t-stops">Điểm
                                     dừng</a>
                             </li>

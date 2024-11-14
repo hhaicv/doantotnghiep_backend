@@ -4,6 +4,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusSeatController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
 use App\Http\Controllers\RoleController;
@@ -29,6 +30,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('buses', BusController::class);
     Route::post('/status-buses/{id}', [BusController::class, 'statusBuses']);
+
+    Route::resource('drivers', DriverController::class);
+    Route::post('/status-drivers/{id}', [DriverController::class, 'statusDriver']);
 
     Route::resource('banners', BannerController::class);
     Route::post('/status-banners/{id}', [BannerController::class, 'statusBanner']);
