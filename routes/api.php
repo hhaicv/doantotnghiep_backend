@@ -26,6 +26,8 @@ Route::apiResource('stops', StopController::class);
 
 Route::apiResource('home', HomeController::class);
 
-Route::get('vnpay/return',[OrderController::class, 'paymentReturn'])->name('vnpay.return');
+Route::get('/thanks',         [StopController::class, 'thanks'])->name('thanks');
+Route::get('/faile',         [StopController::class, 'faile'])->name('faile');
+Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
 
-Route::post('orders', [OrderController::class, 'order']);
+
