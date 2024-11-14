@@ -121,40 +121,33 @@ class StopController extends Controller
             return redirect($jsonResult['payUrl']);
         } else {
             $response = DB::transaction(function () use ($request) {
-                // Extract user data and create a new user record
-                $userData = $request->only('name', 'phone', 'email');
-                $user = User::create($userData);
-
-                // Prepare ticket booking data, excluding certain fields
-                $ticketBookingData = $request->except('name', 'phone', 'email', 'name_seat', 'fare');
-                $ticketBookingData['user_id'] = $user->id;
-
-                // Split seat names by comma and calculate total number of seats
+                $ticketBookingData = $request->except('name_seat', 'fare');
                 $seatNames = explode(', ', $request->input('name_seat'));
                 $totalTickets = count($seatNames);
+
+                $orderCode = strtoupper(Str::random(8));
+                $ticketBookingData['order_code'] = $orderCode;
                 $ticketBookingData['total_tickets'] = $totalTickets;
 
-                // Create ticket booking record
+                // Thiết lập status của TicketBooking dựa trên payment_method_id
+                $ticketBookingData['status'] = $request->input('payment_method_id') == 1
+                    ? TicketBooking::PAYMENT_STATUS_PAID
+                    : TicketBooking::PAYMENT_STATUS_UNPAID;
+
                 $ticketBooking = TicketBooking::create($ticketBookingData);
 
-                // Create ticket details for each seat
-                $ticketDetails = [];
+
                 foreach ($seatNames as $seatName) {
-                    $ticketDetails[] = TicketDetail::create([
-                        'ticket_code' => strtoupper(Str::random(8)),
+                    $ticketCode = $totalTickets == 1 ? $orderCode : strtoupper(Str::random(8));
+
+                    TicketDetail::create([
+                        'ticket_code' => $ticketCode,
                         'ticket_booking_id' => $ticketBooking->id,
                         'name_seat' => $seatName,
                         'price' => $request->input('fare'),
                         'status' => 'booked'
                     ]);
                 }
-
-                // Return a structured response with created data
-                return [
-                    'user' => $user,
-                    'ticket_booking' => $ticketBooking,
-                    'ticket_details' => $ticketDetails,
-                ];
             });
 
             return response()->json([

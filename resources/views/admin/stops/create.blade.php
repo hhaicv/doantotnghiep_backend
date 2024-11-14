@@ -32,14 +32,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Kinh độ</label>
-                <input type="number" class="form-control" name="longitude" value="{{ old('longitude') }}"
-                    placeholder="Nhập kinh độ">
-                @error('longitude')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+
             <div class="col-md-6">
                 <label for="parent_stop" class="form-label">Chọn điểm dừng cha</label>
                 <select class="form-select" name="parent_id" id="parent_stop">
@@ -51,15 +44,8 @@
                     @endforeach
                 </select>
             </div>
-       
-            <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Vĩ độ</label>
-                <input type="number" class="form-control" name="latitude" value="{{ old('latitude') }}"
-                    placeholder="Nhập vĩ độ">
-                @error('latitude')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+
+         
             <div class="col mt-3">
                     <h5>Hình ảnh</h5>
                     <div class="file-drop-area" id="file-drop-area" >
@@ -67,7 +53,7 @@
                             multiple>
                         <div id="file-preview"></div>
                     </div>
-               
+
                 @error('image')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

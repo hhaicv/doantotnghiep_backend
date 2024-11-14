@@ -16,8 +16,6 @@ class Stop extends Model
     protected $fillable = [
         'stop_name',
         'parent_id',
-        'longitude',
-        'latitude',
         'image',
         'is_active',
         'description'
