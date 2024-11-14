@@ -23,6 +23,7 @@ class StoreStopRequest extends FormRequest
     {
         return [
             'stop_name' => ['required', 'string', 'min:6', 'max:255'],
+
             'image' => ['required'],
             'description' => ['required', 'string'],
         ];

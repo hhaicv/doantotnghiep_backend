@@ -31,7 +31,6 @@
                 <input type="text" id="stopNameInput" class="form-control" name="stop_name"
                     value="{{ old('stop_name', $data->stop_name) }}" required>
             </div>
-
             <div class="col-md-3">
                 <label for="parent_id" class="form-label">Điểm dừng cha (Tùy chọn):</label>
                 <select name="parent_id" id="parent_id" class="form-select" onchange="filterChildStops()">

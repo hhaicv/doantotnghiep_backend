@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('stop_name');
             $table->unsignedBigInteger('parent_id')->nullable(); // Cho phép giá trị NULL
-            $table->decimal('longitude', 10, 2);
-            $table->decimal('latitude', 10, 2);
             $table->string('image');
             $table->foreign('parent_id')->references('id')->on('stops')->onDelete('cascade');
             $table->boolean('is_active')->default(true);
