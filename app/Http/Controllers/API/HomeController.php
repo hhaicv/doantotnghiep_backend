@@ -28,7 +28,6 @@ class HomeController extends Controller
      */
     public function show(Request $request)
     {
-
         $data = $request->validate([
             'start_stop_id' => 'required|integer',
             'end_stop_id' => 'required|integer',
@@ -40,7 +39,6 @@ class HomeController extends Controller
         $date = $data['date'];
         $currentTime = Carbon::now('Asia/Ho_Chi_Minh')->format('H:i');
         $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-
 
         // Lấy tên điểm bắt đầu và điểm kết thúc theo `id`
         $startStopName = Stop::where('id', $startRouteId)->value('stop_name');
@@ -59,11 +57,11 @@ class HomeController extends Controller
                 // Nếu là ngày hôm nay, chỉ lấy các chuyến có time_start lớn hơn giờ hiện tại
                 return $query->where('time_start', '>', $currentTime);
             })
-            ->orderBy('time_start', 'asc') // Sắp xếp theo time_start từ bé đến lớn
-            ->get();
+            ->orderBy('time_start', 'asc')
+            ->paginate(5);
 
         // Map dữ liệu chuyến
-        $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
+        $tripData = $trips->getCollection()->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
             $stage = $trip->stages->first();
 
             // Đếm số ghế đã đặt
@@ -75,7 +73,6 @@ class HomeController extends Controller
                     ->count();
             }
 
-
             return [
                 'bus_id' => $trip->bus->id,
                 'route_id' => $trip->route->id,
@@ -85,8 +82,8 @@ class HomeController extends Controller
                 'fare' => $stage ? $stage->fare : null,
                 'name_bus' => $trip->bus->name_bus,
                 'total_seats' => $trip->bus->total_seats,
-                'booked_seats_count' => $bookedSeatsCount, // Số ghế đã đặt
-                'available_seats' => $trip->bus->total_seats - $bookedSeatsCount, // Số ghế còn trống
+                'booked_seats_count' => $bookedSeatsCount,
+                'available_seats' => $trip->bus->total_seats - $bookedSeatsCount,
                 'date' => $date,
                 'start_stop_name' => $startStopName,
                 'end_stop_name' => $endStopName,
@@ -95,12 +92,24 @@ class HomeController extends Controller
             ];
         });
 
+        // Thay thế bộ sưu tập bằng dữ liệu đã map và thêm thông tin phân trang
+        $paginatedTripData = [
+            'data' => $tripData,
+            'pagination' => [
+                'current_page' => $trips->currentPage(),
+                'total_pages' => $trips->lastPage(),
+                'total_items' => $trips->total(),
+                'items_per_page' => $trips->perPage()
+            ]
+        ];
+
         if ($tripData->isEmpty()) {
             return response()->json(['message' => 'Không có chuyến nào.'], 404);
         }
 
-        return response()->json($tripData);
+        return response()->json($paginatedTripData);
     }
+
 
 
 

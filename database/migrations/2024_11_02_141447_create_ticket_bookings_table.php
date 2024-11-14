@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone');
             $table->text('note')->nullable(); // Ghi chú, có thể null
+            $table->time('time_start');
             $table->date('date'); // Ngày đặt vé
             $table->decimal('total_price', 10, 2); // Tổng giá tiền cho tất cả các ghế
             $table->integer('total_tickets');

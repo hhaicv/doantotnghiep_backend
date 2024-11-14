@@ -54,47 +54,160 @@ class StopController extends Controller
 
     public function store(StoreTicketBookingRequest $request)
     {
-        $response = DB::transaction(function () use ($request) {
-            // Extract user data and create a new user record
-            $userData = $request->only('name', 'phone', 'email');
-            $user = User::create($userData);
+        if ($request->has('payment_method_id') && $request->payment_method_id == 2) {
+            $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+            $partnerCode = 'MOMOBKUN20180529';
+            $accessKey = 'klm05TvNBzhg7h7j';
+            $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+            $orderInfo = "Thanh toán qua MoMo";
+            $amount = $request->total_price;
+            $orderId = time();
+            $redirectUrl = route('momo_return');
+            $ipnUrl = route('momo_return');
+            $extraData = "";
+            $requestId = time() . "";
+            $requestType = "payWithATM";
+            $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+            $signature = hash_hmac("sha256", $rawHash, $secretKey);
 
-            // Prepare ticket booking data, excluding certain fields
-            $ticketBookingData = $request->except('name', 'phone', 'email', 'name_seat', 'fare');
-            $ticketBookingData['user_id'] = $user->id;
+            $data = array(
+                'partnerCode' => $partnerCode,
+                'partnerName' => "Test",
+                "storeId" => "MomoTestStore",
+                'requestId' => $requestId,
+                'amount' => $amount,
+                'orderId' => $orderId,
+                'orderInfo' => $orderInfo,
+                'redirectUrl' => $redirectUrl,
+                'ipnUrl' => $ipnUrl,
+                'lang' => 'vi',
+                'extraData' => $extraData,
+                'requestType' => $requestType,
+                'signature' => $signature
+            );
 
-            // Split seat names by comma and calculate total number of seats
+            $result = $this->execPostRequest($endpoint, json_encode($data));
+
+            $jsonResult = json_decode($result, true);  // decode json
+
+
+            // Save order information
+            $ticketBookingData = $request->except('name_seat', 'fare');
             $seatNames = explode(', ', $request->input('name_seat'));
             $totalTickets = count($seatNames);
+
+            $orderCode = $orderId;
+            $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
-            // Create ticket booking record
+            // Thiết lập status của TicketBooking dựa trên payment_method_id
+            $ticketBookingData['status'] = $request->input('payment_method_id') == 1
+                ? TicketBooking::PAYMENT_STATUS_PAID
+                : TicketBooking::PAYMENT_STATUS_UNPAID;
+
             $ticketBooking = TicketBooking::create($ticketBookingData);
 
-            // Create ticket details for each seat
-            $ticketDetails = [];
             foreach ($seatNames as $seatName) {
-                $ticketDetails[] = TicketDetail::create([
-                    'ticket_code' => strtoupper(Str::random(8)),
+                $ticketCode = $totalTickets == 1 ? $orderCode : strtoupper(Str::random(8));
+
+                TicketDetail::create([
+                    'ticket_code' => $ticketCode,
                     'ticket_booking_id' => $ticketBooking->id,
                     'name_seat' => $seatName,
                     'price' => $request->input('fare'),
                     'status' => 'booked'
                 ]);
             }
+            return redirect($jsonResult['payUrl']);
+        } else {
+            $response = DB::transaction(function () use ($request) {
+                // Extract user data and create a new user record
+                $userData = $request->only('name', 'phone', 'email');
+                $user = User::create($userData);
 
-            // Return a structured response with created data
-            return [
-                'user' => $user,
-                'ticket_booking' => $ticketBooking,
-                'ticket_details' => $ticketDetails,
-            ];
-        });
+                // Prepare ticket booking data, excluding certain fields
+                $ticketBookingData = $request->except('name', 'phone', 'email', 'name_seat', 'fare');
+                $ticketBookingData['user_id'] = $user->id;
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $response
-        ], 201);
+                // Split seat names by comma and calculate total number of seats
+                $seatNames = explode(', ', $request->input('name_seat'));
+                $totalTickets = count($seatNames);
+                $ticketBookingData['total_tickets'] = $totalTickets;
+
+                // Create ticket booking record
+                $ticketBooking = TicketBooking::create($ticketBookingData);
+
+                // Create ticket details for each seat
+                $ticketDetails = [];
+                foreach ($seatNames as $seatName) {
+                    $ticketDetails[] = TicketDetail::create([
+                        'ticket_code' => strtoupper(Str::random(8)),
+                        'ticket_booking_id' => $ticketBooking->id,
+                        'name_seat' => $seatName,
+                        'price' => $request->input('fare'),
+                        'status' => 'booked'
+                    ]);
+                }
+
+                // Return a structured response with created data
+                return [
+                    'user' => $user,
+                    'ticket_booking' => $ticketBooking,
+                    'ticket_details' => $ticketDetails,
+                ];
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $response
+            ], 201);
+        }
+    }
+
+    public function thanks()
+    {
+        echo "thanh toán thành công";
+    }
+
+    public function faile()
+    {
+        echo "thanh toán thất bại";
+    }
+
+    private function execPostRequest($url, $data)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
+    }
+
+    public function momo_return(Request $request)
+    {
+
+        $orderId = $request->input('orderId');
+        $resultCode = $request->input('resultCode');  // Mã phản hồi của MoMo
+
+        // Tìm đơn hàng theo order ID
+        $ticketBooking = TicketBooking::where('order_code', $orderId)->first();
+
+        if (!$ticketBooking) {
+            return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
+        }
+        // Cập nhật trạng thái thanh toán dựa trên resultCode từ MoMo
+        if ($resultCode == 0) {
+            $ticketBooking->status = TicketBooking::PAYMENT_STATUS_PAID; // Thanh toán thành công
+            $ticketBooking->save();
+            return redirect()->route('thanks')->with('message', 'Thanh toán thành công!');
+        } else {
+            $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED; // Thanh toán thất bại
+            $ticketBooking->save();
+            return redirect()->route('faile')->with('message', 'Thanh toán thất bại.');
+        }
     }
 
 

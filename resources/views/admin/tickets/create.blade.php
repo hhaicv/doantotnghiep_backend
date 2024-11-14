@@ -582,8 +582,7 @@
                                                 <label for="billinginfo-email" class="form-label">Email <span
                                                         class="text-muted">(Optional)</span></label>
                                                 <input type="email" name="email" class="form-control"
-                                                    id="billinginfo-email" placeholder="Nhập email"
-                                                    value="{{ old('email') }}">
+                                                    id="billinginfo-email" placeholder="Nhập email">
                                             </div>
                                         </div>
                                     </div>
@@ -594,7 +593,7 @@
                                     </div>
 
                                 </div>
-                                
+
                             </div>
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
@@ -640,6 +639,9 @@
                                                 <?php foreach ($methods as $method) { ?>
                                                 <option value="<?php echo $method['id']; ?>"><?php echo $method['name']; ?></option>
                                                 <?php } ?>
+                                                <button type="submit" name="payUrl" class="btn btn-primary btn-label right ms-auto nexttab fs-5"
+                                                data-nexttab="pills-finish-tab" value="payUrl"><i
+                                                    class="ri-coins-fill label-icon align-middle fs-16 ms-2"></i>MoMo</button>
                                             </select>
                                         </div>
                                     </div>
@@ -665,12 +667,12 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="d-flex align-items-start gap-3 mt-4">
 
                                     <button type="submit" class="btn btn-primary btn-label right ms-auto nexttab fs-5"
                                         data-nexttab="pills-finish-tab"><i
                                             class="ri-coins-fill label-icon align-middle fs-16 ms-2"></i>Thu tiền</button>
+
                                 </div>
                             </div>
 

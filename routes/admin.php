@@ -70,4 +70,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
 
+    Route::get('/thanks',         [TicketBookingController::class, 'thanks'])->name('thanks');
+    Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
+
 });
