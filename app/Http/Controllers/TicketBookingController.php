@@ -110,12 +110,8 @@ class TicketBookingController extends Controller
         return response()->json($tripData);
     }
 
-
     public function create(Request $request)
     {
-
-        // lấy chuyến theo ngày, lấy trạng th
-
         $trip_id = $request->query('trip_id');
         $date = $request->query('date');
 
