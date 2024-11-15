@@ -8,9 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    const TYPE_EMPLOYEE = "employee";
+    const TYPE_USER = "user";
 
     /**
      * The attributes that are mass assignable.
@@ -19,8 +24,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'phone',
+        'address',
         'email',
         'password',
+        'type',
+        'is_active',
     ];
 
     /**
@@ -41,9 +50,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean',
     ];
+
     public function promotions()
     {
         return $this->belongsToMany(Promotion::class, 'promotion_user', 'user_id', 'promotion_id');
+    }
+    public function isEmployee(){
+        return $this->type == self::TYPE_EMPLOYEE;
+    }
+    
+    public function isUser(){
+        return $this->type == self::TYPE_USER;
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(TicketBooking::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+
     }
 }

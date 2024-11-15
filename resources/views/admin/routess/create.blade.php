@@ -49,22 +49,25 @@
                                 onchange="updateEndStops()">
                                 <option value="">Chọn điểm bắt đầu</option>
                                 <?php foreach ($stops as $stop) { ?>
-                                <option value="<?php echo $stop['id']; ?>"><?php echo $stop['stop_name']; ?></option>
+                                <option value="<?php echo $stop['id']; ?>" <?php echo old('start_route_id') == $stop['id'] ? 'selected' : ''; ?>>
+                                    <?php echo $stop['stop_name']; ?>
+                                </option>
                                 <?php } ?>
                             </select>
                         </div>
+
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm kết thúc</label>
                             <select name="end_route_id" class="form-control" id="input-to-stop-1">
                                 <option value="">Chọn điểm kết thúc</option>
                                 <?php foreach ($stops as $stop) { ?>
-                                <option value="<?php echo $stop['id']; ?>"><?php echo $stop['stop_name']; ?></option>
+                                <option value="<?php echo $stop['id']; ?>"<?php echo old('end_route_id') == $stop['id'] ? 'selected' : ''; ?>><?php echo $stop['stop_name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Giá Tuyến</label>
-                            <input type="text" class="form-control mt-2" name="route_price" placeholder="Nhập thời gian"
+                            <input type="number" class="form-control mt-2" name="route_price" placeholder="Nhập thời gian"
                                 value="{{ old('route_price') }}">
                             @error('route_price')
                                 <span class="text-danger">{{ $message }}</span>
@@ -72,7 +75,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Chiều dài</label>
-                            <input type="text" class="form-control mt-2" name="length"
+                            <input type="number" class="form-control mt-2" name="length"
                                 placeholder="Nhập chiều dài tuyến đường" value="{{ old('length') }}">
                             @error('length')
                                 <span class="text-danger">{{ $message }}</span>
@@ -86,10 +89,11 @@
                                 <div class="card-body">
                                     <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px"
                                         name="description" placeholder=" Viết mô tả xe ở đây...">{{ old('description') }}</textarea>
+
+                                    @error('description')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                @error('description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                     </div>
@@ -127,9 +131,14 @@
                                         </div>
                                         <div class="col">
                                             <label class="form-label pb-2" for="input-price-1">Giá</label>
-                                            <input type="text" name="fare[]" placeholder="Giá vé"
-                                                class="form-control" style="width: 90%;" id="input-price-1" />
+                                            <input type="number" name="fare[]" placeholder="Giá vé"
+                                                value="{{ old('fare.0') }}" class="form-control" style="width: 90%;"
+                                                id="input-price-1" />
+                                            @error('fare.0')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
+
                                         <div class="col-1">
                                         </div>
                                     </div>

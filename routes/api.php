@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\HomeController;
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\StopController;
 use App\Http\Controllers\API\TripController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +22,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('trips', TripController::class);
+Route::apiResource('stops', StopController::class);
+
 Route::apiResource('home', HomeController::class);
+
+Route::get('/thanks',         [StopController::class, 'thanks'])->name('thanks');
+Route::get('/faile',         [StopController::class, 'faile'])->name('faile');
+Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
+
+

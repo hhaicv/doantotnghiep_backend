@@ -19,11 +19,18 @@ return new class extends Migration
             $table->date('end_date');
             $table->text('description');
             $table->unsignedBigInteger('route_id');
+
             $table->boolean('new_customer_only')->default(0);
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
+
+            $table->unsignedBigInteger('bus_type_id');
+            $table->boolean('new_customer_only')->default(0);
+            
+
             $table->timestamps();
             $table->softDeletes(); // Thêm dòng này để sử dụng soft deletes
         });
+
     }
 
  

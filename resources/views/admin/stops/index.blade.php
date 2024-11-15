@@ -27,7 +27,7 @@
                     <a class="btn btn-primary mb-3" href="{{ route('admin.stops.create') }}">Thêm mới điểm dừng</a>
                 </div>
                 <div class="card-body">
-<<<<<<< HEAD
+
          
                     {{-- <table border="1" cellpadding="20" cellspacing="0"> --}}
                <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
@@ -113,7 +113,6 @@
         @endforeach
     </tbody>
 </table>
-=======
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
                         <thead>
@@ -121,24 +120,19 @@
                                 <th>ID</th>
                                 <th>Hình ảnh</th>
                                 <th>Tên điểm dừng</th>
-                                <th>Kinh độ</th>
-                                <th>Vĩ đỗ</th>
                                 <th>Mô tả</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Vòng lặp qua các điểm dừng cha --}}
                             @foreach ($data as $parent)
                                 <tr class="table-primary">
                                     <td>{{ $parent->id }}</td>
                                     <td><img src="{{ Storage::url($parent->image) }}" alt="" width="120px"
                                             height="80px"></td>
                                     <td><strong>{{ $parent->stop_name }}</strong></td>
-                                    <td>{{ $parent->longitude }}</td>
-                                    <td>{{ $parent->latitude }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($parent->description, 50) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit(strip_tags($parent->description), 50) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -164,7 +158,51 @@
                                         </div>
                                     </td>
                                 </tr>
->>>>>>> 2acf04614117ed8a555b5827522936930e3de856
+
+
+
+                                @if ($parent->children->count())
+                                    @foreach ($parent->children as $child)
+                                        <tr class="child-row">
+                                            <td>{{ $child->id }}</td>
+                                            <td><img src="{{ Storage::url($child->image) }}" alt="" width="120px"
+                                                    height="80px"></td>
+                                            <td><span style="margin-left: 20px;">↳ {{ $child->stop_name }}</span></td>
+
+                                            <td>{{ \Illuminate\Support\Str::limit(strip_tags($child->description), 50) }}
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        id="SwitchCheck{{ $child->id }}" data-id="{{ $child->id }}"
+                                                        {{ $child->is_active ? 'checked' : '' }}>
+                                                    <label class="form-check-label"
+                                                        for="SwitchCheck{{ $child->id }}">{{ $child->is_active ? 'On' : 'Off' }}</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="hstack gap-3 fs-15">
+                                                    <a href="{{ route('admin.stops.edit', $child->id) }}"
+                                                        class="link-primary"><i class="ri-settings-4-line"></i></a>
+                                                    <form id="deleteFormStop{{ $child->id }}"
+                                                        action="{{ route('admin.stops.destroy', $child->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" style="border: none; background: white"
+                                                            class="link-danger"
+                                                            onclick="confirmDelete({{ $child->id }})">
+                                                            <i class="ri-delete-bin-5-line"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
 
                 </div>
             </div>
@@ -173,11 +211,8 @@
 @endsection
 
 @section('style-libs')
-    <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
-    <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
@@ -194,9 +229,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-<<<<<<< HEAD
-  
-=======
+
     {{-- <script>
         new DataTable("#example", {
             order: [
@@ -204,8 +237,9 @@
             ]
         });
     </script> --}}
->>>>>>> 2acf04614117ed8a555b5827522936930e3de856
+
     <script>
+
         document.addEventListener('change', function(e) {
             if (e.target.classList.contains('form-check-input')) {
                 var checkbox = e.target;
@@ -245,7 +279,6 @@
             if (confirm('Bạn có muốn xóa không???')) {
                 let form = document.getElementById('deleteFormStop' + id);
 
-                // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {
                         method: 'POST',
                         headers: {
@@ -259,8 +292,17 @@
                     .then(data => {
                         if (data.success) {
                             alert('Đã xóa thành công!');
-                            // Nếu muốn, có thể xóa dòng hiện tại trong bảng mà không cần reload trang
-                            form.closest('tr').remove();
+
+                            // Tìm và xóa dòng cha
+                            const parentRow = form.closest('tr');
+                            parentRow.remove();
+
+                            // Xóa tất cả các dòng con liên quan đến dòng cha này
+                            let nextRow = parentRow.nextElementSibling;
+                            while (nextRow && nextRow.classList.contains('child-row')) {
+                                nextRow.remove();
+                                nextRow = parentRow.nextElementSibling; // Chuyển đến dòng tiếp theo
+                            }
                         } else {
                             alert('Có lỗi xảy ra. Vui lòng thử lại.');
                         }

@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Trip;
 use Illuminate\Http\Request;
 
-class TripController extends Controller
+class OrderController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $data = Trip::with(['route', 'bus'])->where('is_active', true)->get();
-        return response()->json($data);
+        //
     }
 
     /**

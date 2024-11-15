@@ -37,7 +37,6 @@
                                 <th>Tài xế</th>
                                 <th>Mã GPS</th>
                                 <th>SĐT</th>
-                                <th>Mô tả</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
@@ -55,7 +54,6 @@
                                     <td>{{ $item->model }}</td>
                                     <td>{{ $item->gps_code }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 20) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"

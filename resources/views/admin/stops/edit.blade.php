@@ -11,15 +11,7 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -64,17 +56,8 @@
                     @endforeach
                 </select>
             </div>
-
-            <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Kinh độ</label>
-                <input type="text" class="form-control" name="longitude" value="{{ $data->longitude }}">
-            </div>
-
-            <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Vĩ độ</label>
-                <input type="text" class="form-control" name="latitude" value="{{ $data->latitude }}">
-            </div>
             <div class="col-md-6 mt-3">
+                <h5>Hình ảnh</h5>
                 <div class="file-drop-area" id="file-drop-area">
                     @if ($data->image)
                         <div class="mb-3" id="current-image">

@@ -53,6 +53,9 @@
                                     sách xe</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('admin.drivers.index') }}" class="nav-link" data-key="t-buses">Tài xế</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('admin.stops.index') }}" class="nav-link" data-key="t-stops">Điểm
                                     dừng</a>
                             </li>
@@ -79,10 +82,10 @@
                                 <a href="{{ route('admin.tickets.index') }}" class="nav-link"
                                     data-key="t-horizontal">Tạo vé</a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a href="{{ route('admin.tickets.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li> --}}
+                            <li class="nav-item">
+                                <a href="{{ route('admin.ticket_list') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách vé</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

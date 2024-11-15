@@ -22,7 +22,17 @@ class StoreTicketBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required'],
+            'total_price' => ['required'],
+            'phone' => ['required'],
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Cần phải nhập tên hành khách.',
+            'total_price.required' => 'Bạn cần chọn ghế để thanh toán.',
+            'phone.required' => 'Cần phải nhập số điện thoại.',
         ];
     }
 }
