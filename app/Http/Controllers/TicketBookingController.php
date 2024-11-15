@@ -200,6 +200,57 @@ class TicketBookingController extends Controller
             }
 
             return redirect($jsonResult['payUrl']);
+        } else if ($request->has('payment_method_id') && $request->payment_method_id == 3) {
+            // VNPAY payment logic
+            $endpoint = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";  // URL thanh toán VNPay
+            $vnp_TmnCode = '6H9JFR7W';  // Mã Merchant của bạn
+            $vnp_HashSecret = 'WIGT3LVWWHQZVTK33YR4OHCG5CWPK8R0';  // Mã bí mật của bạn
+
+            // Các tham số thanh toán
+            $vnp_Amount = $request->total_price * 100;  // Số tiền thanh toán (VND, nhân với 100)
+            $vnp_OrderInfo = "Thanh toán qua VNpay";
+            $vnp_OrderType = 'billpayment';
+            $vnp_ReturnUrl = route('admin.vnpay_return');  // URL trả về sau khi thanh toán
+            $vnp_TxnRef = time();  // Mã giao dịch duy nhất
+
+            // Tạo dữ liệu để gửi lên VNPay
+            $vnp_Data = [
+                "vnp_Version" => "2.1.0",
+                "vnp_Command" => "pay",
+                "vnp_TmnCode" => $vnp_TmnCode,
+                "vnp_Amount" => $vnp_Amount,
+                "vnp_Locale" => "vn",
+                "vnp_CurrCode" => "VND",
+                "vnp_TxnRef" => $vnp_TxnRef,
+                "vnp_OrderInfo" => $vnp_OrderInfo,
+                "vnp_OrderType" => $vnp_OrderType,
+                "vnp_ReturnUrl" => $vnp_ReturnUrl,
+                "vnp_IpAddr" => request()->ip(),
+                "vnp_CreateDate" => date('YmdHis')
+            ];
+
+            // Sắp xếp các tham số theo thứ tự alphabet
+            ksort($vnp_Data);
+
+            // Tạo chuỗi dữ liệu hash
+            $hashString = '';
+            foreach ($vnp_Data as $key => $value) {
+                // Đảm bảo không có tham số vnp_SecureHash trong chuỗi này
+                if ($value != "") {
+                    $hashString .= urlencode($key) . "=" . urlencode($value) . "&";
+                }
+            }
+            // Loại bỏ dấu "&" cuối chuỗi
+            $hashString = rtrim($hashString, '&');
+
+            // Tạo chữ ký bảo mật (HMAC SHA512)
+            $vnp_SecureHash = hash_hmac('sha512', $hashString, $vnp_HashSecret);
+            $vnp_Data['vnp_SecureHash'] = $vnp_SecureHash;  // Thêm chữ ký vào tham số
+
+            // Xây dựng URL redirect sang VNPay
+            $vnp_Url = $endpoint . "?" . http_build_query($vnp_Data);
+
+            return redirect($vnp_Url); // Chuyển hướng tới VNPay để thanh toán
         } else {
             return DB::transaction(function () use ($request) {
                 $ticketBookingData = $request->except('name_seat', 'fare');
@@ -275,6 +326,60 @@ class TicketBookingController extends Controller
             return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
         }
     }
+    public function vnpay_return(Request $request)
+    {
+        // Lấy toàn bộ dữ liệu từ response của VNPay
+        $vnpayResponse = $request->all();
+        $vnpaySecureHash = $request->input('vnp_SecureHash');  // Lấy chữ ký từ VNPay
+    
+        // Loại bỏ chữ ký để tính toán lại
+        unset($vnpayResponse['vnp_SecureHash']);
+        ksort($vnpayResponse); // Sắp xếp lại các tham số
+    
+        // Xây dựng chuỗi hash
+        $hashString = '';
+        foreach ($vnpayResponse as $key => $value) {
+            if ($value != "") {
+                $hashString .= urlencode($key) . "=" . urlencode($value) . "&";
+            }
+        }
+        $hashString = rtrim($hashString, '&');  // Loại bỏ dấu "&" cuối chuỗi
+    
+        $secretKey = 'WIGT3LVWWHQZVTK33YR4OHCG5CWPK8R0';  // Mã bí mật của bạn
+        $calculatedHash = hash_hmac('sha512', $hashString, $secretKey); // Tính toán chữ ký
+    
+        // Kiểm tra chữ ký
+        if ($calculatedHash === $vnpaySecureHash) {
+            $orderId = $vnpayResponse['vnp_TxnRef'];  // Lấy mã đơn hàng từ VNPay
+    
+            // Kiểm tra xem mã đơn hàng có tồn tại trong hệ thống không
+            $ticketBooking = TicketBooking::where('order_code', $orderId)->first();
+    
+            if (!$ticketBooking) {
+                return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404); // Nếu không tìm thấy đơn hàng
+            }
+    
+            // Kiểm tra trạng thái thanh toán
+            $paymentStatus = $vnpayResponse['vnp_ResponseCode'];  // Mã phản hồi của VNPay
+    
+            // Cập nhật trạng thái thanh toán của đơn hàng
+            if ($paymentStatus == '00') {
+                $ticketBooking->status = TicketBooking::PAYMENT_STATUS_PAID; // Thanh toán thành công
+                $ticketBooking->save();
+                return redirect()->route('admin.thanks')->with('message', 'Thanh toán thành công!');
+            } else {
+                $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED; // Thanh toán thất bại
+                $ticketBooking->save();
+                return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
+            }
+        } else {
+            return response()->json(['message' => 'Chữ ký không hợp lệ.'], 400); // Nếu chữ ký không hợp lệ
+        }
+    }
+    
+
+
+
 
 
     public function list()
