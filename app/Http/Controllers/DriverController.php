@@ -43,8 +43,6 @@ class DriverController extends Controller
 
         // Khởi tạo đối tượng Driver
         $model = new Driver($data);
-
-
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = Storage::put(self::PATH_UPLOAD, $request->file('profile_image'));
         }
