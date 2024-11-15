@@ -70,6 +70,25 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarTickets" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarTickets">
+                        <i class="ri-ticket-2-fill"></i>
+                        <span data-key="t-layouts">Đơn Hàng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarTickets">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.tickets.index') }}" class="nav-link"
+                                   data-key="t-horizontal">Tạo vé</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.ticket_list') }}" class="nav-link"
+                                   data-key="t-horizontal">Danh sách vé</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarNewCategory" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarNewCategory">
                         <i class="ri-layout-3-line"></i>
@@ -216,7 +235,7 @@
                     <div class="collapse menu-dropdown" id="sidebarStatistical">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.users.employees') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                                <a href="{{ route('admin.statistics.tripStatistical') }}" class="nav-link" data-key="t-horizontal">Thống kê vé đặt</a>
                             </li>
                         </ul>
                     </div>
