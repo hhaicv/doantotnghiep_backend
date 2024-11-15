@@ -14,6 +14,7 @@ use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\SeatController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->as('admin.')->group(function () {
@@ -67,4 +68,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
 
     Route::get('/fetch-trips', [TicketBookingController::class, 'store'])->name('fetch.trips');
+
+
+
 });

@@ -92,17 +92,5 @@ class BusSeatController extends Controller
         return redirect()->route('admin.bus_seats.index')->with('success', 'bus_seats deleted successfully');
     }
 
-    public function statusTrip(Request $request, $id)
-    {
-        // Tìm bản ghi theo ID
-        $role = BusSeat::findOrFail($id);
-
-        // Cập nhật trạng thái 'is_active'
-        $role->is_active = $request->input('is_active');
-        $role->save(); // Lưu thay đổi vào cơ sở dữ liệu
-
-        // Trả về phản hồi JSON cho client
-        return response()->json(['success' => true]);
-    }
 }
 
