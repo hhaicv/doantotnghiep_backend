@@ -249,7 +249,7 @@
             <div class="collapse menu-dropdown" id="sidebarAdmins">
                 <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                        <a href="{{ route('admin.users.employees') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                        <a href="{{ route('admin.admins.index') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                     </li>
                 </ul>
             </div>

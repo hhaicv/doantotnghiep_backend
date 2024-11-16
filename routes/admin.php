@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\BusSeatController;
@@ -17,17 +18,18 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Route;
 
-Route::get('admin/login', [AdminController::class, 'showAdminLoginForm'])->name('admin.login');
-Route::post('admin/login', [AdminController::class, 'adminLogin'])->name('admin.login.submit');
+Route::get('admin/login', [LoginAdminController::class, 'showAdminLoginForm'])->name('admin.login');
+Route::post('admin/login', [LoginAdminController::class, 'adminLogin'])->name('admin.login.submit');
 // Route::post('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 
 // Route cho admin (sử dụng middleware để bảo vệ các route)
 Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     // Route cho đăng xuất
-    Route::post('logout', [AdminController::class, 'logout'])->name('logout');
+    Route::post('logout', [LoginAdminController::class, 'logout'])->name('logout');
 
     Route::get('/', function () {
         return view('admin.dashboard');
@@ -76,6 +78,8 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::put('/{id}', [UserController::class, 'update'])->name('update'); // Cập nhật người dùng
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); // Xóa người dùng
     });
+    
+    Route::resource('admins',AdminController::class);
 
     Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
 });
