@@ -11,20 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bus_seats', function (Blueprint $table) {
+        Schema::create('seat_status', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bus_id');
-            $table->char('seat_name', 10);
-            $table->boolean('is_available')->default(true);
+            $table->string('status')->default('available');
             $table->timestamps();
-            $table->softDeletes();
-            $table->foreign('bus_id')->references('id')->on('buses')->onDelete('cascade');
+        
+            $table->foreign('bus_id')->references('id')->on('bus_seat')->onDelete('cascade');
         });
+        
+        
     }
 
-
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('bus_seats');
+        Schema::dropIfExists('seat_status');
     }
 };

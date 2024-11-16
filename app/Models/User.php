@@ -52,9 +52,15 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_active' => 'boolean',
     ];
+
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class, 'promotion_user', 'user_id', 'promotion_id');
+    }
     public function isEmployee(){
         return $this->type == self::TYPE_EMPLOYEE;
     }
+    
     public function isUser(){
         return $this->type == self::TYPE_USER;
     }
@@ -67,5 +73,6 @@ class User extends Authenticatable
     public function payments()
     {
         return $this->hasMany(Payment::class);
+
     }
 }

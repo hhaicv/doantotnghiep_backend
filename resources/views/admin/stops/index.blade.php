@@ -27,6 +27,92 @@
                     <a class="btn btn-primary mb-3" href="{{ route('admin.stops.create') }}">Thêm mới điểm dừng</a>
                 </div>
                 <div class="card-body">
+
+         
+                    {{-- <table border="1" cellpadding="20" cellspacing="0"> --}}
+               <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Hình ảnh</th>
+            <th>Tên điểm dừng</th>
+            <th>Kinh độ</th>
+            <th>Vĩ độ</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{-- Vòng lặp qua các điểm dừng cha --}}
+        @foreach ($data as $parent)
+            <tr class="table-primary">
+                <td>{{ $parent->id }}</td>
+                <td>
+                    <img src="{{ Storage::url($parent->image) }}" alt="" width="120px" height="80px">
+                </td>
+                <td>
+                    <strong>{{ $parent->stop_name }}</strong>
+                </td>
+                <td>{{ $parent->longitude }}</td>
+                <td>{{ $parent->latitude }}</td>
+                <td>{{ \Illuminate\Support\Str::limit($parent->description, 50) }}</td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="SwitchCheck{{ $parent->id }}" data-id="{{ $parent->id }}" {{ $parent->is_active ? 'checked' : '' }}>
+                        <label class="form-check-label" for="SwitchCheck{{ $parent->id }}">{{ $parent->is_active ? 'Bật' : 'Tắt' }}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="hstack gap-3 fs-15">
+                        <a href="{{ route('admin.stops.edit', $parent->id) }}" class="link-primary"><i class="ri-settings-4-line"></i></a>
+                        <form id="deleteFormStop{{ $parent->id }}" action="{{ route('admin.stops.destroy', $parent->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" style="border: none; background: #d5d8e2" class="link-danger" onclick="confirmDelete({{ $parent->id }})">
+                                <i class="ri-delete-bin-5-line"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+
+            {{-- Vòng lặp qua các điểm dừng con của điểm dừng cha --}}
+            @if ($parent->children())
+                @foreach ($parent->children as $child)
+                    <tr>
+                        <td>{{ $child->id }}</td>
+                        <td>
+                            <img src="{{ Storage::url($child->image) }}" alt="" width="120px" height="80px">
+                        </td>
+                        <td><span style="margin-left: 20px;">↳ {{ $child->stop_name }}</span></td>
+                        <td>{{ $child->longitude }}</td>
+                        <td>{{ $child->latitude }}</td>
+                        <td>{{ \Illuminate\Support\Str::limit($child->description, 50) }}</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="SwitchCheck{{ $child->id }}" data-id="{{ $child->id }}" {{ $child->is_active ? 'checked' : '' }}>
+                                <label class="form-check-label" for="SwitchCheck{{ $child->id }}">{{ $child->is_active ? 'On' : 'Off' }}</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="hstack gap-3 fs-15">
+                                <a href="{{ route('admin.stops.edit', $child->id) }}" class="link-primary"><i class="ri-settings-4-line"></i></a>
+                                <form id="deleteFormStop{{ $child->id }}" action="{{ route('admin.stops.destroy', $child->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" style="border: none; background: white" class="link-danger" onclick="confirmDelete({{ $child->id }})">
+                                        <i class="ri-delete-bin-5-line"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        @endforeach
+    </tbody>
+</table>
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
                         <thead>
@@ -73,6 +159,8 @@
                                     </td>
                                 </tr>
 
+
+
                                 @if ($parent->children->count())
                                     @foreach ($parent->children as $child)
                                         <tr class="child-row">
@@ -115,6 +203,7 @@
                             @endforeach
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div><!--end col-->
@@ -140,6 +229,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
+
     {{-- <script>
         new DataTable("#example", {
             order: [
@@ -147,6 +237,7 @@
             ]
         });
     </script> --}}
+
     <script>
 
         document.addEventListener('change', function(e) {

@@ -34,7 +34,11 @@ class Promotion extends Model
     }
     public function users()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class, 'promotion_user', 'promotion_id', 'user_id');
+    }
+    public function routes()
+    {
+        return $this->belongsToMany(Route::class, 'promotion_route','promotion_id','route_id');
     }
     public function routes()
     {

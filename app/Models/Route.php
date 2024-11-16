@@ -30,7 +30,8 @@ class Route extends Model
     {
         return $this->hasMany(Stage::class, 'route_id'); // Giả định rằng 'route_id' là khóa ngoại trong bảng stages
     }
-  
-
-
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class, 'promotion_route');
+    }
 }
