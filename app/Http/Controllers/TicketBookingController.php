@@ -122,12 +122,12 @@ class TicketBookingController extends Controller
 
         // Lấy danh sách ghế bị "lock" quá 15 phút
         TicketDetail::where('status', 'lock')
-        ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
-            $query->where('date', $date)
-                ->where('trip_id', $trip_id);
-        })
-        ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
-        ->delete();
+            ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+                $query->where('date', $date)
+                    ->where('trip_id', $trip_id);
+            })
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+            ->delete();
 
 
         // Lấy danh sách ghế đã đặt
@@ -192,10 +192,9 @@ class TicketBookingController extends Controller
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
-            // Thiết lập status của TicketBooking dựa trên payment_method_id
-            $ticketBookingData['status'] = $request->input('payment_method_id') == 1
-                ? TicketBooking::PAYMENT_STATUS_PAID
-                : TicketBooking::PAYMENT_STATUS_UNPAID;
+
+            $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
+
 
             $ticketBooking = TicketBooking::create($ticketBookingData);
 
@@ -268,10 +267,7 @@ class TicketBookingController extends Controller
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
-            // Thiết lập status của TicketBooking dựa trên payment_method_id
-            $ticketBookingData['status'] = $request->input('payment_method_id') == 1
-                ? TicketBooking::PAYMENT_STATUS_PAID
-                : TicketBooking::PAYMENT_STATUS_UNPAID;
+            $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
 
             $ticketBooking = TicketBooking::create($ticketBookingData);
 
@@ -455,7 +451,7 @@ class TicketBookingController extends Controller
             foreach ($ticketDetails as $ticketDetail) {
                 $ticketDetail->delete();
             }
-        
+
             return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
         }
     }
