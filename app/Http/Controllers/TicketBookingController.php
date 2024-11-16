@@ -110,28 +110,6 @@ class TicketBookingController extends Controller
         return response()->json($tripData);
     }
 
-    // public function create(Request $request)
-    // {
-    //     $trip_id = $request->query('trip_id');
-    //     $date = $request->query('date');
-
-    //     $methods = PaymentMethod::query()->get();
-
-    //     $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
-    //     $seatCount = $trip->bus->total_seats;
-
-    //     $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
-    //         $query->where('date', $date)
-    //             ->where('trip_id', $trip_id);
-    //     })->get();
-
-    //     $seatsStatus = [];
-    //     foreach ($seatsBooked as $seat) {
-    //         $seatsStatus[$seat->name_seat] = $seat->status;
-    //     }
-    //     return view(self::PATH_VIEW . 'create', compact('methods', 'seatsStatus', 'seatCount'));
-    // }
-
     public function create(Request $request)
     {
         $trip_id = $request->query('trip_id');
@@ -150,7 +128,6 @@ class TicketBookingController extends Controller
         })
         ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
         ->delete();
-
 
 
         // Lấy danh sách ghế đã đặt
@@ -262,7 +239,6 @@ class TicketBookingController extends Controller
                 "vnp_IpAddr" => request()->ip(),
                 "vnp_CreateDate" => date('YmdHis')
             ];
-        
 
             // Sắp xếp các tham số theo thứ tự alphabet
             ksort($vnp_Data);
@@ -278,17 +254,17 @@ class TicketBookingController extends Controller
             // Loại bỏ dấu "&" cuối chuỗi
 
             $hashString = rtrim($hashString, '&');
-           
+
             // Tạo chữ ký bảo mật (HMAC SHA512)
             $vnp_SecureHash = hash_hmac('sha512', $hashString, $vnp_HashSecret);
-            
+
             $vnp_Data['vnp_SecureHash'] = $vnp_SecureHash;  // Thêm chữ ký vào tham số
-         
+
             $ticketBookingData = $request->except('name_seat', 'fare');
             $seatNames = explode(', ', $request->input('name_seat'));
             $totalTickets = count($seatNames);
 
-            $orderCode = $vnp_TxnRef; 
+            $orderCode = $vnp_TxnRef;
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
@@ -307,7 +283,7 @@ class TicketBookingController extends Controller
                     'ticket_booking_id' => $ticketBooking->id,
                     'name_seat' => $seatName,
                     'price' => $request->input('fare'),
-                    'status' => 'booked'
+                    'status' => 'lock'
                 ]);
             }
 
@@ -410,15 +386,15 @@ class TicketBookingController extends Controller
     {
         // Lấy toàn bộ dữ liệu từ response của VNPay
         $vnpayResponse = $request->all();
-      
-        
+
+
         // Lấy chữ ký từ VNPay và loại bỏ nó khỏi dữ liệu phản hồi
         $vnpaySecureHash = $request->input('vnp_SecureHash');
         unset($vnpayResponse['vnp_SecureHash']);  // Loại bỏ chữ ký để tính toán lại
-    
+
         // Sắp xếp các tham số theo thứ tự alphabetic
         ksort($vnpayResponse);
-    
+
         // Xây dựng chuỗi để tính toán chữ ký
         $hashString = '';
         foreach ($vnpayResponse as $key => $value) {
@@ -427,53 +403,62 @@ class TicketBookingController extends Controller
             }
         }
         $hashString = rtrim($hashString, '&');  // Loại bỏ dấu "&" cuối chuỗi
-    
+
         // Tính toán lại chữ ký HMAC SHA512
         $secretKey = 'WIGT3LVWWHQZVTK33YR4OHCG5CWPK8R0';  // Mã bí mật của bạn
         $calculatedHash = hash_hmac('sha512', $hashString, $secretKey);
-    
+
         // Kiểm tra tính hợp lệ của chữ ký
         if ($calculatedHash !== $vnpaySecureHash) {
             return response()->json(['message' => 'Chữ ký không hợp lệ.'], 400);
         }
-    
+
         // Lấy mã đơn hàng từ VNPay
         $orderId = trim($vnpayResponse['vnp_TxnRef']);  // Loại bỏ khoảng trắng
-       
-    
+
+
         // Tìm kiếm đơn hàng từ cơ sở dữ liệu
         $ticketBooking = TicketBooking::where('order_code', $orderId)->first();
-        
+
         // Nếu không tìm thấy đơn hàng, trả về thông báo lỗi
         if (!$ticketBooking) {
-           
-    
+
+
             // Trả về thông báo lỗi cho người dùng
             return response()->json(['message' => 'Không tìm thấy đơn hàng. Vui lòng kiểm tra lại hoặc liên hệ hỗ trợ.'], 404);
         }
-    
+
         // Kiểm tra trạng thái thanh toán
         $paymentStatus = $vnpayResponse['vnp_ResponseCode'];  // Mã phản hồi của VNPay
-        
+
         if ($paymentStatus == '00') {
             // Thanh toán thành công
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_PAID;
             $ticketBooking->save();
-          
+
+            // Lấy danh sách ghế liên quan đến đơn hàng
+            $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
+
+            // Cập nhật trạng thái ghế từ 'lock' thành 'booked'
+            foreach ($ticketDetails as $ticketDetail) {
+                $ticketDetail->status = 'booked';
+                $ticketDetail->save();
+            }
+
             return redirect()->route('admin.thanks')->with('message', 'Thanh toán thành công!');
         } else {
-            // Thanh toán thất bại
+
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED;
             $ticketBooking->save();
+            $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
+            // Xóa các bản ghi tương ứng
+            foreach ($ticketDetails as $ticketDetail) {
+                $ticketDetail->delete();
+            }
+        
             return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
         }
     }
-    
-    
-    
-
-
-
 
 
 

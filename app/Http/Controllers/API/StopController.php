@@ -118,7 +118,10 @@ class StopController extends Controller
                     'status' => 'booked'
                 ]);
             }
-            return redirect($jsonResult['payUrl']);
+            return response()->json([
+                'payUrl' => $jsonResult['payUrl']
+            ]);
+           
         } else if ($request->has('payment_method_id') && $request->payment_method_id == 3) {
             // VNPAY payment logic
             $endpoint = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";  // URL thanh toán VNPay
