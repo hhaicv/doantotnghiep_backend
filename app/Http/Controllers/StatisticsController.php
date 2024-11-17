@@ -20,7 +20,7 @@ class StatisticsController extends Controller
 
         // Lọc theo từ khóa (tên chuyến)
         if ($request->has('keyword') && $request->keyword != '') {
-            $conditions[] = ['name', 'LIKE', '%' . $request->keyword . '%'];
+            $conditions[] = ['phone', 'LIKE', '%' . $request->keyword . '%'];
         }
 
         // Lọc theo loại (ngày, tuần, tháng, khoảng thời gian)
@@ -50,12 +50,7 @@ class StatisticsController extends Controller
 
         $totalTickets = $trips->pluck('total_tickets')->toArray(); // Lấy dữ liệu total_tickets dưới dạng mảng
         $totalRevenue = $trips->pluck('total_price')->toArray(); // Lấy dữ liệu total_price dưới dạng mảng
-
-
-
-//        dd($totalTickets, $totalRevenue);
-
-
+//        dd($data,$totalTickets, $totalRevenue);
         return view('admin.statistics.statistical_trip', compact('trips', 'data', 'totalTickets', 'totalRevenue'));
     }
 

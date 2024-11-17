@@ -5,19 +5,19 @@
         <!-- Dark Logo-->
         <a href="" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt="" height="17">
+                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="17">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="50">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/admin/assets/images/logo-light.png') }}" alt="" height="17">
+                <img src="{{ asset('theme/admin/assets/images/logo.jpg') }}" alt="" height="120">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -98,31 +98,12 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.new_categories.index') }}" class="nav-link"
-                                   data-key="t-horizontal">Danh sách</a>
+                                   data-key="t-horizontal">Danh sách danh mục</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.new_categories.create') }}" class="nav-link"
-                                   data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarInformation" data-bs-toggle="collapse"
-                       role="button" aria-expanded="false" aria-controls="sidebarInformation">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Tin tức</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarInformation">
-                        <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.information.index') }}" class="nav-link"
                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.information.create') }}" class="nav-link"
-                                   data-key="t-horizontal">Thêm mới</a>
+                                    sách tin tức</a>
                             </li>
                         </ul>
                     </div>
@@ -251,30 +232,16 @@
                     <div class="collapse menu-dropdown" id="sidebarAdmins">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.admins.index') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                                <a href="{{ route('admin.admins.index') }}" class="nav-link" data-key="t-horizontal">Tài khoản quản trị</a>
                             </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarRoles" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarRoles">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Chức Vụ</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarRoles">
-                        <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.roles.index') }}" class="nav-link"
-                                   data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.roles.create') }}" class="nav-link"
-                                   data-key="t-horizontal">Thêm mới</a>
+                                   data-key="t-horizontal">Danh sách phân quyền</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+                <hr>
             </ul>
         </div>
     </div>

@@ -30,9 +30,10 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     // Route cho đăng xuất
     Route::post('logout', [AdminController::class, 'logout'])->name('logout');
 
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    // routes/web.php
+
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'totalPrice'])->name('dashboard');
+
 
     Route::resource('contacts', ContactController::class);
     Route::post('/status-contacts/{id}', [ContactController::class, 'statusContact']);
@@ -80,6 +81,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::put('/{id}', [UserController::class, 'update'])->name('update'); // Cập nhật người dùng
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); // Xóa người dùng
     });
+
 
     Route::get('/statistics-trip', [StatisticsController::class, 'tripStatistical'])->name('statistics.tripStatistical');
 
