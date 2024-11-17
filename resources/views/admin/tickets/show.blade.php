@@ -16,9 +16,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h5 class="card-title flex-grow-1 mb-0">Order #VL2667</h5>
+                        <h5 class="card-title flex-grow-1 mb-0">Order #{{$showTicket->order_code}}</h5>
                         <div class="flex-shrink-0">
-                            <a href="{{ route('admin.tickets.edit', $data->id) }}" class="btn btn-success btn-sm"><i
+                            <a href="{{ route('admin.tickets.edit', $showTicket->id) }}" class="btn btn-success btn-sm"><i
                                     class="ri-download-2-fill align-middle me-1"></i> Invoice</a>
                         </div>
                     </div>
@@ -28,127 +28,49 @@
                         <table class="table table-nowrap align-middle table-borderless mb-0">
                             <thead class="table-light text-muted">
                                 <tr>
-                                    <th scope="col">Product Details</th>
-                                    <th scope="col">Item Price</th>
-                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Thông tin vé</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Số lượng</th>
                                     <th scope="col">Rating</th>
-                                    <th scope="col" class="text-end">Total Amount</th>
+                                    <th scope="col" class="text-end">Tổng tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach($showTicket as $ticketBooking)
                                 <tr>
                                     <td>
                                         <div class="d-flex">
-                                            <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
-                                                <img src="assets/images/products/img-8.png" alt=""
-                                                    class="img-fluid d-block">
-                                            </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h5 class="fs-15"><a href="apps-ecommerce-product-details.html"
-                                                        class="link-primary">Sweatshirt for Men (Pink)</a></h5>
-                                                <p class="text-muted mb-0">Color: <span class="fw-medium">Pink</span></p>
-                                                <p class="text-muted mb-0">Size: <span class="fw-medium">M</span></p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>$119.99</td>
-                                    <td>02</td>
-                                    <td>
-                                        <div class="text-warning fs-15">
-                                            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                                                class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                                                class="ri-star-half-fill"></i>
-                                        </div>
-                                    </td>
-                                    <td class="fw-medium text-end">
-                                        $239.98
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
-                                                <img src="assets/images/products/img-7.png" alt=""
-                                                    class="img-fluid d-block">
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h5 class="fs-15"><a href="apps-ecommerce-product-details.html"
-                                                        class="link-primary">Noise NoiseFit Endure Smart Watch</a></h5>
-                                                <p class="text-muted mb-0">Color: <span class="fw-medium">Black</span></p>
-                                                <p class="text-muted mb-0">Size: <span class="fw-medium">32.5mm</span></p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>$94.99</td>
-                                    <td>01</td>
-                                    <td>
-                                        <div class="text-warning fs-15">
-                                            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                                                class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                                                class="ri-star-half-fill"></i>
-                                        </div>
-                                    </td>
-                                    <td class="fw-medium text-end">
-                                        $94.99
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
-                                                <img src="assets/images/products/img-3.png" alt=""
-                                                    class="img-fluid d-block">
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h5 class="fs-15"><a href="apps-ecommerce-product-details.html"
-                                                        class="link-primary">350 ml Glass Grocery Container</a></h5>
+                                                <h5 class="fs-15"></h5>
                                                 <p class="text-muted mb-0">Color: <span class="fw-medium">White</span></p>
                                                 <p class="text-muted mb-0">Size: <span class="fw-medium">350 ml</span></p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>$24.99</td>
+                                    <td>{{ $showPrice ? number_format($showPrice->price, 0, ',', '.') : 'Chưa có giá' }} VNĐ</td>
                                     <td>01</td>
                                     <td>
                                         <div class="text-warning fs-15">
-                                            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                                                class="ri-star-half-fill"></i><i class="ri-star-line"></i><i
-                                                class="ri-star-line"></i>
+                                            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i><i class="ri-star-line"></i><i class="ri-star-line"></i>
                                         </div>
                                     </td>
-                                    <td class="fw-medium text-end">
-                                        $24.99
-                                    </td>
+                                    <td class="fw-medium text-end">{{ number_format($showTicket->total_price, 0, ',', '.') }} VNĐ</td>
                                 </tr>
-                                <tr class="border-top border-top-dashed">
-                                    <td colspan="3"></td>
-                                    <td colspan="2" class="fw-medium p-0">
-                                        <table class="table table-borderless mb-0">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Sub Total :</td>
-                                                    <td class="text-end">$359.96</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Discount <span class="text-muted">(VELZON15)</span> : :</td>
-                                                    <td class="text-end">-$53.99</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Shipping Charge :</td>
-                                                    <td class="text-end">$65.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Estimated Tax :</td>
-                                                    <td class="text-end">$44.99</td>
-                                                </tr>
-                                                <tr class="border-top border-top-dashed">
-                                                    <th scope="row">Total (USD) :</th>
-                                                    <th class="text-end">$415.96</th>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
+                            @endforeach
+                            <tr class="border-top border-top-dashed">
+                                <td colspan="3"></td>
+                                <td colspan="2" class="fw-medium p-0">
+                                    <table class="table table-borderless mb-0">
+                                        <tbody>
+                                        <tr class="border-top border-top-dashed">
+                                            <th scope="row">Tổng Tiền (VNĐ) :</th>
+                                            <td class="text-end">    {{ number_format($showTicket->total_price, 0, ',', '.') }} VNĐ
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -240,14 +162,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div id="collapseThree" class="accordion-collapse collapse show"
-                                    aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body ms-2 ps-5 pt-0">
-                                        <h6 class="fs-14">RQK Logistics - MFDS1400457854</h6>
-                                        <h6 class="mb-1">Your item has been shipped.</h6>
-                                        <p class="text-muted mb-0">Sat, 18 Dec 2021 - 4.54PM</p>
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="accordion-item border-0">
                                 <div class="accordion-header" id="headingFour">
@@ -292,27 +207,6 @@
         </div>
         <!--end col-->
         <div class="col-xl-3">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex">
-                        <h5 class="card-title flex-grow-1 mb-0"><i
-                                class="mdi mdi-truck-fast-outline align-middle me-1 text-muted"></i> Logistics Details</h5>
-                        <div class="flex-shrink-0">
-                            <a href="javascript:void(0);" class="badge bg-primary-subtle text-primary fs-11">Track
-                                Order</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <lord-icon src="https://cdn.lordicon.com/uetqnvvg.json" trigger="loop"
-                            colors="primary:#405189,secondary:#0ab39c" style="width:80px;height:80px"></lord-icon>
-                        <h5 class="fs-16 mt-2">RQK Logistics</h5>
-                        <p class="text-muted mb-0">ID: MFDS1400457854</p>
-                        <p class="text-muted mb-0">Payment Mode : Debit Card</p>
-                    </div>
-                </div>
-            </div>
             <!--end card-->
 
             <div class="card">

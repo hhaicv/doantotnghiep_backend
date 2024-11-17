@@ -100,32 +100,25 @@
                             <li class="nav-item">
                                 <a class="nav-link active All py-3" data-bs-toggle="tab" id="All" href="#home1"
                                     role="tab" aria-selected="true">
-                                    <i class="ri-store-2-fill me-1 align-bottom"></i> All Orders
+                                    <i class="ri-store-2-fill me-1 align-bottom"></i> Tổng vé đặt
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="Delivered" href="#delivered"
                                     role="tab" aria-selected="false">
-                                    <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Delivered
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link py-3 Pickups" data-bs-toggle="tab" id="Pickups" href="#pickups"
-                                    role="tab" aria-selected="false">
-                                    <i class="ri-truck-line me-1 align-bottom"></i> Pickups <span
-                                        class="badge bg-danger align-middle ms-1">2</span>
+                                    <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Thành công
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Returns" data-bs-toggle="tab" id="Returns" href="#returns"
                                     role="tab" aria-selected="false">
-                                    <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> Returns
+                                    <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> Hoàn vé
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Cancelled" data-bs-toggle="tab" id="Cancelled" href="#cancelled"
                                     role="tab" aria-selected="false">
-                                    <i class="ri-close-circle-line me-1 align-bottom"></i> Cancelled
+                                    <i class="ri-close-circle-line me-1 align-bottom"></i> Hủy
                                 </a>
                             </li>
                         </ul>
@@ -159,8 +152,7 @@
                                                         value="option1">
                                                 </div>
                                             </th>
-                                            <td class="id"><a href="apps-ecommerce-order-details.html"
-                                                    class="fw-medium link-primary">{{ $ticketBooking->order_code }}</a></td>
+                                            <td class="id">{{ $ticketBooking->order_code }}</td>
                                             <td class="date">{{ $ticketBooking->date }}</td>
                                             <td class="route_name">{{ $ticketBooking->route->route_name }}</td>
                                             <td class="amount text-center">{{ $ticketBooking->total_tickets }} Ghế</td>

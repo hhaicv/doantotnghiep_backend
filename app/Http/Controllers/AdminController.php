@@ -55,8 +55,8 @@ class AdminController extends Controller
     public function destroy($id)
     {
         // Tìm người dùng theo ID và xóa
-        $user = Admin::findOrFail($id);
-        $user->delete();
+        $admins = Admin::findOrFail($id);
+        $admins->delete();
 
         // Xử lý yêu cầu Ajax
         if (request()->ajax()) {
@@ -70,9 +70,9 @@ class AdminController extends Controller
     public function statusAdmin(Request $request, $id)
     {
         // Tìm người dùng theo ID và cập nhật trạng thái
-        $user = Admin::findOrFail($id);
-        $user->is_active = $request->input('is_active');
-        $user->save();
+        $admins = Admin::findOrFail($id);
+        $admins->is_active = $request->input('is_active');
+        $admins->save();
 
         return response()->json(['success' => true]);
     }

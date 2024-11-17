@@ -466,10 +466,12 @@ class TicketBookingController extends Controller
 
     public function show(string $id)
     {
-        $data = TicketBooking::query()
+
+        $showTicket = TicketBooking::query()
             ->with(['trip', 'bus', 'route', 'user', 'paymentMethod'])
             ->findOrFail($id);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $showPrice = TicketDetail::where('ticket_booking_id', $id)->first();  // Dùng first() nếu chỉ có 1 giá trị
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showTicket','showPrice'));
     }
 
 

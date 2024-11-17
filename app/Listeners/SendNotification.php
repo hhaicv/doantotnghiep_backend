@@ -29,7 +29,7 @@ class SendNotification implements ShouldQueue
         // Lấy thông tin các điểm bắt đầu và kết thúc
         $startStop = Stop::find($ticketBooking->id_start_stop);
         $endStop = Stop::find($ticketBooking->id_end_stop);
-        dd( $endStop);
+//        dd( $endStop);
         // Kiểm tra sự tồn tại của các điểm dừng
         $startLocation = $startStop ? $startStop->stop_name : 'N/A';
         $endLocation = $endStop ? $endStop->stop_name : 'N/A';
