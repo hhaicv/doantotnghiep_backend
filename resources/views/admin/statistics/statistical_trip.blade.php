@@ -116,8 +116,8 @@
 @endsection
 
 @section('bottom_script')
-    <script src="{{ asset('assets/js/parsley.min.js') }}"></script>
-    <script src="{{asset('assets/js/statistical.js')}}"></script>
+    <script src="{{ asset('theme/admin/assets/js/parsley.min.js') }}"></script>
+    <script src="{{asset('theme/admin/assets/js/statistical.js')}}"></script>
 
     <script type="text/javascript">
         const type_request = '{{request('type')}}';
@@ -155,5 +155,5 @@
             });
         });
     </script>
-    <script type="text/javascript" src="{{asset('assets/js/date_time_filter.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('theme/admin/assets/js/date_time_filter.js') }}"></script>
 @endsection

@@ -71,9 +71,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <h5 class="card-title flex-grow-1 mb-0">Customer Details</h5>
+                        <h5 class="card-title flex-grow-1 mb-0">Tài xế</h5>
                         <div class="flex-shrink-0">
-                            <a href="javascript:void(0);" class="link-secondary">View Profile</a>
+                            <a href="javascript:void(0);" class="link-secondary">Xem thông tin</a>
                         </div>
                     </div>
                 </div>
@@ -82,16 +82,17 @@
                         <li>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-sm rounded">
+                                    <img width="100px" height="70px" src="{{ Storage::url($showTicket->profile_image) }}"
+                                         alt="Hình tài xế">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h6 class="fs-14 mb-1">Joseph Parkers</h6>
+                                    <h6 class="fs-14 mb-1">{{ optional(optional($showTicket->bus)->driver)->name ?? 'Chưa có tài xế' }}</h6>
                                     <p class="text-muted mb-0">Customer</p>
                                 </div>
                             </div>
                         </li>
-                        <li><i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>josephparker@gmail.com</li>
-                        <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>+(256) 245451 441</li>
+                        <li><i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>{{ optional(optional($showTicket->bus)->driver)->email }}</li>
+                        <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>{{ optional(optional($showTicket->bus)->driver)->phone }}</li>
                     </ul>
                 </div>
             </div>

@@ -20,7 +20,7 @@ class StatisticsController extends Controller
 
         // Lọc theo từ khóa (tên chuyến)
         if ($request->has('keyword') && $request->keyword != '') {
-            $conditions[] = ['phone', 'LIKE', '%' . $request->keyword . '%'];
+            $conditions[] = ['name', 'LIKE', '%' . $request->keyword . '%'];
         }
 
         // Lọc theo loại (ngày, tuần, tháng, khoảng thời gian)

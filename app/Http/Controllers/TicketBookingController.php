@@ -469,8 +469,9 @@ class TicketBookingController extends Controller
         }
     }
 
-    public function list()
+    public function list(Request $request)
     {
+
         $data = TicketBooking::with(['route', 'paymentMethod', 'trip'])->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
@@ -479,8 +480,9 @@ class TicketBookingController extends Controller
     {
 
         $showTicket = TicketBooking::query()
-            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod','ticketDetails'])
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod','ticketDetails', 'bus.driver'])
             ->findOrFail($id);
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('showTicket'));
     }
 
