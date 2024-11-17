@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
+use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
 use App\Models\User;
@@ -135,7 +136,7 @@ class StopController extends Controller
             $vnp_Amount = $request->total_price * 100;  // Số tiền thanh toán (VND, nhân với 100)
             $vnp_OrderInfo = "Thanh toán qua VNpay";
             $vnp_OrderType = 'billpayment';
-            $vnp_ReturnUrl = route('admin.vnpay_return');  // URL trả về sau khi thanh toán
+            $vnp_ReturnUrl = route('vnpay_return');  // URL trả về sau khi thanh toán
             $vnp_TxnRef = time();  // Mã giao dịch duy nhất
 
             // Tạo dữ liệu để gửi lên VNPay
@@ -208,11 +209,59 @@ class StopController extends Controller
             ]);
         }
     }
-
-    public function thanks()
+    public function bill(Request $request)
     {
-        echo "thanh toán thành công";
+        // Lấy ID đơn hàng từ query string
+        $orderId = $request->query('order_id');
+
+        // Tìm đơn hàng dựa vào ID
+        $ticketBooking = TicketBooking::with(['trip', 'bus.driver', 'route', 'user', 'paymentMethod', 'ticketDetails'])
+            ->find($orderId);
+
+        // Kiểm tra nếu không tìm thấy đơn hàng
+        if (!$ticketBooking) {
+            return response()->json(['status' => 'error', 'message' => 'Không tìm thấy đơn hàng.'], 404);
+        }
+
+        // Lấy tên điểm bắt đầu và điểm kết thúc từ bảng stops
+        $startStop = Stop::find($ticketBooking->id_start_stop);
+        $endStop = Stop::find($ticketBooking->id_end_stop);
+
+        // Chuẩn bị dữ liệu cần trả về
+        $driver = $ticketBooking->bus->driver;
+        $ticketData = [
+            'name' => $ticketBooking->name,
+            'phone' => $ticketBooking->phone,
+            'email' => $ticketBooking->email,
+            'driver_name' => $driver->name ?? null,
+            'driver_phone' => $driver->phone ?? null,
+            'license_plate' => $ticketBooking->bus->license_plate,
+            'route_name' => $ticketBooking->route->route_name,
+            'start_point' => $startStop->stop_name ?? $ticketBooking->location_start, // Tên điểm bắt đầu
+            'end_point' => $endStop->stop_name ?? $ticketBooking->location_end,       // Tên điểm kết thúc
+            'time_start' => $ticketBooking->trip->time_start ?? null,            // Thời gian khởi hành
+            'point_up' => $ticketBooking->location_start,
+            'point_down' => $ticketBooking->location_end,
+            'date_start' => $ticketBooking->date,
+            'booking_date' => $ticketBooking->created_at->format('Y-m-d'),
+            'name_seat' => $ticketBooking->ticketDetails->pluck('name_seat')->toArray(),
+            'note' => $ticketBooking->note,
+            'ticket_price' => $ticketBooking->total_price,
+            'total_price' => $ticketBooking->total_price,
+            'status' => $ticketBooking->status,
+            'order_code' => $ticketBooking->order_code,
+            'ticket_codes' => $ticketBooking->ticketDetails->pluck('ticket_code')->toArray(),
+        ];
+
+        // Trả về dữ liệu đơn hàng
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Dữ liệu đơn hàng đã được tải.',
+            'data' => $ticketData,
+        ]);
     }
+
+
 
     public function faile()
     {
@@ -254,7 +303,7 @@ class StopController extends Controller
                 $ticketDetail->status = 'booked';
                 $ticketDetail->save();
             }
-            return redirect()->route('thanks')->with('message', 'Thanh toán thành công!');
+            return redirect()->route('bill')->with('message', 'Thanh toán thành công!');
         } else {
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED; // Thanh toán thất bại
             $ticketBooking->save();
@@ -324,9 +373,12 @@ class StopController extends Controller
                 $ticketDetail->status = 'booked';
                 $ticketDetail->save();
             }
-
-
-            return response()->json(['status' => 'success', 'message' => 'Thanh toán thành công!'], 200);
+            return redirect()->to(env('FRONTEND_URL') . '/bill?' . http_build_query([
+                'order_id' => $ticketBooking->id,
+                'status' => 'success',
+                'response_code' => $request->vnp_ResponseCode,
+                'message' => 'Thanh toán thành công'
+            ]));
         } else {
             // Thanh toán thất bại
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED;
@@ -337,19 +389,9 @@ class StopController extends Controller
             foreach ($ticketDetails as $ticketDetail) {
                 $ticketDetail->delete();
             }
-
-            return response()->json(['status' => 'error', 'message' => 'Thanh toán thất bại.'], 400);
         }
     }
 
-
-
-
-
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //

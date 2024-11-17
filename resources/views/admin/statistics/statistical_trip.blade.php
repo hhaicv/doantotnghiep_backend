@@ -60,7 +60,7 @@
                                 <!-- Nút lọc -->
                                 <div class="col-md-2">
                                     <div class="form-group pull-right">
-                                        <a href="{{ route('admin.statistics.tripStatistical') }}" class="btn btn-blue-grey mr-2">Hủy lọc</a>
+                                        <a href="{{ route('admin.statistics.tripStatistical') }}" class="btn btn-blue-grey mr-2" style="background-color: #5a5c69; color: #fff;">Hủy lọc</a>
                                         <button id="submit_filter" type="submit" class="btn btn-primary">Lọc</button>
                                     </div>
                                 </div>
