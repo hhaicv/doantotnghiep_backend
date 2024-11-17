@@ -2,6 +2,9 @@
 
 namespace App\Listeners;
 
+
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use App\Events\OrderTicket;
 use App\Models\Stop;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,17 +14,10 @@ use Illuminate\Support\Facades\Mail;
 
 class SendNotification implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     */
     public function __construct()
     {
         //
     }
-
-    /**
-     * Handle the event.
-     */
     public function handle(OrderTicket $event): void
     {
         $ticketBooking = $event->ticket;
@@ -29,6 +25,8 @@ class SendNotification implements ShouldQueue
         $endStop = Stop::find($ticketBooking->id_end_stop);
 
         $driver = $ticketBooking->bus->driver;
+
+        // Dữ liệu chung
         $data = [
             'name' => $ticketBooking->name,
             'phone' => $ticketBooking->phone,
@@ -45,25 +43,69 @@ class SendNotification implements ShouldQueue
             'date_start' => $ticketBooking->date,
             'payment_method' => $ticketBooking->paymentMethod->name,
             'booking_date' => $ticketBooking->created_at->format('Y-m-d'),
-            'name_seat' => $ticketBooking->ticketDetails->pluck('name_seat')->toArray(),
             'note' => $ticketBooking->note,
             'ticket_price' => $ticketBooking->total_price,
             'total_price' => $ticketBooking->total_price,
             'status' => $ticketBooking->status,
             'order_code' => $ticketBooking->order_code,
-            'ticket_codes' => $ticketBooking->ticketDetails->pluck('ticket_code')->toArray(),
         ];
+
+        $ticketDetails = $ticketBooking->ticketDetails->map(function ($ticketDetail) use ($ticketBooking, $startStop, $endStop) {
+            return [
+                'ticket_code' => $ticketDetail->ticket_code,
+                'name_seat' => $ticketDetail->name_seat,
+                'ticket_price' => $ticketBooking->total_price, // Hoặc lấy giá cụ thể cho vé nếu có
+                'route_name' => $ticketBooking->route->route_name,
+                'start_point' => $startStop->stop_name ?? $ticketBooking->location_start,
+                'end_point' => $endStop->stop_name ?? $ticketBooking->location_end,
+                'qr_code_path' => null, // Thêm khóa qr_code_path vào đây
+
+            ];
+        });
+
+
+        // Tạo mã QR cho mỗi vé
+        $qrPaths = [];
+        foreach ($ticketDetails as $key => $ticketDetail) {
+            $qrData = "Mã đơn hàng: {$ticketBooking->order_code}, Mã vé: {$ticketDetail['ticket_code']}, Vị trí ghế: {$ticketDetail['name_seat']},
+            Tuyến đường: {$ticketDetail['route_name']}, Chặng: {$ticketDetail['start_point']} - {$ticketDetail['end_point']}";
+
+            $qrCode = new QrCode($qrData);
+            $writer = new PngWriter();
+            $fileName = "qr_code_{$ticketDetail['ticket_code']}.png";
+            $path = storage_path("app/public/qr_codes/{$fileName}");
+
+            // Lưu mã QR vào file
+            $writer->write($qrCode)->saveToFile($path);
+
+            // Cập nhật qr_code_path trong ticketDetails
+            $ticketDetails[$key]['qr_code_path'] = $path;
+            $qrPaths[] = $path;
+        }
+
+        // Gửi email với thông tin và mã QR
         try {
-            Mail::send('mail', $data, function ($message) use ($data) {
+            Mail::send('mail', ['data' => $data, 'ticketDetails' => $ticketDetails], function ($message) use ($data, $qrPaths) {
                 $message->to($data['email'], $data['name'])
                     ->subject('Thông tin đơn hàng');
+
+                // Đính kèm mã QR vào email
+                foreach ($qrPaths as $qrPath) {
+                    $message->attach($qrPath, [
+                        'as' => basename($qrPath),
+                        'mime' => 'image/png',
+                    ]);
+                }
             });
 
             // Log khi gửi email thành công
             Log::info("Email đã được gửi đến: {$data['email']}.");
         } catch (\Exception $e) {
-            // Log lỗi khi gửi email thất bại
-            Log::error("Lỗi khi gửi email: " . $e->getMessage());
+            Log::error("Lỗi khi gửi email: " . $e->getMessage(), [
+                'exception' => $e, // Include the full exception details
+                'data' => $data,    // Include the data being passed to the email
+                'ticketDetails' => $ticketDetails, // Optionally log the ticket details as well
+            ]);
         }
     }
 }
