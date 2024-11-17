@@ -32,4 +32,10 @@ class Driver extends Authenticatable
         'date_of_birth' => 'date',
         'is_active' => 'boolean',
     ];
+
+
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class, 'driver_id');
+    }
 }

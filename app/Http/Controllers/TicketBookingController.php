@@ -478,10 +478,18 @@ class TicketBookingController extends Controller
     public function show(string $id)
     {
         $data = TicketBooking::query()
-            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod'])
+            ->with([
+                'trip',
+                'bus.driver', 
+                'route',
+                'user',
+                'paymentMethod'
+            ])
             ->findOrFail($id);
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
+
 
 
     /**

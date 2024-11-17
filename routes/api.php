@@ -28,14 +28,9 @@ Route::apiResource('stops', StopController::class);
 
 Route::apiResource('home', HomeController::class);
 
-Route::get('/thanks',         [StopController::class, 'thanks'])->name('thanks');
-Route::get('/faile',         [StopController::class, 'faile'])->name('faile');
+Route::get('/bill',         [StopController::class, 'bill'])->name('bill');
 Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
 Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
-
-
-// Route::post('promotions', [PromotionController::class, 'store'])->name('promotions.store');
-
 
 
 

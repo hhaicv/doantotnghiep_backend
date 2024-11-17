@@ -58,6 +58,7 @@ class TicketBooking extends Model
         return $this->belongsTo(Bus::class, 'bus_id');
     }
 
+
     // Định nghĩa quan hệ với Route
     public function route()
     {
@@ -80,4 +81,6 @@ class TicketBooking extends Model
     {
         return $this->hasMany(TicketDetail::class, 'ticket_booking_id');
     }
+
+    
 }
