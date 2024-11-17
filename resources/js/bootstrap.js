@@ -29,6 +29,18 @@ window.Echo = new Echo({
     encrypted: true
 });
 
+import Echo from 'laravel-echo';
+
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    forceTLS: true
+});
+
 // Thay `userId` bằng ID thực của người dùng (ví dụ bạn có thể truyền từ backend vào frontend).
 let userId =  3    ;
 

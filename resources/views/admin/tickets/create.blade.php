@@ -33,18 +33,6 @@
 
         }
     </style>
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công',
-                    text: "{{ session('success') }}"
-                });
-            });
-        </script>
-    @endif
-
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
@@ -651,15 +639,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" type="checkbox" id="formCheckZalo"
-                                                checked>
-                                            <label class="form-check-label" for="formCheckZalo">
-                                                Gửi thông tin qua Zalo
-                                            </label>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="d-flex align-items-start gap-3 mt-4">
 

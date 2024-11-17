@@ -26,10 +26,9 @@ class TicketBookingController extends Controller
     {
 
         $data = Stop::query()->get();
-
-
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
+
 
     public function uploadTicket(Request $request)
     {
@@ -146,6 +145,7 @@ class TicketBookingController extends Controller
 
     public function store(StoreTicketBookingRequest $request)
     {
+
         if ($request->has('payment_method_id') && $request->payment_method_id == 2) {
             $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             $partnerCode = 'MOMOBKUN20180529';
@@ -316,14 +316,13 @@ class TicketBookingController extends Controller
                     ]);
                 }
                 event(new OrderTicket($ticketBooking));
-                return redirect()->back()->with('success', 'Đặt vé thành công!');
+                $data = Stop::query()->get();
+                return redirect()
+                    ->route('admin.tickets.index') // Thay bằng route của trang 'create'
+                    ->with('success', 'Đặt vé thành công!')
+                    ->with('data', $data);
             });
         }
-    }
-
-    public function thanks()
-    {
-        echo "thanh toán thành công";
     }
 
     private function execPostRequest($url, $data)
@@ -364,8 +363,11 @@ class TicketBookingController extends Controller
                 $ticketDetail->status = 'booked';
                 $ticketDetail->save();
             }
-
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thành công!');
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('success', 'Đặt vé thành công!')
+                ->with('data', $data);
         } else {
             // Thanh toán thất bại
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED;
@@ -375,7 +377,11 @@ class TicketBookingController extends Controller
             foreach ($ticketDetails as $ticketDetail) {
                 $ticketDetail->delete();
             }
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('failes', 'Đặt vé thất bại!')
+                ->with('data', $data);
         }
     }
     public function vnpay_return(Request $request)
@@ -416,6 +422,8 @@ class TicketBookingController extends Controller
         // Tìm kiếm đơn hàng từ cơ sở dữ liệu
         $ticketBooking = TicketBooking::where('order_code', $orderId)->first();
 
+
+
         // Nếu không tìm thấy đơn hàng, trả về thông báo lỗi
         if (!$ticketBooking) {
 
@@ -440,10 +448,12 @@ class TicketBookingController extends Controller
                 $ticketDetail->status = 'booked';
                 $ticketDetail->save();
             }
-
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thành công!');
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('success', 'Đặt vé thành công!')
+                ->with('data', $data);
         } else {
-
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED;
             $ticketBooking->save();
             $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
@@ -451,12 +461,13 @@ class TicketBookingController extends Controller
             foreach ($ticketDetails as $ticketDetail) {
                 $ticketDetail->delete();
             }
-
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('failes', 'Đặt vé thất bại!')
+                ->with('data', $data);
         }
     }
-
-
 
     public function list()
     {

@@ -60,75 +60,79 @@
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
                 <select name="route_id" id="routeSelect" class="form-control" multiple>
                     <option value="">Chọn tuyến đường</option>
-                    @foreach($routes as $route)
-                        <option value="{{ $route->id }}" 
+                    @foreach ($routes as $route)
+                        <option value="{{ $route->id }}"
                             {{ isset($promotionRoute) && in_array($route->id, $promotionRoute) ? 'selected' : '' }}>
                             {{ $route->route_name }}
                         </option>
                     @endforeach
                 </select>
             </div>
-            
-            
+
+
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
-                <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc" 
-                       min="{{ date('Y-m-d') }}">
-            </div> 
+                <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc"
+                    min="{{ date('Y-m-d') }}">
+            </div>
             <div class="col-md-6">
                 <label for="userSelect" class="form-label text-muted">Người dùng:</label>
                 <select name="users[]" id="userSelect" class="form-control" multiple>
-                    @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ in_array($user->id, $promotionUsers ?? []) ? 'selected' : '' }}>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}"
+                            {{ in_array($user->id, $promotionUsers ?? []) ? 'selected' : '' }}>
                             {{ $user->name }}
 
 
-            <div class="col-md-6">
-                <label for="endDateInput" class="form-label">Ngày kết thúc</label>
-                <input type="date" class="form-control" name="end_date" value="{{ old('end_date') }}"
-                    placeholder="Ngày kết thúc" min="{{ date('Y-m-d') }}">
-                @error('end_date')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="col-md-6">
-                <label for="userSelect" class="form-label">Người dùng</label>
-                <select name="user_id" id="userSelect" class="form-control">
-                    <option value="">Chọn người dùng</option> <!-- Option mặc định -->
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                            {{ $user->name }} <!-- Hoặc bất kỳ thuộc tính nào bạn muốn hiển thị -->
+                            <div class="col-md-6">
+                                <label for="endDateInput" class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" name="end_date" value="{{ old('end_date') }}"
+                                    placeholder="Ngày kết thúc" min="{{ date('Y-m-d') }}">
+                                @error('end_date')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="userSelect" class="form-label">Người dùng</label>
+                                <select name="user_id" id="userSelect" class="form-control">
+                                    <option value="">Chọn người dùng</option> <!-- Option mặc định -->
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}"
+                                            {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                            {{ $user->name }} <!-- Hoặc bất kỳ thuộc tính nào bạn muốn hiển thị -->
 
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="descriptionInput" class="form-label">Mô tả danh mục</label>
-                <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2">{{ old('description') }}</textarea>
-                @error('description')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="col-md-6">
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="descriptionInput" class="form-label">Mô tả danh mục</label>
+                                <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2">{{ old('description') }}</textarea>
+                                @error('description')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
 
-                <label for="newCustomerOnly" class="form-label">Chỉ áp dụng cho khách hàng mới</label>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="newCustomerOnly" name="new_customer_only" value="1">
-                    <label class="form-check-label" for="newCustomerOnly">On</label>
-                </div>
-            </div>
-            
+                                <label for="newCustomerOnly" class="form-label">Chỉ áp dụng cho khách hàng mới</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="newCustomerOnly"
+                                        name="new_customer_only" value="1">
+                                    <label class="form-check-label" for="newCustomerOnly">On</label>
+                                </div>
+                            </div>
 
-                <label for="routeSelect" class="form-label">Tuyến đường</label>
-                <select class="form-control" name="route_id" id="routeSelect">
-                    <option value="">Chọn tuyến đường</option>
-                    @foreach ($routes as $route)
-                        <option value="{{ $route->id }}" {{ old('route_id') == $route->id ? 'selected' : '' }}>
-                            {{ $route->route_name }}
-                        </option>
-                    @endforeach
-                </select>
+
+                            <label for="routeSelect" class="form-label">Tuyến đường</label>
+                            <select class="form-control" name="route_id" id="routeSelect">
+                                <option value="">Chọn tuyến đường</option>
+                                @foreach ($routes as $route)
+                                    <option value="{{ $route->id }}"
+                                        {{ old('route_id') == $route->id ? 'selected' : '' }}>
+                                        {{ $route->route_name }}
+                                    </option>
+                                @endforeach
+                            </select>
             </div>
 
             <!-- Loại xe -->
@@ -157,7 +161,6 @@
                 </div>
             </div>
         </form>
-
     </div>
 @endsection
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
@@ -165,8 +168,7 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const userSelect = document.getElementById('userSelect');
         const choices = new Choices(userSelect, {
             removeItemButton: true, // Thêm nút xóa cho mỗi mục đã chọn
@@ -174,7 +176,7 @@
             maxItemCount: 5, // Giới hạn số người dùng có thể chọn, nếu cần
         });
     });
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const userSelect = document.getElementById('routeSelect');
         const choices = new Choices(userSelect, {
             removeItemButton: true, // Thêm nút xóa cho mỗi mục đã chọn
@@ -182,19 +184,20 @@
             maxItemCount: 5, // Giới hạn số người dùng có thể chọn, nếu cần
         });
     });
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    function validateDiscount() {
-        const discountInput = document.getElementById('discountInput');
-        let value = parseInt(discountInput.value);
+        function validateDiscount() {
+            const discountInput = document.getElementById('discountInput');
+            let value = parseInt(discountInput.value);
 
-        // Kiểm tra giá trị nếu nằm ngoài khoảng 1-100
-        if (value < 1) {
-            discountInput.value = 1;
-        } else if (value > 100) {
-            discountInput.value = 100;
+            // Kiểm tra giá trị nếu nằm ngoài khoảng 1-100
+            if (value < 1) {
+                discountInput.value = 1;
+            } else if (value > 100) {
+                discountInput.value = 100;
+            }
         }
-    }
+    });
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

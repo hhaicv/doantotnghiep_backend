@@ -38,7 +38,7 @@ class PromotionController extends Controller
         $buses = Bus::all();
         $users = User::all();
 
-     
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('routes', 'buses', 'users'));
     }
 
