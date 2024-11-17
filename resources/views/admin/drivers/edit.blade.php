@@ -66,12 +66,8 @@
                 <!-- Mật khẩu -->
                 <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Mật khẩu</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu mới">
-                        {{-- <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                            <i class="fa fa-eye" id="toggleIcon"></i>
-                        </button> --}}
-                    </div>
+                    <input type="text" class="form-control" id="password" name="password" value="{{ old('password', $data->password) }}"
+                        placeholder="Nhập mật khẩu mới">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

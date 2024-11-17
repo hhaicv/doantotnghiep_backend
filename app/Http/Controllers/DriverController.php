@@ -38,10 +38,7 @@ class DriverController extends Controller
     {
         // Lấy tất cả dữ liệu từ request ngoại trừ profile_image
         $data = $request->except('profile_image');
-        // Mã hóa mật khẩu
-        $data['password'] = Hash::make($request->password);
 
-        // Khởi tạo đối tượng Driver
         $model = new Driver($data);
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = Storage::put(self::PATH_UPLOAD, $request->file('profile_image'));
@@ -78,17 +75,6 @@ class DriverController extends Controller
     public function update(UpdateDriverRequest $request, string $id)
     {
         $data = Driver::query()->findOrFail($id);
-
-        // Lưu mật khẩu cũ nếu không thay đổi mật khẩu
-        $oldPassword = $data->password;
-
-        // Cập nhật mật khẩu nếu có thay đổi
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        } else {
-            // Nếu không thay đổi mật khẩu, giữ mật khẩu cũ
-            $data['password'] = $oldPassword;
-        }
 
         // Định dạng lại ngày sinh trước khi cập nhật (nếu cần)
         if ($request->filled('date_of_birth')) {

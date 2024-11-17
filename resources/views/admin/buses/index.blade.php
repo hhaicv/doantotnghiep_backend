@@ -35,7 +35,6 @@
                                 <th>Hình ảnh</th>
                                 <th>Xe</th>
                                 <th>Tài xế</th>
-                                <th>Mã GPS</th>
                                 <th>SĐT</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
@@ -49,11 +48,12 @@
                                             style="width: 170px;height: 100px;object-fit: cover"></td>
                                     <td>
                                         <p> {{ $item->license_plate }} - {{ $item->total_seats }} Chỗ</p>
-                                        {{ $item->name_bus }}
+                                        <p> {{ $item->name_bus }}</p>
+                                        <p> {{ $item->model }} </p>
                                     </td>
-                                    <td>{{ $item->model }}</td>
-                                    <td>{{ $item->gps_code }}</td>
-                                    <td>{{ $item->phone }}</td>
+                                    <td>{{ $item->driver ? $item->driver->name : 'No Driver' }}</td>
+
+                                    <td>{{ $item->driver ? $item->driver->phone : 'No Phone' }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"

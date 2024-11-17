@@ -21,7 +21,7 @@ class Trip extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
-  
+
 
     public function stages()
     {
@@ -39,11 +39,6 @@ class Trip extends Model
         return $this->belongsTo(Bus::class);
     }
 
-    // Mối quan hệ với booked_seats
-    public function bookedSeats()
-    {
-        return $this->hasMany(BookedSeat::class, 'trip_id');
-    }
 
     // Mối quan hệ với ticket_bookings
     public function ticketBookings()
