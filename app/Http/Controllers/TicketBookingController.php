@@ -426,8 +426,6 @@ class TicketBookingController extends Controller
 
         // Nếu không tìm thấy đơn hàng, trả về thông báo lỗi
         if (!$ticketBooking) {
-
-
             // Trả về thông báo lỗi cho người dùng
             return response()->json(['message' => 'Không tìm thấy đơn hàng. Vui lòng kiểm tra lại hoặc liên hệ hỗ trợ.'], 404);
         }
@@ -448,6 +446,7 @@ class TicketBookingController extends Controller
                 $ticketDetail->status = 'booked';
                 $ticketDetail->save();
             }
+            event(new OrderTicket($ticketBooking));
             $data = Stop::query()->get();
             return redirect()
                 ->route('admin.tickets.index')
@@ -480,7 +479,7 @@ class TicketBookingController extends Controller
         $data = TicketBooking::query()
             ->with([
                 'trip',
-                'bus.driver', 
+                'bus.driver',
                 'route',
                 'user',
                 'paymentMethod'

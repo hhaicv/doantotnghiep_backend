@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
+use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
 use App\Models\User;
@@ -208,7 +209,6 @@ class StopController extends Controller
             ]);
         }
     }
-
     public function bill(Request $request)
     {
         // Lấy ID đơn hàng từ query string
@@ -223,6 +223,10 @@ class StopController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Không tìm thấy đơn hàng.'], 404);
         }
 
+        // Lấy tên điểm bắt đầu và điểm kết thúc từ bảng stops
+        $startStop = Stop::find($ticketBooking->id_start_stop);
+        $endStop = Stop::find($ticketBooking->id_end_stop);
+
         // Chuẩn bị dữ liệu cần trả về
         $driver = $ticketBooking->bus->driver;
         $ticketData = [
@@ -233,10 +237,13 @@ class StopController extends Controller
             'driver_phone' => $driver->phone ?? null,
             'license_plate' => $ticketBooking->bus->license_plate,
             'route_name' => $ticketBooking->route->route_name,
+            'start_point' => $startStop->stop_name ?? $ticketBooking->location_start, // Tên điểm bắt đầu
+            'end_point' => $endStop->stop_name ?? $ticketBooking->location_end,       // Tên điểm kết thúc
+            'time_start' => $ticketBooking->trip->time_start ?? null,            // Thời gian khởi hành
+            'point_up' => $ticketBooking->location_start,
+            'point_down' => $ticketBooking->location_end,
             'date_start' => $ticketBooking->date,
             'booking_date' => $ticketBooking->created_at->format('Y-m-d'),
-            'start_point' => $ticketBooking->location_start,
-            'end_point' => $ticketBooking->location_end,
             'name_seat' => $ticketBooking->ticketDetails->pluck('name_seat')->toArray(),
             'note' => $ticketBooking->note,
             'ticket_price' => $ticketBooking->total_price,
@@ -253,6 +260,8 @@ class StopController extends Controller
             'data' => $ticketData,
         ]);
     }
+
+
 
     public function faile()
     {
