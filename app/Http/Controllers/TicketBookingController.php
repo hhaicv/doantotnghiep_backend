@@ -479,20 +479,21 @@ class TicketBookingController extends Controller
     {
 
         $showTicket = TicketBooking::query()
-            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod'])
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod','ticketDetails'])
             ->findOrFail($id);
-        $showPrice = TicketDetail::where('ticket_booking_id', $id)->first();  // Dùng first() nếu chỉ có 1 giá trị
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showTicket','showPrice'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showTicket'));
     }
 
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TicketBooking $ticketBooking)
+    public function edit(string $id)
     {
-        $data = TicketBooking::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $showPayment = TicketBooking::query()
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod','ticketDetails'])
+            ->findOrFail($id);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showPayment'));
     }
 
     /**

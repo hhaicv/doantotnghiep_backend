@@ -25,15 +25,16 @@ return new class extends Migration
 
             $table->unsignedBigInteger('bus_type_id');
             $table->boolean('new_customer_only')->default(0);
-            
+
 
             $table->timestamps();
             $table->softDeletes(); // Thêm dòng này để sử dụng soft deletes
         });
-
     }
 
- 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('promotions');

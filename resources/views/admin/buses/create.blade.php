@@ -50,13 +50,13 @@
                 @enderror
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Số điện thoại</label>
-                <input type="number" class="form-control" id="icon" name="phone" placeholder="Nhập số điện thoại"
-                    value="{{ old('phone') }}">
-                @error('phone')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-
+                <label for="fullnameInput" class="form-label">Tài xế</label>
+                <select class="form-select" aria-label="Default select example" name="driver_id">
+                    @foreach ($drivers as $driver)
+                        <option value="{{ $driver->id }}" {{ old('driver_id') == $driver->id ? 'selected' : '' }}>
+                            {{ $driver->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="col mt-6">
                 <h5>Image</h5>
@@ -79,15 +79,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="col-mt-3">
-                    <br>
-                    <label class="form-label" for="fare_multiplier">Mã GPS</label>
-                    <input type="text" class="form-control" name="gps_code" value="{{ old('gps_code') }}"
-                        placeholder="Nhập mã GPS">
-                    @error('gps_code')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                
             </div>
     </div>
     <div class="col-md-12">

@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class TripController extends Controller
 {
     const PATH_VIEW = 'admin.trips.';
-    
+
     public function index()
     {
         $data = Trip::with(['route', 'bus'])->get();
@@ -25,7 +25,6 @@ class TripController extends Controller
     public function create()
     {
 
-        // cái này là do anh check đk thôi em kh quan tâm nhé
         $buses = Bus::query()->where('is_active', false)->get();
         $routes = Route::query()->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('buses', 'routes'));

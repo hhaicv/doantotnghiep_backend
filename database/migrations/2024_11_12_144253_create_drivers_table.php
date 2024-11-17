@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('address')->nullable();      // Địa chỉ
             $table->string('profile_image')->nullable(); // Đường dẫn ảnh đại diện
             $table->boolean('is_active')->default(0); //trạng thái
-
             $table->timestamps();
         });
     }

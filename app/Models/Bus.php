@@ -16,9 +16,8 @@ class Bus extends Model
         'model',
         'license_plate',
         'total_seats',
-        'gps_code',
+        'driver_id',
         'image',
-        'phone',
         'description',
         'is_active',
     ];
@@ -26,4 +25,9 @@ class Bus extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class, 'driver_id');
+    }
 }
