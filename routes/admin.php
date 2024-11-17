@@ -15,8 +15,6 @@ use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
-use App\Http\Controllers\SeatController;
-use App\Http\Controllers\VnpayController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->as('admin.')->group(function () {
@@ -81,6 +79,5 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('/thanks',         [TicketBookingController::class, 'thanks'])->name('thanks');
     Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
-
-  
+    
 });
