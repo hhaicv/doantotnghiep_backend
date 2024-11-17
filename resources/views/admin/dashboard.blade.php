@@ -21,11 +21,11 @@
 
                 <div class="row">
                     @foreach ([
-                        ['label' => 'Tổng doanh thu', 'value' => number_format($totalRevenue, 0, ',', '.'), 'icon' => 'bx-dollar-circle', 'route' => route('admin.statistics.tripStatistical')],
-                        ['label' => 'Tổng vé đặt', 'value' => $totalTickets, 'icon' => 'bx-shopping-bag', 'route' => route('admin.statistics.tripStatistical')],
-                        ['label' => 'Khách hàng', 'value' => $totalUser, 'icon' => 'bx-user-circle', 'route' => route('admin.users.customers')],
-                        ['label' => 'Tổng xe', 'value' => $totalBus, 'icon' => 'fas fa-bus', 'route' => route('admin.buses.index')]
-                    ] as $stat)
+                                ['label' => 'Tổng doanh thu', 'value' => number_format($totalRevenue, 0, ',', '.'), 'icon' => 'bx-dollar-circle', 'route' => route('admin.statistics.tripStatistical')],
+                                ['label' => 'Tổng vé đặt', 'value' => $totalTickets, 'icon' => 'bx-shopping-bag', 'route' => route('admin.statistics.tripStatistical')],
+                                ['label' => 'Khách hàng', 'value' => $totalUser, 'icon' => 'bx-user-circle', 'route' => route('admin.users.customers')],
+                                ['label' => 'Tổng xe', 'value' => $totalBus, 'icon' => 'fas fa-bus', 'route' => route('admin.buses.index')]
+                            ] as $stat)
                         <div class="col-xl-3 col-md-6">
                             <div class="card card-animate">
                                 <div class="card-body">
@@ -37,20 +37,34 @@
                                     <div class="d-flex align-items-end justify-content-between mt-4">
                                         <div>
                                             <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                                <span>{{ $stat['value'] }}</span>
+                            <span>
+                                @if($stat['label'] == 'Tổng doanh thu')
+                                    {{ $stat['value'] }} VNĐ
+                                @else
+                                    {{ $stat['value'] }}
+                                @endif
+                            </span>
                                             </h4>
-                                            <a href="{{ $stat['route'] }}" class="text-decoration-underline">Xem chi tiết</a>
+                                            <a href="{{ $stat['route'] }}" class="text-decoration-underline">Xem chi
+                                                tiết</a>
                                         </div>
                                         <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-success-subtle rounded fs-3">
-                                                <i class="bx {{ $stat['icon'] }} text-success"></i>
-                                            </span>
+                        <span class="avatar-title bg-success-subtle rounded fs-3">
+                            <!-- Thêm màu xanh cho icon của "Tổng xe" -->
+                            @if($stat['label'] == 'Tổng xe')
+                                <i class="fas fa-bus text-success"></i> <!-- Màu xanh cho icon xe buýt -->
+                            @else
+                                <i class="bx {{ $stat['icon'] }} text-success"></i>
+                            @endif
+                        </span>
                                         </div>
                                     </div>
                                 </div><!-- end card body -->
                             </div><!-- end card -->
                         </div><!-- end col -->
                     @endforeach
+
+
                 </div><!-- end row -->
 
                 <div class="row">
@@ -215,7 +229,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val + ' vé';
                     }
                 }
