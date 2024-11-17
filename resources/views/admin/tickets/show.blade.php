@@ -72,9 +72,6 @@
                 <div class="card-header">
                     <div class="d-flex">
                         <h5 class="card-title flex-grow-1 mb-0">Tài xế</h5>
-                        <div class="flex-shrink-0">
-                            <a href="javascript:void(0);" class="link-secondary">Xem thông tin</a>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body">

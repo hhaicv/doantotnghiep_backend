@@ -4,17 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
-use App\Http\Requests\UpdateTicketBookingRequest;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
 use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class StopController extends Controller
@@ -373,6 +370,7 @@ class StopController extends Controller
                 $ticketDetail->status = 'booked';
                 $ticketDetail->save();
             }
+            event(new OrderTicket($ticketBooking));
             return redirect()->to(env('FRONTEND_URL') . '/bill?' . http_build_query([
                 'order_id' => $ticketBooking->id,
                 'status' => 'success',

@@ -6,13 +6,11 @@ use App\Events\OrderTicket;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
-use App\Models\Payment;
 use App\Models\PaymentMethod;
 
 use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
