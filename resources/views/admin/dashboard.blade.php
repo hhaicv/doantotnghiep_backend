@@ -172,7 +172,7 @@
                 intersect: false,
                 y: {
                     formatter: function (val) {
-                        return val.toLocaleString('vi-VN') + ' VNĐ';
+                        return val.toLocaleString('vi-VN') + ' Vé';
                     }
                 }
             },
