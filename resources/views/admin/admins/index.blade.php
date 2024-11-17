@@ -24,6 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
+                    <a class="btn btn-primary mb-3" href="{{ route('admin.admins.create') }}">Thêm mới quản trị</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -32,8 +33,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Tên</th>
-                            <th>Quyền</th>
                             <th>Email</th>
+                            <th>Quyền</th>
                             <th>Trạng Thái</th>
                             <th>Ngày tạo</th>
                             <th>Action</th>

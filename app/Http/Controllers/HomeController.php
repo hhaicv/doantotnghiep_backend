@@ -26,8 +26,16 @@ class HomeController extends Controller
             ->orderBy('month', 'asc')
             ->get();
 
+        $topRoutes = TicketBooking::with('route') // Giả sử có quan hệ 'route' trong model TicketBooking
+        ->selectRaw('route_id, COUNT(*) as count')
+            ->groupBy('route_id')
+            ->orderBy('count', 'desc')
+            ->take(5)
+            ->get();
+//        dd($topRoutes->toArray());
+
         // Truyền dữ liệu vào view
-        return view('admin.dashboard', compact('totalRevenue', 'totalTickets', 'totalUser','monthlyData','totalBus'));
+        return view('admin.dashboard', compact('totalRevenue', 'totalTickets', 'totalUser','monthlyData','totalBus','topRoutes'));
     }
 
 

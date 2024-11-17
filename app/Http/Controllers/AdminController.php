@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Requests\StoreAdminRequest;
@@ -16,13 +17,40 @@ class AdminController extends Controller
         $admins = Admin::all();
         return view(self::PATH_VIEW . 'index', compact('admins'));
     }
+    public function create()
+    {
+        $roles = Role::all();
+
+        // Trả về view thêm mới tài khoản
+        return view(self::PATH_VIEW . 'create', compact('roles'));
+    }
+
+    public function store(StoreAdminRequest $request)
+    {
+        // Lấy dữ liệu từ form
+        $model = $request->all();
+
+        // Mã hóa mật khẩu
+        $model['password'] = bcrypt($request->password);
+
+        // Tạo mới tài khoản quản trị
+        $admin = Admin::create($model);
+
+        if ($admin) {
+            return redirect()->route('admin.admins.index')->with('success', 'Tài khoản quản trị đã được tạo thành công.');
+        } else {
+            return redirect()->route('admin.admins.index')->with('error', 'Không thể tạo tài khoản quản trị.');
+        }
+    }
 
 
     public function edit($id)
     {
         // Tìm người dùng theo ID
         $model = Admin::findOrFail($id);
-        return view(self::PATH_VIEW . 'edit', compact('model')); // Không cần role nữa
+        $roles = Role::all();
+
+        return view(self::PATH_VIEW . 'edit', compact('model','roles')); // Không cần role nữa
     }
 
     public function update(UpdateAdminRequest $request, $id)
