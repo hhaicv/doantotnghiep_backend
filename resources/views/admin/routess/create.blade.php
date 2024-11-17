@@ -67,7 +67,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Giá Tuyến</label>
-                            <input type="number" class="form-control mt-2" name="route_price" placeholder="Nhập thời gian"
+                            <input type="number" class="form-control mt-2" name="route_price" placeholder="Nhập gias tuyến"
                                 value="{{ old('route_price') }}">
                             @error('route_price')
                                 <span class="text-danger">{{ $message }}</span>

@@ -8,7 +8,6 @@ use Endroid\QrCode\Writer\PngWriter;
 use App\Events\OrderTicket;
 use App\Models\Stop;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -50,25 +49,11 @@ class SendNotification implements ShouldQueue
             'order_code' => $ticketBooking->order_code,
         ];
 
-        $ticketDetails = $ticketBooking->ticketDetails->map(function ($ticketDetail) use ($ticketBooking, $startStop, $endStop) {
-            return [
-                'ticket_code' => $ticketDetail->ticket_code,
-                'name_seat' => $ticketDetail->name_seat,
-                'ticket_price' => $ticketBooking->total_price, // Hoặc lấy giá cụ thể cho vé nếu có
-                'route_name' => $ticketBooking->route->route_name,
-                'start_point' => $startStop->stop_name ?? $ticketBooking->location_start,
-                'end_point' => $endStop->stop_name ?? $ticketBooking->location_end,
-                'qr_code_path' => null, // Thêm khóa qr_code_path vào đây
-
-            ];
-        });
-
-
-        // Tạo mã QR cho mỗi vé
-        $qrPaths = [];
-        foreach ($ticketDetails as $key => $ticketDetail) {
+        // Sử dụng map() để tạo một collection mới với qr_code_path
+        $ticketDetails = $ticketBooking->ticketDetails->map(function ($ticketDetail) use ($ticketBooking, $startStop, $endStop, &$qrPaths) {
+            // Dữ liệu cho mã QR
             $qrData = "Mã đơn hàng: {$ticketBooking->order_code}, Mã vé: {$ticketDetail['ticket_code']}, Vị trí ghế: {$ticketDetail['name_seat']},
-            Tuyến đường: {$ticketDetail['route_name']}, Chặng: {$ticketDetail['start_point']} - {$ticketDetail['end_point']}";
+        Tuyến đường: {$ticketDetail['route_name']}, Chặng: {$ticketDetail['start_point']} - {$ticketDetail['end_point']}";
 
             $qrCode = new QrCode($qrData);
             $writer = new PngWriter();
@@ -78,10 +63,14 @@ class SendNotification implements ShouldQueue
             // Lưu mã QR vào file
             $writer->write($qrCode)->saveToFile($path);
 
-            // Cập nhật qr_code_path trong ticketDetails
-            $ticketDetails[$key]['qr_code_path'] = $path;
+            // Thêm qr_code_path vào phần tử ticketDetail và trả lại phần tử đã thay đổi
+            $ticketDetail['qr_code_path'] = $path;
+
+            // Thêm vào danh sách qrPaths
             $qrPaths[] = $path;
-        }
+
+            return $ticketDetail;
+        });
 
         // Gửi email với thông tin và mã QR
         try {
@@ -102,9 +91,9 @@ class SendNotification implements ShouldQueue
             Log::info("Email đã được gửi đến: {$data['email']}.");
         } catch (\Exception $e) {
             Log::error("Lỗi khi gửi email: " . $e->getMessage(), [
-                'exception' => $e, // Include the full exception details
-                'data' => $data,    // Include the data being passed to the email
-                'ticketDetails' => $ticketDetails, // Optionally log the ticket details as well
+                'exception' => $e,
+                'data' => $data,
+                'ticketDetails' => $ticketDetails,
             ]);
         }
     }
