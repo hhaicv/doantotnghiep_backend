@@ -82,6 +82,8 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index'); // Danh sách tất cả người dùng
         Route::get('/employees', [UserController::class, 'employeeIndex'])->name('employees'); // Danh sách nhân viên
         Route::get('/customers', [UserController::class, 'userIndex'])->name('customers'); // Danh sách khách hàng
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/store', [UserController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); // Chỉnh sửa người dùng
         Route::put('/{id}', [UserController::class, 'update'])->name('update'); // Cập nhật người dùng
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); // Xóa người dùng

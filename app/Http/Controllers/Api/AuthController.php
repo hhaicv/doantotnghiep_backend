@@ -47,26 +47,38 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // Validate yêu cầu đầu vào
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
+        // Tìm kiếm người dùng theo email
         $user = User::where('email', $request->email)->first();
 
+        // Kiểm tra nếu người dùng không tồn tại hoặc mật khẩu không chính xác
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Thông tin đăng nhập không chính xác.'],
             ]);
         }
 
+        // Tạo token cho người dùng
         $token = $user->createToken(env('SANCTUM_NAME', 'DefaultTokenName'))->plainTextToken;
 
+        // Trả về thông tin đăng nhập thành công mà không bao gồm mật khẩu hoặc dữ liệu nhạy cảm
         return response()->json([
             'status' => 'Thành công',
             'message' => 'Đăng nhập thành công.',
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'address' => $user->address,
+                // Có thể trả về các trường khác mà bạn muốn, nhưng không phải mật khẩu
+            ]
         ]);
     }
 

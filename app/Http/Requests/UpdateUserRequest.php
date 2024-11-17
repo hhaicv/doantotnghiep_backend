@@ -26,6 +26,7 @@ class UpdateUserRequest extends FormRequest
             'phone' => 'required|digits:10',
             'address' => 'required|string|max:255',
             'password' => 'nullable|min:8|confirmed',
+            'is_active' => 'nullable|boolean',
         ];
     }
     public function messages(): array
