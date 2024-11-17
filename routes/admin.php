@@ -18,19 +18,17 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SeatController;
+use App\Http\Controllers\VnpayController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin/login', [AdminController::class, 'showAdminLoginForm'])->name('admin.login');
 Route::post('admin/login', [AdminController::class, 'adminLogin'])->name('admin.login.submit');
-// Route::post('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
 
 // Route cho admin (sử dụng middleware để bảo vệ các route)
 Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     // Route cho đăng xuất
     Route::post('logout', [AdminController::class, 'logout'])->name('logout');
-
-    // routes/web.php
 
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'totalPrice'])->name('dashboard');
 
@@ -72,6 +70,12 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::post('/status-bus-seat/{id}', [BusSeatController::class, 'statusBusSeat']);
 
     Route::resource('reviews', ReviewController::class);
+    Route::get('/send-notification', [PromotionController::class, 'sendPromotionNotification']);
+
+
+
+    Route::get('/fetch-trips', [TicketBookingController::class, 'store'])->name('fetch.trips');
+
 
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index'); // Danh sách tất cả người dùng
@@ -90,5 +94,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
     Route::get('/thanks', [TicketBookingController::class, 'thanks'])->name('thanks');
     Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
+    Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
+
 
 });

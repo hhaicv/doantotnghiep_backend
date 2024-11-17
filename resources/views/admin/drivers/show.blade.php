@@ -12,9 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="text-end">
-        <a href="{{ route('admin.drivers.index') }}" class="btn btn-outline-primary mb-3">Danh sách</a>
-    </div>
+    
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -35,17 +33,6 @@
                         <h4 class="font-weight bold fs-3">{{ $data->name }}</h4>
                     </div>
 
-                    <div class="mt-4">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch"
-                                id="SwitchCheck{{ $data->id }}" data-id="{{ $data->id }}"
-                                {{ $data->is_active ? 'checked' : '' }} disabled>
-                            <label class="form-check-label" for="SwitchCheck{{ $data->id }}">
-                                {{ $data->is_active ? 'On' : 'Off' }}
-                            </label>
-                        </div>
-
-                    </div>
                 </div>
                 <!-- end col-lg-4 -->
 
@@ -85,5 +72,8 @@
             </div>
             <!-- end row -->
         </div>
+    </div>
+    <div class="text-end">
+        <a href="{{ route('admin.drivers.index') }}" class="btn btn-outline-primary mb-3">Danh sách</a>
     </div>
 @endsection

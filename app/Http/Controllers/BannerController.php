@@ -29,7 +29,6 @@ class BannerController extends Controller
 
     public function store(StoreBannerRequest $request)
     {
-
         $data = $request->except('image_url');
 
         if ($request->hasFile('image_url')) {
@@ -42,8 +41,6 @@ class BannerController extends Controller
         } else {
             return redirect()->back()->with('danger', 'Banner không được thêm thành công');
         }
-
-
     }
 
 

@@ -30,4 +30,8 @@ class BusSeat extends Model
     {
         return $this->belongsTo(Bus::class);
     }
+    public function seatStatus()
+{
+    return $this->hasMany(SeatStatus::class, 'bus_id');  // Liên kết với bus_id
+}
 }

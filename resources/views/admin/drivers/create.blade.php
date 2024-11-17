@@ -114,7 +114,7 @@
                     <div class="file-drop-area" id="file-drop-area">
                         <input type="file" name="profile_image" id="file-input" accept="image/*"
                             value="{{ old('profile_image') }}" multiple>
-                        
+
                         <!-- Hiển thị ảnh đã tải lên trước đó (nếu có) -->
                         <div id="file-preview">
                             @if (old('profile_image') || isset($driver) && $driver->profile_image)
@@ -127,7 +127,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                
+
             </div>
 
             <!-- Submit Button -->

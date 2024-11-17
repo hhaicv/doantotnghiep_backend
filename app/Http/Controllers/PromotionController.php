@@ -2,26 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PromotionAdded;
+use App\Mail\PromotionNotificationMail;
 use App\Models\Promotion;
 use App\Http\Requests\StorePromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
+use App\Events\PromotionNotification;
+
 use Illuminate\Http\Request;
 use App\Models\Bus;
 use App\Models\Route;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class PromotionController extends Controller
 {
     const PATH_VIEW = 'admin.promotions.';
+
     /**
-     * 
      * Display a listing of the resource.
      */
     public function index()
-    {   
-        $users= User::all(); 
-         $data = Promotion::all();
-         return view(self::PATH_VIEW . __FUNCTION__, compact('data','users'));
+    {
+        $users = User::all();
+        $data = Promotion::with('users')->get(); // Lấy danh sách khuyến mãi cùng người dùng
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'users'));
     }
 
     /**
@@ -29,12 +34,13 @@ class PromotionController extends Controller
      */
     public function create()
     {
-        $routes = Route::all(); // Lấy tất cả tuyến đường
-        $buses = Bus::all(); // Lấy tất cả loại xe
-        $users= User::all(); // lấy tất cả user
-        return view(self::PATH_VIEW . __FUNCTION__, compact('routes','buses','users'));
-    }
+        $routes = Route::all();
+        $buses = Bus::all();
+        $users = User::all();
 
+     
+        return view(self::PATH_VIEW . __FUNCTION__, compact('routes', 'buses', 'users'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -42,29 +48,36 @@ class PromotionController extends Controller
     public function store(StorePromotionRequest $request)
     {
 
-    $userId = $request->input('user_id');
-    $user = User::find($userId);
-
-    // Kiểm tra nếu người dùng đã tồn tại
-    if ($user && $user->created_at < now()->subMonths(1)) {
-        return redirect()->back()->with('error', 'Mã khuyến mãi không áp dụng cho người dùng cũ.');
-    }
-    $startDate = $request->input('start_date');
-    $endDate = $request->input('end_date');
-
-    if ($startDate >= $endDate) {
-        return redirect()->back()->with('error', 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc.');
-    }
         $data = $request->all();
-        $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0;
+        $data['status'] = $request->has('status') ? 1 : 0; // Kiểm tra trạng thái checkbox
+        $promotion = Promotion::create($data);
 
-        $data = $request->all();
-        $model = Promotion::query()->create($data);
-        if ($model) {
-            return redirect()->back()->with('success', 'Bạn thêm thành công');
+        // Gắn người dùng vào khuyến mãi
+        $userIds = $request->input('users', []);
+        $promotion->users()->attach($userIds);
+
+        // Gắn nhiều tuyến đường vào khuyến mãi
+        $routeIds = $request->input('routes', []);
+        $promotion->routes()->attach($routeIds);
+
+
+        // Kiểm tra nếu chọn gửi đến tất cả người dùng
+        if ($request->input('send_to_all')) { // Giả sử bạn có checkbox để chọn tất cả
+            $users = User::all(); // Lấy tất cả người dùng
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new PromotionAdded($promotion));
+            }
         } else {
-            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+            // Gửi email đến người dùng đã chọn
+            foreach ($userIds as $userId) {
+                $user = User::find($userId);
+                if ($user) {
+                    Mail::to($user->email)->send(new PromotionAdded($promotion));
+                }
+            }
         }
+
+        return redirect()->route('admin.promotions.index')->with('success', 'Tạo khuyến mãi thành công và đã gửi email cho người dùng.');
     }
 
     /**
@@ -80,11 +93,11 @@ class PromotionController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Promotion::query()->findOrFail($id);
-        $routes = Route::all();  
-        $buses = Bus::all(); 
-        $users= User::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data','routes','buses','users'));
+        $data = Promotion::with('users')->findOrFail($id); // Lấy khuyến mãi cùng người dùng liên quan
+        $routes = Route::all();
+        $buses = Bus::all();
+        $users = User::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'routes', 'buses', 'users'));
     }
 
     /**
@@ -92,27 +105,20 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, string $id)
     {
-        $data = Promotion::query()->findOrFail($id);
-        $userId = $request->input('user_id');
-        $user = User::find($userId);
-    
-        // Kiểm tra nếu người dùng đã tồn tại
-        if ($user && $user->created_at < now()->subMonths(1)) {
-            return redirect()->back()->with('error', 'Mã khuyến mãi không áp dụng cho người dùng cũ.');
-        }
-        $data = Promotion::query()->findOrFail($id);
-        $model = $request->all();
-        $res = $data->update($model);
-        if ($res) {
-            return redirect()->back()->with('success', 'Danh mục khuyến mãi  được sửa thành công');
-        } else {
-            return redirect()->back()->with('danger', 'Danh mục khuyến mãi  không sửa thành công');
-        }
-    }
+        $promotion = Promotion::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
+        // Cập nhật dữ liệu khuyến mãi
+        $data = $request->all();
+        $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0; // Kiểm tra trạng thái checkbox
+        $promotion->update($data);
+
+        // Cập nhật người dùng liên kết
+        $promotion->users()->sync($request->input('users', []));
+        // Cập nhật tuyến đường liên kết
+        $promotion->routes()->sync($request->input('routes', []));
+
+        return redirect()->route('admin.promotions.index')->with('success', 'Cập nhật khuyến mãi thành công');
+    }
     public function destroy(string $id)
     {
         $data = Promotion::query()->findOrFail($id);
@@ -120,19 +126,62 @@ class PromotionController extends Controller
         if (request()->ajax()) {
             return response()->json(['success' => true]);
         }
-
-        return redirect()->route('admin.promotions.index')->with('success', 'Promotions deleted successfully');
+        return redirect()->route('admin.promotions.index')->with('success', 'promotions deleted successfully');
     }
+    /**
+     * Update promotion status.
+     */
     public function statusPromotion(Request $request, $id)
     {
-        // Tìm bản ghi theo ID
-        $promotion = Promotion::findOrFail($id); // Thay 'Category' bằng model phù hợp
-
-        // Cập nhật trạng thái 'is_active'
+        $promotion = Promotion::findOrFail($id);
         $promotion->new_customer_only = $request->input('new_customer_only');
-        $promotion->save(); // Lưu thay đổi vào cơ sở dữ liệu
+        $promotion->save();
 
-        // Trả về phản hồi JSON cho client
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Assign multiple promotions to a user.
+     */
+    public function assignPromotionsToUser(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $promotionIds = $request->input('promotion_ids');
+
+        // Gán khuyến mãi cho user
+        $user->promotions()->sync($promotionIds);
+
+        return redirect()->back()->with('success', 'Khuyến mãi đã được gắn cho người dùng thành công');
+    }
+
+    /**
+     * Assign multiple users to a promotion.
+     */
+    public function assignUsersToPromotion(Request $request, $promotionId)
+    {
+        $promotion = Promotion::findOrFail($promotionId);
+        $userIds = $request->input('user_ids');
+
+        // Gắn người dùng cho khuyến mãi
+        $promotion->users()->sync($userIds);
+
+        return redirect()->back()->with('success', 'Người dùng đã được gắn cho khuyến mãi thành công');
+    }
+    public function sendPromotionNotification($userId = null)
+    {
+        // Lấy khuyến mãi mới nhất
+        $promotion = Promotion::latest()->first();
+
+        if (!$promotion) {
+            return response()->json(['status' => 'No promotions found'], 404);
+        }
+
+        // Chuẩn bị dữ liệu khuyến mãi
+        $promotionData = [
+            'code' => $promotion->code,
+            'discount' => $promotion->discount,
+            'description' => $promotion->description,
+            'end_date' => $promotion->end_date,
+        ];
     }
 }

@@ -43,15 +43,12 @@ class DriverController extends Controller
 
         // Khởi tạo đối tượng Driver
         $model = new Driver($data);
-
-        // Xử lý upload hình ảnh nếu có
         if ($request->hasFile('profile_image')) {
-            $imagePath = $request->file('profile_image')->store('drivers', 'public');
-            $model->profile_image = $imagePath; // Lưu đường dẫn ảnh vào profile_image
+            $data['profile_image'] = Storage::put(self::PATH_UPLOAD, $request->file('profile_image'));
         }
-
+        $model = Driver::query()->create($data);
         // Lưu đối tượng driver vào cơ sở dữ liệu
-        if ($model->save()) {
+        if ($model) {
             return redirect()->back()->with('success', 'Tài xế đã được tạo thành công.');
         } else {
             return redirect()->back()->with('danger', 'Tài xế không được tạo thành công.');
@@ -77,14 +74,9 @@ class DriverController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
 
     public function update(UpdateDriverRequest $request, string $id)
     {
-
         $data = Driver::query()->findOrFail($id);
 
         // Lưu mật khẩu cũ nếu không thay đổi mật khẩu
@@ -107,7 +99,9 @@ class DriverController extends Controller
         if ($request->hasFile('profile_image')) {
             $model['profile_image'] = Storage::put(self::PATH_UPLOAD, $request->file('profile_image'));
         }
+
         $image = $data->profile_image;
+
         $res = $data->update($model);
 
         if ($request->hasFile('profile_image') && $image && Storage::exists($image)) {
