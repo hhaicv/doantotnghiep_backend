@@ -24,8 +24,8 @@
                     <td
                         style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
                         <b>Mã đơn hàng: </b> {{ $order_code }}<br />
-                        <b>Ngày tạo: </b> {{ $created_at }}<br />
-                        <b>Phương thức thanh toán: </b> {{ $paymentMethod->name }}<br />
+                        <b>Ngày tạo: </b> {{ $booking_date }}<br />
+                        <b>Phương thức thanh toán: </b> {{ $payment_method }}<br />
                     <td
                         style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
                         <b>Email:</b> {{ $email }}<br />
@@ -63,40 +63,42 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($ticket_details as $ticketDetail)
-
+                @foreach ($ticket_codes as $index => $ticket_code)
                     <tr>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                            {{-- {{ $ticketDetail['ticket_code'] }} --}}
+                            {{ $ticket_code }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                            {{ $start_location }}
+                            {{ $start_point }} - {{ $point_up }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                            {{ $end_location }}
+                            {{ $end_point }} - {{ $point_down }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{ $route }}
+                            {{ $route_name }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{ $ticketDetail['time_start'] }} - {{ $date }}
+                            {{ $time_start }} - {{ $date_start }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{ $phone_bus }} - {{ $bus }}
+                            <p>{{ $license_plate }}</p>
+                            <p>{{ $driver_name }}</p>
+                            <p>{{ $driver_phone }}</p>
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{-- {{ $ticketDetail['seat_name'] }} --}}
+                            {{ $name_seat[$index] ?? '' }}
                         </td>
                     </tr>
                 @endforeach
             </tbody>
+
         </table>
 
 
