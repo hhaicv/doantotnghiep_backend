@@ -8,7 +8,11 @@ use App\Http\Controllers\Api\NewCategoryController;
 use App\Http\Controllers\Api\RouteController;
 use App\Http\Controllers\Api\InformationController;
 use App\Http\Controllers\API\HomeController;
+use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\StopController;
+use App\Http\Controllers\API\TripController;
+use App\Http\Controllers\API\VNPayController;
+use App\Http\Controllers\PromotionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +52,13 @@ Route::apiResource('information', InformationController::class);
 
 
 Route::apiResource('stops', StopController::class);
+
 Route::apiResource('home', HomeController::class);
+
+Route::get('/bill',         [StopController::class, 'bill'])->name('bill');
+Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
+Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
+
+
+
+

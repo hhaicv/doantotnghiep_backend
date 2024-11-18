@@ -1,7 +1,7 @@
 @extends('admin.layouts.mater')
 
 @section('title')
-Danh sách tài khoản
+Danh sách tài khoản quản trị
 @endsection
 @section('content')
 <div class="row">
@@ -12,7 +12,7 @@ Danh sách tài khoản
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                    <li class="breadcrumb-item active">Tài khoản</li>
+                    <li class="breadcrumb-item active">Tài khoản quản trị</li>
                 </ol>
             </div>
         </div>
@@ -24,6 +24,7 @@ Danh sách tài khoản
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5 class="card-title mb-0">Danh sách</h5>
+                <a class="btn btn-primary mb-3" href="{{ route('admin.admins.create') }}">Thêm mới quản trị</a>
             </div>
             <div class="card-body">
                 <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -32,19 +33,20 @@ Danh sách tài khoản
                         <tr>
                             <th>ID</th>
                             <th>Tên</th>
-                            <th>Quyền</th>
                             <th>Email</th>
-                            <th>Trạng thái</th>                  
+                            <th>Quyền</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày tạo</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $item)
+                        @foreach ($admins as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->name}}</td>
-                            <td>{{ $item->name_role}}</td>
                             <td>{{ $item->email}}</td>
+                            <td>{{ $item->name_role}}</td>
                             <td>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch"
@@ -55,12 +57,13 @@ Danh sách tài khoản
                                     </label>
                                 </div>
                             </td>
+                            <td>{{ $item->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <div class="hstack gap-3 fs-15">
-                                    <a href="{{ route('admin.users.edit', $item->id) }}" class="link-primary"><i
+                                    <a href="{{ route('admin.admins.edit', $item->id) }}" class="link-primary"><i
                                             class="ri-settings-4-line"></i></a>
                                     <form id="deleteFormRole{{ $item->id }}"
-                                        action="{{ route('admin.users.destroy', $item->id) }}" method="post">
+                                        action="{{ route('admin.admins.destroy', $item->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" style="border: none; background: white"

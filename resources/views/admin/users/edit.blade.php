@@ -44,12 +44,10 @@ Chỉnh sửa tài khoản
             <label for="nameInput" class="form-label">Tên tài khoản</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $model->name) }}" required>
         </div>
-
         <div class="col-md-6">
             <label for="emailInput" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $model->email) }}" required>
+            <input type="email" class="form-control" id="email" name="email" disabled value="{{ old('email', $model->email) }}" required>
         </div>
-
         <div class="col-md-6">
             <label for="phoneInput" class="form-label">Số điện thoại</label>
             <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone', $model->phone) }}" required>
@@ -59,7 +57,6 @@ Chỉnh sửa tài khoản
             <label for="addressInput" class="form-label">Địa chỉ</label>
             <input type="text" class="form-control" id="address" name="address" value="{{ old('address', $model->address) }}">
         </div>
-
         <div class="col-md-6">
             <label for="roleInput" class="form-label">Quyền</label>
             <select class="form-select" id="name_role" name="name_role" required>
@@ -68,7 +65,6 @@ Chỉnh sửa tài khoản
                 <option value="user" {{ $model->type === 'isUser' ? 'selected' : '' }}>Người dùng</option>
             </select>
         </div>
-
         <div class="col-md-6">
             <label for="passwordInput" class="form-label">Mật khẩu (để trống nếu không muốn thay đổi)</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu mới...">

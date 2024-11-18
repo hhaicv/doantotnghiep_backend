@@ -10,15 +10,7 @@
             </div>
         </div>
     </div>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+   
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -77,7 +69,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Giá Tuyến</label>
-                            <input type="text" class="form-control mt-2" name="route_price"
+                            <input type="number" class="form-control mt-2" name="route_price"
                                 value="{{ $data->route_price }}">
                             @error('route_price')
                                 <span class="text-danger">{{ $message }}</span>
@@ -85,7 +77,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Chiều dài</label>
-                            <input type="text" class="form-control mt-2" name="length" value="{{ $data->length }}">
+                            <input type="number" class="form-control mt-2" name="length" value="{{ $data->length }}">
                             @error('length')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -148,7 +140,7 @@
                                         <div class="col">
                                             <label class="form-label pb-2"
                                                 for="input-price-{{ $index + 1 }}">Giá</label>
-                                            <input type="text" name="fare[]" placeholder="Giá vé"
+                                            <input type="number" name="fare[]" placeholder="Giá vé"
                                                 class="form-control" style="width: 90%;"
                                                 id="input-price-{{ $index + 1 }}" value="<?php echo $stage->fare; ?>" />
                                         </div>

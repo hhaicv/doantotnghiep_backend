@@ -34,15 +34,18 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col">
+                    <div class="col mb-3">
                         <label for="choices-multiple-remove-button" class="form-label text-muted">Danh mục tin tức</label>
                         <select id="choices-multiple-remove-button" name="newCategories[]"
-                            placeholder="This is a placeholder" multiple>
+                                placeholder="This is a placeholder" multiple>
                             @foreach ($newCategories as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
+                                <option value="{{ $id }}" {{ (is_array(old('newCategories')) && in_array($id, old('newCategories'))) ? 'selected' : '' }}>
+                                    {{ $name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
+                    
                     <div class="col md-6">
                         <h5>Hình ảnh</h5>
                         <div class="file-drop-area" id="file-drop-area">
@@ -89,6 +92,7 @@
             </div>
         </form>
     </div>
+    
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>

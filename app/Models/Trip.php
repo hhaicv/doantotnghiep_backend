@@ -22,6 +22,7 @@ class Trip extends Model
         'is_active' => 'boolean',
     ];
 
+
     public function stages()
     {
         return $this->hasMany(Stage::class, 'route_id', 'route_id'); // 'route_id' là khóa ngoại trong bảng 'stages' liên kết với 'route_id' trong bảng 'trips'
@@ -38,11 +39,6 @@ class Trip extends Model
         return $this->belongsTo(Bus::class);
     }
 
-    // Mối quan hệ với booked_seats
-    public function bookedSeats()
-    {
-        return $this->hasMany(BookedSeat::class, 'trip_id');
-    }
 
     // Mối quan hệ với ticket_bookings
     public function ticketBookings()

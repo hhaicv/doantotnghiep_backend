@@ -17,6 +17,42 @@ class UserController extends Controller
         return view(self::PATH_VIEW . 'index', compact('data'));
     }
 
+    // Phương thức tạo view thêm mới tài khoản user
+    public function create()
+    {
+
+        // Trả về view thêm mới tài khoản user
+        return view(self::PATH_VIEW . 'create');
+    }
+
+    // Phương thức lưu tài khoản user vào database
+    public function store(StoreUserRequest $request)  // Sử dụng StoreUserRequest để validate dữ liệu
+    {
+        // Lấy dữ liệu từ form
+        $model = $request->all();
+
+        // Mã hóa mật khẩu
+        $model['password'] = bcrypt($request->password);
+
+        // Cài đặt mặc định cho type (ví dụ là 'user') nếu chưa có
+        if (!isset($model['type'])) {
+            $model['type'] = User::TYPE_USER;  // Gán loại người dùng là 'user'
+        }
+
+        // Cài đặt mặc định cho is_active nếu chưa có
+        if (!isset($model['is_active'])) {
+            $model['is_active'] = true;  // Mặc định kích hoạt tài khoản
+        }
+
+        // Tạo mới tài khoản user
+        $user = User::create($model);  // Thay Admin thành User
+
+        if ($user) {
+            return redirect()->route('admin.users.index')->with('success', 'Tài khoản người dùng đã được tạo thành công.');
+        } else {
+            return redirect()->route('admin.users.index')->with('error', 'Không thể tạo tài khoản người dùng.');
+        }
+    }
 
     public function edit($id)
     {

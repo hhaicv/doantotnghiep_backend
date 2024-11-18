@@ -1,12 +1,12 @@
 @extends('admin.layouts.mater')
 @section('title')
-    Thêm mới Danh mục điểm dừng
+    Thêm mới điểm dừng
 @endsection
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Thêm mới Danh mục điểm dừng </h4>
+                <h4 class="mb-sm-0">Thêm mới điểm dừng </h4>
             </div>
         </div>
     </div>
@@ -38,44 +38,31 @@
                 <select class="form-select" name="parent_id" id="parent_stop">
                     <option value="">Điểm dừng cha</option>
                     @foreach ($parents as $stop)
-                        <option value="{{ $stop->id }}">{{ $stop->stop_name }}</option>
+                        <option value="{{ $stop->id }}" {{ old('parent_id') == $stop->id ? 'selected' : '' }}>
+                            {{ $stop->stop_name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
-            <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Kinh độ</label>
-                <input type="text" class="form-control" name="longitude" value="{{ old('longitude') }}"
-                    placeholder="Nhập kinh độ">
-                @error('longitude')
+
+            <div class="col mt-3">
+                    <h5>Hình ảnh</h5>
+                    <div class="file-drop-area" id="file-drop-area">
+                        <input type="file" name="image" id="file-input" value="{{ old('image') }}" accept="image/*"
+                            multiple>
+                        <div id="file-preview"></div>
+                    </div>
+
+                @error('image')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Vĩ độ</label>
-                <input type="text" class="form-control" name="latitude" value="{{ old('latitude') }}"
-                    placeholder="Nhập vĩ độ">
-                @error('latitude')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="col mt-3">
-                    <h5>Hình ảnh</h5>
-                    <div class="file-drop-area" id="file-drop-area" >
-                        <input type="file" name="image" id="file-input" value="{{ old('image') }}" accept="image/*"
-                            multiple>
-                        <div id="file-preview"></div>
-                    </div>
-               
-                @error('image')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="col-md-6">
                 <div class="col">
-                    <label for="exampleFormControlTextarea5" class="form-label" >Mô tả</label>
-                    <textarea name="description" id="editor" placeholder="Mô tả" >{{ old('description') }}</textarea>
+                    <label for="exampleFormControlTextarea5" class="form-label">Mô tả</label>
+                    <textarea name="description" id="editor" placeholder="Mô tả">{{ old('description') }}</textarea>
                     @error('description')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -88,7 +75,7 @@
             </div>
         </form>
 
-
+        {{-- script --}}
         <script>
             document.getElementById('add-child-stop').addEventListener('click', function() {
                 const container = document.getElementById('child-stops-container');

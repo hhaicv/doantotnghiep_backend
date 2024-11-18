@@ -27,6 +27,9 @@
                     <a class="btn btn-primary mb-3" href="{{ route('admin.stops.create') }}">Thêm mới điểm dừng</a>
                 </div>
                 <div class="card-body">
+
+
+                    {{-- <table border="1" cellpadding="20" cellspacing="0"> --}}
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
                         <thead>
@@ -34,22 +37,24 @@
                                 <th>ID</th>
                                 <th>Hình ảnh</th>
                                 <th>Tên điểm dừng</th>
-                                <th>Kinh độ</th>
-                                <th>Vĩ đỗ</th>
                                 <th>Mô tả</th>
-                                <th>Trạng Thái</th>
+                                <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {{-- Vòng lặp qua các điểm dừng cha --}}
                             @foreach ($data as $parent)
                                 <tr class="table-primary">
                                     <td>{{ $parent->id }}</td>
-                                    <td><img src="{{ Storage::url($parent->image) }}" alt="" width="120px"
-                                            height="80px"></td>
-                                    <td><strong>{{ $parent->stop_name }}</strong></td>
-                                    <td>{{ $parent->longitude }}</td>
-                                    <td>{{ $parent->latitude }}</td>
+                                    <td>
+                                        <img src="{{ Storage::url($parent->image) }}" alt="" width="120px"
+                                            height="80px">
+                                    </td>
+                                    <td>
+                                        <strong>{{ $parent->stop_name }}</strong>
+                                    </td>
+
                                     <td>{{ \Illuminate\Support\Str::limit($parent->description, 50) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
@@ -77,15 +82,16 @@
                                     </td>
                                 </tr>
 
-                                @if ($parent->children->count())
+                                {{-- Vòng lặp qua các điểm dừng con của điểm dừng cha --}}
+                                @if ($parent->children())
                                     @foreach ($parent->children as $child)
                                         <tr>
                                             <td>{{ $child->id }}</td>
-                                            <td><img src="{{ Storage::url($child->image) }}" alt="" width="120px"
-                                                    height="80px"></td>
+                                            <td>
+                                                <img src="{{ Storage::url($child->image) }}" alt="" width="120px"
+                                                    height="80px">
+                                            </td>
                                             <td><span style="margin-left: 20px;">↳ {{ $child->stop_name }}</span></td>
-                                            <td>{{ $child->longitude }}</td>
-                                            <td>{{ $child->latitude }}</td>
                                             <td>{{ \Illuminate\Support\Str::limit($child->description, 50) }}</td>
                                             <td>
                                                 <div class="form-check form-switch">
@@ -119,6 +125,7 @@
                             @endforeach
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div><!--end col-->
@@ -144,6 +151,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
+
     {{-- <script>
         new DataTable("#example", {
             order: [
@@ -151,6 +159,7 @@
             ]
         });
     </script> --}}
+
     <script>
         document.addEventListener('change', function(e) {
             if (e.target.classList.contains('form-check-input')) {
@@ -204,8 +213,17 @@
                     .then(data => {
                         if (data.success) {
                             alert('Đã xóa thành công!');
-                            // Nếu muốn, có thể xóa dòng hiện tại trong bảng mà không cần reload trang
-                            form.closest('tr').remove();
+
+                            // Tìm và xóa dòng cha
+                            const parentRow = form.closest('tr');
+                            parentRow.remove();
+
+                            // Xóa tất cả các dòng con liên quan đến dòng cha này
+                            let nextRow = parentRow.nextElementSibling;
+                            while (nextRow && nextRow.classList.contains('child-row')) {
+                                nextRow.remove();
+                                nextRow = parentRow.nextElementSibling; // Chuyển đến dòng tiếp theo
+                            }
                         } else {
                             alert('Có lỗi xảy ra. Vui lòng thử lại.');
                         }
