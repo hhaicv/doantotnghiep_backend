@@ -54,8 +54,7 @@
                                     <td>
                                         <strong>{{ $parent->stop_name }}</strong>
                                     </td>
-
-                                    <td>{{ \Illuminate\Support\Str::limit($parent->description, 50) }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit(strip_tags($parent->description), 50) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -92,7 +91,7 @@
                                                     height="80px">
                                             </td>
                                             <td><span style="margin-left: 20px;">↳ {{ $child->stop_name }}</span></td>
-                                            <td>{{ \Illuminate\Support\Str::limit($child->description, 50) }}</td>
+                                            <td>{{ \Illuminate\Support\Str::limit(strip_tags($child->description), 50) }}</td>
                                             <td>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" role="switch"

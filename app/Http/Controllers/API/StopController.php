@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\OrderTicket;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Controllers\Controller;
