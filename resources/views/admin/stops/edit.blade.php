@@ -23,7 +23,7 @@
         </div>
     @endif
     <div class="card">
-        <form action="{{ route('admin.stops.update', $data->id) }}" method="POST" class="row g-3 p-5">
+        <form action="{{ route('admin.stops.update', $data->id) }}" method="POST" enctype="multipart/form-data" class="row g-3 p-5" >
             @csrf
             @method('PUT')
             <div class="col-md-6">

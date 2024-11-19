@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('title');
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->text('message')->nullable();
             $table->softDeletes();
             $table->timestamps();
