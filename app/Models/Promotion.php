@@ -40,9 +40,9 @@ class Promotion extends Model
     {
         return $this->belongsToMany(Route::class, 'promotion_route','promotion_id','route_id');
     }
-    public function routes()
-    {
-        return $this->hasMany(Route::class, 'route_id');
+    // public function routes()
+    // {
+    //     return $this->hasMany(Route::class, 'route_id');
 
-    }
+    // }
 }

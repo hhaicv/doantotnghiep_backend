@@ -25,7 +25,7 @@ class PromotionController extends Controller
     public function index()
     {
         $users = User::all();
-        $data = Promotion::with('users')->get(); // Lấy danh sách khuyến mãi cùng người dùng
+        $data = Promotion::with('users','routes')->get(); // Lấy danh sách khuyến mãi cùng người dùng
         return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'users'));
     }
 
