@@ -25,25 +25,28 @@
         <form action="{{ route('admin.banners.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
             <div class="col md-6">
-                    <h5>Hình ảnh</h5>
-                    <div class="file-drop-area" id="file-drop-area" >
-                        <input type="file" name="image_url" id="file-input" accept="image/*" value="{{ old('image_url') }}" multiple>
-                        <div id="file-preview"></div>
-                    </div>
-                    @error('image_url')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                <h5>Hình ảnh</h5>
+                <div class="file-drop-area" id="file-drop-area">
+                    <input type="file" name="image_url" id="file-input" accept="image/*" value="{{ old('image_url') }}"
+                        multiple>
+                    <div id="file-preview"></div>
+                </div>
+                @error('image_url')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Link banner</label>
-                <input type="text" class="form-control" id="link" name="link" placeholder="Gắn link banner" value ="{{ old('link') }}">
+                <input type="text" class="form-control" id="link" name="link" placeholder="Gắn link banner"
+                    value ="{{ old('link') }}">
                 @error('link')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="col-md-6">
                 <label for="start_date">Ngày bắt đầu</label>
-                <input type="date" name="start_date" id="start_date" class="form-control" value ="{{ old('start_date') }}">
+                <input type="date" name="start_date" id="start_date" class="form-control"
+                    value ="{{ old('start_date') }}">
                 @error('start_date')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -68,6 +71,37 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                htmlSupport: {
+                    allow: [{
+                        name: /.*/,
+                        attributes: true,
+                        classes: true,
+                        styles: true
+                    }]
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor
+            .create(document.querySelector('#editor1'), {
+                htmlSupport: {
+                    allow: [{
+                        name: /.*/,
+                        attributes: true,
+                        classes: true,
+                        styles: true
+                    }]
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
     <script>
         const fileInput = document.getElementById('file-input');
         const fileDropArea = document.getElementById('file-drop-area');
