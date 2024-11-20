@@ -39,7 +39,7 @@ class AdminController extends Controller
         if ($admin) {
             return redirect()->route('admin.admins.index')->with('success', 'Tài khoản quản trị đã được tạo thành công.');
         } else {
-            return redirect()->route('admin.admins.index')->with('error', 'Không thể tạo tài khoản quản trị.');
+            return redirect()->route('admin.admins.index')->with('failes', 'Không thể tạo tài khoản quản trị.');
         }
     }
 
