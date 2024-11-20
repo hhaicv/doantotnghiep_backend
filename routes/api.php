@@ -8,11 +8,7 @@ use App\Http\Controllers\Api\NewCategoryController;
 use App\Http\Controllers\Api\RouteController;
 use App\Http\Controllers\Api\InformationController;
 use App\Http\Controllers\API\HomeController;
-use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\StopController;
-use App\Http\Controllers\API\TripController;
-use App\Http\Controllers\API\VNPayController;
-use App\Http\Controllers\PromotionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

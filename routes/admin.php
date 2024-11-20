@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
-use App\Http\Controllers\BusSeatController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
@@ -18,8 +17,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\SeatController;
-use App\Http\Controllers\VnpayController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -67,8 +65,6 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
-    Route::resource('bus_seats', BusSeatController::class);
-    Route::post('/status-bus-seat/{id}', [BusSeatController::class, 'statusBusSeat']);
 
     Route::resource('reviews', ReviewController::class);
     Route::get('/send-notification', [PromotionController::class, 'sendPromotionNotification']);
