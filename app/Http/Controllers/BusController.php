@@ -44,9 +44,9 @@ class BusController extends Controller
             }
         }
         if ($res) {
-            return redirect()->back()->with('success', 'Bạn thêm thành công');
+            return redirect()->back()->with('success', 'Thêm xe thành công');
         } else {
-            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+            return redirect()->back()->with('failes', 'Xe không thêm thành công');
         }
     }
 

@@ -12,15 +12,29 @@
     </div>
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
     @endif
+
 
     <div class="card">
         <form action="{{ route('admin.promotions.store') }}" method="POST" class="row g-3 p-5">
@@ -57,10 +71,9 @@
 
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày bắt đầu</label>
-                <input type="date" class="form-control" name="start_date" 
-                    min="{{ date('Y-m-d') }}">
+                <input type="date" class="form-control" name="start_date" min="{{ date('Y-m-d') }}">
             </div>
-            
+
             <div class="col-md-6">
                 <label for="userSelect" class="form-label text-muted">Người dùng:</label>
                 <select name="users[]" id="userSelect" class="form-control" multiple>
@@ -75,8 +88,7 @@
 
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
-                <input type="date" class="form-control" name="end_date" 
-                    min="{{ date('Y-m-d') }}">
+                <input type="date" class="form-control" name="end_date" min="{{ date('Y-m-d') }}">
             </div>
 
             <!-- Loại xe -->
@@ -91,10 +103,10 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="col-md-6">
-                <label for="descriptionInput" class="form-label">Mô tả danh mục</label>
-                <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2">{{ old('description') }}</textarea>
+                <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
+                <textarea class="form-control" placeholder="Mô tả khuyến mãi" name="description" rows="2">{{ old('description') }}</textarea>
                 @error('description')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

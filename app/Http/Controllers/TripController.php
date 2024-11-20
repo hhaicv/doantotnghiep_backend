@@ -80,7 +80,7 @@ class TripController extends Controller
                 break;
             }
         }
-        return redirect()->back()->with('success', 'Bạn thêm thành công');
+        return redirect()->back()->with('success', 'Thêm chuyến xe thành công');
     }
 
 

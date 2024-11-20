@@ -34,9 +34,9 @@ class RoleController extends Controller
         $data = $request->all();
         $res = Role::create($data);
         if ($res) {
-            return redirect()->back()->with('success', 'thêm thành công');
+            return redirect()->back()->with('success', 'Thêm phân quyền thành công');
         } else {
-            return redirect()->back()->with('success', 'thêm không thành công');
+            return redirect()->back()->with('failes', 'Thêm không thành công phân quyền');
         }
     }
 

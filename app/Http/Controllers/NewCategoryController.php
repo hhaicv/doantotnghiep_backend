@@ -35,7 +35,7 @@ class NewCategoryController extends Controller
         if ($model) {
             return redirect()->back()->with('success', 'Bạn thêm thành công');
         } else {
-            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+            return redirect()->back()->with('failes', 'Bạn không thêm thành công');
         }
     }
 

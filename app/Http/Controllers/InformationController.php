@@ -43,9 +43,9 @@ class InformationController extends Controller
         $res = Information::query()->create($data);
         $res->newCategories()->sync($dataNewCategories);
         if ($res) {
-            return redirect()->back()->with('success', 'Bạn thêm thành công');
+            return redirect()->back()->with('success', 'Thêm tin tức thành công');
         } else {
-            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+            return redirect()->back()->with('failes', 'Thêm tin tức không thành công');
         }
     }
 

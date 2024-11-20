@@ -50,7 +50,7 @@ class UserController extends Controller
         if ($user) {
             return redirect()->route('admin.users.index')->with('success', 'Tài khoản người dùng đã được tạo thành công.');
         } else {
-            return redirect()->route('admin.users.index')->with('error', 'Không thể tạo tài khoản người dùng.');
+            return redirect()->route('admin.users.index')->with('failes', 'Không thể tạo tài khoản người dùng.');
         }
     }
 

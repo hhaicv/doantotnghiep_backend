@@ -27,17 +27,12 @@
         <form action="{{ route('admin.promotions.store') }}" method="POST" class="row g-3 p-5">
             @csrf
             <div class="col-md-6">
-                <label for="codeInput" class="form-label">Code:</label>
+                <label for="codeInput" class="form-label">Mã code giảm giá:</label>
                 <input type="text" class="form-control" name="code" value="{{ $data->code }}">
             </div>
             <div class="col-md-6">
-                <label for="discountInput" class="form-label">Discount(%):</label>
+                <label for="discountInput" class="form-label">Giảm giá(%):</label>
                 <input type="text" class="form-control" name="discount" value="{{ $data->discount }}">
-            </div>
-            <div class="col-md-6">
-                <label for="startDateInput" class="form-label">Ngày bắt đầu:</label>
-                <input type="date" class="form-control" name="start_date"value="{{ $data->start_date }}"
-                       min="{{ date('Y-m-d') }}">
             </div>
             <div class="col-md-6">
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
@@ -49,11 +44,10 @@
                     @endforeach
                 </select>
             </div>
-            
             <div class="col-md-6">
-                <label for="endDateInput" class="form-label">Ngày kết thúc</label>
-                <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc" 
-                       id="endDateInput" min="{{ date('Y-m-d') }}" value="{{ $data->end_date }}">
+                <label for="startDateInput" class="form-label">Ngày bắt đầu:</label>
+                <input type="date" class="form-control" name="start_date" value="{{ $data->start_date }}"
+                       min="{{ date('Y-m-d') }}">
             </div>
             <div class="col-md-6">
                 <label for="userSelect" class="form-label text-muted">Người dùng</label>
@@ -61,6 +55,21 @@
                     @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ in_array($user->id, $promotionUsers ?? []) ? 'selected' : '' }}>
                             {{ $user->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="startDateInput" class="form-label">Ngày kết thúc:</label>
+                <input type="date" class="form-control" name="end_date" value="{{ $data->end_date }}"
+                       min="{{ date('Y-m-d') }}">
+            </div>
+            <div class="col-md-6">
+                <label for="busTypeSelect" class="form-label">Loại xe</label>
+                <select class="form-control" name="bus_type_id" id="busTypeSelect">
+                    @foreach ($buses as $bus)
+                        <option value="{{ $bus->id }}" {{ old('bus_type_id') == $bus->id ? 'selected' : '' }}>
+                            {{ $bus->name_bus }}
                         </option>
                     @endforeach
                 </select>
