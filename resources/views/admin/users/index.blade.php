@@ -32,6 +32,7 @@ Danh sách tài khoản
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Hình ảnh</th>
                             <th>Tên</th>
                             <th>Quyền</th>
                             <th>Email</th>
@@ -46,6 +47,7 @@ Danh sách tài khoản
                         @foreach ($data as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
+                            <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px" height="100px"></td>
                             <td>{{ $item->name}}</td>
                             <td>{{ $item->type === 'employee' ? 'Nhân viên' : 'Khách hàng' }}</td>
                             <td>{{ $item->email}}</td>
