@@ -28,22 +28,29 @@ class AdminController extends Controller
     }
 
     public function store(StoreAdminRequest $request)
-    {
-        // Lấy dữ liệu từ form
-        $model = $request->all();
+{
+    // Lấy dữ liệu từ form
+    $data = $request->all();
 
-        // Mã hóa mật khẩu
-        $model['password'] = bcrypt($request->password);
+    // Mã hóa mật khẩu
+    $data['password'] = bcrypt($request->password);
 
-        // Tạo mới tài khoản quản trị
-        $admin = Admin::create($model);
-
-        if ($admin) {
-            return redirect()->route('admin.admins.index')->with('success', 'Tài khoản quản trị đã được tạo thành công.');
-        } else {
-            return redirect()->route('admin.admins.index')->with('failes', 'Không thể tạo tài khoản quản trị.');
-        }
+    // Xử lý upload ảnh
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store(self::PATH_UPLOAD, 'public');
     }
+
+    // Tạo mới tài khoản quản trị
+    $admin = Admin::create($data);
+
+    // Kiểm tra kết quả và phản hồi
+    if ($admin) {
+        return redirect()->route('admin.admins.index')->with('success', 'Tài khoản quản trị đã được tạo thành công.');
+    } else {
+        return redirect()->route('admin.admins.index')->with('failes', 'Không thể tạo tài khoản quản trị.');
+    }
+}
+
 
 
     public function edit($id)

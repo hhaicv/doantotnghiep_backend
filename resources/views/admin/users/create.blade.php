@@ -48,12 +48,21 @@
     @endif
 
     <div class="card">
-        <form action="{{ route('admin.users.store') }}" method="POST" class="row g-3 p-5">
+        <form action="{{ route('admin.users.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
 
             <div class="col-md-6">
                 <label for="nameInput" class="form-label">Tên tài khoản</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+            </div>
+
+            <div class="col md-6">
+                <h5>Hình ảnh</h5>
+                <div class="file-drop-area" id="file-drop-area">
+                    <input type="file" name="image" id="file-input" accept="image/*" value="{{ old('image') }}"
+                        multiple>
+                    <div id="file-preview"></div>
+                </div>
             </div>
 
             <div class="col-md-6">

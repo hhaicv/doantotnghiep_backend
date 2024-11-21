@@ -69,8 +69,7 @@
                             @foreach ($admins as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px"
-                                            height="100px"></td>
+                                    <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px" height="100px"></td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->name_role }}</td>

@@ -6,10 +6,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     const PATH_VIEW = 'admin.users.';
+    const PATH_UPLOAD = 'users';
 
     public function index()
     {
@@ -25,7 +27,6 @@ class UserController extends Controller
         return view(self::PATH_VIEW . 'create');
     }
 
-    // Phương thức lưu tài khoản user vào database
     public function store(StoreUserRequest $request)  // Sử dụng StoreUserRequest để validate dữ liệu
     {
         // Lấy dữ liệu từ form
@@ -35,24 +36,28 @@ class UserController extends Controller
         $model['password'] = bcrypt($request->password);
 
         // Cài đặt mặc định cho type (ví dụ là 'user') nếu chưa có
-        if (!isset($model['type'])) {
-            $model['type'] = User::TYPE_USER;  // Gán loại người dùng là 'user'
-        }
+        $model['type'] = $model['type'] ?? User::TYPE_USER;  // Dùng toán tử ?? để gán giá trị mặc định nếu không có
 
         // Cài đặt mặc định cho is_active nếu chưa có
-        if (!isset($model['is_active'])) {
-            $model['is_active'] = true;  // Mặc định kích hoạt tài khoản
+        $model['is_active'] = $model['is_active'] ?? true;  // Mặc định kích hoạt tài khoản
+
+        // Kiểm tra và xử lý ảnh nếu có
+        if ($request->hasFile('image')) {
+            $model['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
         }
 
         // Tạo mới tài khoản user
-        $user = User::create($model);  // Thay Admin thành User
+        $user = User::create($model);  // Tạo mới user thay vì admin
 
+        // Kiểm tra kết quả và phản hồi
         if ($user) {
             return redirect()->route('admin.users.index')->with('success', 'Tài khoản người dùng đã được tạo thành công.');
         } else {
             return redirect()->route('admin.users.index')->with('failes', 'Không thể tạo tài khoản người dùng.');
         }
     }
+
+
 
     public function edit($id)
     {
@@ -78,9 +83,17 @@ class UserController extends Controller
         if ($request->has('name_role')) {
             $model['type'] = $request->input('name_role');
         }
+        //xử lí ảnh
+        $data = $request->except('image');
+        if ($request->hasFile('image')) {
+            $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+        }
+        $image = $user->image;
+        $res = $user->update($data);
 
-        $res = $user->update($model);
-
+        if ($request->hasFile('image') && $image && Storage::exists($image)) {
+            Storage::delete($image);
+        }
         if ($res) {
             return redirect()->back()->with('success', 'Thông tin người dùng được sửa thành công.');
         } else {

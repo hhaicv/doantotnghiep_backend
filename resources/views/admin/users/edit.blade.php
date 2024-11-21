@@ -36,13 +36,24 @@ Chỉnh sửa tài khoản
 @endif
 
 <div class="card">
-    <form action="{{ route('admin.users.update', $model->id) }}" method="POST" class="row g-3 p-5">
+    <form action="{{ route('admin.users.update', $model->id) }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <div class="col-md-6">
             <label for="nameInput" class="form-label">Tên tài khoản</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $model->name) }}" required>
+        </div>
+        <div class="col-md-6">
+            <h5>Hình ảnh</h5>
+            <div class="file-drop-area" id="file-drop-area">
+                <input type="file" name="image" id="file-input" accept="image/*" multiple>
+                <div id="file-preview">
+                    @if ($model->image)
+                        <img src="{{ Storage::url($model->image) }}" alt="Ảnh đã tải lên" width="200px" height="150px">
+                    @endif
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
             <label for="emailInput" class="form-label">Email</label>
@@ -61,10 +72,11 @@ Chỉnh sửa tài khoản
             <label for="roleInput" class="form-label">Quyền</label>
             <select class="form-select" id="name_role" name="name_role" required>
                 <option value="">Chọn quyền</option>
-                <option value="employee" {{ $model->type === 'isEmployee' ? 'selected' : '' }}>Nhân viên</option>
-                <option value="user" {{ $model->type === 'isUser' ? 'selected' : '' }}>Người dùng</option>
+                <option value="employee" {{ old('name_role', $model->type) === 'employee' ? 'selected' : '' }}>Nhân viên</option>
+                <option value="user" {{ old('name_role', $model->type) === 'user' ? 'selected' : '' }}>Người dùng</option>
             </select>
-        </div>
+        </div>        
+
         <div class="col-md-6">
             <label for="passwordInput" class="form-label">Mật khẩu (để trống nếu không muốn thay đổi)</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu mới...">
