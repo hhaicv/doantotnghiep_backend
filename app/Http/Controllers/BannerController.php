@@ -75,7 +75,7 @@ class BannerController extends Controller
         if ($res) {
             return redirect()->back()->with('success', 'Banner được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Banner không sửa thành công');
+            return redirect()->back()->with('failes', 'Banner không sửa thành công');
         }
     }
 

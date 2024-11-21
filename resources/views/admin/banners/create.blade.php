@@ -10,6 +10,7 @@
             </div>
         </div>
     </div>
+    
     @if (session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -21,7 +22,6 @@
             });
         </script>
     @endif
-
     @if (session('failes'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {

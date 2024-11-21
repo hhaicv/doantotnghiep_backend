@@ -7,10 +7,12 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Requests\StoreAdminRequest;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
     const PATH_VIEW = 'admin.admins.';
+    const PATH_UPLOAD = 'admins';
 
     public function index()
     {
@@ -50,7 +52,7 @@ class AdminController extends Controller
         $model = Admin::findOrFail($id);
         $roles = Role::all();
 
-        return view(self::PATH_VIEW . 'edit', compact('model','roles')); // Không cần role nữa
+        return view(self::PATH_VIEW . 'edit', compact('model', 'roles')); // Không cần role nữa
     }
 
     public function update(UpdateAdminRequest $request, $id)
@@ -71,14 +73,26 @@ class AdminController extends Controller
             $model['type'] = $request->input('name_role');
         }
 
-        $res = $admins->update($model);
+        // Xử lý ảnh
+        $data = $request->except('image');
+        if ($request->hasFile('image')) {
+            $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+        }
+        $image = $admins->image;
+        $res = $admins->update($data);
+
+        if ($request->hasFile('image') && $image && Storage::exists($image)) {
+            Storage::delete($image);
+        }
 
         if ($res) {
             return redirect()->back()->with('success', 'Thông tin người dùng được sửa thành công.');
         } else {
-            return redirect()->back()->with('danger', 'Không thể sửa thông tin người dùng.');
+            return redirect()->back()->with('failes', 'Không thể sửa thông tin người dùng.');
         }
     }
+
+
 
     public function destroy($id)
     {
@@ -104,5 +118,4 @@ class AdminController extends Controller
 
         return response()->json(['success' => true]);
     }
-
 }
