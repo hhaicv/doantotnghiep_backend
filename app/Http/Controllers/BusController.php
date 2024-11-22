@@ -89,7 +89,7 @@ class BusController extends Controller
 
         // Cập nhật dữ liệu bus
         $oldDriverId = $bus->driver_id; // Lưu lại driver_id cũ
-        $bus->update($data);
+        $res = $bus->update($data); // Cập nhật bus và lưu kết quả
 
         // Xử lý trạng thái tài xế
         // Đặt is_active = false cho tài xế cũ (nếu có)
@@ -111,8 +111,13 @@ class BusController extends Controller
         }
 
         // Xử lý kết quả trả về
-        return redirect()->back()->with('success', 'Bus được sửa thành công');
+        if ($res) {
+            return redirect()->back()->with('success', 'Cập nhật xe thành công');
+        } else {
+            return redirect()->back()->with('failes', 'Xe không cập nhật thành công');
+        }
     }
+
 
 
     public function destroy(string $id)

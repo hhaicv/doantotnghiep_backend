@@ -477,11 +477,10 @@ class TicketBookingController extends Controller
     {
 
         $showTicket = TicketBooking::query()
-            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod','ticketDetails', 'bus.driver'])
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod', 'ticketDetails', 'bus.driver'])
             ->findOrFail($id);
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('showTicket'));
-
     }
 
 
@@ -492,7 +491,7 @@ class TicketBookingController extends Controller
     public function edit(string $id)
     {
         $showPayment = TicketBooking::query()
-            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod','ticketDetails'])
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod', 'ticketDetails'])
             ->findOrFail($id);
         return view(self::PATH_VIEW . __FUNCTION__, compact('showPayment'));
     }
@@ -505,11 +504,34 @@ class TicketBookingController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TicketBooking $ticketBooking)
+   
+    public function destroy(string $id)
     {
-        //
+        try {
+            // Tìm vé đặt theo ID
+            $ticket = TicketBooking::findOrFail($id);
+
+            // Xóa vé đặt
+            $ticket->delete();
+
+            // Trả về phản hồi JSON thành công
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Vé đã được xóa thành công.'
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Nếu không tìm thấy vé đặt
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không tìm thấy vé đặt.'
+            ], 404);
+        } catch (\Exception $e) {
+            // Xử lý các lỗi khác
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Có lỗi xảy ra. Không thể xóa vé!',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

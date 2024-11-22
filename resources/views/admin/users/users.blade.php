@@ -23,7 +23,7 @@ Danh sách tài khoản
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title mb-0">Danh sách</h5>
+                <h5 class="card-title mb-0">Danh sách khách hàng</h5>
             </div>
             <div class="card-body">
                 <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -66,7 +66,7 @@ Danh sách tài khoản
                             <td>
                                 <div class="hstack gap-3 fs-15">
                                     <a href="{{ route('admin.users.edit', $item->id) }}" class="link-primary"><i
-                                            class="ri-settings-4-line"></i></a>
+                                        class="ri-settings-4-line"></i></a>
                                     <form id="deleteFormRole{{ $item->id }}"
                                         action="{{ route('admin.users.destroy', $item->id) }}" method="post">
                                         @csrf

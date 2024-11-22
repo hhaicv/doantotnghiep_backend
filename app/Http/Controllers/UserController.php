@@ -95,9 +95,9 @@ class UserController extends Controller
             Storage::delete($image);
         }
         if ($res) {
-            return redirect()->back()->with('success', 'Thông tin người dùng được sửa thành công.');
+            return redirect()->back()->with('success', 'Thông tin được sửa thành công.');
         } else {
-            return redirect()->back()->with('danger', 'Không thể sửa thông tin người dùng.');
+            return redirect()->back()->with('failes', 'Không thể sửa thông tin.');
         }
     }
 
@@ -125,7 +125,6 @@ class UserController extends Controller
 
         return response()->json(['success' => true]);
     }
-
     // Hiển thị danh sách nhân viên
     public function employeeIndex()
     {
