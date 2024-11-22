@@ -35,7 +35,6 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ], 201);
-
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'Lỗi',
@@ -107,6 +106,47 @@ class AuthController extends Controller
                 'status' => 'Lỗi',
                 'message' => 'Không tìm thấy token.',
             ], 404);
+        }
+    }
+    public function updateAccount(Request $request)
+    {
+        $user = $request->user(); // Lấy người dùng hiện tại
+
+        // Validate các thông tin đầu vào
+        $validatedData = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'sometimes|string|max:10',
+            'address' => 'sometimes|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        // Nếu người dùng muốn thay đổi mật khẩu, mã hóa mật khẩu mới
+        if (isset($validatedData['password'])) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        try {
+            // Cập nhật thông tin người dùng
+            $user->update($validatedData);
+
+            return response()->json([
+                'status' => 'Thành công',
+                'message' => 'Cập nhật tài khoản thành công.',
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'address' => $user->address,
+                ]
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'Lỗi',
+                'message' => 'Cập nhật tài khoản thất bại. Vui lòng thử lại sau.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }

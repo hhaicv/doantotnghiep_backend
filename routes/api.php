@@ -38,6 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::post('logout', [AuthController::class, 'logout']);
 
+    // Thêm route cho API cập nhật tài khoản
+    Route::put('account/update', [AuthController::class, 'updateAccount']);
 });
 
 Route::apiResource('banners', BannerController::class);
@@ -58,7 +60,3 @@ Route::apiResource('home', HomeController::class);
 Route::get('/bill',         [StopController::class, 'bill'])->name('bill');
 Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
 Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
-
-
-
-
