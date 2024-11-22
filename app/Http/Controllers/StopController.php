@@ -20,7 +20,7 @@ class StopController extends Controller
     {
         $data = Stop::whereNull('parent_id')->with('children')->get();
 
-        return view( self::PATH_VIEW. __FUNCTION__, compact('data'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     /**
@@ -30,7 +30,7 @@ class StopController extends Controller
     {
 
         $parents = Stop::whereNull('parent_id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__,compact('parents'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('parents'));
     }
 
     /**
@@ -59,8 +59,7 @@ class StopController extends Controller
 
         $children = Stop::whereNotNull('parent_id')->get();
         $parents = Stop::with('children')->whereNull('parent_id')->get(); // Lấy các điểm dừng cha kèm children
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data','parents','children'));
-
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'parents', 'children'));
     }
 
     /**
@@ -68,27 +67,37 @@ class StopController extends Controller
      */
     public function update(UpdateStopRequest $request, string $id)
     {
+        try {
+            // Lấy dữ liệu điểm dừng theo ID
+            $stop = Stop::query()->findOrFail($id);
 
-        $data = Stop::query()->findOrFail($id);
+            // Chuẩn bị dữ liệu cập nhật
+            $modelData = $request->except('image');
+
+            $oldImage = $stop->image;
+
+            // Xử lý hình ảnh nếu có
+            if ($request->hasFile('image')) {
+                $modelData['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+            }
+
+            // Cập nhật dữ liệu
+            $stop->update($modelData);
 
 
-        $model = $request->except('image');
-        if ($request->hasFile('image')) {
-            $model['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
-        }
-        $image = $data->image;
-        $res = $data->update($model);
+            // Xóa hình ảnh cũ nếu cần
+            if ($request->hasFile('image') && $oldImage && Storage::exists($oldImage)) {
+                Storage::delete($oldImage);
+            }
 
-        if ($request->hasFile('image') && $image && Storage::exists($image)) {
-            Storage::delete($image);
-        }
-
-        if ($res) {
+            // Trả về thông báo thành công
             return redirect()->back()->with('success', 'Danh mục điểm dừng được sửa thành công');
-        } else {
-            return redirect()->back()->with('danger', 'Danh mục điểm dừng không sửa thành công');
+        } catch (\Exception $e) {
+            // Xử lý lỗi
+            return redirect()->back()->with('danger', 'Đã xảy ra lỗi: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

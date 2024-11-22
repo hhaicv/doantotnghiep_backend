@@ -79,8 +79,8 @@
                         <li>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <img width="100px" height="70px" src="{{ Storage::url($showTicket->profile_image) }}"
-                                         alt="Hình tài xế">
+                                    <img width="100px" height="70px" src="{{ Storage::url($showTicket->bus->driver->profile_image) }}" alt="Hình tài xế">
+
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="fs-14 mb-1">{{ optional(optional($showTicket->bus)->driver)->name ?? 'Chưa có tài xế' }}</h6>

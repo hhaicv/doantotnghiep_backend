@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\OrderTicket;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Controllers\Controller;
@@ -300,7 +301,13 @@ class StopController extends Controller
                 $ticketDetail->status = 'booked';
                 $ticketDetail->save();
             }
-            return redirect()->route('bill')->with('message', 'Thanh toán thành công!');
+            event(new OrderTicket($ticketBooking));
+            return redirect()->to(env('FRONTEND_URL') . '/bill?' . http_build_query([
+                'order_id' => $ticketBooking->id,
+                'status' => 'success',
+                'response_code' => $request->resultCode,
+                'message' => 'Thanh toán thành công'
+            ]));
         } else {
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED; // Thanh toán thất bại
             $ticketBooking->save();
