@@ -13,23 +13,23 @@ return new class extends Migration
     {
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('image')->nullable();
             $table->string('code');
             $table->integer('discount');
             $table->date('start_date');
             $table->date('end_date');
             $table->text('description');
+            $table->string('count');
             $table->unsignedBigInteger('route_id');
-
-            $table->boolean('new_customer_only')->default(0);
+            $table->unsignedBigInteger('user_id');
+            // $table->boolean('new_customer_only')->default(0);
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes(); // Thêm dòng này để sử dụng soft deletes
+            $table->softDeletes(); 
         });
-
     }
-
-
- 
     public function down(): void
     {
         Schema::dropIfExists('promotions');

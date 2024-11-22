@@ -32,6 +32,6 @@ class Route extends Model
     }
     public function promotions()
     {
-        return $this->belongsToMany(Promotion::class, 'promotion_route');
+        return $this->belongsToMany(Promotion::class, 'promotion_route', 'route_id', 'promotion_id');
     }
 }

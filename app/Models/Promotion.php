@@ -14,19 +14,22 @@ class Promotion extends Model
 
 
     protected $fillable = [
+        'title',
+        'image',
         'code',
         'description',
         'discount',
         'start_date',
         'end_date',
-        'new_customer_only',
+        'count',
+        // 'new_customer_only',
         'route_id',
-        'bus_type_id',
+        // 'bus_type_id',
         'user_id'
     ];
-    protected $casts = [
-        'is_active' => 'new_customer_only',
-    ];
+    // protected $casts = [
+    //     'is_active' => 'new_customer_only',
+    // ];
 
     public function promotionUsers()
     {

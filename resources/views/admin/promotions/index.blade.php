@@ -32,13 +32,15 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Người dùng</th>
+                                {{-- <th>Người dùng</th> --}}
+                                <th>Tiêu đề</th>
+                                <th>Ảnh</th>
                                 <th>Mã giảm giá </th>
-                                <th>Mô tả</th>
                                 <th>Giảm giá</th>
+                                <th>Mô tả</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày bắt kết thúc</th>
-                                <th>Dùng cho khách hàng mới</th>
+                                {{-- <th>Dùng cho khách hàng mới</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -46,17 +48,21 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>
+                                    {{-- <td>
                                         @foreach($item->users as $user)
                                             {{ $user->name }}<br>
                                         @endforeach
-                                    </td>
-                                    <td>{{ $item->code }}</td>
+                                    </td> --}}
+                                    <td>{{ $item->title }}</td>
+                                    <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px"
+                                        height="100px"></td>
+                                        <td>{{ $item->code }}</td>
+                                        <td>{{ $item->discount }} % </td>
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
-                                    <td>{{ $item->discount }} % </td>
+                                   
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
-                                    <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td>
+                                    {{-- <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td> --}}
                                     <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('admin.promotions.edit', $item->id) }}"

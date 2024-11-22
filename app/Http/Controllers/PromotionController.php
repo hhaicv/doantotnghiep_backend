@@ -14,10 +14,12 @@ use App\Models\Bus;
 use App\Models\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class PromotionController extends Controller
 {
     const PATH_VIEW = 'admin.promotions.';
+    const PATH_UPLOAD = 'promotions';
 
     /**
      * Display a listing of the resource.
@@ -38,7 +40,7 @@ class PromotionController extends Controller
         $buses = Bus::all();
         $users = User::all();
 
-     
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('routes', 'buses', 'users'));
     }
 
@@ -49,7 +51,13 @@ class PromotionController extends Controller
     {
 
         $data = $request->all();
-        $data['status'] = $request->has('status') ? 1 : 0; // Kiểm tra trạng thái checkbox
+        $data = $request->except('image');
+        
+        // Kiểm tra xem có file ảnh không
+        if ($request->hasFile('image')) {
+            // Lưu ảnh vào thư mục 'public/images'
+            $data['image'] = $request->file('image')->store('images', 'public');
+        }
         $promotion = Promotion::create($data);
 
         // Gắn người dùng vào khuyến mãi
@@ -58,9 +66,9 @@ class PromotionController extends Controller
 
         // Gắn nhiều tuyến đường vào khuyến mãi
         $routeIds = $request->input('routes', []);
-        $promotion->routes()->attach($routeIds);
-
-
+        if (!empty($routeIds)) {
+            $promotion->routes()->attach($routeIds);  // Gắn các tuyến đường vào bảng promotion_route
+        }
         // Kiểm tra nếu chọn gửi đến tất cả người dùng
         if ($request->input('send_to_all')) { // Giả sử bạn có checkbox để chọn tất cả
             $users = User::all(); // Lấy tất cả người dùng
@@ -93,7 +101,7 @@ class PromotionController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Promotion::with('users')->findOrFail($id); // Lấy khuyến mãi cùng người dùng liên quan
+        $data = Promotion::with('users','routes')->findOrFail($id); // Lấy khuyến mãi cùng người dùng liên quan
         $routes = Route::all();
         $buses = Bus::all();
         $users = User::all();
@@ -105,18 +113,33 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, string $id)
     {
+        // Tìm bản ghi khuyến mãi hiện tại
         $promotion = Promotion::findOrFail($id);
-
-        // Cập nhật dữ liệu khuyến mãi
+    
+        // Chuẩn bị dữ liệu cập nhật
         $data = $request->all();
-        $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0; // Kiểm tra trạng thái checkbox
+        $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0;
+    
+        // Kiểm tra và xử lý ảnh
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ nếu tồn tại
+            if ($promotion->image) {
+                Storage::delete($promotion->image);
+            }
+    
+            // Lưu ảnh mới
+            $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
+        }
+    
+        // Cập nhật bản ghi khuyến mãi
         $promotion->update($data);
-
+    
         // Cập nhật người dùng liên kết
         $promotion->users()->sync($request->input('users', []));
+    
         // Cập nhật tuyến đường liên kết
         $promotion->routes()->sync($request->input('routes', []));
-
+    
         return redirect()->route('admin.promotions.index')->with('success', 'Cập nhật khuyến mãi thành công');
     }
     public function destroy(string $id)

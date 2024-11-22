@@ -26,18 +26,42 @@
         <form action="{{ route('admin.promotions.store') }}" method="POST" class="row g-3 p-5">
             @csrf
             <div class="col-md-6">
-                <label for="codeInput" class="form-label">Code</label>
-                <input type="text" class="form-control" name="code" value="{{ old('code') }}" placeholder="Nhập code">
+                <label for="codeInput" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" name="title" value="{{ old('title') }}" placeholder="Nhập tiêu đề">
+                @error('title')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col md-6">
+                <h5>Hình ảnh</h5>
+                <div class="file-drop-area" id="file-drop-area" >
+                    <input type="file" name="image" id="file-input" accept="image/*" value="{{ old('image') }}" multiple>
+                    <div id="file-preview"></div>
+                </div>
+                @error('image')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+            </div>
+            <div class="col-md-6">
+                <label for="codeInput" class="form-label">Mã giảm giá</label>
+                <input type="text" class="form-control" name="code" value="{{ old('code') }}" placeholder="Nhập mã giảm giá">
                 @error('code')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             
             <div class="col-md-6">
-                <label for="discountInput" class="form-label">Discount (%)</label>
+                <label for="discountInput" class="form-label">Phần trăm giảm</label>
                 <input type="number" class="form-control" name="discount" id="discountInput" value="{{ old('discount') }}"
                     placeholder="Nhập %" min="1" max="100" oninput="validateDiscount()">
                 @error('discount')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-md-6">
+                <label for="codeInput" class="form-label">Số lượng</label>
+                <input type="number" class="form-control" name="count" value="{{ old('count') }}" placeholder="Nhập số lượng">
+                @error('count')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
@@ -62,7 +86,7 @@
 
             <div class="col-md-6">
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
-                <select name="route_id" id="routeSelect" class="form-control" multiple>
+                <select name="routes[]" id="routeSelect" class="form-control" multiple>
                     <option value="">Chọn tuyến đường</option>
                     @foreach ($routes as $route)
                         <option value="{{ $route->id }}" {{ isset($promotionRoute) && in_array($route->id, $promotionRoute) ? 'selected' : '' }}>
@@ -83,20 +107,20 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label for="descriptionInput" class="form-label">Mô tả danh mục</label>
+                <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
                 <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2">{{ old('description') }}</textarea>
                 @error('description')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
        
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
                 <label for="newCustomerOnly" class="form-label">Chỉ áp dụng cho khách hàng mới</label>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="newCustomerOnly" name="new_customer_only" value="1">
                     <label class="form-check-label" for="newCustomerOnly">On</label>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="col-12 text-end">
                 <button type="submit" class="btn btn-primary">Submit</button>

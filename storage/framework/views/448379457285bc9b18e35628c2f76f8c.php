@@ -30,13 +30,15 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Người dùng</th>
+                                
+                                <th>Tiêu đề</th>
+                                <th>Ảnh</th>
                                 <th>Mã giảm giá </th>
-                                <th>Mô tả</th>
                                 <th>Giảm giá</th>
+                                <th>Mô tả</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày bắt kết thúc</th>
-                                <th>Dùng cho khách hàng mới</th>
+                                
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -44,17 +46,17 @@
                             <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
                                     <td><?php echo e($item->id); ?></td>
-                                    <td>
-                                        <?php $__currentLoopData = $item->users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <?php echo e($user->name); ?><br>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </td>
-                                    <td><?php echo e($item->code); ?></td>
+                                    
+                                    <td><?php echo e($item->title); ?></td>
+                                    <td><img src="<?php echo e(Storage::url($item->image)); ?>" alt="" width="150px"
+                                        height="100px"></td>
+                                        <td><?php echo e($item->code); ?></td>
+                                        <td><?php echo e($item->discount); ?> % </td>
                                     <td><?php echo e(\Illuminate\Support\Str::limit($item->description, 50)); ?></td>
-                                    <td><?php echo e($item->discount); ?> % </td>
+                                   
                                     <td><?php echo e($item->start_date); ?></td>
                                     <td><?php echo e($item->end_date); ?></td>
-                                    <td><?php echo e($item->new_customer_only ? 'On' : 'Off'); ?></td>
+                                    
                                     <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="<?php echo e(route('admin.promotions.edit', $item->id)); ?>"
