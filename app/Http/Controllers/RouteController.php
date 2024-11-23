@@ -76,7 +76,7 @@ class RouteController extends Controller
             }
             return redirect()->back()->with('success', 'Bạn thêm thành công');
         } else {
-            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+            return redirect()->back()->with('failes', 'Bạn không thêm thành công');
         }
     }
 
@@ -109,7 +109,7 @@ class RouteController extends Controller
 
             return redirect()->back()->with('success', 'Chuyến xe được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Chuyến xe không sửa thành công');
+            return redirect()->back()->with('failes', 'Chuyến xe không sửa thành công');
         }
     }
 

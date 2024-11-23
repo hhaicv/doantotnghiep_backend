@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách tuyến đường</h5>
                     <a class="btn btn-primary mb-3" href="{{ route('admin.routes.create') }}">Thêm mới</a>
                 </div>
                 <div class="card-body">

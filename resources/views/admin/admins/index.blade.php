@@ -18,6 +18,30 @@
             </div>
         </div>
     </div>
+    
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
+    @endif
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
+    @endif
 
     <div class="row">
         <div class="col-lg-12">
@@ -28,53 +52,55 @@
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                           style="width:100%">
+                        style="width:100%">
                         <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên</th>
-                            <th>Email</th>
-                            <th>Quyền</th>
-                            <th>Trạng Thái</th>
-                            <th>Ngày tạo</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>Hình ảnh</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Quyền</th>
+                                <th>Trạng Thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach ($admins as $item)
-                            <tr>
-                                <td>{{ $item->id }}</td>
-                                <td>{{ $item->name}}</td>
-                                <td>{{ $item->email}}</td>
-                                <td>{{ $item->name_role}}</td>
-                                <td>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                               id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
-                                            {{ $item->is_active ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
-                                            {{ $item->is_active ? 'On' : 'Off' }}
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                                <td>
-                                    <div class="hstack gap-3 fs-15">
-                                        <a href="{{ route('admin.admins.edit', $item->id) }}" class="link-primary"><i
-                                                class="ri-settings-4-line"></i></a>
-                                        <form id="deleteFormRole{{ $item->id }}"
-                                              action="{{ route('admin.admins.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" style="border: none; background: white"
+                            @foreach ($admins as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px" height="100px"></td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->email }}</td>
+                                    <td>{{ $item->name_role }}</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
+                                                {{ $item->is_active ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
+                                                {{ $item->is_active ? 'On' : 'Off' }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                                    <td>
+                                        <div class="hstack gap-3 fs-15">
+                                            <a href="{{ route('admin.admins.edit', $item->id) }}" class="link-primary"><i
+                                                    class="ri-settings-4-line"></i></a>
+                                            <form id="deleteFormRole{{ $item->id }}"
+                                                action="{{ route('admin.admins.destroy', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" style="border: none; background: white"
                                                     class="link-danger" onclick="confirmDelete({{ $item->id }})">
-                                                <i class="ri-delete-bin-5-line"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                                                    <i class="ri-delete-bin-5-line"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -94,7 +120,7 @@
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -113,6 +139,24 @@
         });
     </script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fromStopSelect = document.getElementById('input-from-stop-1');
+            const toStopSelect = document.getElementById('input-to-stop-1');
+
+            fromStopSelect.addEventListener('change', function() {
+                const selectedValue = fromStopSelect.value;
+
+                for (let option of toStopSelect.options) {
+                    if (option.value === selectedValue) {
+                        option.style.display = 'none';
+                    } else {
+                        option.style.display = '';
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
         document.querySelectorAll('.form-check-input').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
                 var isChecked = this.checked ? 1 : 0;
@@ -121,15 +165,15 @@
 
 
                 fetch(`/admin/status-roles/${itemId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        is_active: isChecked
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            is_active: isChecked
+                        })
                     })
-                })
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -155,14 +199,14 @@
 
                 // Dùng AJAX để gửi yêu cầu xóa mà không reload trang
                 fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
-                    },
-                    body: new URLSearchParams(new FormData(form))
-                })
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        },
+                        body: new URLSearchParams(new FormData(form))
+                    })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
