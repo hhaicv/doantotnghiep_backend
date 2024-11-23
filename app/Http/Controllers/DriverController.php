@@ -95,9 +95,9 @@ class DriverController extends Controller
         }
 
         if ($res) {
-            return redirect()->back()->with('success', 'tài xế được sửa thành công');
+            return redirect()->back()->with('success', 'Tài xế được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'tài xế không sửa thành công');
+            return redirect()->back()->with('danger', 'Tài xế không sửa thành công');
         }
     }
     /**

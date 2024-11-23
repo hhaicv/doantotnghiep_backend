@@ -102,7 +102,7 @@ class TripController extends Controller
         if ($res) {
             return redirect()->back()->with('success', 'Chuyến xe được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Chuyến xe không sửa thành công');
+            return redirect()->back()->with('failes', 'Chuyến xe không sửa thành công');
         }
     }
     public function destroy(string $id)

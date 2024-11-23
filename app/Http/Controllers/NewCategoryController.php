@@ -54,7 +54,7 @@ class NewCategoryController extends Controller
         if ($res) {
             return redirect()->back()->with('success', 'Danh mục tin tức được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Danh mục tin tức không sửa thành công');
+            return redirect()->back()->with('failes', 'Danh mục tin tức không sửa thành công');
         }
     }
 

@@ -46,9 +46,9 @@ class StopController extends Controller
 
         $model = Stop::query()->create($data);
         if ($model) {
-            return redirect()->back()->with('success', 'Bạn thêm thành công');
+            return redirect()->back()->with('success', 'Điểm dừng thêm thành công');
         } else {
-            return redirect()->back()->with('danger', 'Bạn không thêm thành công');
+            return redirect()->back()->with('failes', 'Điểm dừng không thêm thành công');
         }
     }
 
@@ -91,10 +91,10 @@ class StopController extends Controller
             }
 
             // Trả về thông báo thành công
-            return redirect()->back()->with('success', 'Danh mục điểm dừng được sửa thành công');
+            return redirect()->back()->with('success', 'Điểm dừng được sửa thành công');
         } catch (\Exception $e) {
             // Xử lý lỗi
-            return redirect()->back()->with('danger', 'Đã xảy ra lỗi: ' . $e->getMessage());
+            return redirect()->back()->with('failes', 'Điểm dừng đã xảy ra lỗi: ' . $e->getMessage());
         }
     }
 

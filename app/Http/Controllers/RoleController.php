@@ -68,7 +68,7 @@ class RoleController extends Controller
         if ($res) {
             return redirect()->back()->with('success', 'Phân quyền được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Phân quyền không sửa thành công');
+            return redirect()->back()->with('failes', 'Phân quyền không sửa thành công');
         }
     }
 
