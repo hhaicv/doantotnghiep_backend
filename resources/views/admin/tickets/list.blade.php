@@ -169,13 +169,12 @@
                                                             <i class="ri-eye-fill fs-16"></i>
                                                         </a>
                                                     </li>
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                        <a class="text-danger d-inline-block remove-item-btn"
-                                                            data-bs-toggle="modal" href="#deleteOrder">
+                                                    <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
+                                                        <a class="text-danger d-inline-block remove-item-btn" 
+                                                           data-id="{{ $ticketBooking->id }}" href="javascript:void(0);">
                                                             <i class="ri-delete-bin-5-fill fs-16"></i>
                                                         </a>
-                                                    </li>
+                                                    </li>                                                                                                     
                                                 </ul>
                                             </td>
                                         </tr>
@@ -274,4 +273,39 @@
 
     <!-- ecommerce-order init js -->
     <script src="{{ asset('theme/admin/assets/js/pages/ecommerce-order.init.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            // Lắng nghe sự kiện click nút xóa
+            $('.remove-item-btn').on('click', function () {
+                const itemId = $(this).data('id'); // Lấy ID từ data-id
+    
+                // Hiển thị modal xác nhận
+                $('#deleteOrder').modal('show');
+    
+                // Xử lý khi nhấn nút "Yes, Delete It" trong modal
+                $('#delete-record').off('click').on('click', function () {
+                    $.ajax({
+                        url: `/admin/tickets/${itemId}`, // URL DELETE
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}', // Laravel CSRF token
+                        },
+                        success: function (response) {
+                            // Xóa hàng khỏi bảng nếu thành công
+                            $(`tr:has(td:contains(${itemId}))`).remove();
+                            $('#deleteOrder').modal('hide');
+                            alert('Đã xóa thành công vé!');
+                        },
+                        error: function (xhr, status, error) {
+                            // Hiển thị thông báo lỗi nếu thất bại
+                            $('#deleteOrder').modal('hide');
+                            alert('Có lỗi xảy ra. Không thể xóa vé!');
+                            console.error(error);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    
 @endsection

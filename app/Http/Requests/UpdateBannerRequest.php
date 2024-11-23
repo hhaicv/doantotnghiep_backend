@@ -23,10 +23,10 @@ class UpdateBannerRequest extends FormRequest
     {
         return [
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'link' => 'required|string|max:255', 
-            'start_date' => 'required|date', 
+            'link' => 'required|string|max:255',
+            'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'nullable|boolean', 
+            'status' => 'nullable|boolean',
         ];
     }
     public function messages(): array

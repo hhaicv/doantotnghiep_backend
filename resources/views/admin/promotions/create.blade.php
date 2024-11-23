@@ -12,34 +12,44 @@
     </div>
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
     @endif
+
 
     <div class="card">
         <form action="{{ route('admin.promotions.store') }}" method="POST" class="row g-3 p-5">
             @csrf
             <div class="col-md-6">
-
-                <label for="codeInput" class="form-label">Code: </label>
-                <input type="text" class="form-control" name="code" placeholder="Nhập code">
-
-                <label for="codeInput" class="form-label">Code</label>
+                <label for="codeInput" class="form-label">Mã code giảm giá </label>
                 <input type="text" class="form-control" name="code" value="{{ old('code') }}"
                     placeholder="Nhập code">
                 @error('code')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
-
             </div>
+
             <div class="col-md-6">
-                <label for="discountInput" class="form-label">Discount (%)</label>
+                <label for="discountInput" class="form-label">Giảm giá (%)</label>
                 <input type="number" class="form-control" name="discount" id="discountInput" value="{{ old('discount') }}"
                     placeholder="Nhập %" min="1" max="100" oninput="validateDiscount()">
                 @error('discount')
@@ -48,18 +58,8 @@
             </div>
 
             <div class="col-md-6">
-                <label for="startDateInput" class="form-label">Ngày bắt đầu</label>
-                <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}"
-                    placeholder="Ngày bắt đầu" min="{{ date('Y-m-d') }}">
-                @error('start_date')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="col-md-6">
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
                 <select name="route_id" id="routeSelect" class="form-control" multiple>
-                    <option value="">Chọn tuyến đường</option>
                     @foreach ($routes as $route)
                         <option value="{{ $route->id }}"
                             {{ isset($promotionRoute) && in_array($route->id, $promotionRoute) ? 'selected' : '' }}>
@@ -69,12 +69,11 @@
                 </select>
             </div>
 
-
             <div class="col-md-6">
-                <label for="endDateInput" class="form-label">Ngày kết thúc</label>
-                <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc"
-                    min="{{ date('Y-m-d') }}">
+                <label for="endDateInput" class="form-label">Ngày bắt đầu</label>
+                <input type="date" class="form-control" name="start_date" min="{{ date('Y-m-d') }}">
             </div>
+
             <div class="col-md-6">
                 <label for="userSelect" class="form-label text-muted">Người dùng:</label>
                 <select name="users[]" id="userSelect" class="form-control" multiple>
@@ -82,57 +81,14 @@
                         <option value="{{ $user->id }}"
                             {{ in_array($user->id, $promotionUsers ?? []) ? 'selected' : '' }}>
                             {{ $user->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-
-                            <div class="col-md-6">
-                                <label for="endDateInput" class="form-label">Ngày kết thúc</label>
-                                <input type="date" class="form-control" name="end_date" value="{{ old('end_date') }}"
-                                    placeholder="Ngày kết thúc" min="{{ date('Y-m-d') }}">
-                                @error('end_date')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label for="userSelect" class="form-label">Người dùng</label>
-                                <select name="user_id" id="userSelect" class="form-control">
-                                    <option value="">Chọn người dùng</option> <!-- Option mặc định -->
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}"
-                                            {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }} <!-- Hoặc bất kỳ thuộc tính nào bạn muốn hiển thị -->
-
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="descriptionInput" class="form-label">Mô tả danh mục</label>
-                                <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2">{{ old('description') }}</textarea>
-                                @error('description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-
-                                <label for="newCustomerOnly" class="form-label">Chỉ áp dụng cho khách hàng mới</label>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="newCustomerOnly"
-                                        name="new_customer_only" value="1">
-                                    <label class="form-check-label" for="newCustomerOnly">On</label>
-                                </div>
-                            </div>
-
-
-                            <label for="routeSelect" class="form-label">Tuyến đường</label>
-                            <select class="form-control" name="route_id" id="routeSelect">
-                                <option value="">Chọn tuyến đường</option>
-                                @foreach ($routes as $route)
-                                    <option value="{{ $route->id }}"
-                                        {{ old('route_id') == $route->id ? 'selected' : '' }}>
-                                        {{ $route->route_name }}
-                                    </option>
-                                @endforeach
-                            </select>
+            <div class="col-md-6">
+                <label for="endDateInput" class="form-label">Ngày kết thúc</label>
+                <input type="date" class="form-control" name="end_date" min="{{ date('Y-m-d') }}">
             </div>
 
             <!-- Loại xe -->
@@ -147,13 +103,21 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="col-md-6">
+                <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
+                <textarea class="form-control" placeholder="Mô tả khuyến mãi" name="description" rows="2">{{ old('description') }}</textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" name="new_customer_only" id="newCustomerOnly"
                     value="1">
                 <label class="form-check-label" for="newCustomerOnly">Chỉ áp dụng cho khách hàng mới</label>
             </div>
             <input type="hidden" name="new_customer_only" value="0">
-
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>

@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách khuyến mãi</h5>
                     <a class="btn btn-primary mb-3" href="{{ route('admin.promotions.create') }}">Thêm mới khuyến mãi</a>
                 </div>
                 <div class="card-body">
@@ -56,7 +56,16 @@
                                     <td>{{ $item->discount }} % </td>
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
-                                    <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
+                                                {{ $item->new_customer_only  ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
+                                                {{ $item->new_customer_only  ? 'On' : 'Off' }}
+                                            </label>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('admin.promotions.edit', $item->id) }}"
