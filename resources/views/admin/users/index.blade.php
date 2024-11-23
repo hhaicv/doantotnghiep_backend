@@ -23,7 +23,7 @@ Danh sách tài khoản
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title mb-0">Danh sách</h5>
+                <h5 class="card-title mb-0">Danh sách nhân viên</h5>
                 <a class="btn btn-primary mb-3" href="{{ route('admin.users.create') }}">Thêm mới nhân viên</a>
             </div>
             <div class="card-body">

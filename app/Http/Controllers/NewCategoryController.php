@@ -33,9 +33,9 @@ class NewCategoryController extends Controller
         $data = $request->all();
         $model = NewCategory::query()->create($data);
         if ($model) {
-            return redirect()->back()->with('success', 'Bạn thêm thành công');
+            return redirect()->back()->with('success', 'Danh mục tin tức thêm thành công');
         } else {
-            return redirect()->back()->with('failes', 'Bạn không thêm thành công');
+            return redirect()->back()->with('failes', 'Danh mục tin tức không thêm thành công');
         }
     }
 

@@ -13,15 +13,28 @@
     </div>
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
     @endif
+
     <div class="card">
         <form action="{{ route('admin.banners.update', $model) }}" method="POST" class="row g-3 p-5"
             enctype="multipart/form-data">
@@ -31,10 +44,11 @@
                 <h5>Hình ảnh</h5>
                 <div class="file-drop-area" id="file-drop-area">
                     <input type="file" name="image_url" id="file-input" accept="image/*" multiple>
-               
+
                     <div id="file-preview">
-                        @if($model->image_url)
-                            <img src="{{ Storage::url($model->image_url) }}" alt="Ảnh đã tải lên" width="200px" height="150px">
+                        @if ($model->image_url)
+                            <img src="{{ Storage::url($model->image_url) }}" alt="Ảnh đã tải lên" width="200px"
+                                height="150px">
                         @endif
                     </div>
                 </div>
@@ -55,7 +69,7 @@
             <div class="col-md-6">
                 <label for="start_date">Ngày bắt đầu</label>
                 <input type="date" name="start_date" id="start_date" class="form-control"
-                    value="{{ old('start_date', $model->start_date) }}">
+                    value="{{ old('start_date', $model->start_date) }}" min="{{ now()->toDateString() }}">
                 @error('start_date')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -64,7 +78,7 @@
             <div class="col-md-6">
                 <label for="end_date">Ngày kết thúc</label>
                 <input type="date" name="end_date" id="end_date" class="form-control"
-                    value="{{ old('end_date', $model->end_date) }}">
+                    value="{{ old('end_date', $model->end_date) }}" min="{{ now()->toDateString() }}">
                 @error('end_date')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror

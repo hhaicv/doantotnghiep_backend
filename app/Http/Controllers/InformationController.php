@@ -100,9 +100,9 @@ class InformationController extends Controller
         $res = $model->newCategories()->sync($dataNewCategory);
 
         if ($res) {
-            return redirect()->back()->with('success', 'Bạn cập nhật thành công');
+            return redirect()->back()->with('success', 'Tin tức cập nhật thành công');
         } else {
-            return redirect()->back()->with('danger', 'Bạn không cập nhật thành công');
+            return redirect()->back()->with('failes', 'Tin tức cập nhật không thành công');
         }
     }
 

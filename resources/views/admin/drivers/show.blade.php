@@ -21,24 +21,23 @@
                     <div class="product-img-slider sticky-side-div mb-4">
                         <div class="swiper product-thumbnail-slider p-2 rounded">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <img src="{{ Storage::url($data->profile_image) }}" alt=""
-                                        class="img-fluid d-block" />
-                                </div>
+                                <div class="swiper-slide d-flex justify-content-center">
+                                    <img src="{{ Storage::url($data->profile_image) }}" alt="" width="300px" class="img-fluid d-block" />
+                                </div>                                
                             </div>
                         </div>
                     </div>
 
-                    <div class="mt-4 text-black">
-                        <h4 class="font-weight bold fs-3">{{ $data->name }}</h4>
-                    </div>
+                    <div class="mt-4 text-black text-center">
+                        <h4 class="font-weight-bold fs-3">{{ $data->name }}</h4>
+                    </div>                    
 
                 </div>
                 <!-- end col-lg-4 -->
 
                 <!-- Cột bên phải - Thông tin chi tiết -->
                 <div class="col-lg-8">
-                    <div class="mt-xl-0 mt-5">
+                    <div class="mt-xl-0 mt-5" >
                         <div class="text-black-30 mt-3 d-flex justify-content-between align-items-cente">
                             <h5 class="fs-15 text-black">Email:</h5>
                             {{ $data->email }}
