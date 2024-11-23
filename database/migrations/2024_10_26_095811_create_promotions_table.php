@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->text('description');
             $table->string('count');
+            $table->string('status')->default('open'); // Thêm cột status, mặc định là 'open'
             $table->unsignedBigInteger('route_id');
             $table->unsignedBigInteger('user_id');
             // $table->boolean('new_customer_only')->default(0);

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\Bus;
 use App\Models\Route;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,7 +28,7 @@ class PromotionController extends Controller
     public function index()
     {
         $users = User::all();
-        $data = Promotion::with('users','routes')->get(); // Lấy danh sách khuyến mãi cùng người dùng
+        $data = Promotion::with('users', 'routes')->get(); // Lấy danh sách khuyến mãi cùng người dùng
         return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'users'));
     }
 
@@ -52,13 +53,18 @@ class PromotionController extends Controller
 
         $data = $request->all();
         $data = $request->except('image');
-        
+
         // Kiểm tra xem có file ảnh không
         if ($request->hasFile('image')) {
             // Lưu ảnh vào thư mục 'public/images'
             $data['image'] = $request->file('image')->store('images', 'public');
         }
         $promotion = Promotion::create($data);
+        // Nếu số lượng khuyến mãi bằng 0, đóng khuyến mãi
+        if ($promotion->count == 0) {
+            $promotion->status = 'closed'; // Đóng khuyến mãi
+            $promotion->save();
+        }
 
         // Gắn người dùng vào khuyến mãi
         $userIds = $request->input('users', []);
@@ -70,8 +76,8 @@ class PromotionController extends Controller
             $promotion->routes()->attach($routeIds);  // Gắn các tuyến đường vào bảng promotion_route
         }
         // Kiểm tra nếu chọn gửi đến tất cả người dùng
-        if ($request->input('send_to_all')) { // Giả sử bạn có checkbox để chọn tất cả
-            $users = User::all(); // Lấy tất cả người dùng
+        if ($request->input('send_to_all')) { 
+            $users = User::all(); 
             foreach ($users as $user) {
                 Mail::to($user->email)->send(new PromotionAdded($promotion));
             }
@@ -101,7 +107,7 @@ class PromotionController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Promotion::with('users','routes')->findOrFail($id); // Lấy khuyến mãi cùng người dùng liên quan
+        $data = Promotion::with('users', 'routes')->findOrFail($id); 
         $routes = Route::all();
         $buses = Bus::all();
         $users = User::all();
@@ -113,33 +119,34 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, string $id)
     {
-        // Tìm bản ghi khuyến mãi hiện tại
         $promotion = Promotion::findOrFail($id);
-    
-        // Chuẩn bị dữ liệu cập nhật
+
         $data = $request->all();
-        $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0;
-    
-        // Kiểm tra và xử lý ảnh
+        // $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0;
+
         if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu tồn tại
+    
             if ($promotion->image) {
                 Storage::delete($promotion->image);
             }
-    
+
             // Lưu ảnh mới
             $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
         }
-    
+
         // Cập nhật bản ghi khuyến mãi
         $promotion->update($data);
-    
+        if ($promotion->count == 0 && $promotion->status != 'closed') {
+            $promotion->status = 'closed'; // Đóng khuyến mãi
+            $promotion->save();
+        }
+
         // Cập nhật người dùng liên kết
         $promotion->users()->sync($request->input('users', []));
-    
+
         // Cập nhật tuyến đường liên kết
         $promotion->routes()->sync($request->input('routes', []));
-    
+
         return redirect()->route('admin.promotions.index')->with('success', 'Cập nhật khuyến mãi thành công');
     }
     public function destroy(string $id)
@@ -206,5 +213,53 @@ class PromotionController extends Controller
             'description' => $promotion->description,
             'end_date' => $promotion->end_date,
         ];
+    }
+    public function showPromotions()
+    {
+        $promotions = Promotion::where('status', 1) 
+            ->where('count', '>', 0)
+            ->whereDate('end_date', '>=', now())
+            ->get();
+
+        // Lấy tất cả các mã khuyến mãi đã hết số lượng hoặc đã hết hạn
+        $expiredPromotions = Promotion::where('status', 1) 
+            ->where('count', 0) 
+            ->orWhereDate('end_date', '<', now()) 
+            ->get();
+
+        // Trả về view với các mã khuyến mãi đang hoạt động và hết hạn
+        return view('admin.promotions.index', compact('promotions', 'expiredPromotions'));
+    }
+
+    public function applyVoucher(Request $request)
+    {
+        $user = auth()->user();  
+        $voucherCode = $request->input('code');  
+    
+        // Kiểm tra mã khuyến mãi hợp lệ
+        $promotion = Promotion::where('code', $voucherCode)
+            ->where('status', 'open')  
+            ->first();
+    
+        if (!$promotion) {
+            return redirect()->back()->with('error', 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.');
+        }
+    
+        // Kiểm tra số lượng mã khuyến mãi còn lại
+        if ($promotion->count <= 0) {
+            // Cập nhật trạng thái mã khuyến mãi nếu số lượng = 0
+            $promotion->update(['status' => 'closed']);
+            return redirect()->back()->with('error', 'Số lượng mã khuyến mãi đã hết.');
+        }
+    
+        // Kiểm tra ngày hết hạn của mã khuyến mãi
+        if (Carbon::now()->gt(Carbon::parse($promotion->end_date))) {
+            return redirect()->back()->with('error', 'Mã khuyến mãi đã hết hạn.');
+        }
+    
+        // Giảm số lượng mã khuyến mãi khi người dùng áp dụng
+        $promotion->decrement('count');  
+    
+        return redirect()->back()->with('success', 'Mã khuyến mãi đã được áp dụng thành công.');
     }
 }
