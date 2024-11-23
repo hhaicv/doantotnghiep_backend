@@ -39,7 +39,7 @@ class BannerController extends Controller
         if ($model) {
             return redirect()->back()->with('success', 'Banner được thêm thành công');
         } else {
-            return redirect()->back()->with('danger', 'Banner không được thêm thành công');
+            return redirect()->back()->with('failes', 'Banner không được thêm thành công');
         }
     }
 

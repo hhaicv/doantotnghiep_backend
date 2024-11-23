@@ -47,11 +47,15 @@ Route::patch('new-categories/{id}/status', [NewCategoryController::class, 'statu
 Route::apiResource('information', InformationController::class);
 
 
+
+
 Route::apiResource('stops', StopController::class);
 
 Route::apiResource('home', HomeController::class);
 
+Route::post('check', [StopController::class, 'check']);
 Route::get('/bill',         [StopController::class, 'bill'])->name('bill');
+Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);
 Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
 Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
 

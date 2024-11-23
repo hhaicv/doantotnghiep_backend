@@ -21,4 +21,6 @@ class TicketDetail extends Model
     {
         return $this->belongsTo(TicketBooking::class, 'ticket_booking_id');
     }
+
+    
 }
