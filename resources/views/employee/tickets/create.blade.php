@@ -23,8 +23,6 @@
             border-radius: 2px;
         }
 
-
-
         .seat.booked {
             background: #f5c170;
             /* Màu nền cho ghế "booked" */
@@ -33,13 +31,13 @@
         .seat.selected {
             background: #9dc3fe;
 
-
         }
     </style>
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
                 <div class="card-body checkout-tab">
+                    <?php if ($seatCount == 40): ?>
                     <div class="row">
                         <div class="col">
                             <h5 class="pt-3 fw-semibold">Tầng 1</h5>
@@ -171,7 +169,251 @@
                                     data-seat-floor="2" type="submit"></button></li>
                         </div>
                     </div>
+                    <?php elseif ($seatCount == 34): ?>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="pt-3 fw-semibold">Tầng 1</h5>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="A1" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A2" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A3" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A4" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A5" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A6" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="A7" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A8" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A9" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A10" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A11" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="A12" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A13" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A14" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A15" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A16" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A17" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <h5 class="pt-3 fw-semibold">Tầng 2</h5>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="B1" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B2" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B3" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B4" data-trip-id="2" data-seat-status="selected"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B5" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B6" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="B7" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B8" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B9" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B10" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B11" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="B12" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B13" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B14" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B15" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B16" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B17" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                        </div>
+                    </div>
+                    <?php elseif ($seatCount == 45): ?>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="pt-3 fw-semibold">Tầng 1</h5>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="A1" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A2" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A3" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A4" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A5" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A6" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A7" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A8" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A9" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A10" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="A11" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="B1" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B2" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B3" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B4" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B5" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B6" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B7" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B8" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B9" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B10" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B11" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                        </div>
+                        <div class="col">
 
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button style="visibility: hidden;" type="submit"></button></li>
+                            <li><button class="seat" data-name="C1" data-trip-id="2" data-seat-status="available"
+                                    data-seat-floor="2" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="D1" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D2" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D3" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D4" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D5" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D6" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D7" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D8" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D9" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D10" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="D11" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                        </div>
+                        <div class="col">
+                            <li><button class="seat" data-name="E1" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E2" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E3" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E4" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E5" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E6" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E7" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E8" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E9" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E10" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="E11" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" type="submit"></button></li>
+                        </div>
+                    </div>
+
+                    <?php endif; ?>
 
                     <div class="row mt-2 p-2" style="background: #ecedf1 !important;">
                         <div class="col">
@@ -184,7 +426,7 @@
                             <li><button style="background: #f5c170;" type="submit"></button> <br> Ghế đã đặt</li>
                         </div>
                         <div class="col">
-                            <li><button style="background: #e76966;" type="submit"></button> <br> Ghế bảo trì</li>
+                            <li><button style="background: #e76966;" type="submit"></button> <br> Ghế đã chọn</li>
                         </div>
                     </div>
                 </div>
@@ -199,7 +441,7 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="{{ route('admin.tickets.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('employee.tickets.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">
@@ -237,15 +479,6 @@
                                         <i
                                             class="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
                                         Thanh toán
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link fs-15 p-3" id="pills-finish-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-finish" type="button" role="tab"
-                                        aria-controls="pills-finish" aria-selected="false">
-                                        <i
-                                            class="ri-checkbox-circle-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                                        Thông báo
                                     </button>
                                 </li>
                             </ul>
@@ -303,21 +536,8 @@
                                     <h5 class="mb-1">Thông tin khách hàng</h5>
                                     <p class="text-muted mb-4">Vui lòng nhập đầy đủ thông tin</p>
                                 </div>
-
                                 <div>
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="mb-3">
-                                                <label for="billinginfo-name" class="form-label">Họ tên</label>
-                                                <input type="text" name="name" class="form-control"
-                                                    id="billinginfo-name" placeholder="Nhập họ tên"
-                                                    value="{{ old('name') }}">
-                                                @error('name')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
@@ -329,26 +549,36 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label for="billinginfo-name" class="form-label">Họ tên</label>
+                                                <input type="text" name="name" class="form-control"
+                                                    id="billinginfo-name" placeholder="Nhập họ tên"
+                                                    value="{{ old('name') }}">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="mb-3">
                                                 <label for="billinginfo-email" class="form-label">Email <span
                                                         class="text-muted">(Optional)</span></label>
                                                 <input type="email" name="email" class="form-control"
-                                                    id="billinginfo-email" placeholder="Nhập email"
-                                                    value="{{ old('email') }}">
+                                                    id="billinginfo-email" placeholder="Nhập email">
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="mb-3">
                                         <label for="billinginfo-address" class="form-label">Ghi chú</label>
-                                        <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú" rows="3">{{ old('note') }}</textarea>
+                                        <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú"
+                                            rows="3">{{ old('note') }}</textarea>
                                     </div>
 
                                 </div>
+
                             </div>
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
@@ -379,14 +609,16 @@
                                     <div class="col-sm-6">
                                         <div class="mb-3">
                                             <label for="billinginfo-tralai" class="form-label">Trả lại</label>
-                                            <input type="text" class="form-control" id="billinginfo-tralai" readonly>
+                                            <input type="text" class="form-control" id="billinginfo-tralai"
+                                                readonly>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="mb-3">
-                                            <label for="billinginfo-email" class="form-label">Hình thức thanh toán</label>
+                                            <label for="billinginfo-email" class="form-label">Hình thức thanh
+                                                toán</label>
                                             <select name="payment_method_id" class="form-select"
                                                 aria-label="Default select example">
                                                 <?php foreach ($methods as $method) { ?>
@@ -398,47 +630,26 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-check mb-3" id="emailCheckboxContainer" style="display: none;">
-                                            <input class="form-check-input" type="checkbox" id="formCheckEmail" checked>
+                                        <div class="form-check mb-3" id="emailCheckboxContainer"
+                                            style="display: none;">
+                                            <input class="form-check-input" type="checkbox" id="formCheckEmail"
+                                                checked>
                                             <label class="form-check-label" for="formCheckEmail">
                                                 Gửi vé điện tử qua Email
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" type="checkbox" id="formCheckZalo" checked>
-                                            <label class="form-check-label" for="formCheckZalo">
-                                                Gửi thông tin qua Zalo
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
 
+                                </div>
                                 <div class="d-flex align-items-start gap-3 mt-4">
 
                                     <button type="submit" class="btn btn-primary btn-label right ms-auto nexttab fs-5"
                                         data-nexttab="pills-finish-tab"><i
                                             class="ri-coins-fill label-icon align-middle fs-16 ms-2"></i>Thu tiền</button>
+
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="pills-finish" role="tabpanel"
-                                aria-labelledby="pills-finish-tab">
-                                <div class="text-center py-5">
 
-                                    <div class="mb-4">
-                                        <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
-                                            colors="primary:#0ab39c,secondary:#405189"
-                                            style="width:120px;height:120px"></lord-icon>
-                                    </div>
-                                    <h5>Cảm ơn ! Đơn hàng đã được tạo thành công !</h5>
-                                    <p class="text-muted">Quý khách sẽ nhận được email vé và thông tin chi tiết.</p>
-
-                                    <h3 class="fw-semibold">Mã vé: <ae href="apps-ecommerce-order-details.html"
-                                            class="text-decoration-underline">VZ2451</ae>
-                                    </h3>
-                                </div>
-                            </div>
                             <!-- end tab pane -->
                         </div>
                         <!-- end tab content -->
@@ -454,10 +665,10 @@
         // Giả sử bạn đã nhận được mảng trạng thái ghế từ máy chủ
         const seatStatusArray = @json($seatsStatus);
 
-
         // Lặp qua từng ghế và cập nhật trạng thái
         document.querySelectorAll('.seat').forEach(function(button) {
             const seatName = button.getAttribute('data-name');
+            console.log(seatStatusArray);
 
             // Kiểm tra xem ghế có trong mảng trạng thái không
             if (seatStatusArray[seatName]) {
@@ -470,20 +681,27 @@
                 if (status === 'booked') {
                     button.classList.add('booked'); // Thêm lớp booked
                     button.classList.remove('selected'); // Bỏ lớp selected nếu có
+                } else if (status === 'lock') {
+                    button.classList.add('lock'); // Thêm lớp selected
+                    button.classList.remove('available'); // Bỏ lớp available nếu có
+                    button.classList.remove('booked'); // Bỏ lớp booked nếu có
+                    button.classList.remove('selected'); // Xóa lớp selected nếu không phải
                 } else {
                     button.classList.remove('booked'); // Xóa lớp booked nếu không phải
+                    button.classList.remove('selected'); // Xóa lớp selected nếu không phải
                 }
 
                 // Cập nhật màu sắc cho ghế
-                if (status === 'available') {
-                    button.style.backgroundColor = '#4CAF50'; // Màu cho ghế có thể chọn
-                } else if (status === 'booked') {
+               if (status === 'booked') {
                     button.style.backgroundColor = '#f5c170'; // Màu cho ghế đã đặt
-                } else if (status === 'maintenance') {
+                } else if (status === 'lock') {
                     button.style.backgroundColor = '#e76966'; // Màu cho ghế bảo trì
+                } else if (status === 'selected') {
+                    button.style.backgroundColor = '#9dc3fe'; // Màu cho ghế đã chọn
                 }
             }
         });
+
 
         document.getElementById('billinginfo-email').addEventListener('input', function() {
             const emailCheckboxContainer = document.getElementById('emailCheckboxContainer');
@@ -631,20 +849,20 @@
                     document.getElementById("billinginfo-thucthu").value = totalPrice;
                 } else if (seatStatus === 'booked') {
                     Swal.fire({
-                    icon: 'warning',
-                    title: 'Thông báo',
-                    text: 'Ghế đã đươc đặt. Vui lòng chọn ghế khác!.',
-                    confirmButtonText: 'OK'
-                });
-                return;
-                } else if (seatStatus === 'maintenance') {
+                        icon: 'warning',
+                        title: 'Thông báo',
+                        text: 'Ghế đã đươc đặt. Vui lòng chọn ghế khác!.',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                } else if (seatStatus === 'lock') {
                     Swal.fire({
-                    icon: 'warning',
-                    title: 'Thông báo',
-                    text: 'Ghế đang bảo trì đươc đặt. Vui lòng chọn ghế khác!.',
-                    confirmButtonText: 'OK'
-                });
-                return;
+                        icon: 'warning',
+                        title: 'Thông báo',
+                        text: 'Ghế đã chọn. Vui lòng chọn ghế khác!.',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
                 }
             });
         });

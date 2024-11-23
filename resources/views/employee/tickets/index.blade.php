@@ -70,15 +70,41 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         button:hover {
             background-color: #37477a;
             box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
         }
+
         button:active {
             background-color: #51629a;
         }
     </style>
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
+    @endif
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
+    @endif
+
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -235,15 +261,14 @@
         function displayTrips(trips) {
             const resultsBody = document.querySelector('#orderTable tbody');
             resultsBody.innerHTML = '';
-
-            if (!Array.isArray(trips) || trips.length === 0) {
+            const tripsArray = Array.isArray(trips) ? trips : Object.values(trips);
+            if (tripsArray.length === 0) {
                 resultsBody.innerHTML = '<tr><td colspan="5">Không có chuyến nào.</td></tr>';
                 return;
             }
 
-            trips.forEach(trip => {
+            tripsArray.forEach(trip => {
                 const row = document.createElement('tr');
-
                 const timeCell = document.createElement('td');
                 timeCell.classList.add('time-cell');
                 const timeIcon = document.createElement('i');
@@ -265,7 +290,7 @@
                 routeCell.appendChild(busName);
 
                 const seatsCell = document.createElement('td');
-                seatsCell.textContent = `${trip.total_seats} chỗ trống`;
+                seatsCell.textContent = `${trip.available_seats}/${trip.total_seats} chỗ trống`;
 
                 const fareCell = document.createElement('td');
                 fareCell.textContent = formatCurrency(trip.fare); // Giá vé
@@ -303,6 +328,9 @@
                 resultsBody.appendChild(row);
             });
         }
+
+
+
         function formatTime(timeString) {
             const [hour, minute] = timeString.split(':');
             return `${hour}:${minute}`; // Chỉ hiển thị giờ và phút

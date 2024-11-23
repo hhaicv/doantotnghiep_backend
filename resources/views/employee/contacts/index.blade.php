@@ -76,7 +76,7 @@
                                     <td>
                                         <div class="hstack gap-3 fs-15">
                                             <!-- <form id="deleteFormContacts{{ $item->id }}"
-                                                action="{{ route('admin.contacts.destroy', $item->id) }}" method="post">
+                                                action="{{ route('employee.contacts.destroy', $item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" style="border: none; background: white"
@@ -132,7 +132,7 @@
                 var isChecked = checkbox.checked ? 1 : 0;
                 var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-contacts/${itemId}`, {
+                fetch(`/employee/status-contacts/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
