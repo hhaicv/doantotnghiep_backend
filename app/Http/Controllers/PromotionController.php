@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PromotionCreated;
 use App\Mail\PromotionAdded;
 use App\Mail\PromotionNotificationMail;
 use App\Models\Promotion;
@@ -75,9 +76,12 @@ class PromotionController extends Controller
         if (!empty($routeIds)) {
             $promotion->routes()->attach($routeIds);  // Gắn các tuyến đường vào bảng promotion_route
         }
+
+
+
         // Kiểm tra nếu chọn gửi đến tất cả người dùng
-        if ($request->input('send_to_all')) { 
-            $users = User::all(); 
+        if ($request->input('send_to_all')) {
+            $users = User::all();
             foreach ($users as $user) {
                 Mail::to($user->email)->send(new PromotionAdded($promotion));
             }
@@ -90,24 +94,22 @@ class PromotionController extends Controller
                 }
             }
         }
+        // Phát sự kiện thông báo mã khuyến mãi mới
+        event(new PromotionAdded($promotion));
+        // \Log::info('PromotionAdded event fired for: ' . $promotion->id);
 
         return redirect()->route('admin.promotions.index')->with('success', 'Tạo khuyến mãi thành công và đã gửi email cho người dùng.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Promotion $promotion)
     {
         //
     }
+ 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        $data = Promotion::with('users', 'routes')->findOrFail($id); 
+        $data = Promotion::with('users', 'routes')->findOrFail($id);
         $routes = Route::all();
         $buses = Bus::all();
         $users = User::all();
@@ -120,12 +122,10 @@ class PromotionController extends Controller
     public function update(UpdatePromotionRequest $request, string $id)
     {
         $promotion = Promotion::findOrFail($id);
-
         $data = $request->all();
         // $data['new_customer_only'] = $request->has('new_customer_only') ? 1 : 0;
-
         if ($request->hasFile('image')) {
-    
+
             if ($promotion->image) {
                 Storage::delete($promotion->image);
             }
@@ -216,50 +216,65 @@ class PromotionController extends Controller
     }
     public function showPromotions()
     {
-        $promotions = Promotion::where('status', 1) 
+        $promotions = Promotion::where('status', 1)
             ->where('count', '>', 0)
             ->whereDate('end_date', '>=', now())
             ->get();
 
         // Lấy tất cả các mã khuyến mãi đã hết số lượng hoặc đã hết hạn
-        $expiredPromotions = Promotion::where('status', 1) 
-            ->where('count', 0) 
-            ->orWhereDate('end_date', '<', now()) 
+        $expiredPromotions = Promotion::where('status', 1)
+            ->where('count', 0)
+            ->orWhereDate('end_date', '<', now())
             ->get();
 
         // Trả về view với các mã khuyến mãi đang hoạt động và hết hạn
         return view('admin.promotions.index', compact('promotions', 'expiredPromotions'));
     }
-
     public function applyVoucher(Request $request)
     {
-        $user = auth()->user();  
-        $voucherCode = $request->input('code');  
+        // Lấy thông tin người dùng đang đăng nhập
+        $user = auth()->user();
+        $voucherCode = $request->input('code');  // Lấy mã khuyến mãi từ request
     
         // Kiểm tra mã khuyến mãi hợp lệ
         $promotion = Promotion::where('code', $voucherCode)
-            ->where('status', 'open')  
+            ->where('status', 'open')  // Trạng thái "open" của mã
             ->first();
     
         if (!$promotion) {
-            return redirect()->back()->with('error', 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.'
+            ], 400); // Trả về mã lỗi 400 nếu mã khuyến mãi không hợp lệ
         }
     
         // Kiểm tra số lượng mã khuyến mãi còn lại
         if ($promotion->count <= 0) {
             // Cập nhật trạng thái mã khuyến mãi nếu số lượng = 0
             $promotion->update(['status' => 'closed']);
-            return redirect()->back()->with('error', 'Số lượng mã khuyến mãi đã hết.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Số lượng mã khuyến mãi đã hết.'
+            ], 400); // Trả về lỗi 400 nếu hết số lượng
         }
     
         // Kiểm tra ngày hết hạn của mã khuyến mãi
         if (Carbon::now()->gt(Carbon::parse($promotion->end_date))) {
-            return redirect()->back()->with('error', 'Mã khuyến mãi đã hết hạn.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Mã khuyến mãi đã hết hạn.'
+            ], 400); // Trả về lỗi 400 nếu mã đã hết hạn
         }
     
         // Giảm số lượng mã khuyến mãi khi người dùng áp dụng
-        $promotion->decrement('count');  
+        $promotion->decrement('count');
     
-        return redirect()->back()->with('success', 'Mã khuyến mãi đã được áp dụng thành công.');
+        // Trả về phản hồi thành công
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Mã khuyến mãi đã được áp dụng thành công.',
+            'data' => $promotion
+        ], 200);
     }
+    
 }

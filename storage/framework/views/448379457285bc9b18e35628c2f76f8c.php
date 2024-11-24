@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-    </div>z
+    </div>
 
     <div class="row">
         <div class="col-lg-12">
@@ -36,7 +36,7 @@
                                 <th>Mã giảm giá </th>
                                 <th>Giảm giá</th>
                                 <th>Số lượng</th>
-
+                                <th>Trạng thái</th>
                                 <th>Mô tả</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày bắt kết thúc</th>
@@ -55,6 +55,7 @@
                                         <td><?php echo e($item->code); ?></td>
                                         <td><?php echo e($item->discount); ?> % </td>
                                         <td><?php echo e($item->count); ?></td>
+                                        <td><?php echo e($item->status); ?></td>
                                     <td><?php echo e(\Illuminate\Support\Str::limit($item->description, 50)); ?></td>
                                    
                                     <td><?php echo e($item->start_date); ?></td>

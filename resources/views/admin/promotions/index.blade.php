@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-    </div>z
+    </div>
 
     <div class="row">
         <div class="col-lg-12">
@@ -38,7 +38,7 @@
                                 <th>Mã giảm giá </th>
                                 <th>Giảm giá</th>
                                 <th>Số lượng</th>
-
+                                <th>Trạng thái</th>
                                 <th>Mô tả</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày bắt kết thúc</th>
@@ -61,6 +61,7 @@
                                         <td>{{ $item->code }}</td>
                                         <td>{{ $item->discount }} % </td>
                                         <td>{{ $item->count }}</td>
+                                        <td>{{ $item->status }}</td>
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
                                    
                                     <td>{{ $item->start_date }}</td>

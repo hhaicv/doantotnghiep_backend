@@ -83,5 +83,5 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
     Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply.voucher');
 
-  
+
 });

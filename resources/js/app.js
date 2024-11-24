@@ -1,7 +1,16 @@
-const userId = document.getElementById('user-id').value; // Lấy user ID từ DOM hoặc nơi khác
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-Echo.private('user.' + userId)
-    .listen('VoucherNotification', (e) => {
-        console.log('Voucher received:', e.voucher);
-        // Hiển thị thông báo voucher cho người dùng
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    encrypted: true,
+});
+
+window.Echo.channel('promotions')
+    .listen('PromotionAdded', (event) => {
+        console.log('New promotion added:', event);
     });
