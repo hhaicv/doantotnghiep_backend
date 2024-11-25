@@ -52,7 +52,7 @@ Route::apiResource('information', InformationController::class);
 Route::apiResource('stops', StopController::class);
 
 Route::apiResource('home', HomeController::class);
-
+Route::get('/my_ticket/{user_id}', [StopController::class, 'my_ticket'])->name('my_ticket');
 Route::post('check', [StopController::class, 'check']);
 Route::get('/bill',         [StopController::class, 'bill'])->name('bill');
 Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);

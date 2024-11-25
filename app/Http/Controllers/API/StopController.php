@@ -501,6 +501,56 @@ class StopController extends Controller
     }
 
 
+    public function my_ticket($user_id)
+    {
+        // Kiểm tra user_id
+        if (!is_numeric($user_id)) {
+            return response()->json([
+                'status' => 'Thất bại',
+                'message' => 'ID người dùng không hợp lệ.',
+                'DỮ LIỆU' =>$user_id,
+            ], 400);
+        }
+
+        // Lấy thông tin vé
+        $ticketBookings = TicketBooking::with(['trip', 'bus.driver', 'route', 'user', 'paymentMethod'])
+            ->where('user_id', $user_id)
+            ->get();
+
+        // Kiểm tra vé có tồn tại
+        if ($ticketBookings->isEmpty()) {
+            return response()->json([
+                'status' => 'Thất bại',
+                'message' => 'Không có vé nào được tìm thấy cho người dùng này.',
+                'orders' => [],
+            ], 404);
+        }
+
+        // Chuẩn bị dữ liệu đơn hàng
+        $orders = $ticketBookings->map(function ($ticketBooking) {
+            $driver = $ticketBooking->bus->driver ?? null;
+
+            return [
+                'driver_phone' => $driver->phone ?? null,
+                'route_name' => $ticketBooking->route->route_name ?? null,
+                'image' => $ticketBooking->bus->image ?? null,
+                'time_start' => $ticketBooking->trip->time_start ?? null,
+                'date_start' => $ticketBooking->date,
+                'total_price' => $ticketBooking->total_price,
+                'status' => $ticketBooking->status,
+                'order_code' => $ticketBooking->order_code,
+            ];
+        });
+
+        // Trả về thông tin đăng nhập và đơn hàng
+        return response()->json([
+            'status' => 'Thành công',
+            'message' => 'Lấy thông tin vé thành công.',
+            'orders' => $orders,
+        ], 200);
+    }
+
+
 
     /**
      * Update the specified resource in storage.

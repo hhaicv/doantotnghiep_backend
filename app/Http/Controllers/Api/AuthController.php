@@ -67,25 +67,6 @@ class AuthController extends Controller
         $token = $user->createToken(env('SANCTUM_NAME', 'DefaultTokenName'))->plainTextToken;
 
         // Lấy tất cả các đơn hàng liên quan đến người dùng
-        $ticketBookings = TicketBooking::with(['trip', 'bus.driver', 'route', 'user', 'paymentMethod'])
-            ->where('user_id', $user->id)
-            ->get();
-
-        // Chuẩn bị dữ liệu đơn hàng
-        $orders = $ticketBookings->map(function ($ticketBooking) {
-            $driver = $ticketBooking->bus->driver;
-
-            return [
-                'driver_phone' => $driver->phone ?? null,
-                'route_name' => $ticketBooking->route->route_name ?? null,
-                'image' => $ticketBooking->bus->image,
-                'time_start' => $ticketBooking->trip->time_start ?? null,
-                'date_start' => $ticketBooking->date,
-                'total_price' => $ticketBooking->total_price,
-                'status' => $ticketBooking->status,
-                'order_code' => $ticketBooking->order_code,
-            ];
-        });
 
         // Trả về thông tin đăng nhập và đơn hàng
         return response()->json([
@@ -99,10 +80,11 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'address' => $user->address,
                 'phone' => $user->phone,
-            ],
-            'orders' => $orders,
+            ]
         ]);
     }
+
+
 
     public function logout(Request $request)
     {
