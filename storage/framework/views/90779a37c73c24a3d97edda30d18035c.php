@@ -10,11 +10,10 @@
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css']); ?>
 
     <!-- Import Pusher JavaScript -->
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
 </head>
 <body>
-
-    <div class="container">
+     <div class="container">
         <h1>Áp dụng mã khuyến mãi</h1>
 
         <!-- Hiển thị thông báo -->
@@ -39,15 +38,10 @@
             <input type="text" id="code" name="code" required>
             <button type="submit">Áp dụng</button>
         </form>
-
-        <!-- Thông báo realtime -->
-        <div id="realtime-alert" style="display: none; margin-top: 20px; padding: 10px; background-color: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6;">
-            <strong>Thông báo:</strong> <span id="promotion-message"></span>
-        </div>
     </div>
-
     <!-- JavaScript -->
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/public.js']); ?>
 </body>
+
 </html>
 <?php /**PATH L:\laragon\www\doantotnghiep\resources\views/apply-voucher.blade.php ENDPATH**/ ?>

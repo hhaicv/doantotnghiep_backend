@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\PromotionCreated;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\StorePromotionRequest;
@@ -30,6 +31,7 @@ class PromotionController extends Controller
             $data['image'] = $request->file('image')->store('images', 'public');
         }
 
+
         // Tạo khuyến mãi
         $promotion = Promotion::create($data);
 
@@ -38,7 +40,7 @@ class PromotionController extends Controller
 
         // Gắn tuyến đường vào khuyến mãi
         $promotion->routes()->attach($request->input('routes', []));
-
+        broadcast(new PromotionCreated($promotion))->toOthers();
         return response()->json([
             'status' => 'success',
             'message' => 'Khuyến mãi được tạo thành công.',
@@ -83,19 +85,19 @@ class PromotionController extends Controller
     {
         $user = auth()->user();
         $voucherCode = $request->input('code');
-    
+
         // Kiểm tra mã khuyến mãi hợp lệ
         $promotion = Promotion::where('code', $voucherCode)
             ->where('status', 'open')
             ->first();
-    
+
         if (!$promotion) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.'
             ], 400);
         }
-    
+
         // Kiểm tra số lượng mã khuyến mãi còn lại
         if ($promotion->count <= 0) {
             $promotion->update(['status' => 'closed']);
@@ -104,7 +106,7 @@ class PromotionController extends Controller
                 'message' => 'Số lượng mã khuyến mãi đã hết.'
             ], 400);
         }
-    
+
         // Kiểm tra ngày hết hạn của mã khuyến mãi
         if (Carbon::now()->gt(Carbon::parse($promotion->end_date))) {
             return response()->json([
@@ -112,15 +114,15 @@ class PromotionController extends Controller
                 'message' => 'Mã khuyến mãi đã hết hạn.'
             ], 400);
         }
-    
+
         // Giảm số lượng mã khuyến mãi
         $promotion->decrement('count');
-    
+
         return response()->json([
             'status' => 'success',
             'message' => 'Mã khuyến mãi đã được áp dụng thành công.',
             'data' => $promotion
         ], 200);
     }
-    
+
 }
