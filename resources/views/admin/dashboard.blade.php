@@ -12,7 +12,7 @@ Dashboard
                 <div class="col-12">
                     <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                         <div class="flex-grow-1">
-                            <h4 class="fs-16 mb-1">Good Morning</h4>
+                            <h4 id="greeting" class="fs-16 mb-1">Good Morning</h4>
                             <p class="text-muted mb-0">Thống kê của bạn</p>
                         </div>
                     </div><!-- end card header -->
@@ -126,6 +126,20 @@ Dashboard
 
 @section('script-libs')
 <script src="{{ asset('theme/admin/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+<script>
+    // Lấy giờ hiện tại
+    const currentHour = new Date().getHours();
+
+    // Lấy thẻ h4
+    const greetingElement = document.getElementById('greeting');
+
+    // Kiểm tra thời gian để thay đổi nội dung
+    if (currentHour >= 6 && currentHour < 18) {
+        greetingElement.textContent = 'Chào buổi sáng';
+    } else {
+        greetingElement.textContent = 'Chào buổi tối';
+    }
+</script>
 <script>
     // Truyền dữ liệu từ controller vào JS
     var monthlyData = @json($monthlyData);

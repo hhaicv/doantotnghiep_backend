@@ -469,7 +469,21 @@ class TicketBookingController extends Controller
     public function list(Request $request)
     {
 
-        $data = TicketBooking::with(['route', 'paymentMethod', 'trip'])->get();
+        $query = TicketBooking::with(['route', 'paymentMethod', 'trip']);
+
+        // Lọc theo ngày nếu có tham số 'date'
+        if ($request->has('date') && $request->date) {
+            $query->whereDate('date', $request->date);
+        }
+
+        // Lọc theo trạng thái thanh toán từ PAYMENT_STATUSES
+        if ($request->has('payment_status') && $request->payment_status !== 'all' && array_key_exists($request->payment_status, TicketBooking::PAYMENT_STATUSES)) {
+            $query->where('status', TicketBooking::PAYMENT_STATUSES[$request->payment_status]);
+        }
+
+        // Lấy dữ liệu
+        $data = $query->get();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -504,7 +518,7 @@ class TicketBookingController extends Controller
         //
     }
 
-   
+
     public function destroy(string $id)
     {
         try {
@@ -533,5 +547,10 @@ class TicketBookingController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function changeTrip()
+    {
+        return view('admin.tickets.changeTrip');
     }
 }

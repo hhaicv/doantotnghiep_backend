@@ -1,4 +1,4 @@
-@extends('employee.layouts.mater')
+@extends('employeet.layouts.mater')
 
 @section('title')
     Danh sách tuyến đường
@@ -263,15 +263,15 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 
-    <script src="{{ asset('theme/employee/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-    <script src="{{ asset('theme/employee/assets/js/plugins.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/js/plugins.js') }}"></script>
 
     <!-- list.js min js -->
-    <script src="{{ asset('theme/employee/assets/libs/list.js/list.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/list.js/list.min.js') }}"></script>
 
     <!--list pagination js-->
-    <script src="{{ asset('theme/employee/assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 
     <!-- ecommerce-order init js -->
-    <script src="{{ asset('theme/employee/assets/js/pages/ecommerce-order.init.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/js/pages/ecommerce-order.init.js') }}"></script>
 @endsection

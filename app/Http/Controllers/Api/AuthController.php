@@ -77,7 +77,6 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'address' => $user->address,
                 'phone' => $user->phone,
-                // Có thể trả về các trường khác mà bạn muốn, nhưng không phải mật khẩu
             ]
         ]);
     }

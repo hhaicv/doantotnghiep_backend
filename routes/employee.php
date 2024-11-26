@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Auth\EmployeeController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\HomeEmployeeController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReviewController;
@@ -13,23 +13,23 @@ use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('employee/login', [EmployeeController::class, 'showEmployeeLoginForm'])->name('employee.login');
-Route::post('employee/login', [EmployeeController::class, 'employeeLogin'])->name('employee.login.submit');
+Route::get('/login', [EmployeeController::class, 'showEmployeeLoginForm'])->name('employee.login');
+Route::post('/login', [EmployeeController::class, 'employeeLogin'])->name('employee.login.submit');
 Route::middleware(['employee'])->prefix('employee')->as('employee.')->group(function () {
-    // Route::post('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::post('/logout', [EmployeeController::class, 'employeeLogout'])->name('logout');
 
     Route::get('/', function () {
         return view('employee.dashboard');
     })->name('dashboard');
 
-    Route::resource('contacts', ContactController::class);
-    Route::post('/status-contacts/{id}', [ContactController::class, 'statusContact']);
+    Route::get('/contacts', [HomeEmployeeController::class, 'contacts'])->name('contacts');
+    Route::post('/status-contacts/{id}', [HomeEmployeeController::class, 'statusContact']);
 
     Route::resource('buses', BusController::class);
     Route::post('/status-buses/{id}', [BusController::class, 'statusBuses']);
 
-    // Route::resource('drivers', DriverController::class);
-    // Route::post('/status-drivers/{id}', [DriverController::class, 'statusDriver']);
+    Route::resource('drivers', DriverController::class);
+    Route::post('/status-drivers/{id}', [DriverController::class, 'statusDriver']);
 
 
     Route::resource('routes', RouteController::class);
@@ -46,7 +46,7 @@ Route::middleware(['employee'])->prefix('employee')->as('employee.')->group(func
 
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
-    
+
 
     Route::resource('reviews', ReviewController::class);
     Route::get('/send-notification', [PromotionController::class, 'sendPromotionNotification']);

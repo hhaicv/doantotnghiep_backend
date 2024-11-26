@@ -95,4 +95,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
 
+    Route::get('/change_trip', [TicketBookingController::class, 'changeTrip'])->name('change_trip.get');
+    Route::post('/change_trip', [TicketBookingController::class, 'changeTrip'])->name('change_trip.post');
+    
+
+
 });
