@@ -23,7 +23,6 @@
 
             </div>
         <?php endif; ?>
-
         <?php if(session('error')): ?>
             <div class="alert alert-danger">
                 <?php echo e(session('error')); ?>
@@ -39,9 +38,7 @@
             <button type="submit">Áp dụng</button>
         </form>
     </div>
-    <!-- JavaScript -->
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/public.js']); ?>
 </body>
-
 </html>
 <?php /**PATH L:\laragon\www\doantotnghiep\resources\views/apply-voucher.blade.php ENDPATH**/ ?>

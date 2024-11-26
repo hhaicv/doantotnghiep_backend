@@ -22,7 +22,7 @@ class StorePromotionRequest extends FormRequest
     public function rules(): array
     {
         return [
-           
+
             'code' => ['required', 'string', 'min:5', 'max:20'],
             'discount' => 'required|numeric',
             'start_date' => 'required|date',
@@ -37,7 +37,7 @@ class StorePromotionRequest extends FormRequest
             'discount.required' => 'Discount là bắt buộc.',
             'start_date.required' => 'Ngày bắt đầu là bắt buộc.',
             'end_date.required' => 'Ngày kết thúc là bắt buộc.',
-            'discount.required' => 'Discount là bắt buộc.',
+
             'code.min' => 'Mã giảm giá phải có ít nhất 5 ký tự.',
             'code.max' => 'Mã giảm giá không được vượt quá 255 ký tự.',
             'description.required' => 'Mô tả bắt buộc phải nhập',

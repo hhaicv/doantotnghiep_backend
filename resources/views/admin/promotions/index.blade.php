@@ -61,7 +61,18 @@
                                         <td>{{ $item->code }}</td>
                                         <td>{{ $item->discount }} % </td>
                                         <td>{{ $item->count }}</td>
-                                        <td>{{ $item->status }}</td>
+                                        <td>
+                                            @if($item->status === 'open')
+                                                <span class="badge badge-success" style="background-color: #28a745; color: white;">Đang hoạt động</span>
+                                            @elseif($item->status === 'closed')
+                                                <span class="badge badge-danger" style="background-color: #dc3545; color: white;">Đã đóng</span>
+                                            @elseif($item->status === 'pending')
+                                                <span class="badge badge-warning" style="background-color: #ffc107; color: black;">Chưa kích hoạt</span>
+                                            @else
+                                                <span class="badge badge-secondary" style="background-color: #6c757d; color: white;">Không xác định</span>
+                                            @endif
+                                        </td>
+                                        
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
                                    
                                     <td>{{ $item->start_date }}</td>

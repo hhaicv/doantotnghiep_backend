@@ -55,7 +55,18 @@
                                         <td><?php echo e($item->code); ?></td>
                                         <td><?php echo e($item->discount); ?> % </td>
                                         <td><?php echo e($item->count); ?></td>
-                                        <td><?php echo e($item->status); ?></td>
+                                        <td>
+                                            <?php if($item->status === 'open'): ?>
+                                                <span class="badge badge-success" style="background-color: #28a745; color: white;">Đang hoạt động</span>
+                                            <?php elseif($item->status === 'closed'): ?>
+                                                <span class="badge badge-danger" style="background-color: #dc3545; color: white;">Đã đóng</span>
+                                            <?php elseif($item->status === 'pending'): ?>
+                                                <span class="badge badge-warning" style="background-color: #ffc107; color: black;">Chưa kích hoạt</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-secondary" style="background-color: #6c757d; color: white;">Không xác định</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        
                                     <td><?php echo e(\Illuminate\Support\Str::limit($item->description, 50)); ?></td>
                                    
                                     <td><?php echo e($item->start_date); ?></td>

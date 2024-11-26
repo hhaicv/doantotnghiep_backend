@@ -1,9 +1,8 @@
-@extends('admin.layouts.mater')
-@section('title')
+<?php $__env->startSection('title'); ?>
     Cập nhật lại khuyến mại
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -12,99 +11,117 @@
         </div>
     </div>
    
-    @if (session('success'))
+    <?php if(session('success')): ?>
         <div class="alert alert-success">
-            {{ session('success') }}
+            <?php echo e(session('success')); ?>
+
         </div>
-    @endif
-    @if (session('error'))
+    <?php endif; ?>
+    <?php if(session('error')): ?>
         <div class="alert alert-danger">
-            {{ session('error') }}
+            <?php echo e(session('error')); ?>
+
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="card"> 
-        <form action="{{ route('admin.promotions.update', $data) }}" method="POST" class="row g-3 p-5"  enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+        <form action="<?php echo e(route('admin.promotions.update', $data)); ?>" method="POST" class="row g-3 p-5"  enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
             <div class="col-md-6">
                 <label for="codeInput" class="form-label">Tiêu đề:</label>
-                <input type="text" class="form-control" name="title" value="{{ $data->title }}">
-                @error('title')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                <input type="text" class="form-control" name="title" value="<?php echo e($data->title); ?>">
+                <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <span class="text-danger"><?php echo e($message); ?></span>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
             <div class="col-md-6">
                 <h5>Hình ảnh</h5>
                 <div class="file-drop-area" id="file-drop-area">
                     <input type="file" name="image" id="file-input" accept="image/*" multiple>
                     <div id="file-preview">
-                        @if ($data->image)
-                            <img src="{{ Storage::url($data->image) }}" alt="Ảnh đã tải lên" width="200px" height="150px">
-                        @endif
+                        <?php if($data->image): ?>
+                            <img src="<?php echo e(Storage::url($data->image)); ?>" alt="Ảnh đã tải lên" width="200px" height="150px">
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <label for="codeInput" class="form-label">Mã khuyến mãi:</label>
-                <input type="text" class="form-control" name="code" value="{{ $data->code }}">
+                <input type="text" class="form-control" name="code" value="<?php echo e($data->code); ?>">
             </div>
             <div class="col-md-6">
                 <label for="discountInput" class="form-label">Phần trăm giảm(%):</label>
-                <input type="text" class="form-control" name="discount" value="{{ $data->discount }}">
+                <input type="text" class="form-control" name="discount" value="<?php echo e($data->discount); ?>">
             </div>
             <div class="col-md-6">
                 <label for="startDateInput" class="form-label">Ngày bắt đầu:</label>
-                <input type="date" class="form-control" name="start_date"value="{{ $data->start_date }}"
-                       min="{{ date('Y-m-d') }}">
+                <input type="date" class="form-control" name="start_date"value="<?php echo e($data->start_date); ?>"
+                       min="<?php echo e(date('Y-m-d')); ?>">
             </div>
             <div class="col-md-6">
                 <label for="codeInput" class="form-label">Số lượng</label>
-                <input type="number" class="form-control" name="count" value="{{ $data->count }}">
-                @error('count')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                <input type="number" class="form-control" name="count" value="<?php echo e($data->count); ?>">
+                <?php $__errorArgs = ['count'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <span class="text-danger"><?php echo e($message); ?></span>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
                 <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc" 
-                       id="endDateInput" min="{{ date('Y-m-d') }}" value="{{ $data->end_date }}">
+                       id="endDateInput" min="<?php echo e(date('Y-m-d')); ?>" value="<?php echo e($data->end_date); ?>">
             </div>
             <div class="col-md-6">
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
                 <select name="routes[]" id="routeSelect" class="form-control" multiple>
-                    @foreach($routes as $route)
-                        <option value="{{ $route->id }}" {{ in_array($route->id, $promotionRoutes ?? []) ? 'selected' : '' }}>
-                            {{ $route->route_name }}
+                    <?php $__currentLoopData = $routes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $route): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($route->id); ?>" <?php echo e(in_array($route->id, $promotionRoutes ?? []) ? 'selected' : ''); ?>>
+                            <?php echo e($route->route_name); ?>
+
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="col-md-6">
                 <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
-                <textarea class="form-control" name="description" rows="2">{{ $data->description }}</textarea>
+                <textarea class="form-control" name="description" rows="2"><?php echo e($data->description); ?></textarea>
             </div>
             <div class="col-md-6">
                 <label for="userSelect" class="form-label text-muted">Người dùng</label>
                 <select name="users[]" id="userSelect" class="form-control" multiple>
-                    @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ in_array($user->id, $promotionUsers ?? []) ? 'selected' : '' }}>
-                            {{ $user->name }}
+                    <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($user->id); ?>" <?php echo e(in_array($user->id, $promotionUsers ?? []) ? 'selected' : ''); ?>>
+                            <?php echo e($user->name); ?>
+
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ route('admin.promotions.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="<?php echo e(route('admin.promotions.index')); ?>" class="btn btn-success">Quay lại</a>
                 </div>
             </div>
         </form>
         
 
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
 
 
@@ -161,3 +178,5 @@
         });
     });
 </script>
+
+<?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH L:\laragon\www\doantotnghiep\resources\views/admin/promotions/edit.blade.php ENDPATH**/ ?>

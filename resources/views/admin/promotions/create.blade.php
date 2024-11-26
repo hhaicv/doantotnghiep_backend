@@ -34,14 +34,16 @@
             </div>
             <div class="col md-6">
                 <h5>Hình ảnh</h5>
-                <div class="file-drop-area" id="file-drop-area" >
-                    <input type="file" name="image" id="file-input" accept="image/*" value="{{ old('image') }}" multiple>
+                <div class="file-drop-area" id="file-drop-area">
+                    <input type="file" name="image" id="file-input" accept="image/*" value="{{ old('image') }}"
+                        multiple>
                     <div id="file-preview"></div>
                 </div>
                 @error('image')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="codeInput" class="form-label">Mã giảm giá</label>
                 <input type="text" class="form-control" name="code" value="{{ old('code') }}" placeholder="Nhập mã giảm giá">
@@ -49,12 +51,20 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            
+
             <div class="col-md-6">
                 <label for="discountInput" class="form-label">Phần trăm giảm</label>
                 <input type="number" class="form-control" name="discount" id="discountInput" value="{{ old('discount') }}"
-                    placeholder="Nhập %" min="1" max="100" oninput="validateDiscount()">
+                    placeholder="Nhập % giảm" min="1" max="100" oninput="validateDiscount()">
                 @error('discount')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-md-6">
+                <label for="startDateInput" class="form-label">Ngày bắt đầu</label>
+                <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}" placeholder="Ngày bắt đầu"
+                    min="{{ date('Y-m-d') }}">
+                @error('start_date')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
@@ -62,16 +72,7 @@
                 <label for="codeInput" class="form-label">Số lượng</label>
                 <input type="number" class="form-control" name="count" value="{{ old('count') }}" placeholder="Nhập số lượng">
                 @error('count')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="col-md-6">
-                <label for="startDateInput" class="form-label">Ngày bắt đầu</label>
-                <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}" placeholder="Ngày bắt đầu"
-                    min="{{ date('Y-m-d') }}">
-                @error('start_date')
-                    <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -95,7 +96,13 @@
                     @endforeach
                 </select>
             </div>
-
+            <div class="col-md-6">
+                <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
+                <textarea class="form-control" placeholder="Mô tả khuyến mãi" name="description" rows="2">{{ old('description') }}</textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
             <div class="col-md-6">
                 <label for="userSelect" class="form-label">Người dùng</label>
                 <select name="users[]" id="userSelect" class="form-control" multiple>
@@ -106,14 +113,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-6">
-                <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
-                <textarea class="form-control" placeholder="Mô tả danh mục" name="description" rows="2">{{ old('description') }}</textarea>
-                @error('description')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-       
+
             {{-- <div class="col-md-6">
                 <label for="newCustomerOnly" class="form-label">Chỉ áp dụng cho khách hàng mới</label>
                 <div class="form-check form-switch">
