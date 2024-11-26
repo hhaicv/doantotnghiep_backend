@@ -408,23 +408,27 @@ class StopController extends Controller
             ], 404);
         }
         // Chuẩn bị dữ liệu trả về
+        $startStop = Stop::find($ticketBooking->id_start_stop);
+        $endStop = Stop::find($ticketBooking->id_end_stop);
         $data = [
             'id' => $ticketBooking->id,
             'name' => $ticketBooking->name,
             'phone' => $ticketBooking->phone,
             'email' => $ticketBooking->email,
+
             'driver_name' => $ticketBooking->bus->driver->name ?? null,
             'driver_phone' => $ticketBooking->bus->driver->phone ?? null,
             'license_plate' => $ticketBooking->bus->license_plate ?? null,
             'route_name' => $ticketBooking->route->route_name ?? null,
-            'start_point' => $ticketBooking->location_start,
-            'end_point' => $ticketBooking->location_end,
+            'start_point' => $startStop->stop_name ?? $ticketBooking->location_start, // Tên điểm bắt đầu
+            'end_point' => $endStop->stop_name ?? $ticketBooking->location_end,       // Tên điểm kết thúc
             'time_start' => $ticketBooking->trip->time_start ?? null,
             'date_start' => $ticketBooking->date ?? null,
             'ticket_details' => $ticketBooking->ticketDetails->map(function ($detail) {
                 return [
                     'ticket_code' => $detail->ticket_code,
                     'name_seat' => $detail->name_seat,
+                    'price' => $detail->price,
                 ];
             }),
             'total_price' => $ticketBooking->total_price,
@@ -539,6 +543,7 @@ class StopController extends Controller
                 'total_price' => $ticketBooking->total_price,
                 'status' => $ticketBooking->status,
                 'order_code' => $ticketBooking->order_code,
+                'total_tickets' => $ticketBooking->total_tickets,
             ];
         });
 
