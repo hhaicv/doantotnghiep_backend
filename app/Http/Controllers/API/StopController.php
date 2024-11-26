@@ -422,6 +422,11 @@ class StopController extends Controller
             'route_name' => $ticketBooking->route->route_name ?? null,
             'start_point' => $startStop->stop_name ?? $ticketBooking->location_start, // Tên điểm bắt đầu
             'end_point' => $endStop->stop_name ?? $ticketBooking->location_end,       // Tên điểm kết thúc
+
+
+            'location_start' =>  $ticketBooking->location_start, // Tên điểm bắt đầu
+            'location_end' =>  $ticketBooking->location_end,       // Tên điểm kết thúc
+
             'time_start' => $ticketBooking->trip->time_start ?? null,
             'date_start' => $ticketBooking->date ?? null,
             'ticket_details' => $ticketBooking->ticketDetails->map(function ($detail) {
