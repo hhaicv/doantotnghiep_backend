@@ -25,6 +25,8 @@ class DeactivatePromotionJob implements ShouldQueue
     {
         if (Carbon::now()->gte($this->promotion->end_date) && $this->promotion->status !== 'closed') {
             $this->promotion->update(['status' => 'closed']);
+            $this->promotion->save();
+
         }
     }
 }

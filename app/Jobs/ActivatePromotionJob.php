@@ -24,6 +24,7 @@ class ActivatePromotionJob implements ShouldQueue
     {
         if (Carbon::now()->gte($this->promotion->start_date) && $this->promotion->status !== 'open') {
             $this->promotion->update(['status' => 'open']);
+            $this->promotion->save();
         }
     }
 }

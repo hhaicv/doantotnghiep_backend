@@ -55,24 +55,20 @@ class PromotionController extends Controller
     {
         // Lấy tất cả dữ liệu từ request
         $data = $request->all();
-    
+
         // Xử lý ngày bắt đầu và ngày kết thúc
-        $data['start_date'] = $request->input('start_date') 
-            ? Carbon::parse($request->input('start_date')) 
-            : null;
-    
-        $data['end_date'] = $request->input('end_date') 
-            ? Carbon::parse($request->input('end_date')) 
-            : null;
-    
+        $data['start_date'] = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : null;
+
+        $data['end_date'] = $request->input('end_date') ? Carbon::parse($request->input('end_date')) : null;
+
         // Kiểm tra và lưu file ảnh nếu có
         if ($request->hasFile('image')) {
             $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
         }
-    
+
         // Tạo khuyến mãi
         $promotion = Promotion::create($data);
-    
+
         // Kiểm tra trạng thái khuyến mãi
         // Đảm bảo trạng thái được gán đúng dựa trên ngày bắt đầu và ngày kết thúc
         if ($promotion->count == 0) {
@@ -84,29 +80,29 @@ class PromotionController extends Controller
         } else {
             $promotion->status = 'open'; // Mở nếu đủ điều kiện (đã đến ngày bắt đầu và chưa hết ngày kết thúc)
         }
-    
+
         $promotion->save();
-    
+
         // Lên lịch tự động kích hoạt nếu có start_date
         if ($promotion->start_date) {
             dispatch(new ActivatePromotionJob($promotion))->delay($promotion->start_date);
         }
-    
+
         // Lên lịch tự động đóng nếu có end_date
         if ($promotion->end_date) {
             dispatch(new DeactivatePromotionJob($promotion))->delay($promotion->end_date);
         }
-    
+
         // Gắn người dùng vào khuyến mãi
         $userIds = $request->input('users', []);
         $promotion->users()->attach($userIds);
-    
+
         // Gắn nhiều tuyến đường vào khuyến mãi
         $routeIds = $request->input('routes', []);
         if (!empty($routeIds)) {
             $promotion->routes()->attach($routeIds);
         }
-    
+
         // Kiểm tra nếu chọn gửi đến tất cả người dùng
         if ($request->input('send_to_all')) {
             $users = User::all();
@@ -122,13 +118,13 @@ class PromotionController extends Controller
                 }
             }
         }
-    
+
         // Phát sự kiện thông báo mã khuyến mãi mới
         event(new PromotionCreated($promotion));
-    
+
         return redirect()->route('admin.promotions.index')->with('success', 'Tạo khuyến mãi thành công và đã gửi email cho người dùng.');
     }
-    
+
 
     public function show(Promotion $promotion)
     {
@@ -153,35 +149,35 @@ class PromotionController extends Controller
         // Lấy khuyến mãi từ database
         $promotion = Promotion::findOrFail($id);
         $data = $request->all();
-    
+
         // Chuyển đổi ngày bắt đầu và kết thúc thành kiểu Carbon nếu có
         $data['start_date'] = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : null;
         $data['end_date'] = $request->input('end_date') ? Carbon::parse($request->input('end_date')) : null;
-    
+
         // Kiểm tra và lưu ảnh nếu có ảnh mới
         if ($request->hasFile('image')) {
             // Nếu có ảnh cũ, xóa đi
             if ($promotion->image) {
                 Storage::delete($promotion->image);
             }
-    
+
             // Lưu ảnh mới
             $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
         }
-    
+
         // Cập nhật bản ghi khuyến mãi
         $promotion->update($data);
-    
+
         // Lên lịch tự động kích hoạt khuyến mãi nếu có ngày bắt đầu
         if ($promotion->start_date && Carbon::now()->lt(Carbon::parse($promotion->start_date))) {
             dispatch(new ActivatePromotionJob($promotion))->delay($promotion->start_date);
         }
-    
+
         // Lên lịch tự động đóng khuyến mãi nếu có ngày kết thúc
         if ($promotion->end_date && Carbon::now()->lt(Carbon::parse($promotion->end_date))) {
             dispatch(new DeactivatePromotionJob($promotion))->delay($promotion->end_date);
         }
-    
+
         // Kiểm tra lại trạng thái khuyến mãi sau khi cập nhật
         if ($promotion->count == 0 && $promotion->status != 'closed') {
             $promotion->status = 'closed'; // Đóng khuyến mãi nếu hết số lượng
@@ -192,22 +188,20 @@ class PromotionController extends Controller
         } else {
             $promotion->status = 'open'; // Nếu không có điều kiện nào thỏa mãn thì mở khuyến mãi
         }
-    
-        // Lưu lại trạng thái khuyến mãi
+
+
         $promotion->save();
+
     
-        // Cập nhật người dùng liên kết với khuyến mãi
         $promotion->users()->sync($request->input('users', []));
-    
-        // Cập nhật các tuyến đường liên kết với khuyến mãi
+
         $promotion->routes()->sync($request->input('routes', []));
-    
-        // Phát sự kiện khuyến mãi đã được tạo hoặc cập nhật
+
         broadcast(new PromotionCreated($promotion))->toOthers();
-    
+
         return redirect()->route('admin.promotions.index')->with('success', 'Cập nhật khuyến mãi thành công');
     }
-    
+
 
     public function destroy(string $id)
     {
