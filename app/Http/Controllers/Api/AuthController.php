@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Mail\OtpMail;
 use Exception;
 
 class AuthController extends Controller
 {
+    // Đăng ký người dùng
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -44,28 +48,25 @@ class AuthController extends Controller
         }
     }
 
+    // Đăng nhập người dùng
     public function login(Request $request)
     {
-        // Validate yêu cầu đầu vào
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        // Tìm kiếm người dùng theo email
         $user = User::where('email', $request->email)->first();
 
-        // Kiểm tra nếu người dùng không tồn tại hoặc mật khẩu không chính xác
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Thông tin đăng nhập không chính xác.'],
+                'password' =>['Mật khẩu không chính xác']
             ]);
         }
 
-        // Tạo token cho người dùng
         $token = $user->createToken(env('SANCTUM_NAME', 'DefaultTokenName'))->plainTextToken;
 
-        // Trả về thông tin đăng nhập thành công mà không bao gồm mật khẩu hoặc dữ liệu nhạy cảm
         return response()->json([
             'status' => 'Thành công',
             'message' => 'Đăng nhập thành công.',
@@ -81,6 +82,7 @@ class AuthController extends Controller
         ]);
     }
 
+    // Đăng xuất người dùng
     public function logout(Request $request)
     {
         if ($request->input('type') === 'all') {
@@ -108,11 +110,12 @@ class AuthController extends Controller
             ], 404);
         }
     }
+
+    // Cập nhật thông tin tài khoản
     public function updateAccount(Request $request)
     {
-        $user = $request->user(); // Lấy người dùng hiện tại
+        $user = $request->user();
 
-        // Validate các thông tin đầu vào
         $validatedData = $request->validate([
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
@@ -121,13 +124,11 @@ class AuthController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        // Nếu người dùng muốn thay đổi mật khẩu, mã hóa mật khẩu mới
         if (isset($validatedData['password'])) {
             $validatedData['password'] = Hash::make($validatedData['password']);
         }
 
         try {
-            // Cập nhật thông tin người dùng
             $user->update($validatedData);
 
             return response()->json([
@@ -149,4 +150,69 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    // Gửi mã OTP để thay đổi mật khẩu
+    public function requestPasswordReset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        $otp = Str::random(6);  // Tạo mã OTP ngẫu nhiên
+
+        // Lưu OTP và thời gian hết hạn (5 phút)
+        $user->otp = $otp;
+        $user->otp_expires_at = now()->addMinutes(5);
+        $user->save();
+
+        // Gửi OTP qua email
+        Mail::to($user->email)->send(new OtpMail($otp));
+
+        return response()->json([
+            'status' => 'Thành công',
+            'message' => 'Mã OTP đã được gửi vào email của bạn.',
+        ], 200);
+    }
+
+    // Cập nhật mật khẩu sau khi xác thực OTP
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|string|size:6',  // Kiểm tra mã OTP
+            'password' => 'required|string|min:8|confirmed',  // Kiểm tra mật khẩu mới
+        ]);
+
+        $user = $request->user();
+
+        $user = User::where('email', $request->email)->first(); // Hoặc dùng 'user_id'
+        if (!$user) {
+            return response()->json(['status' => 'Lỗi', 'message' => 'Người dùng không tồn tại.'], 404);
+        }
+
+        // Kiểm tra OTP và thời gian hết hạn (Sử dụng optional để tránh lỗi nếu các thuộc tính là null)
+        if (optional($user)->otp !== $request->otp || now()->gt(optional($user)->otp_expires_at)) {
+            return response()->json([
+                'status' => 'Lỗi',
+                'message' => 'Mã OTP không hợp lệ hoặc đã hết hạn.',
+            ], 400);
+        }
+
+        // Cập nhật mật khẩu
+        $user->password = Hash::make($request->password);
+        $user->otp = null;  // Xóa OTP sau khi xác thực
+        $user->otp_expires_at = null;  // Xóa thời gian hết hạn OTP
+        $user->save();
+
+        return response()->json([
+            'status' => 'Thành công',
+            'message' => 'Mật khẩu đã được thay đổi thành công.',
+        ], 200);
+    }
 }
+
+//"email": "anhtrieu147@gmail.com",
+//  "otp": "tUtf8L",
+//  "password": "12345678",
+//  "password_confirmation": "12345678"
