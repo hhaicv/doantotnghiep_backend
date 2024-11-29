@@ -47,7 +47,7 @@
                 <input type="text" class="form-control" id="name_bus" name="name_bus" value="{{ $model->name_bus }}">
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Tên tài xế</label>
+                <label for="fullnameInput" class="form-label">Hãng xe</label>
                 <input type="text" class="form-control" id="model" name="model" value="{{ $model->model }}">
             </div>
             <div class="col-md-6">
