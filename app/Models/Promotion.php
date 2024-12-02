@@ -44,6 +44,10 @@ class Promotion extends Model
     {
         return $this->belongsToMany(Route::class, 'promotion_route','promotion_id','route_id');
     }
+    public function promotionCategory()
+    {
+        return $this->belongsTo(PromotionCategory::class, 'promotion_category_id');
+    }
     public function usePromotion()
     {
         // Kiểm tra trạng thái của khuyến mãi

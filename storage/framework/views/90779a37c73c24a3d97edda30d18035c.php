@@ -9,35 +9,51 @@
     <!-- CSS -->
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css']); ?>
 
-    <!-- Import Pusher JavaScript -->
+    <!-- Import Bootstrap CSS for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Import Pusher JavaScript -->
+    
 </head>
 <body>
-     <div class="container">
-        <h1>Áp dụng mã khuyến mãi</h1>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Áp dụng mã khuyến mãi</h1>
 
         <!-- Hiển thị thông báo -->
         <?php if(session('success')): ?>
-            <div class="alert alert-success">
-                <?php echo e(session('success')); ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Thành công!</strong> <?php echo e(session('success')); ?>
 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
         <?php if(session('error')): ?>
-            <div class="alert alert-danger">
-                <?php echo e(session('error')); ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Thất bại!</strong> <?php echo e(session('error')); ?>
 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
 
         <!-- Form nhập mã khuyến mãi -->
-        <form action="<?php echo e(route('apply-voucher')); ?>" method="POST">
-            <?php echo csrf_field(); ?>
-            <label for="code">Nhập mã khuyến mãi:</label>
-            <input type="text" id="code" name="code" required>
-            <button type="submit">Áp dụng</button>
-        </form>
+        <div class="card p-4 shadow-sm">
+            <form action="<?php echo e(route('apply-voucher')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
+                <div class="mb-3">
+                    <label for="code" class="form-label">Nhập mã khuyến mãi:</label>
+                    <input type="text" id="code" name="code" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary w-100">Áp dụng</button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Bootstrap JS for modal, alerts, etc. -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/public.js']); ?>
 </body>
 </html>

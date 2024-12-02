@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
+use App\Http\Controllers\PromotionCategoryController;
 use App\Http\Controllers\RoleController;
 
 use App\Http\Controllers\RouteController;
@@ -58,6 +59,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('promotions', PromotionController::class);
     Route::post('/status-promotion/{id}', [PromotionController::class, 'statusPromotion']);
+    Route::resource('promotion_categories', PromotionCategoryController::class);
 
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);

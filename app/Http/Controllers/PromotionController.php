@@ -12,6 +12,7 @@ use App\Http\Requests\StorePromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
 use App\Events\PromotionNotification;
 
+use App\Models\PromotionCategory;
 use Illuminate\Http\Request;
 use App\Models\Bus;
 use App\Models\Route;
@@ -40,12 +41,13 @@ class PromotionController extends Controller
      */
     public function create()
     {
+        $categories = PromotionCategory::all();
         $routes = Route::all();
         $buses = Bus::all();
         $users = User::all();
 
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('routes', 'buses', 'users'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('routes', 'buses', 'users','categories'));
     }
 
     /**
@@ -102,7 +104,7 @@ class PromotionController extends Controller
         if (!empty($routeIds)) {
             $promotion->routes()->attach($routeIds);
         }
-
+ 
         // Kiểm tra nếu chọn gửi đến tất cả người dùng
         if ($request->input('send_to_all')) {
             $users = User::all();
@@ -118,7 +120,10 @@ class PromotionController extends Controller
                 }
             }
         }
-
+        if ($request->has('promotion_category_id') && $request->input('promotion_category_id')) {
+            $promotion->promotionCategory()->associate($request->input('promotion_category_id'));
+            $promotion->save();
+        }
         // Phát sự kiện thông báo mã khuyến mãi mới
         event(new PromotionCreated($promotion));
 
@@ -138,7 +143,16 @@ class PromotionController extends Controller
         $routes = Route::all();
         $buses = Bus::all();
         $users = User::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'routes', 'buses', 'users'));
+        // Lấy các tuyến đường và người dùng liên kết với khuyến mại hiện tại
+    // $promotionRoutes = $data->routes()->pluck('route_id')->toArray();
+    // $promotionUsers = $data->users()->pluck('user_id')->toArray();
+
+    // Chỉ hiển thị danh sách các tuyến đường và người dùng liên quan
+    // $routes = Route::whereIn('id', $promotionRoutes)->get();
+    // $users = User::whereIn('id', $promotionUsers)->get();
+
+        $categories = PromotionCategory::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'routes', 'buses', 'users','categories'));
     }
 
     /**
@@ -188,11 +202,15 @@ class PromotionController extends Controller
         } else {
             $promotion->status = 'open'; // Nếu không có điều kiện nào thỏa mãn thì mở khuyến mãi
         }
+        if ($request->has('promotion_category_id') && $request->input('promotion_category_id')) {
+            $promotion->promotionCategory()->associate($request->input('promotion_category_id'));
+            $promotion->save();
+        }
 
 
         $promotion->save();
 
-    
+
         $promotion->users()->sync($request->input('users', []));
 
         $promotion->routes()->sync($request->input('routes', []));
@@ -289,38 +307,54 @@ class PromotionController extends Controller
     }
     public function applyVoucher(Request $request)
     {
+        // Kiểm tra nếu người dùng chưa đăng nhập
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để áp dụng mã khuyến mãi.');
+        }
+    
         $user = auth()->user();
         $voucherCode = $request->input('code');
-
+        $routeId = $request->input('route_id'); // Tuyến đường người dùng đang sử dụng
+    
         // Kiểm tra mã khuyến mãi hợp lệ
         $promotion = Promotion::where('code', $voucherCode)
             ->where('status', 'open')
             ->first();
-
+    
         if (!$promotion) {
             return redirect()->back()->with('error', 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.');
         }
-
+    
+        // Kiểm tra xem người dùng đã sử dụng mã khuyến mãi này chưa
+        if ($promotion->users()->where('user_id', $user->id)->exists()) {
+            return redirect()->back()->with('error', 'Bạn đã áp dụng mã khuyến mãi này trước đó rồi. Mã chỉ có thể sử dụng một lần.');
+        }
+    
+        // Kiểm tra tuyến đường có liên kết với mã khuyến mãi hay không
+        if (!$promotion->routes()->where('route_id', $routeId)->exists()) {
+            return redirect()->back()->with('error', 'Mã khuyến mãi này không áp dụng cho tuyến đường bạn đang sử dụng.');
+        }
+    
         // Kiểm tra số lượng mã khuyến mãi còn lại
         if ($promotion->count <= 0) {
-            // Cập nhật trạng thái mã khuyến mãi nếu số lượng = 0
             $promotion->update(['status' => 'closed']);
             return redirect()->back()->with('error', 'Số lượng mã khuyến mãi đã hết.');
         }
-
+    
         // Kiểm tra ngày hết hạn của mã khuyến mãi
         if (Carbon::now()->gt(Carbon::parse($promotion->end_date))) {
             $promotion->update(['status' => 'closed']);
             return redirect()->back()->with('error', 'Mã khuyến mãi đã hết hạn.');
         }
-
+    
         // Giảm số lượng mã khuyến mãi khi người dùng áp dụng
         $promotion->decrement('count');
         if ($promotion->count == 0) {
             $promotion->update(['status' => 'closed']);
         }
-
-
+    
         return redirect()->back()->with('success', 'Mã khuyến mãi đã được áp dụng thành công.');
     }
+    
 }
+

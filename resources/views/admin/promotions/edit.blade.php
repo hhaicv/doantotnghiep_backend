@@ -1,17 +1,18 @@
 @extends('admin.layouts.mater')
+
 @section('title')
-    Cập nhật lại khuyến mại
+    Cập nhật Danh mục khuyến mãi
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Cập nhật lại khuyến mại</h4>
+                <h4 class="mb-sm-0">Cập nhật Danh mục khuyến mãi</h4>
             </div>
         </div>
     </div>
-   
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -23,141 +24,155 @@
         </div>
     @endif
 
-    <div class="card"> 
-        <form action="{{ route('admin.promotions.update', $data) }}" method="POST" class="row g-3 p-5"  enctype="multipart/form-data">
+    <div class="card">
+        <form action="{{ route('admin.promotions.update', $data->id) }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
             <div class="col-md-6">
-                <label for="codeInput" class="form-label">Tiêu đề:</label>
-                <input type="text" class="form-control" name="title" value="{{ $data->title }}">
+                <label for="codeInput" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" name="title" value="{{ old('title', $data->title) }}" placeholder="Nhập tiêu đề">
                 @error('title')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+
             <div class="col-md-6">
-                <h5>Hình ảnh</h5>
-                <div class="file-drop-area" id="file-drop-area">
-                    <input type="file" name="image" id="file-input" accept="image/*" multiple>
-                    <div id="file-preview">
-                        @if ($data->image)
-                            <img src="{{ Storage::url($data->image) }}" alt="Ảnh đã tải lên" width="200px" height="150px">
-                        @endif
-                    </div>
-                </div>
+                <label for="promotion_category_id" class="form-label">Danh mục khuyến mãi</label>
+                <select name="promotion_category_id" id="promotion_category_id" class="form-control">
+                    <option value="">Chọn danh mục khuyến mãi</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('promotion_category_id', $data->promotion_category_id) == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('promotion_category_id')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
-                <label for="codeInput" class="form-label">Mã khuyến mãi:</label>
-                <input type="text" class="form-control" name="code" value="{{ $data->code }}">
+                <label for="codeInput" class="form-label">Mã giảm giá</label>
+                <input type="text" class="form-control" name="code" value="{{ old('code', $data->code) }}" placeholder="Nhập mã giảm giá">
+                @error('code')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
-                <label for="discountInput" class="form-label">Phần trăm giảm(%):</label>
-                <input type="text" class="form-control" name="discount" value="{{ $data->discount }}">
+                <label for="discountInput" class="form-label">Phần trăm giảm</label>
+                <input type="number" class="form-control" name="discount" id="discountInput" value="{{ old('discount', $data->discount) }}"
+                    placeholder="Nhập % giảm" min="1" max="100" oninput="validateDiscount()">
+                @error('discount')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
-                <label for="startDateInput" class="form-label">Ngày bắt đầu:</label>
-                <input type="date" class="form-control" name="start_date"value="{{ $data->start_date }}"
-                       min="{{ date('Y-m-d') }}">
+                <label for="startDateInput" class="form-label">Ngày bắt đầu</label>
+                <input type="date" class="form-control" name="start_date" value="{{ old('start_date', $data->start_date) }}" placeholder="Ngày bắt đầu"
+                    min="{{ date('Y-m-d') }}">
+                @error('start_date')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="codeInput" class="form-label">Số lượng</label>
-                <input type="number" class="form-control" name="count" value="{{ $data->count }}">
+                <input type="number" class="form-control" name="count" value="{{ old('count', $data->count) }}" placeholder="Nhập số lượng">
                 @error('count')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
-                <input type="date" class="form-control" name="end_date" placeholder="Ngày kết thúc" 
-                       id="endDateInput" min="{{ date('Y-m-d') }}" value="{{ $data->end_date }}">
+                <input type="date" class="form-control" name="end_date" value="{{ old('end_date', $data->end_date) }}" placeholder="Ngày kết thúc"
+                    min="{{ date('Y-m-d') }}">
+                @error('end_date')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
+            <div class="col-md-6">
+                <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
+                <textarea class="form-control" placeholder="Mô tả khuyến mãi" name="description" rows="2">{{ old('description', $data->description) }}</textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
             <div class="col-md-6">
                 <label for="routeSelect" class="form-label">Tuyến đường</label>
                 <select name="routes[]" id="routeSelect" class="form-control" multiple>
-                    @foreach($routes as $route)
-                        <option value="{{ $route->id }}" {{ in_array($route->id, $promotionRoutes ?? []) ? 'selected' : '' }}>
+                    @foreach ($routes as $route)
+                        <option value="{{ $route->id }}" {{ isset($promotionRoutes) && in_array($route->id, $promotionRoutes) ? 'selected' : '' }}>
                             {{ $route->route_name }}
                         </option>
                     @endforeach
                 </select>
+                <button type="button" class="btn btn-secondary btn-sm mt-2" id="selectAllRoutes">Chọn tất cả tuyến đường</button>
             </div>
+
             <div class="col-md-6">
-                <label for="descriptionInput" class="form-label">Mô tả khuyến mãi</label>
-                <textarea class="form-control" name="description" rows="2">{{ $data->description }}</textarea>
-            </div>
-            <div class="col-md-6">
-                <label for="userSelect" class="form-label text-muted">Người dùng</label>
+                <label for="userSelect" class="form-label">Người dùng</label>
                 <select name="users[]" id="userSelect" class="form-control" multiple>
-                    @foreach($users as $user)
+                    @foreach ($users as $user)
                         <option value="{{ $user->id }}" {{ in_array($user->id, $promotionUsers ?? []) ? 'selected' : '' }}>
                             {{ $user->name }}
                         </option>
                     @endforeach
                 </select>
+                <button type="button" class="btn btn-secondary btn-sm mt-2" id="selectAllUsers">Chọn tất cả người dùng</button>
             </div>
-            <div class="col-12">
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ route('admin.promotions.index') }}" class="btn btn-success">Quay lại</a>
+
+            <div class="col-md-6">
+                <h5>Hình ảnh</h5>
+                <div class="file-drop-area" id="file-drop-area">
+                    <input type="file" name="image" id="file-input" accept="image/*" value="{{ old('image', $data->image) }}">
+                    <div id="file-preview"></div>
                 </div>
+                @error('image')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <a href="{{ route('admin.promotions.index') }}" class="btn btn-success">Quay lại</a>
             </div>
         </form>
-        
-
     </div>
 @endsection
 
-
-
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
 <script>
-       document.addEventListener('DOMContentLoaded', function () {
-        const userSelect = document.getElementById('userSelect');
-        const choices = new Choices(userSelect, {
-            removeItemButton: true, // Thêm nút xóa cho mỗi mục đã chọn
-            placeholderValue: "Chọn người dùng", // Placeholder
-            maxItemCount: 5, // Giới hạn số người dùng có thể chọn, nếu cần
-        });
-    });
     document.addEventListener('DOMContentLoaded', function () {
-        const userSelect = document.getElementById('routeSelect');
-        const choices = new Choices(userSelect, {
-            removeItemButton: true, // Thêm nút xóa cho mỗi mục đã chọn
-            placeholderValue: "Chọn tuyến đường", // Placeholder
-            maxItemCount: 5, // Giới hạn số người dùng có thể chọn, nếu cần
-        });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        const startDateInput = document.getElementById('startDateInput');
-        const endDateInput = document.getElementById('endDateInput');
-        
-        // Khi người dùng chọn ngày bắt đầu
-        startDateInput.addEventListener('change', function () {
-            const startDate = new Date(startDateInput.value);
-            const endDate = new Date(endDateInput.value);
-            
-            // Kiểm tra nếu ngày bắt đầu lớn hơn ngày kết thúc
-            if (endDate && startDate > endDate) {
-                alert('Ngày bắt đầu không được lớn hơn ngày kết thúc');
-                startDateInput.value = ''; // Xóa giá trị không hợp lệ
-            }
-            
-            // Cập nhật giá trị min cho ngày kết thúc
-            endDateInput.min = startDateInput.value;
+        // Khởi tạo Choices.js cho Tuyến đường
+        const routeSelect = new Choices('#routeSelect', {
+            removeItemButton: true,
+            placeholderValue: "Chọn tuyến đường",
+            maxItemCount: -1,
         });
 
-        // Khi người dùng chọn ngày kết thúc
-        endDateInput.addEventListener('change', function () {
-            const startDate = new Date(startDateInput.value);
-            const endDate = new Date(endDateInput.value);
+        document.getElementById('selectAllRoutes').addEventListener('click', function () {
+            const allOptions = Array.from(document.querySelectorAll('#routeSelect option')).map(option => option.value);
+            routeSelect.setChoiceByValue(allOptions);
+        });
 
-            // Kiểm tra nếu ngày kết thúc nhỏ hơn ngày bắt đầu
-            if (startDate && endDate < startDate) {
-                alert('Ngày kết thúc không được nhỏ hơn ngày bắt đầu');
-                endDateInput.value = ''; // Xóa giá trị không hợp lệ
-            }
+        // Khởi tạo Choices.js cho Người dùng
+        const userSelect = new Choices('#userSelect', {
+            removeItemButton: true,
+            placeholderValue: "Chọn người dùng",
+            maxItemCount: -1,
+        });
+
+        document.getElementById('selectAllUsers').addEventListener('click', function () {
+            const allOptions = Array.from(document.querySelectorAll('#userSelect option')).map(option => option.value);
+            userSelect.setChoiceByValue(allOptions);
         });
     });
 </script>
