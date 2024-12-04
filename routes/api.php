@@ -37,27 +37,28 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route để cập nhật thông tin tài khoản
     Route::put('account/update', [AuthController::class, 'updateAccount']);
 
-    // Thêm các route API cho các tài nguyên khác
-    Route::apiResource('banners', BannerController::class);
-    Route::apiResource('contacts', ContactController::class);
-    Route::patch('contacts/{id}/status', [ContactController::class, 'statusContact']);
-    Route::apiResource('routes', RouteController::class);
-    Route::patch('routes/{id}/status', [RouteController::class, 'statusRoute']);
-    Route::apiResource('buses', BusController::class);
-    Route::apiResource('new-categories', NewCategoryController::class);
-    Route::patch('new-categories/{id}/status', [NewCategoryController::class, 'statusNewCategory']);
-    Route::apiResource('information', InformationController::class);
-    Route::apiResource('stops', StopController::class);
-    Route::apiResource('home', HomeController::class);
-
-    // Các route cho thanh toán
-    Route::get('/bill', [StopController::class, 'bill'])->name('bill');
-    Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
-    Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
+    // Route gửi OTP cho người dùng
+    Route::post('request-password-reset', [AuthController::class, 'requestPasswordReset']);  // Gửi OTP yêu cầu thay đổi mật khẩu
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
 });
 
-// Route gửi OTP cho người dùng
-Route::post('request-password-reset', [AuthController::class, 'requestPasswordReset']);  // Gửi OTP yêu cầu thay đổi mật khẩu
-Route::post('reset-password', [AuthController::class, 'resetPassword']);
+
+// Thêm các route API cho các tài nguyên khác
+Route::apiResource('banners', BannerController::class);
+Route::apiResource('contacts', ContactController::class);
+Route::patch('contacts/{id}/status', [ContactController::class, 'statusContact']);
+Route::apiResource('routes', RouteController::class);
+Route::patch('routes/{id}/status', [RouteController::class, 'statusRoute']);
+Route::apiResource('buses', BusController::class);
+Route::apiResource('new-categories', NewCategoryController::class);
+Route::patch('new-categories/{id}/status', [NewCategoryController::class, 'statusNewCategory']);
+Route::apiResource('information', InformationController::class);
+Route::apiResource('stops', StopController::class);
+Route::apiResource('home', HomeController::class);
+
+// Các route cho thanh toán
+Route::get('/bill', [StopController::class, 'bill'])->name('bill');
+Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
+Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
 
 

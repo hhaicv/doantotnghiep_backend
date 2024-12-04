@@ -36,21 +36,27 @@ class DriverController extends Controller
      */
     public function store(StoreDriverRequest $request)
     {
-        // Lấy tất cả dữ liệu từ request ngoại trừ profile_image
         $data = $request->except('profile_image');
 
-        $model = new Driver($data);
+        // Mã hóa mật khẩu
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        // Xử lý ảnh
         if ($request->hasFile('profile_image')) {
             $data['profile_image'] = Storage::put(self::PATH_UPLOAD, $request->file('profile_image'));
         }
-        $model = Driver::query()->create($data);
-        // Lưu đối tượng driver vào cơ sở dữ liệu
+
+        $model = Driver::create($data);
+
         if ($model) {
             return redirect()->back()->with('success', 'Tài xế được thêm thành công.');
         } else {
             return redirect()->back()->with('failes', 'Tài xế không được thêm thành công.');
         }
     }
+
 
 
     /**
@@ -74,25 +80,31 @@ class DriverController extends Controller
 
     public function update(UpdateDriverRequest $request, string $id)
     {
-        $data = Driver::query()->findOrFail($id);
-
-        // Định dạng lại ngày sinh trước khi cập nhật (nếu cần)
-        if ($request->filled('date_of_birth')) {
-            $data['date_of_birth'] = Carbon::createFromFormat('Y-m-d', $request->date_of_birth)->format('Y-m-d');
-        }
+        $driver = Driver::findOrFail($id);
 
         $model = $request->except('profile_image');
+
+        // Định dạng ngày sinh nếu cần
+        if ($request->filled('date_of_birth')) {
+            $model['date_of_birth'] = Carbon::createFromFormat('Y-m-d', $request->date_of_birth)->format('Y-m-d');
+        }
+
+        // Xử lý mật khẩu (nếu cần cập nhật)
+        if ($request->filled('password')) {
+            $model['password'] = Hash::make($request->password);
+        }
+
+        // Xử lý ảnh mới
         if ($request->hasFile('profile_image')) {
             $model['profile_image'] = Storage::put(self::PATH_UPLOAD, $request->file('profile_image'));
+
+            // Xóa ảnh cũ nếu tồn tại
+            if ($driver->profile_image && Storage::exists($driver->profile_image)) {
+                Storage::delete($driver->profile_image);
+            }
         }
 
-        $image = $data->profile_image;
-
-        $res = $data->update($model);
-
-        if ($request->hasFile('profile_image') && $image && Storage::exists($image)) {
-            Storage::delete($image);
-        }
+        $res = $driver->update($model);
 
         if ($res) {
             return redirect()->back()->with('success', 'Tài xế được sửa thành công');
@@ -100,6 +112,7 @@ class DriverController extends Controller
             return redirect()->back()->with('danger', 'Tài xế không sửa thành công');
         }
     }
+
     /**
      * Remove the specified resource from storage.
      */

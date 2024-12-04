@@ -212,7 +212,3 @@ class AuthController extends Controller
     }
 }
 
-//"email": "anhtrieu147@gmail.com",
-//  "otp": "tUtf8L",
-//  "password": "12345678",
-//  "password_confirmation": "12345678"
