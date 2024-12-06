@@ -137,6 +137,13 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+            <div class="col-md-6">
+                <label for="descriptionInput" class="form-label">Nội dung</label>
+                <textarea class="form-control" placeholder="Nội dung" name="content" rows="2">{{ old('content',$data->content) }}</textarea>
+                @error('content')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
 
             <div class="col-12 text-end">
                 <button type="submit" class="btn btn-primary">Cập nhật</button>

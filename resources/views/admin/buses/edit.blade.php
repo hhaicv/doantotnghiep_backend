@@ -11,18 +11,32 @@
             </div>
         </div>
     </div>
-   
+
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
     @endif
+
     <div class="card">
         <form action="{{ route('admin.buses.update', $model) }}" method="POST" class="row g-3 p-5"
             enctype="multipart/form-data">
@@ -42,8 +56,14 @@
                     value="{{ $model->license_plate }}">
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Số điện thoại</label>
-                <input type="number" class="form-control" id="icon" name="phone" value="{{ $model->phone }}">
+                <label for="fullnameInput" class="form-label">Tài xế</label>
+                <select class="form-select" aria-label="Default select example" name="driver_id">
+                    @foreach ($drivers as $driver)
+                        <option value="{{ $driver->id }}" {{ $model->driver_id == $driver->id ? 'selected' : '' }}>
+                            {{ $driver->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
             <div class="col mt-6">
                 <div class="filepond-container">
@@ -64,9 +84,6 @@
                 <label for="start_date">Số lượng ghế</label>
                 <input type="number" name="total_seats" id="total_seats" class="form-control"
                     value="{{ $model->total_seats }}">
-                <br>
-                <label class="form-label" for="gps_code">Mã GPS</label>
-                <input type="text" class="form-control" name="gps_code" value="{{ $model->gps_code }}">
             </div>
             <div class="col-lg-12">
                 <div class="card">

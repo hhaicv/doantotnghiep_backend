@@ -75,6 +75,7 @@ class HomeController extends Controller
 
             return [
                 'bus_id' => $trip->bus->id,
+                'image' => $trip->bus->image,
                 'route_id' => $trip->route->id,
                 'trip_id' => $trip->id,
                 'time_start' => $trip->time_start,

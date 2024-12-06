@@ -34,6 +34,8 @@
                                 <th>ID</th>
                                 <th>Tên danh mục</th>
                                 <th>Mô tả danh mục</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -43,6 +45,17 @@
                                     <td>{{ $item->id }}</td> 
                                     <td>{{ $item->name }}</td>   
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
+                                                {{ $item->is_active ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
+                                                {{ $item->is_active ? 'On' : 'Off' }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('admin.promotion_categories.edit', $item->id) }}"
@@ -99,13 +112,13 @@
         });
     </script>
     <script>
-        document.addEventListener('change', function(e) {
+       document.addEventListener('change', function(e) {
             if (e.target.classList.contains('form-check-input')) {
                 var checkbox = e.target;
                 var isChecked = checkbox.checked ? 1 : 0;
                 var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-promotion/${itemId}`, {
+                fetch(`/admin/status-promotion-category/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -132,7 +145,6 @@
                     .catch(error => console.error('Error:', error));
             }
         });
-
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {
                 let form = document.getElementById('deleteFormPromotion' + id);

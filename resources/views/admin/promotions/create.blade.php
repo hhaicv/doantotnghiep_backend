@@ -12,15 +12,29 @@
     </div>
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
     @endif
+
 
     <div class="card">
         <form action="{{ route('admin.promotions.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
@@ -55,6 +69,7 @@
                 @enderror
             </div>
 
+
             <div class="col-md-6">
                 <label for="discountInput" class="form-label">Phần trăm giảm</label>
                 <input type="number" class="form-control" name="discount" id="discountInput" value="{{ old('discount') }}"
@@ -78,6 +93,7 @@
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+
 
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
@@ -129,7 +145,14 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-
+            <div class="col-md-6">
+                <label for="contentInput" class="form-label">Nội dung</label>
+                <textarea class="form-control" placeholder="Nội dung" name="content" rows="2">{{ old('content') }}</textarea>
+                @error('content')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+    
             <div class="col-12 text-end">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <a href="{{ route('admin.promotions.index') }}" class="btn btn-success">Quay lại</a>

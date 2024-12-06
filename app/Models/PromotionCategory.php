@@ -12,8 +12,8 @@ class PromotionCategory extends Model
         'name',
         'description',
     ];
-    public function promotion()
+    public function promotions()
     {
-        return $this->belongsTo(Promotion::class, 'id_promotion');
+        return $this->hasMany(Promotion::class);
     }
 }

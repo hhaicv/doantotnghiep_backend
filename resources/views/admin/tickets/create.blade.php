@@ -23,8 +23,6 @@
             border-radius: 2px;
         }
 
-
-
         .seat.booked {
             background: #f5c170;
             /* Màu nền cho ghế "booked" */
@@ -33,21 +31,8 @@
         .seat.selected {
             background: #9dc3fe;
 
-
         }
     </style>
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công',
-                    text: "{{ session('success') }}"
-                });
-            });
-        </script>
-    @endif
-
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
@@ -441,7 +426,7 @@
                             <li><button style="background: #f5c170;" type="submit"></button> <br> Ghế đã đặt</li>
                         </div>
                         <div class="col">
-                            <li><button style="background: #e76966;" type="submit"></button> <br> Ghế bảo trì</li>
+                            <li><button style="background: #e76966;" type="submit"></button> <br> Ghế đã chọn</li>
                         </div>
                     </div>
                 </div>
@@ -539,6 +524,10 @@
                                                 aria-label="Default select example" id="end-stop">
                                                 <!-- ID và tên sẽ được cập nhật ở đây -->
                                             </select>
+                                        <div>
+                                            <input type="text" placeholder= "Nhập mã khuyến mãi">
+                                            <button type="submit">Áp dụng</button>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -654,15 +643,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" type="checkbox" id="formCheckZalo"
-                                                checked>
-                                            <label class="form-check-label" for="formCheckZalo">
-                                                Gửi thông tin qua Zalo
-                                            </label>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="d-flex align-items-start gap-3 mt-4">
 
@@ -688,10 +669,10 @@
         // Giả sử bạn đã nhận được mảng trạng thái ghế từ máy chủ
         const seatStatusArray = @json($seatsStatus);
 
-
         // Lặp qua từng ghế và cập nhật trạng thái
         document.querySelectorAll('.seat').forEach(function(button) {
             const seatName = button.getAttribute('data-name');
+            console.log(seatStatusArray);
 
             // Kiểm tra xem ghế có trong mảng trạng thái không
             if (seatStatusArray[seatName]) {
@@ -704,20 +685,27 @@
                 if (status === 'booked') {
                     button.classList.add('booked'); // Thêm lớp booked
                     button.classList.remove('selected'); // Bỏ lớp selected nếu có
+                } else if (status === 'lock') {
+                    button.classList.add('lock'); // Thêm lớp selected
+                    button.classList.remove('available'); // Bỏ lớp available nếu có
+                    button.classList.remove('booked'); // Bỏ lớp booked nếu có
+                    button.classList.remove('selected'); // Xóa lớp selected nếu không phải
                 } else {
                     button.classList.remove('booked'); // Xóa lớp booked nếu không phải
+                    button.classList.remove('selected'); // Xóa lớp selected nếu không phải
                 }
 
                 // Cập nhật màu sắc cho ghế
-                if (status === 'available') {
-                    button.style.backgroundColor = '#4CAF50'; // Màu cho ghế có thể chọn
-                } else if (status === 'booked') {
+               if (status === 'booked') {
                     button.style.backgroundColor = '#f5c170'; // Màu cho ghế đã đặt
-                } else if (status === 'maintenance') {
+                } else if (status === 'lock') {
                     button.style.backgroundColor = '#e76966'; // Màu cho ghế bảo trì
+                } else if (status === 'selected') {
+                    button.style.backgroundColor = '#9dc3fe'; // Màu cho ghế đã chọn
                 }
             }
         });
+
 
         document.getElementById('billinginfo-email').addEventListener('input', function() {
             const emailCheckboxContainer = document.getElementById('emailCheckboxContainer');
@@ -871,11 +859,11 @@
                         confirmButtonText: 'OK'
                     });
                     return;
-                } else if (seatStatus === 'maintenance') {
+                } else if (seatStatus === 'lock') {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Thông báo',
-                        text: 'Ghế đang bảo trì đươc đặt. Vui lòng chọn ghế khác!.',
+                        text: 'Ghế đã chọn. Vui lòng chọn ghế khác!.',
                         confirmButtonText: 'OK'
                     });
                     return;

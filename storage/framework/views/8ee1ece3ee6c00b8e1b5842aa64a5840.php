@@ -10,16 +10,27 @@
         </div>
     </div>
     <?php if(session('success')): ?>
-        <div class="alert alert-success">
-            <?php echo e(session('success')); ?>
-
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "<?php echo e(session('success')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
-    <?php if(session('error')): ?>
-        <div class="alert alert-danger">
-            <?php echo e(session('error')); ?>
 
-        </div>
+    <?php if(session('failes')): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "<?php echo e(session('failes')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
 
     <div class="card">
@@ -45,16 +56,17 @@ unset($__errorArgs, $__bag); ?>
                     <div class="col mb-3">
                         <label for="choices-multiple-remove-button" class="form-label text-muted">Danh mục tin tức</label>
                         <select id="choices-multiple-remove-button" name="newCategories[]"
-                                placeholder="This is a placeholder" multiple>
+                            placeholder="This is a placeholder" multiple>
                             <?php $__currentLoopData = $newCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($id); ?>" <?php echo e((is_array(old('newCategories')) && in_array($id, old('newCategories'))) ? 'selected' : ''); ?>>
+                                <option value="<?php echo e($id); ?>"
+                                    <?php echo e(is_array(old('newCategories')) && in_array($id, old('newCategories')) ? 'selected' : ''); ?>>
                                     <?php echo e($name); ?>
 
                                 </option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
-                    
+
                     <div class="col md-6">
                         <h5>Hình ảnh</h5>
                         <div class="file-drop-area" id="file-drop-area">
@@ -122,7 +134,7 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </form>
     </div>
-    
+
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>

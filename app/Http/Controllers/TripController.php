@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class TripController extends Controller
 {
     const PATH_VIEW = 'admin.trips.';
-    
+
     public function index()
     {
         $data = Trip::with(['route', 'bus'])->get();
@@ -25,7 +25,6 @@ class TripController extends Controller
     public function create()
     {
 
-        // cái này là do anh check đk thôi em kh quan tâm nhé
         $buses = Bus::query()->where('is_active', false)->get();
         $routes = Route::query()->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('buses', 'routes'));
@@ -81,7 +80,7 @@ class TripController extends Controller
                 break;
             }
         }
-        return redirect()->back()->with('success', 'Bạn thêm thành công');
+        return redirect()->back()->with('success', 'Thêm chuyến xe thành công');
     }
 
 
@@ -103,7 +102,7 @@ class TripController extends Controller
         if ($res) {
             return redirect()->back()->with('success', 'Chuyến xe được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Chuyến xe không sửa thành công');
+            return redirect()->back()->with('failes', 'Chuyến xe không sửa thành công');
         }
     }
     public function destroy(string $id)

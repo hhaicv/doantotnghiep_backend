@@ -11,17 +11,29 @@
     </div>
 
     <?php if(session('success')): ?>
-        <div class="alert alert-success">
-            <?php echo e(session('success')); ?>
-
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "<?php echo e(session('success')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
-    <?php if(session('error')): ?>
-        <div class="alert alert-danger">
-            <?php echo e(session('error')); ?>
 
-        </div>
+    <?php if(session('failes')): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "<?php echo e(session('failes')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
+
 
     <div class="card">
         <form action="<?php echo e(route('admin.promotions.store')); ?>" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
@@ -78,6 +90,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
             </div>
 
+
             <div class="col-md-6">
                 <label for="discountInput" class="form-label">Phần trăm giảm</label>
                 <input type="number" class="form-control" name="discount" id="discountInput" value="<?php echo e(old('discount')); ?>"
@@ -122,6 +135,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
             </div>
+
 
             <div class="col-md-6">
                 <label for="endDateInput" class="form-label">Ngày kết thúc</label>
@@ -196,7 +210,21 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
             </div>
-
+            <div class="col-md-6">
+                <label for="contentInput" class="form-label">Nội dung</label>
+                <textarea class="form-control" placeholder="Nội dung" name="content" rows="2"><?php echo e(old('content')); ?></textarea>
+                <?php $__errorArgs = ['content'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <span class="text-danger"><?php echo e($message); ?></span>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+    
             <div class="col-12 text-end">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <a href="<?php echo e(route('admin.promotions.index')); ?>" class="btn btn-success">Quay lại</a>

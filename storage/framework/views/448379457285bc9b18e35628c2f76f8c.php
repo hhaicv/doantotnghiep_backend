@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách khuyến mãi</h5>
                     <a class="btn btn-primary mb-3" href="<?php echo e(route('admin.promotions.create')); ?>">Thêm mới khuyến mãi</a>
                 </div>
                 <div class="card-body">

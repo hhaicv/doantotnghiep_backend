@@ -13,18 +13,29 @@
         </div>
     </div>
 
-    <!-- Display Success or Error Messages -->
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
 
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
+    @endif
     <div class="card">
         <form action="{{ route('admin.drivers.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
@@ -63,19 +74,12 @@
                 <!-- Mật khẩu -->
                 <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Mật khẩu</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Nhập mật khẩu" value="{{ old('password') }}">
-                        {{-- <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                            <i class="fa fa-eye" id="toggleIcon"></i> <!-- Sử dụng icon mắt để hiển thị trạng thái -->
-                        </button> --}}
-                    </div>
+                    <input type="text" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu"
+                        value="{{ old('password') }}">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Số bằng lái -->
                 <div class="mb-3">
                     <label for="license_number" class="form-label">Số bằng lái xe</label>
                     <input type="number" class="form-control" id="license_number" name="license_number"
@@ -87,8 +91,6 @@
             </div>
 
             <div class="col-md-6">
-
-                <!-- Số điện thoại -->
                 <div class="mb-3">
                     <label for="phone" class="form-label">Số điện thoại</label>
                     <input type="number" class="form-control" id="phone" name="phone"
@@ -98,7 +100,6 @@
                     @enderror
                 </div>
 
-                <!-- Địa chỉ -->
                 <div class="mb-3">
                     <label for="address" class="form-label">Địa chỉ</label>
                     <input type="text" class="form-control" id="address" name="address" placeholder="Nhập địa chỉ"
@@ -107,18 +108,15 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Ảnh đại diện -->
                 <div class="mb-3">
                     <h5>Hình ảnh</h5>
                     <div class="file-drop-area" id="file-drop-area">
                         <input type="file" name="profile_image" id="file-input" accept="image/*"
                             value="{{ old('profile_image') }}" multiple>
-
-                        <!-- Hiển thị ảnh đã tải lên trước đó (nếu có) -->
                         <div id="file-preview">
-                            @if (old('profile_image') || isset($driver) && $driver->profile_image)
-                                <img src="{{ old('profile_image') ?: asset('storage/' . $driver->profile_image) }}" alt="Preview" class="img-thumbnail" style="max-width: 150px;">
+                            @if (old('profile_image') || (isset($driver) && $driver->profile_image))
+                                <img src="{{ old('profile_image') ?: asset('storage/' . $driver->profile_image) }}"
+                                    alt="Preview" class="img-thumbnail" style="max-width: 150px;">
                                 <button type="button" class="btn btn-danger btn-sm" id="remove-image">Xóa ảnh</button>
                             @endif
                         </div>
@@ -130,7 +128,6 @@
 
             </div>
 
-            <!-- Submit Button -->
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>

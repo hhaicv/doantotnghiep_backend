@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách xe</h5>
                     <a class="btn btn-primary mb-3" href="{{ route('admin.buses.create') }}">Thêm mới xe</a>
                 </div>
                 <div class="card-body">
@@ -35,7 +35,6 @@
                                 <th>Hình ảnh</th>
                                 <th>Xe</th>
                                 <th>Tài xế</th>
-                                <th>Mã GPS</th>
                                 <th>SĐT</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
@@ -49,11 +48,12 @@
                                             style="width: 170px;height: 100px;object-fit: cover"></td>
                                     <td>
                                         <p> {{ $item->license_plate }} - {{ $item->total_seats }} Chỗ</p>
-                                        {{ $item->name_bus }}
+                                        <p> {{ $item->name_bus }}</p>
+                                        <p> {{ $item->model }} </p>
                                     </td>
-                                    <td>{{ $item->model }}</td>
-                                    <td>{{ $item->gps_code }}</td>
-                                    <td>{{ $item->phone }}</td>
+                                    <td>{{ $item->driver ? $item->driver->name : 'No Driver' }}</td>
+
+                                    <td>{{ $item->driver ? $item->driver->phone : 'No Phone' }}</td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -94,7 +94,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
@@ -153,7 +152,6 @@
             }
         });
 
-
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {
                 let form = document.getElementById('deleteFormBuses' + id);
@@ -186,3 +184,5 @@
         }
     </script>
 @endsection
+
+

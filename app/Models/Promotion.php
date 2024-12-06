@@ -18,6 +18,7 @@ class Promotion extends Model
         'image',
         'code',
         'description',
+        'content',
         'discount',
         'start_date',
         'end_date',
@@ -46,7 +47,7 @@ class Promotion extends Model
     }
     public function promotionCategory()
     {
-        return $this->belongsTo(PromotionCategory::class, 'promotion_category_id');
+        return $this->belongsTo(PromotionCategory::class);
     }
     public function usePromotion()
     {

@@ -6,13 +6,11 @@ use App\Events\OrderTicket;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
-use App\Models\Payment;
 use App\Models\PaymentMethod;
 
 use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -26,10 +24,9 @@ class TicketBookingController extends Controller
     {
 
         $data = Stop::query()->get();
-
-
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
+
 
     public function uploadTicket(Request $request)
     {
@@ -120,6 +117,17 @@ class TicketBookingController extends Controller
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
         $seatCount = $trip->bus->total_seats;
 
+        // Lấy danh sách ghế bị "lock" quá 15 phút
+        TicketDetail::where('status', 'lock')
+            ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+                $query->where('date', $date)
+                    ->where('trip_id', $trip_id);
+            })
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+            ->delete();
+
+
+        // Lấy danh sách ghế đã đặt
         $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
             $query->where('date', $date)
                 ->where('trip_id', $trip_id);
@@ -129,11 +137,13 @@ class TicketBookingController extends Controller
         foreach ($seatsBooked as $seat) {
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
+
         return view(self::PATH_VIEW . 'create', compact('methods', 'seatsStatus', 'seatCount'));
     }
 
     public function store(StoreTicketBookingRequest $request)
     {
+
         if ($request->has('payment_method_id') && $request->payment_method_id == 2) {
             $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             $partnerCode = 'MOMOBKUN20180529';
@@ -180,10 +190,9 @@ class TicketBookingController extends Controller
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
-            // Thiết lập status của TicketBooking dựa trên payment_method_id
-            $ticketBookingData['status'] = $request->input('payment_method_id') == 1
-                ? TicketBooking::PAYMENT_STATUS_PAID
-                : TicketBooking::PAYMENT_STATUS_UNPAID;
+
+            $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
+
 
             $ticketBooking = TicketBooking::create($ticketBookingData);
 
@@ -195,10 +204,9 @@ class TicketBookingController extends Controller
                     'ticket_booking_id' => $ticketBooking->id,
                     'name_seat' => $seatName,
                     'price' => $request->input('fare'),
-                    'status' => 'booked'
+                    'status' => 'lock'
                 ]);
             }
-
             return redirect($jsonResult['payUrl']);
         } else if ($request->has('payment_method_id') && $request->payment_method_id == 3) {
             // VNPAY payment logic
@@ -228,7 +236,6 @@ class TicketBookingController extends Controller
                 "vnp_IpAddr" => request()->ip(),
                 "vnp_CreateDate" => date('YmdHis')
             ];
-        
 
             // Sắp xếp các tham số theo thứ tự alphabet
             ksort($vnp_Data);
@@ -244,24 +251,21 @@ class TicketBookingController extends Controller
             // Loại bỏ dấu "&" cuối chuỗi
 
             $hashString = rtrim($hashString, '&');
-           
+
             // Tạo chữ ký bảo mật (HMAC SHA512)
             $vnp_SecureHash = hash_hmac('sha512', $hashString, $vnp_HashSecret);
-            
+
             $vnp_Data['vnp_SecureHash'] = $vnp_SecureHash;  // Thêm chữ ký vào tham số
-         
+
             $ticketBookingData = $request->except('name_seat', 'fare');
             $seatNames = explode(', ', $request->input('name_seat'));
             $totalTickets = count($seatNames);
 
-            $orderCode = $vnp_TxnRef; 
+            $orderCode = $vnp_TxnRef;
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
-            // Thiết lập status của TicketBooking dựa trên payment_method_id
-            $ticketBookingData['status'] = $request->input('payment_method_id') == 1
-                ? TicketBooking::PAYMENT_STATUS_PAID
-                : TicketBooking::PAYMENT_STATUS_UNPAID;
+            $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
 
             $ticketBooking = TicketBooking::create($ticketBookingData);
 
@@ -273,7 +277,7 @@ class TicketBookingController extends Controller
                     'ticket_booking_id' => $ticketBooking->id,
                     'name_seat' => $seatName,
                     'price' => $request->input('fare'),
-                    'status' => 'booked'
+                    'status' => 'lock'
                 ]);
             }
 
@@ -310,15 +314,13 @@ class TicketBookingController extends Controller
                     ]);
                 }
                 event(new OrderTicket($ticketBooking));
-                return redirect()->back()->with('success', 'Đặt vé thành công!');
+                $data = Stop::query()->get();
+                return redirect()
+                    ->route('admin.tickets.index') // Thay bằng route của trang 'create'
+                    ->with('success', 'Đặt vé thành công!')
+                    ->with('data', $data);
             });
         }
-    }
-
-
-    public function thanks()
-    {
-        echo "thanh toán thành công";
     }
 
     private function execPostRequest($url, $data)
@@ -335,9 +337,8 @@ class TicketBookingController extends Controller
 
     public function momo_return(Request $request)
     {
-
         $orderId = $request->input('orderId');
-        $resultCode = $request->input('resultCode');  // Mã phản hồi của MoMo
+        $resultCode = $request->input('resultCode'); // Mã phản hồi của MoMo
 
         // Tìm đơn hàng theo order ID
         $ticketBooking = TicketBooking::where('order_code', $orderId)->first();
@@ -345,30 +346,55 @@ class TicketBookingController extends Controller
         if (!$ticketBooking) {
             return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
         }
+
         // Cập nhật trạng thái thanh toán dựa trên resultCode từ MoMo
         if ($resultCode == 0) {
-            $ticketBooking->status = TicketBooking::PAYMENT_STATUS_PAID; // Thanh toán thành công
+            // Thanh toán thành công
+            $ticketBooking->status = TicketBooking::PAYMENT_STATUS_PAID;
             $ticketBooking->save();
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thành công!');
+
+            // Lấy danh sách ghế liên quan đến đơn hàng
+            $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
+
+            // Cập nhật trạng thái ghế từ 'lock' thành 'booked'
+            foreach ($ticketDetails as $ticketDetail) {
+                $ticketDetail->status = 'booked';
+                $ticketDetail->save();
+            }
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('success', 'Đặt vé thành công!')
+                ->with('data', $data);
         } else {
-            $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED; // Thanh toán thất bại
+            // Thanh toán thất bại
+            $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED;
             $ticketBooking->save();
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
+            $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
+            // Xóa các bản ghi tương ứng
+            foreach ($ticketDetails as $ticketDetail) {
+                $ticketDetail->delete();
+            }
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('failes', 'Đặt vé thất bại!')
+                ->with('data', $data);
         }
     }
     public function vnpay_return(Request $request)
     {
         // Lấy toàn bộ dữ liệu từ response của VNPay
         $vnpayResponse = $request->all();
-      
-        
+
+
         // Lấy chữ ký từ VNPay và loại bỏ nó khỏi dữ liệu phản hồi
         $vnpaySecureHash = $request->input('vnp_SecureHash');
         unset($vnpayResponse['vnp_SecureHash']);  // Loại bỏ chữ ký để tính toán lại
-    
+
         // Sắp xếp các tham số theo thứ tự alphabetic
         ksort($vnpayResponse);
-    
+
         // Xây dựng chuỗi để tính toán chữ ký
         $hashString = '';
         foreach ($vnpayResponse as $key => $value) {
@@ -377,77 +403,126 @@ class TicketBookingController extends Controller
             }
         }
         $hashString = rtrim($hashString, '&');  // Loại bỏ dấu "&" cuối chuỗi
-    
+
         // Tính toán lại chữ ký HMAC SHA512
         $secretKey = 'WIGT3LVWWHQZVTK33YR4OHCG5CWPK8R0';  // Mã bí mật của bạn
         $calculatedHash = hash_hmac('sha512', $hashString, $secretKey);
-    
+
         // Kiểm tra tính hợp lệ của chữ ký
         if ($calculatedHash !== $vnpaySecureHash) {
             return response()->json(['message' => 'Chữ ký không hợp lệ.'], 400);
         }
-    
+
         // Lấy mã đơn hàng từ VNPay
         $orderId = trim($vnpayResponse['vnp_TxnRef']);  // Loại bỏ khoảng trắng
-       
-    
+
+
         // Tìm kiếm đơn hàng từ cơ sở dữ liệu
         $ticketBooking = TicketBooking::where('order_code', $orderId)->first();
-        
+
+
+
         // Nếu không tìm thấy đơn hàng, trả về thông báo lỗi
         if (!$ticketBooking) {
-           
-    
             // Trả về thông báo lỗi cho người dùng
             return response()->json(['message' => 'Không tìm thấy đơn hàng. Vui lòng kiểm tra lại hoặc liên hệ hỗ trợ.'], 404);
         }
-    
+
         // Kiểm tra trạng thái thanh toán
         $paymentStatus = $vnpayResponse['vnp_ResponseCode'];  // Mã phản hồi của VNPay
-        
+
         if ($paymentStatus == '00') {
             // Thanh toán thành công
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_PAID;
             $ticketBooking->save();
-          
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thành công!');
+
+            // Lấy danh sách ghế liên quan đến đơn hàng
+            $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
+
+            // Cập nhật trạng thái ghế từ 'lock' thành 'booked'
+            foreach ($ticketDetails as $ticketDetail) {
+                $ticketDetail->status = 'booked';
+                $ticketDetail->save();
+            }
+            event(new OrderTicket($ticketBooking));
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('success', 'Đặt vé thành công!')
+                ->with('data', $data);
         } else {
-            // Thanh toán thất bại
             $ticketBooking->status = TicketBooking::PAYMENT_STATUS_FAILED;
             $ticketBooking->save();
-            return redirect()->route('admin.thanks')->with('message', 'Thanh toán thất bại.');
+            $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
+            // Xóa các bản ghi tương ứng
+            foreach ($ticketDetails as $ticketDetail) {
+                $ticketDetail->delete();
+            }
+            $data = Stop::query()->get();
+            return redirect()
+                ->route('admin.tickets.index')
+                ->with('failes', 'Đặt vé thất bại!')
+                ->with('data', $data);
         }
     }
-    
-    
-    
 
-
-
-
-
-    public function list()
+    public function list(Request $request)
     {
-        $data = TicketBooking::with(['route', 'paymentMethod', 'trip'])->get();
+        $query = TicketBooking::with(['route', 'paymentMethod', 'trip']);
+
+        // Lọc theo ngày nếu có tham số 'date'
+        if ($request->has('date') && $request->date) {
+            $query->whereDate('date', $request->date);
+        }
+
+        // Lọc theo mã đơn hàng nếu có
+        if ($request->has('order_code') && $request->order_code) {
+            $query->where('order_code', 'like', "%" . $request->order_code . "%");
+        }
+
+        // Lọc theo phương thức thanh toán
+        if ($request->has('payment_method_id') && $request->payment_method_id) {
+            $query->where('payment_method_id', $request->payment_method_id);
+        }
+
+        if ($request->has('payment_status') && $request->payment_status !== 'all') {
+            // Lấy giá trị trạng thái thanh toán từ request
+            $paymentStatus = $request->payment_status;
+
+            // Kiểm tra nếu payment_status là một giá trị hợp lệ trong PAYMENT_STATUSES
+            if (array_key_exists($paymentStatus, TicketBooking::PAYMENT_STATUSES)) {
+                // Lọc theo trạng thái thanh toán
+                $query->where('status', $paymentStatus);
+            }
+        }
+
+        // Lấy dữ liệu
+        $data = $query->get();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     public function show(string $id)
     {
-        $data = TicketBooking::query()
-            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod'])
+
+        $showTicket = TicketBooking::query()
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod', 'ticketDetails', 'bus.driver'])
             ->findOrFail($id);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showTicket'));
     }
+
 
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TicketBooking $ticketBooking)
+    public function edit(string $id)
     {
-        $data = TicketBooking::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $showPayment = TicketBooking::query()
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod', 'ticketDetails'])
+            ->findOrFail($id);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showPayment'));
     }
 
     /**
@@ -458,11 +533,39 @@ class TicketBookingController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TicketBooking $ticketBooking)
+
+    public function destroy(string $id)
     {
-        //
+        try {
+            // Tìm vé đặt theo ID
+            $ticket = TicketBooking::findOrFail($id);
+
+            // Xóa vé đặt
+            $ticket->delete();
+
+            // Trả về phản hồi JSON thành công
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Vé đã được xóa thành công.'
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Nếu không tìm thấy vé đặt
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không tìm thấy vé đặt.'
+            ], 404);
+        } catch (\Exception $e) {
+            // Xử lý các lỗi khác
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Có lỗi xảy ra. Không thể xóa vé!',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function changeTrip()
+    {
+        return view('admin.tickets.changeTrip');
     }
 }

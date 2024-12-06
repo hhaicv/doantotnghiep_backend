@@ -25,6 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'phone',
+        'image',
         'address',
         'email',
         'password',
@@ -50,7 +51,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_active' => 'boolean',
+        'is_active' => 'boolean', 
     ];
 
     public function promotions()

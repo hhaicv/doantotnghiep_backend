@@ -9,7 +9,7 @@
     <div><a><img src="" alt=""
                 style="max-height: 60px; width: auto; margin-bottom: 20px; border: none;" /></a>
         <p></p>
-        <p style="margin-top: 0px; margin-bottom: 20px;">Chào {{ $name }}</p>
+        <p style="margin-top: 0px; margin-bottom: 20px;">Chào {{ $data['name'] }}</p>
         <p style="margin-top: 0px; margin-bottom: 20px;">Cảm ơn quý khách đã đặt vé. Vui lòng xem chi tiết vé dưới</p>
         <table
             style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
@@ -23,14 +23,14 @@
                 <tr>
                     <td
                         style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                        <b>Mã đơn hàng: </b> {{ $order_code }}<br />
-                        <b>Ngày tạo: </b> {{ $created_at }}<br />
-                        <b>Phương thức thanh toán: </b> {{ $paymentMethod->name }}<br />
+                        <b>Mã đơn hàng: </b> {{ $data['order_code'] }}<br />
+                        <b>Ngày tạo: </b> {{ $data['booking_date'] }}<br />
+                        <b>Phương thức thanh toán: </b> {{ $data['payment_method'] }}<br />
                     <td
                         style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                        <b>Email:</b> {{ $email }}<br />
-                        <b>Số điện thoại:</b> {{ $phone }}<br />
-                        <b>Ghi chú:</b> {{ $note }}<br />
+                        <b>Email:</b> {{ $data['email'] }}<br />
+                        <b>Số điện thoại:</b> {{ $data['phone'] }}<br />
+                        <b>Ghi chú:</b> {{ $data['note'] }}<br />
 
                 </tr>
             </tbody>
@@ -63,40 +63,43 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($ticket_details as $ticketDetail)
-
+                @foreach ($ticketDetails as $ticketDetail)
                     <tr>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                            {{-- {{ $ticketDetail['ticket_code'] }} --}}
+                            {{ $ticketDetail['ticket_code'] }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                            {{ $start_location }}
+                            {{ $data['start_point'] }} - {{ $data['point_up'] }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-                            {{ $end_location }}
+                            {{ $data['end_point'] }} - {{ $data['point_down'] }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{ $route }}
+                            {{ $data['route_name'] }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{ $ticketDetail['time_start'] }} - {{ $date }}
+                            {{ $data['time_start'] }} - {{ $data['date_start'] }}
                         </td>
                         <td
                             style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{ $phone_bus }} - {{ $bus }}
+                            <p>{{ $data['license_plate'] }}</p>
+                            <p>{{ $data['driver_name'] }}</p>
+                            <p>{{ $data['driver_phone'] }}</p>
                         </td>
-                        <td
-                            style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
-                            {{-- {{ $ticketDetail['seat_name'] }} --}}
+                        <td style="font-size: 12px; text-align: right; padding: 7px;">
+                            {{ $ticketDetail['name_seat'] ?? '' }}
                         </td>
+
                     </tr>
                 @endforeach
             </tbody>
+
+
         </table>
 
 

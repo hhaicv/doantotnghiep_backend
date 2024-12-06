@@ -43,7 +43,7 @@ class ReviewController extends Controller
         if ($res) {
             return redirect()->back()->with('success', 'Nhận xét thêm thành công');
         } else {
-            return redirect()->back()->with('error', 'Nhận xét thêm không thành công');
+            return redirect()->back()->with('failes', 'Nhận xét thêm không thành công');
         }
     }
 
@@ -76,7 +76,7 @@ class ReviewController extends Controller
         if ($res) {
             return redirect()->back()->with('success', 'Nhận xét được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Nhận xét không sửa thành công');
+            return redirect()->back()->with('failes', 'Nhận xét không sửa thành công');
         }
     }
 

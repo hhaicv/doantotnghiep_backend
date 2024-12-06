@@ -152,14 +152,23 @@
                     .then(data => {
                         if (data.success) {
                             var label = checkbox.nextElementSibling;
-                            label.textContent = isChecked ? 'On' : 'Off';
+                            label.textContent = isChecked ? 'Đã liên hệ' : 'Chưa liên hệ';
+
+                            // Nếu trạng thái là "Đã liên hệ", disable checkbox
+                            if (isChecked) {
+                                checkbox.disabled = true;
+                            }
                         } else {
                             alert('Cập nhật trạng thái thất bại.');
                         }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Đã xảy ra lỗi trong quá trình xử lý.');
+                    });
             }
         });
+
 
         function confirmDelete(id) {
             if (confirm('Bạn có muốn xóa không???')) {

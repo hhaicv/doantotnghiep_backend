@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->text('description');
+            $table->text('content');
             $table->integer('count'); // Số lượng
             $table->string('status')->default('open'); // Trạng thái mặc định là 'open'
             $table->unsignedBigInteger('route_id'); // Khóa ngoại đến bảng routes

@@ -12,6 +12,12 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
+        // Nếu URL yêu cầu có chứa 'admin', chuyển hướng đến trang đăng nhập admin
+        if ($request->is('admin/*')) {
+            return route('admin.login');
+        }
+
+        // Nếu không, chuyển hướng đến trang đăng nhập người dùng thông thường
         return $request->expectsJson() ? null : route('login');
     }
 }

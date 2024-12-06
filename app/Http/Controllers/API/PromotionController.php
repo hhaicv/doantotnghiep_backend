@@ -32,6 +32,29 @@ class PromotionController extends Controller
             'data' => $promotions,
         ], 200);
     }
+    public function getByCategory($categoryId)
+    {
+        // Kiểm tra xem danh mục có tồn tại hay không
+        $category = PromotionCategory::find($categoryId);
+
+        if (!$category) {
+            dd($category->promotions); // 
+            // Trả về lỗi nếu danh mục không tồn tại
+            return response()->json([
+                'success' => false,
+                'message' => 'Danh mục không tồn tại.',
+            ], 404);
+        }
+
+        // Lấy tất cả các khuyến mãi trong danh mục này (không lọc theo trạng thái)
+        $promotions = $category->promotions; // Đây là cách gọi phương thức `promotions()` đã khai báo ở model PromotionCategory
+        
+        // Trả về danh sách các khuyến mãi trong danh mục
+        return response()->json([
+            'success' => true,
+            'data' => $promotions,
+        ], 200);
+    }
 
     /**
      * Tạo khuyến mãi mới.
@@ -163,12 +186,12 @@ class PromotionController extends Controller
      */
     public function applyVoucher(Request $request)
     {
-        if (!auth()->check()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Bạn cần đăng nhập để áp dụng mã khuyến mãi.',
-            ], 401);
-        }
+        // if (!auth()->check()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Bạn cần đăng nhập để áp dụng mã khuyến mãi.',
+        //     ], 401);
+        // }
 
         $user = auth()->user();
         $voucherCode = $request->input('code');

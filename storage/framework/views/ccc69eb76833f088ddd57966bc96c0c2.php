@@ -15,7 +15,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?php echo e(asset('theme/admin/assets/images/favicon.ico')); ?>">
 
@@ -23,8 +22,10 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 
+
     <script src="https://kit.fontawesome.com/24d8b82fa8.js" crossorigin="anonymous"></script>
     <?php echo $__env->yieldContent('style-libs'); ?>
+
     <!-- Layout config Js -->
     <script src="<?php echo e(asset('theme/admin/assets/js/layout.js')); ?>"></script>
     <!-- Bootstrap Css -->

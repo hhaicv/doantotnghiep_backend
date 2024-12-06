@@ -18,11 +18,11 @@ class TicketBooking extends Model
     ];
 
 
-    const PAYMENT_STATUS_UNPAID = 'unpaid';
-    const PAYMENT_STATUS_PAID = 'paid';
-    const PAYMENT_STATUS_FAILED = 'failed';
-    const PAYMENT_STATUS_OVERDUE = 'overdue';
-    const PAYMENT_STATUS_REFUNDED = 'refunded';
+    const PAYMENT_STATUS_UNPAID = 'unpaid'; // chưa thành công
+    const PAYMENT_STATUS_PAID = 'paid'; // thành công
+    const PAYMENT_STATUS_FAILED = 'failed'; // Hủy lỗi
+    const PAYMENT_STATUS_OVERDUE = 'overdue'; // quá hạn
+    const PAYMENT_STATUS_REFUNDED = 'refunded'; // Trả vé
 
     protected $fillable = [
         "trip_id",
@@ -58,6 +58,7 @@ class TicketBooking extends Model
         return $this->belongsTo(Bus::class, 'bus_id');
     }
 
+
     // Định nghĩa quan hệ với Route
     public function route()
     {
@@ -80,4 +81,6 @@ class TicketBooking extends Model
     {
         return $this->hasMany(TicketDetail::class, 'ticket_booking_id');
     }
+
+
 }
