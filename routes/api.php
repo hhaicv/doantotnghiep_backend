@@ -71,9 +71,11 @@ Route::apiResource('home', HomeController::class);
 // Route gửi OTP cho người dùng
 Route::apiResource('promotions', PromotionController::class);
 Route::get('promotions/category/{categoryId}', [PromotionController::class, 'getByCategory']);
-Route::post('request-password-reset', [AuthController::class, 'requestPasswordReset']);  // Gửi OTP yêu cầu thay đổi mật khẩu
+Route::post('request-password-reset', [AuthController::class, 'requestPasswordReset']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::class, 'applyVoucher']);
+
+Route::get('promotions/{id}', [PromotionController::class, 'show']);
 
 
 

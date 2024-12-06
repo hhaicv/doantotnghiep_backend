@@ -48,11 +48,27 @@ class PromotionController extends Controller
 
         // Lấy tất cả các khuyến mãi trong danh mục này (không lọc theo trạng thái)
         $promotions = $category->promotions; // Đây là cách gọi phương thức `promotions()` đã khai báo ở model PromotionCategory
-        
+
         // Trả về danh sách các khuyến mãi trong danh mục
         return response()->json([
             'success' => true,
             'data' => $promotions,
+        ], 200);
+    }
+    public function show($id)
+    {
+        $promotion = Promotion::find($id); // Chỉ lấy thông tin của khuyến mãi theo IDv
+
+        if (!$promotion) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Khuyến mãi không tồn tại.',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $promotion,
         ], 200);
     }
 

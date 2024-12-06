@@ -60,6 +60,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('promotions', PromotionController::class);
     Route::post('/status-promotion/{id}', [PromotionController::class, 'statusPromotion']);
     Route::resource('promotion_categories', PromotionCategoryController::class);
+   
 
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
@@ -82,9 +83,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::get('/customers', [UserController::class, 'userIndex'])->name('customers'); // Danh sách khách hàng
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::post('/store', [UserController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); // Chỉnh sửa người dùng
-        Route::put('/{id}', [UserController::class, 'update'])->name('update'); // Cập nhật người dùng
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); // Xóa người dùng
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); 
+        Route::put('/{id}', [UserController::class, 'update'])->name('update'); 
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); 
     });
 
 
