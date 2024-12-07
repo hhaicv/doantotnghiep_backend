@@ -313,7 +313,12 @@ class StopController extends Controller
             foreach ($ticketDetails as $ticketDetail) {
                 $ticketDetail->delete();
             }
-            return redirect()->route('faile')->with('message', 'Thanh toán thất bại.');
+
+            return redirect()->to(env('FRONTEND_URL') . '/?' . http_build_query([
+                'status' => 'faile',
+                'response_code' => $request->resultCode,
+                'message' => 'Thanh toán thất bại'
+            ]));
         }
     }
     public function vnpay_return(Request $request)

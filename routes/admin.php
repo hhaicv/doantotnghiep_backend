@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
-use App\Http\Controllers\BusSeatController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
@@ -18,8 +17,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\SeatController;
-use App\Http\Controllers\VnpayController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -97,5 +95,8 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/thanks', [TicketBookingController::class, 'thanks'])->name('thanks');
     Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
+
+    Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
+    Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
 
 });
