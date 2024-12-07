@@ -50,26 +50,26 @@ class PromotionController extends Controller
     }
     public function getByCategory($categoryId)
     {
-        // Kiểm tra xem danh mục có tồn tại hay không
-        $category = PromotionCategory::find($categoryId);
+       // Tìm danh mục theo ID
+     // Tìm danh mục theo ID và eager load các khuyến mãi
+     $category = PromotionCategory::with('promotions')->find($categoryId);
 
-        if (!$category) {
-            dd($category->promotions); // 
-            // Trả về lỗi nếu danh mục không tồn tại
-            return response()->json([
-                'success' => false,
-                'message' => 'Danh mục không tồn tại.',
-            ], 404);
-        }
-
-        // Lấy tất cả các khuyến mãi trong danh mục này (không lọc theo trạng thái)
-        $promotions = $category->promotions; // Đây là cách gọi phương thức `promotions()` đã khai báo ở model PromotionCategory
-
-        // Trả về danh sách các khuyến mãi trong danh mục
-        return response()->json([
-            'success' => true,
-            'data' => $promotions,
-        ], 200);
+     // Kiểm tra xem danh mục có tồn tại không
+     if (!$category) {
+         return response()->json([
+             'success' => false,
+             'message' => 'Danh mục không tồn tại.',
+         ], 404);
+     }
+ 
+     // Trả về danh mục cùng với tất cả khuyến mãi
+     return response()->json([
+         'success' => true,
+         'data' => [
+             'category' => $category, // Toàn bộ thông tin của danh mục
+             'promotions' => $category->promotions, // Mảng khuyến mãi chi tiết trong danh mục
+         ],
+     ], 200);
     }
     public function show($id)
     {
