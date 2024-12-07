@@ -78,4 +78,3 @@ Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::cla
 Route::get('promotions/{id}', [PromotionController::class, 'show']);
 
 
-

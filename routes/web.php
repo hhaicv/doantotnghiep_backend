@@ -40,9 +40,9 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 // Route để hiển thị form nhập mã khuyến mãi
-Route::get('/apply-voucher', function() {
-    return view('apply-voucher');
-})->name('apply-voucher.form');
-Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply-voucher');
+// Route::get('/apply-voucher', function() {
+//     return view('apply-voucher');
+// })->name('apply-voucher.form');
+// Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply-voucher');
 
 
