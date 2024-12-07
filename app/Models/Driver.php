@@ -33,8 +33,8 @@ class Driver extends Authenticatable
         'is_active' => 'boolean',
     ];
 
-    public function driver()
+    public function trips()
     {
-        return $this->belongsTo(Driver::class, 'driver_id');
+        return $this->hasMany(Trip::class, 'driver_id');
     }
 }

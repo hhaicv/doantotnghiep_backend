@@ -30,13 +30,19 @@
         <div class="container-fluid">
             {{-- // div cấm xóa --}}
             <div id="two-column-menu">
-
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                <li class="nav-item">
+
+                <li class="nav-item {{ Request::routeIs('driver.dashboard') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="{{ route('driver.dashboard') }}">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Lịch trình</span>
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống kê</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Request::routeIs(['drivers.index','drivers.show']) ? 'active' : 'drivers.show' }}">
+                    <a class="nav-link menu-link" href="{{ route('drivers.index') }}">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Danh sách chuyến</span>
                     </a>
                 </li>
             </ul>

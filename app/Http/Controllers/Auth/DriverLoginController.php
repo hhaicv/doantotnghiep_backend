@@ -15,13 +15,10 @@ class DriverLoginController extends Controller
 
     public function driverLogin(Request $request)
     {
-        // Validate yêu cầu đăng nhập
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
-        // Thử đăng nhập bằng guard 'driver'
         if (Auth::guard('driver')->attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('driver.dashboard'); // Chuyển hướng đến trang dashboard
         }
@@ -34,7 +31,7 @@ class DriverLoginController extends Controller
 
     public function logout()
     {
-        Auth::guard('driver')->logout(); // Đăng xuất
-        return redirect()->route('driver.login')->with('success', 'Đăng xuất thành công!'); // Redirect về trang login
+        Auth::guard('driver')->logout();
+        return redirect()->route('driver.login')->with('success', 'Đăng xuất thành công!');
     }
 }

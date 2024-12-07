@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\DriverLoginController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\HomeDriverController;
 use App\Http\Controllers\ProfileController;
 
 
@@ -26,7 +28,10 @@ Route::middleware('driver')->group(function () {
     Route::get('/driver/dashboard', function () {
         return view('driver.dashboard');
     })->name('driver.dashboard');
-    Route::get('/driver/dashboard', [\App\Http\Controllers\HomeDriverController::class, 'showDashboard'])->name('driver.dashboard');
+
+    Route::resource('drivers', HomeDriverController::class);
+    Route::get('/driver/dashboard', [HomeDriverController::class, 'showDashboard'])->name('driver.dashboard');
+
 
 });
 
