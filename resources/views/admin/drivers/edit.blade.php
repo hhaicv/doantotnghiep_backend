@@ -77,7 +77,7 @@
                 <!-- Mật khẩu -->
                 <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Mật khẩu</label>
-                    <input type="text" class="form-control" id="password" name="password" value="{{ old('password', $data->password) }}"
+                    <input type="password" class="form-control" id="password" name="password" value="{{ old('password', $data->password) }}"
                         placeholder="Nhập mật khẩu mới">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
