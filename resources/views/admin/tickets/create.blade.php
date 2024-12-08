@@ -524,10 +524,6 @@
                                                 aria-label="Default select example" id="end-stop">
                                                 <!-- ID và tên sẽ được cập nhật ở đây -->
                                             </select>
-                                        <div>
-                                            <input type="text" placeholder= "Nhập mã khuyến mãi">
-                                            <button type="submit">Áp dụng</button>
-                                        </div>
                                         </div>
                                     </div>
                                 </div>

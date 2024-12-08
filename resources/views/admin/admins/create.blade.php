@@ -13,16 +13,42 @@
         </div>
     </div>
 
-   
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
+    @endif
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
+    @endif
 
     <div class="card">
         <form action="{{ route('admin.admins.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
             <div class="col-md-6">
                 <label for="nameInput" class="form-label">Tên tài khoản</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
-                    required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+                @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col md-6">
                 <h5>Hình ảnh</h5>
                 <div class="file-drop-area" id="file-drop-area">
@@ -34,30 +60,41 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="emailInput" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}"
-                    required>
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="roleInput" class="form-label">Quyền</label>
                 <select class="form-select" id="name_role" name="name_role">
                     <option disabled>Chọn Quyền</option>
                     @foreach ($roles as $role)
-                        <option value="{{ $role->name_role }}" {{ old('name_role') == $role->name_role ? 'selected' : '' }}>
+                        <option value="{{ $role->name_role }}"
+                            {{ old('name_role') == $role->name_role ? 'selected' : '' }}>
                             {{ $role->name_role }}</option>
                     @endforeach
                 </select>
+                @error('name_role')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="passwordInput" class="form-label">Mật khẩu</label>
-                <input type="password" class="form-control" id="password" name="password" required
-                    placeholder="Nhập mật khẩu...">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu...">
+                @error('password')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="col-md-6">
                 <label for="passwordConfirmInput" class="form-label">Xác nhận mật khẩu</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
                     placeholder="Xác nhận mật khẩu...">
             </div>
 

@@ -98,3 +98,31 @@
 #45 L:\\laragon\\www\\doantotnghiep\\public\\index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #46 {main}
 "} 
+[2024-12-08 01:08:35] local.ERROR: Pusher\Pusher::__construct(): Argument #1 ($auth_key) must be of type string, null given, called in L:\laragon\www\doantotnghiep\vendor\laravel\framework\src\Illuminate\Broadcasting\BroadcastManager.php on line 313 {"exception":"[object] (TypeError(code: 0): Pusher\\Pusher::__construct(): Argument #1 ($auth_key) must be of type string, null given, called in L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Broadcasting\\BroadcastManager.php on line 313 at L:\\laragon\\www\\doantotnghiep\\vendor\\pusher\\pusher-php-server\\src\\Pusher.php:63)
+[stacktrace]
+#0 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Broadcasting\\BroadcastManager.php(313): Pusher\\Pusher->__construct(NULL, NULL, NULL, Array, NULL)
+#1 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Broadcasting\\BroadcastManager.php(295): Illuminate\\Broadcasting\\BroadcastManager->pusher(Array)
+#2 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Broadcasting\\BroadcastManager.php(262): Illuminate\\Broadcasting\\BroadcastManager->createPusherDriver(Array)
+#3 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Broadcasting\\BroadcastManager.php(233): Illuminate\\Broadcasting\\BroadcastManager->resolve('pusher')
+#4 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Broadcasting\\BroadcastManager.php(222): Illuminate\\Broadcasting\\BroadcastManager->get('pusher')
+#5 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Broadcasting\\BroadcastManager.php(490): Illuminate\\Broadcasting\\BroadcastManager->driver()
+#6 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(355): Illuminate\\Broadcasting\\BroadcastManager->__call('channel', Array)
+#7 L:\\laragon\\www\\doantotnghiep\\routes\\channels.php(18): Illuminate\\Support\\Facades\\Facade::__callStatic('channel', Array)
+#8 L:\\laragon\\www\\doantotnghiep\\app\\Providers\\BroadcastServiceProvider.php(17): require('L:\\\\laragon\\\\www\\\\...')
+#9 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Providers\\BroadcastServiceProvider->boot()
+#10 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#11 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#12 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#13 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#14 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1034): Illuminate\\Container\\Container->call(Array)
+#15 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1015): Illuminate\\Foundation\\Application->bootProvider(Object(App\\Providers\\BroadcastServiceProvider))
+#16 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(App\\Providers\\BroadcastServiceProvider), 22)
+#17 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1016): array_walk(Array, Object(Closure))
+#18 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#19 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(263): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#20 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(186): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#21 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(170): Illuminate\\Foundation\\Http\\Kernel->bootstrap()
+#22 L:\\laragon\\www\\doantotnghiep\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#23 L:\\laragon\\www\\doantotnghiep\\public\\index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#24 {main}
+"} 

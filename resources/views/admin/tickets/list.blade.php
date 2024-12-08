@@ -21,12 +21,10 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex gap-1 flex-wrap">
-                                <a href="{{ route('admin.tickets.index') }}">
-                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
-                                            id="create-btn" data-bs-target="#showModal"><i
-                                            class="ri-add-line align-bottom me-1"></i> Create Order
-                                    </button>
-                                </a>
+                                <a href="{{ route('admin.tickets.index') }}"><button type="button"
+                                        class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
+                                        data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Create
+                                        Order</button></a>
                                 <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
                                         class="ri-delete-bin-2-line"></i></button>
                             </div>
@@ -153,50 +151,60 @@
                                 </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
-                                @forelse ($data as $ticketBooking)
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="checkAll"
-                                                       value="option1">
-                                            </div>
-                                        </th>
-                                        <td class="id">{{ $ticketBooking->order_code }}</td>
-                                        <td class="date">{{ $ticketBooking->date }}</td>
-                                        <td class="route_name">{{ $ticketBooking->route->route_name }}</td>
-                                        <td class="amount text-center">{{ $ticketBooking->total_tickets }} Ghế</td>
-                                        <td class="total_price text-center">{{ number_format($ticketBooking->total_price, 0, ',', '.') }}
-                                            ₫
-                                        </td>
-                                        <td class="payment">{{ $ticketBooking->paymentMethod->name }}</td>
-                                        <td class="status text-center">
-                                            <span
-                                                class="badge bg-warning-subtle text-warning text-uppercase">{{ $ticketBooking->status }}</span>
-                                        </td>
-                                        <td>
-                                            <ul class="list-inline hstack gap-2 mb-0">
-                                                <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                    data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                    <a href="{{ route('admin.tickets.show', $ticketBooking->id) }}"
-                                                       class="text-primary d-inline-block">
-                                                        <i class="ri-eye-fill fs-16"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                    data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                    <a class="text-danger d-inline-block remove-item-btn"
-                                                       data-id="{{ $ticketBooking->id }}" href="javascript:void(0);">
-                                                        <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="8" class="text-center">No data.</td>
-                                    </tr>
-                                @endforelse
+                                    @foreach ($data as $ticketBooking)
+                                        <tr>
+                                            <th scope="row">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="checkAll"
+                                                        value="option1">
+                                                </div>
+                                            </th>
+                                            <td class="id">{{ $ticketBooking->order_code }}</td>
+                                            <td class="date">{{ $ticketBooking->date }}</td>
+                                            <td class="route_name">{{ $ticketBooking->route->route_name }}</td>
+                                            <td class="amount text-center">{{ $ticketBooking->total_tickets }} Ghế</td>
+                                            <td class="total_price text-center">
+                                                {{ number_format($ticketBooking->total_price, 0, ',', '.') }} ₫</td>
+                                            <td class="payment">{{ $ticketBooking->paymentMethod->name }}</td>
+                                            <td class="status text-center">
+                                                <span
+                                                    class="badge bg-warning-subtle text-warning text-uppercase">{{ $ticketBooking->status }}</span>
+                                            </td>
+                                            <td>
+                                                <ul class="list-inline hstack gap-2 mb-0">
+                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                        data-bs-trigger="hover" data-bs-placement="top" title="View">
+                                                        <a href="{{ route('admin.tickets.show', $ticketBooking->id) }}"
+                                                            class="text-primary d-inline-block">
+                                                            <i class="ri-eye-fill fs-16"></i>
+                                                        </a>
+                                                    </li>
+                                                    @php
+                                                        $bookingDate = \Carbon\Carbon::parse($ticketBooking->date);
+                                                        $currentDate = \Carbon\Carbon::now();
+                                                    @endphp
+
+                                                    @if ($bookingDate->greaterThan($currentDate))
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip">
+                                                            <a href="{{ route('admin.change', $ticketBooking->id) }}"
+                                                                class="text-primary">
+                                                                <i class="ri-exchange-fill"></i>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                        data-bs-trigger="hover" data-bs-placement="top" title="Remove">
+                                                        <a class="text-danger d-inline-block remove-item-btn"
+                                                            data-id="{{ $ticketBooking->id }}"
+                                                            href="javascript:void(0);">
+                                                            <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                             <div class="noresult" style="display: none">
@@ -293,29 +301,29 @@
     <!-- ecommerce-order init js -->
     <script src="{{ asset('theme/admin/assets/js/pages/ecommerce-order.init.js') }}"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Lắng nghe sự kiện click nút xóa
-            $('.remove-item-btn').on('click', function () {
+            $('.remove-item-btn').on('click', function() {
                 const itemId = $(this).data('id'); // Lấy ID từ data-id
 
                 // Hiển thị modal xác nhận
                 $('#deleteOrder').modal('show');
 
                 // Xử lý khi nhấn nút "Yes, Delete It" trong modal
-                $('#delete-record').off('click').on('click', function () {
+                $('#delete-record').off('click').on('click', function() {
                     $.ajax({
                         url: `/admin/tickets/${itemId}`, // URL DELETE
                         type: 'DELETE',
                         data: {
                             _token: '{{ csrf_token() }}', // Laravel CSRF token
                         },
-                        success: function (response) {
+                        success: function(response) {
                             // Xóa hàng khỏi bảng nếu thành công
                             $(`tr:has(td:contains(${itemId}))`).remove();
                             $('#deleteOrder').modal('hide');
                             alert('Đã xóa thành công vé!');
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             // Hiển thị thông báo lỗi nếu thất bại
                             $('#deleteOrder').modal('hide');
                             alert('Có lỗi xảy ra. Không thể xóa vé!');
@@ -377,5 +385,4 @@
         }
 
     </script>
-
 @endsection

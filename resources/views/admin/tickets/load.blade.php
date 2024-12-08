@@ -1,7 +1,8 @@
-<?php $__env->startSection('title'); ?>
-    Đặt vé
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('content'); ?>
+@extends('admin.layouts.mater')
+@section('title')
+    Đổi chỗ
+@endsection
+@section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -434,14 +435,11 @@
             <!-- end card -->
         </div>
 
-
-        <!-- end col -->
-
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="<?php echo e(route('admin.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
-                        <?php echo csrf_field(); ?>
+                    <form action="{{ route('admin.tickets.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">
                         <input type="hidden" name="route_id" id="route_id">
@@ -449,6 +447,7 @@
                         <input type="hidden" name="fare" id="fare">
                         <input type="hidden" name="date" id="date">
                         <input type="hidden" name="name_seat" id="name_seat">
+                        <input type="hidden" name="id_change" value="{{ $showTicket->id }}">
 
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
                             <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
@@ -542,17 +541,10 @@
                                                 <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
                                                 <input type="text" name="phone" class="form-control"
                                                     id="billinginfo-phone" placeholder="Nhập số điện thoại"
-                                                    value="<?php echo e(old('phone')); ?>">
-                                                <?php $__errorArgs = ['phone'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                    <span class="text-danger"><?php echo e($message); ?></span>
-                                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                                                    value="{{ $showTicket->phone }}">
+                                                @error('phone')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -560,17 +552,10 @@ unset($__errorArgs, $__bag); ?>
                                                 <label for="billinginfo-name" class="form-label">Họ tên</label>
                                                 <input type="text" name="name" class="form-control"
                                                     id="billinginfo-name" placeholder="Nhập họ tên"
-                                                    value="<?php echo e(old('name')); ?>">
-                                                <?php $__errorArgs = ['name'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                    <span class="text-danger"><?php echo e($message); ?></span>
-                                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                                                    value="{{ $showTicket->name }}">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -580,14 +565,15 @@ unset($__errorArgs, $__bag); ?>
                                                 <label for="billinginfo-email" class="form-label">Email <span
                                                         class="text-muted">(Optional)</span></label>
                                                 <input type="email" name="email" class="form-control"
-                                                    id="billinginfo-email" placeholder="Nhập email">
+                                                    id="billinginfo-email" placeholder="Nhập email"
+                                                    value="{{ $showTicket->email }}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="billinginfo-address" class="form-label">Ghi chú</label>
                                         <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú"
-                                            rows="3"><?php echo e(old('note')); ?></textarea>
+                                            rows="3">{{ old('note') }}</textarea>
                                     </div>
 
                                 </div>
@@ -597,24 +583,15 @@ unset($__errorArgs, $__bag); ?>
                                 aria-labelledby="pills-payment-tab">
                                 <div>
                                     <h5 class="mb-1">Thông tin thanh toán</h5>
-                                    <p class="text-muted mb-4">Vui long nhập đầy đủ thông tin</p>
+                                    <p class="text-muted mb-4">Vui lòng nhập đầy đủ thông tin</p>
                                 </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="billinginfo-thucthu" class="form-label">Thực thu</label>
-                                            <input type="text" name="total_price" class="form-control"
-                                                id="billinginfo-thucthu" readonly>
-                                            <?php $__errorArgs = ['total_price'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                <span class="text-danger"><?php echo e($message); ?></span>
-                                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                                            <input type="text" class="form-control" name="price" id="billinginfo-thucthu"
+                                                readonly>
+
                                         </div>
                                     </div>
                                 </div>
@@ -623,14 +600,15 @@ unset($__errorArgs, $__bag); ?>
                                         <div class="mb-3">
                                             <label for="billinginfo-dathu" class="form-label">Đã thu</label>
                                             <input type="text" class="form-control" id="billinginfo-dathu"
+                                                value="{{ number_format($showTicket->total_price, 0, ',', '.') }}"
                                                 oninput="calculateRefund()">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-3">
-                                            <label for="billinginfo-tralai" class="form-label">Trả lại</label>
-                                            <input type="text" class="form-control" id="billinginfo-tralai"
-                                                readonly>
+                                            <label for="billinginfo-tralai" class="form-label">Tổng tiền</label>
+                                            <input type="text" class="form-control" name="total_price"
+                                                id="billinginfo-tralai" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -679,11 +657,11 @@ unset($__errorArgs, $__bag); ?>
             </div>
             <!-- end card -->
         </div>
-        <!-- end col -->
+
     </div>
     <script>
         // Giả sử bạn đã nhận được mảng trạng thái ghế từ máy chủ
-        const seatStatusArray = <?php echo json_encode($seatsStatus, 15, 512) ?>;
+        const seatStatusArray = @json($seatsStatus);
 
         // Lặp qua từng ghế và cập nhật trạng thái
         document.querySelectorAll('.seat').forEach(function(button) {
@@ -712,7 +690,7 @@ unset($__errorArgs, $__bag); ?>
                 }
 
                 // Cập nhật màu sắc cho ghế
-               if (status === 'booked') {
+                if (status === 'booked') {
                     button.style.backgroundColor = '#f5c170'; // Màu cho ghế đã đặt
                 } else if (status === 'lock') {
                     button.style.backgroundColor = '#e76966'; // Màu cho ghế bảo trì
@@ -743,13 +721,40 @@ unset($__errorArgs, $__bag); ?>
         document.getElementById("fare").value = getParameterByName("fare");
         document.getElementById("date").value = getParameterByName("date");
 
-        function calculateRefund() {
-            const thucThu = parseInt(document.getElementById('billinginfo-thucthu').value.replace(/\./g, '')) || 0;
-            const daThu = parseInt(document.getElementById('billinginfo-dathu').value.replace(/\./g, '')) || 0;
-            const traLai = daThu - thucThu;
 
-            document.getElementById('billinginfo-tralai').value = formatVND(Math.max(traLai, 0));
+        function calculateRefund() {
+            // Lấy giá trị Thực thu và Đã thu
+            const thucThuInput = document.getElementById('billinginfo-thucthu');
+            const dathuInput = document.getElementById('billinginfo-dathu');
+            const tongTienInput = document.getElementById('billinginfo-tralai');
+
+            // Kiểm tra nếu Thực thu chưa có giá trị
+            if (!thucThuInput.value || thucThuInput.value.trim() === '') {
+                tongTienInput.value = ''; // Xóa giá trị Tổng tiền
+                return;
+            }
+
+            const thucThu = parseInt(thucThuInput.value.replace(/\D/g, '')) || 0;
+            const daThu = parseInt(dathuInput.value.replace(/\D/g, '')) || 0;
+
+            // Tính Tổng tiền
+            const tongTien = thucThu - daThu;
+
+            // Hiển thị giá trị Tổng tiền với định dạng số
+            tongTienInput.value = tongTien;
         }
+
+        // Cập nhật giá trị Thực thu sau khi chọn ghế
+        function updateThucThu(thucThu) {
+            const thucThuInput = document.getElementById('billinginfo-thucthu');
+            thucThuInput.value = thucThu.toLocaleString('vi-VN'); // Định dạng giá trị
+            calculateRefund(); // Tính toán lại
+        }
+
+        // Gọi hàm này khi giá trị Đã thu thay đổi
+        document.getElementById('billinginfo-dathu').addEventListener('input', calculateRefund);
+
+
 
         function formatVND(number) {
             return number.toLocaleString('vi-VN') + ' đ';
@@ -887,6 +892,4 @@ unset($__errorArgs, $__bag); ?>
             });
         });
     </script>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH L:\laragon\www\doantotnghiep\resources\views/admin/tickets/create.blade.php ENDPATH**/ ?>
+@endsection
