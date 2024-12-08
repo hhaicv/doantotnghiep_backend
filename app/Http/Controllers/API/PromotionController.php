@@ -48,29 +48,50 @@ class PromotionController extends Controller
             'data' => $promotions,
         ]);
     }
-    public function getByCategory($categoryId)
+    public function getByCategory(Request $request)
     {
-       // Tìm danh mục theo ID
-     // Tìm danh mục theo ID và eager load các khuyến mãi
-     $category = PromotionCategory::with('promotions')->find($categoryId);
+      // Lấy user_id từ query string
+      $userId = $request->input('user_id');
 
-     // Kiểm tra xem danh mục có tồn tại không
-     if (!$category) {
-         return response()->json([
-             'success' => false,
-             'message' => 'Danh mục không tồn tại.',
-         ], 404);
-     }
- 
-     // Trả về danh mục cùng với tất cả khuyến mãi
-     return response()->json([
-         'success' => true,
-         'data' => [
-             'category' => $category, // Toàn bộ thông tin của danh mục
-             'promotions' => $category->promotions, // Mảng khuyến mãi chi tiết trong danh mục
-         ],
-     ], 200);
-    }
+      // Kiểm tra xem có user_id không
+      if (!$userId) {
+          return response()->json([
+              'success' => false,
+              'message' => 'User ID là bắt buộc.',
+          ], 400);
+      }
+  
+      // Kiểm tra sự tồn tại của user
+      $user = User::find($userId);
+      if (!$user) {
+          return response()->json([
+              'success' => false,
+              'message' => 'User không tồn tại.',
+          ], 404);
+      }
+  
+      // Lấy tất cả danh mục với các khuyến mãi liên quan đến user_id
+      $categories = PromotionCategory::with(['promotions' => function ($query) use ($userId) {
+          // Lọc các khuyến mãi của user
+          $query->whereHas('users', function ($query) use ($userId) {
+              $query->where('user_id', $userId);
+          });
+      }])->get();
+  
+      // Kiểm tra nếu không có danh mục hoặc khuyến mãi nào
+      if ($categories->isEmpty()) {
+          return response()->json([
+              'success' => false,
+              'message' => 'Không tìm thấy danh mục hoặc khuyến mãi nào cho người dùng này.',
+          ], 404);
+      }
+  
+      // Trả về dữ liệu danh mục và các khuyến mãi liên quan
+      return response()->json([
+          'success' => true,
+          'data' => $categories,
+      ], 200);
+}
     public function show($id)
     {
         $promotion = Promotion::find($id); // Chỉ lấy thông tin của khuyến mãi theo IDv
