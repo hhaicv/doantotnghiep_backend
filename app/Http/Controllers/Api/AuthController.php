@@ -68,6 +68,9 @@ class AuthController extends Controller
 
         $token = $user->createToken(env('SANCTUM_NAME', 'DefaultTokenName'))->plainTextToken;
 
+        // Lấy tất cả các đơn hàng liên quan đến người dùng
+
+        // Trả về thông tin đăng nhập và đơn hàng
         return response()->json([
             'status' => 'Thành công',
             'message' => 'Đăng nhập thành công.',
@@ -83,7 +86,8 @@ class AuthController extends Controller
         ]);
     }
 
-    // Đăng xuất người dùng
+
+
     public function logout(Request $request)
     {
         if ($request->input('type') === 'all') {

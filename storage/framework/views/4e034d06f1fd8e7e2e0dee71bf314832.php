@@ -30,7 +30,7 @@
             <?php echo csrf_field(); ?>
             <?php echo method_field('PUT'); ?>
             <div class="col-md-6">
-                <label for="codeInput" class="form-label">Tiêu đề:</label>
+                <label for="codeInput" class="form-label">Tên danh mục:</label>
                 <input type="text" class="form-control" name="name" value="<?php echo e($data->name); ?>">
                 <?php $__errorArgs = ['title'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

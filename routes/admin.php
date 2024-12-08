@@ -68,6 +68,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
 
+
     
 
     Route::resource('reviews', ReviewController::class);
@@ -98,6 +99,12 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/thanks', [TicketBookingController::class, 'thanks'])->name('thanks');
     Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
+
+    Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
+    Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
+
+});
+
     Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply.voucher');
 
 
@@ -109,4 +116,3 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
     Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
 
-});

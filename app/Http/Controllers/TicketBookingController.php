@@ -608,7 +608,6 @@ class TicketBookingController extends Controller
 
 
 
-
     public function destroy(string $id)
     {
         try {
