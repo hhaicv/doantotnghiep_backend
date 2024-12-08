@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Driver;
 use App\Models\Bus;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -46,47 +47,45 @@ class HomeDriverController extends Controller{
 
         return view('driver.drivers.show', compact('tickets'));
     }
-    public function edit(string $id)
+    public function edit($id)
     {
-        $data = Driver::query()->findOrFail($id);
-        return view('driver.drivers.edit', compact('data'));
+        $driver = Driver::findOrFail(auth('driver')->id());
+        return view('driver.drivers.edit', compact('driver'));
     }
 
 
-    public function update(UpdateDriverRequest $request, string $id)
+    public function update(UpdateDriverRequest $request)
     {
-        $driver = Driver::findOrFail($id);
+        $driver = Driver::findOrFail(auth('driver')->id());
 
         $model = $request->except('profile_image');
 
-        // Định dạng ngày sinh nếu cần
+        // Định dạng ngày sinh
         if ($request->filled('date_of_birth')) {
             $model['date_of_birth'] = Carbon::createFromFormat('Y-m-d', $request->date_of_birth)->format('Y-m-d');
         }
 
-        // Xử lý mật khẩu (nếu cần cập nhật)
+        // Cập nhật mật khẩu nếu cần
         if ($request->filled('password')) {
             $model['password'] = Hash::make($request->password);
         }
 
-        // Xử lý ảnh mới
+        // Xử lý ảnh đại diện
         if ($request->hasFile('profile_image')) {
-            $model['profile_image'] = Storage::put(self::PATH_UPLOAD, $request->file('profile_image'));
+            $model['profile_image'] = Storage::put('drivers', $request->file('profile_image'));
 
-            // Xóa ảnh cũ nếu tồn tại
+            // Xóa ảnh cũ
             if ($driver->profile_image && Storage::exists($driver->profile_image)) {
                 Storage::delete($driver->profile_image);
             }
         }
 
-        $res = $driver->update($model);
+        $driver->update($model);
 
-        if ($res) {
-            return redirect()->back()->with('success', 'Tài xế được sửa thành công');
-        } else {
-            return redirect()->back()->with('danger', 'Tài xế không sửa thành công');
-        }
+        return redirect()->route('drivers.edit', $driver->id)
+            ->with('success', 'Thông tin tài khoản đã được cập nhật.');
     }
+
 
     public function showDashboard()
     {
