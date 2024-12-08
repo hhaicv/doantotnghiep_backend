@@ -161,7 +161,7 @@
                                 <div>
                                     <input type="date" class="form-control" id="datepicker" min="{{ \Carbon\Carbon::today()->toDateString() }}">
                                 </div>
-                            </div>                            
+                            </div>
                             <div class="col" style="margin-top: 51px; width: 105px !important;">
                                 <div style="width: 105px;">
                                     <button type="button" class="btn btn-primary" onclick="SearchData();"><i

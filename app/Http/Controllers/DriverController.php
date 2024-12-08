@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Driver;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\Storage;
 class DriverController extends Controller
 {
     const PATH_VIEW = 'admin.drivers.';
-
     const PATH_UPLOAD = 'drivers';
 
     public function index()

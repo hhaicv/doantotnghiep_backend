@@ -28,6 +28,25 @@ class TicketBookingController extends Controller
     }
 
 
+    public function change($id)
+    {
+        $data = TicketBooking::query()
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod', 'ticketDetails'])
+            ->findOrFail($id);
+
+        $stops = Stop::query()->get();
+
+        $startStopName = Stop::where('id',  $data->id_start_stop)->value('stop_name');
+        $endStopName = Stop::where('id', $data->id_end_stop)->value('stop_name');
+
+        $nameSeats = $data->ticketDetails->pluck('name_seat')->toArray(); // Chuyển thành mảng
+        $mergedNameSeats = implode(", ", $nameSeats);
+
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'startStopName', 'endStopName', 'mergedNameSeats', 'stops'));
+    }
+
+
     public function uploadTicket(Request $request)
     {
         $data = $request->validate([
@@ -112,6 +131,7 @@ class TicketBookingController extends Controller
         $trip_id = $request->query('trip_id');
         $date = $request->query('date');
 
+
         $methods = PaymentMethod::query()->get();
 
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
@@ -141,9 +161,16 @@ class TicketBookingController extends Controller
         return view(self::PATH_VIEW . 'create', compact('methods', 'seatsStatus', 'seatCount'));
     }
 
+
+
     public function store(StoreTicketBookingRequest $request)
     {
 
+
+        if ($request->id_change) {
+            $booking = TicketBooking::findOrFail($request->id_change);
+            $booking->delete();
+        }
         if ($request->has('payment_method_id') && $request->payment_method_id == 2) {
             $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             $partnerCode = 'MOMOBKUN20180529';
@@ -187,6 +214,10 @@ class TicketBookingController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $orderId;
+
+            if ($request->id_change) {
+                $ticketBookingData['total_price'] = $request->input('price');
+            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
@@ -262,6 +293,9 @@ class TicketBookingController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $vnp_TxnRef;
+            if ($request->id_change) {
+                $ticketBookingData['total_price'] = $request->input('price');
+            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
@@ -528,9 +562,46 @@ class TicketBookingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTicketBookingRequest $request, TicketBooking $ticketBooking)
+
+    public function load(Request $request)
     {
-        //
+        $trip_id = $request->query('trip_id');
+        $date = $request->query('date');
+
+        $id_change = $request->query('id_change');
+
+
+
+        $showTicket = TicketBooking::query()->findOrFail($id_change);
+
+
+        $methods = PaymentMethod::query()->get();
+
+        $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
+        $seatCount = $trip->bus->total_seats;
+
+        // Lấy danh sách ghế bị "lock" quá 15 phút
+        TicketDetail::where('status', 'lock')
+            ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+                $query->where('date', $date)
+                    ->where('trip_id', $trip_id);
+            })
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+            ->delete();
+
+
+        // Lấy danh sách ghế đã đặt
+        $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+            $query->where('date', $date)
+                ->where('trip_id', $trip_id);
+        })->get();
+
+        $seatsStatus = [];
+        foreach ($seatsBooked as $seat) {
+            $seatsStatus[$seat->name_seat] = $seat->status;
+        }
+
+        return view(self::PATH_VIEW . 'load', compact('methods', 'seatsStatus', 'seatCount', 'showTicket'));
     }
 
 
@@ -562,10 +633,5 @@ class TicketBookingController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function changeTrip()
-    {
-        return view('admin.tickets.changeTrip');
     }
 }

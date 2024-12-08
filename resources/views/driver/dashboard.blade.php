@@ -47,7 +47,7 @@
                             <tr>
                                 <td>{{ $ticket->route->route_name }}</td>
                                 <td>{{ number_format($ticket->total_price) }} VNĐ</td>
-                                <td>{{ \Carbon\Carbon::parse($ticket->time_start)->format('d/m/Y H:i') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($ticket->date)->format('d/m/Y') }}</td>
                             </tr>
                         @endforeach
                         </tbody>

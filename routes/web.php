@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/driver', [DriverLoginController::class, 'showLogin'])->name('driver.login');
 Route::post('/driver', [DriverLoginController::class, 'driverLogin'])->name('driver.login.submit');
 Route::middleware('driver')->group(function () {
-    Route::post('/logout', [DriverLoginController::class, 'driverLogout'])->name('driver.logout');
+    Route::post('/driver/logout', [DriverLoginController::class, 'driverLogout'])->name('driver.logout');
 
     Route::get('/driver/dashboard', function () {
         return view('driver.dashboard');

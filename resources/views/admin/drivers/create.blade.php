@@ -74,12 +74,13 @@
                 <!-- Mật khẩu -->
                 <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Mật khẩu</label>
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu"
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu"
                         value="{{ old('password') }}">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
-                </div>
+                </div>                
+
                 <div class="mb-3">
                     <label for="license_number" class="form-label">Số bằng lái xe</label>
                     <input type="number" class="form-control" id="license_number" name="license_number"

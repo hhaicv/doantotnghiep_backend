@@ -41,11 +41,16 @@
             enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
             <div class="col-md-6">
                 <label for="nameInput" class="form-label">Tên tài khoản</label>
                 <input type="text" class="form-control" id="name" name="name"
-                    value="{{ old('name', $model->name) }}" required>
+                    value="{{ old('name', $model->name) }}">
+                    @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
                 <h5>Hình ảnh</h5>
                 <div class="file-drop-area" id="file-drop-area">
@@ -55,13 +60,21 @@
                             <img src="{{ Storage::url($model->image) }}" alt="Ảnh đã tải lên" width="200px" height="150px">
                         @endif
                     </div>
+                    @error('image')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
                 </div>
             </div>
+
             <div class="col-md-6">
                 <label for="emailInput" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" disabled
-                    value="{{ old('email', $model->email) }}" required>
+                    value="{{ old('email', $model->email) }}">
+                    @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <div class="col-md-6">
                 <label for="roleInput" class="form-label">Quyền</label>
                 <select class="form-select" id="name_role" name="name_role">
@@ -73,17 +86,21 @@
                         </option>
                     @endforeach
                 </select>
-            </div>            
+                @error('name_role')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>     
+
             <div class="col-md-6">
                 <label for="passwordInput" class="form-label">Mật khẩu (để trống nếu không muốn thay đổi)</label>
                 <input type="password" class="form-control" id="password" name="password"
-                    placeholder="Nhập mật khẩu mới..." >
+                    placeholder="Nhập mật khẩu mới..." value="{{ old('password', $model->password) }}">
             </div>
 
             <div class="col-md-6">
                 <label for="passwordConfirmInput" class="form-label">Xác nhận mật khẩu</label>
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                    placeholder="Xác nhận mật khẩu mới..." >
+                    placeholder="Xác nhận mật khẩu mới..." value="{{ old('password_confirmation', $model->password_confirmation) }}">
             </div>
 
             <div class="col-12">

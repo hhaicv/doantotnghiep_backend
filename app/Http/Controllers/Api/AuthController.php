@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\TicketBooking;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -82,7 +83,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // Đăng xuất người dùng
     public function logout(Request $request)
     {
         if ($request->input('type') === 'all') {

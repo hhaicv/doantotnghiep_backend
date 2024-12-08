@@ -60,5 +60,3 @@ Route::apiResource('home', HomeController::class);
 Route::get('/bill', [StopController::class, 'bill'])->name('bill');
 Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
 Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
-
-

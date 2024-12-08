@@ -18,6 +18,7 @@ use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
 
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin/login', [LoginAdminController::class, 'showAdminLoginForm'])->name('admin.login');
@@ -64,7 +65,6 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
-    
 
     Route::resource('reviews', ReviewController::class);
     Route::get('/send-notification', [PromotionController::class, 'sendPromotionNotification']);
@@ -95,9 +95,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
 
-    Route::get('/change_trip', [TicketBookingController::class, 'changeTrip'])->name('change_trip.get');
-    Route::post('/change_trip', [TicketBookingController::class, 'changeTrip'])->name('change_trip.post');
-    
-
+    Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
+    Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
 
 });
