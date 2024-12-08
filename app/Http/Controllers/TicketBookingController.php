@@ -502,8 +502,37 @@ class TicketBookingController extends Controller
 
     public function list(Request $request)
     {
+        $query = TicketBooking::with(['route', 'paymentMethod', 'trip']);
 
-        $data = TicketBooking::with(['route', 'paymentMethod', 'trip'])->get();
+        // Lọc theo ngày nếu có tham số 'date'
+        if ($request->has('date') && $request->date) {
+            $query->whereDate('date', $request->date);
+        }
+
+        // Lọc theo mã đơn hàng nếu có
+        if ($request->has('order_code') && $request->order_code) {
+            $query->where('order_code', 'like', "%" . $request->order_code . "%");
+        }
+
+        // Lọc theo phương thức thanh toán
+        if ($request->has('payment_method_id') && $request->payment_method_id) {
+            $query->where('payment_method_id', $request->payment_method_id);
+        }
+
+        if ($request->has('payment_status') && $request->payment_status !== 'all') {
+            // Lấy giá trị trạng thái thanh toán từ request
+            $paymentStatus = $request->payment_status;
+
+            // Kiểm tra nếu payment_status là một giá trị hợp lệ trong PAYMENT_STATUSES
+            if (array_key_exists($paymentStatus, TicketBooking::PAYMENT_STATUSES)) {
+                // Lọc theo trạng thái thanh toán
+                $query->where('status', $paymentStatus);
+            }
+        }
+
+        // Lấy dữ liệu
+        $data = $query->get();
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAdminRequest;
@@ -17,11 +16,9 @@ class AdminController extends Controller
 
     public function index()
     {
-
         $admins = Admin::all();
         return view(self::PATH_VIEW . 'index', compact('admins'));
     }
-
     public function create()
     {
         $roles = Role::all();

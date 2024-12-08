@@ -32,58 +32,66 @@
                     </div>
                 </div>
                 <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form>
+                    <form method="GET" action="{{ route('admin.ticket_list') }}">
                         <div class="row g-3">
                             <div class="col-xxl-5 col-sm-6">
                                 <div class="search-box">
-                                    <input type="text" class="form-control search"
-                                        placeholder="Search for order ID, customer, order status or something...">
+                                    <input type="text" class="form-control search" placeholder="Tìm theo mã đơn hàng"
+                                           name="order_code" value="{{ request('order_code') }}">
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                             </div>
                             <!--end col-->
+
                             <div class="col-xxl-2 col-sm-6">
                                 <div>
-                                    <input type="text" class="form-control" data-provider="flatpickr"
-                                        data-date-format="d M, Y" data-range-date="true" id="demo-datepicker"
-                                        placeholder="Select date">
+                                    <input type="date" name="date" class="form-control" value="{{ request('date') }}">
                                 </div>
                             </div>
                             <!--end col-->
+
                             <div class="col-xxl-2 col-sm-4">
                                 <div>
                                     <select class="form-control" data-choices data-choices-search-false
-                                        name="choices-single-default" id="idStatus">
-                                        <option value="">Status</option>
-                                        <option value="all" selected>All</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Inprogress">Inprogress</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                        <option value="Pickups">Pickups</option>
-                                        <option value="Returns">Returns</option>
-                                        <option value="Delivered">Delivered</option>
+                                            name="payment_method_id" id="idStatus">
+                                        <option value="">Lọc theo thanh toán</option>
+                                        @foreach(App\Models\PaymentMethod::all() as $method)
+                                            <option
+                                                value="{{ $method->id }}" {{ request('payment_method_id') == $method->id ? 'selected' : '' }}>
+                                                {{ $method->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <!--end col-->
+
                             <div class="col-xxl-2 col-sm-4">
                                 <div>
                                     <select class="form-control" data-choices data-choices-search-false
-                                        name="choices-single-default" id="idPayment">
-                                        <option value="">Select Payment</option>
-                                        <option value="all" selected>All</option>
-                                        <option value="Mastercard">Mastercard</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Visa">Visa</option>
-                                        <option value="COD">COD</option>
+                                            name="payment_status" id="idPayment">
+                                        <option value="">Lọc theo trạng thái</option>
+                                        @foreach(App\Models\TicketBooking::PAYMENT_STATUSES as $key => $status)
+                                            <option
+                                                value="{{ $key }}" {{ request('payment_status') == $key ? 'selected' : '' }}>
+                                                {{ $status }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <!--end col-->
+
                             <div class="col-xxl-1 col-sm-4">
+                                <!-- Nút Hủy Lọc -->
+                                <div class="mb-2">
+                                    <a href="{{ route('admin.ticket_list') }}" class="btn btn-primary w-100">Hủy lọc</a>
+                                </div>
+
+                                <!-- Nút Filters -->
                                 <div>
-                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i
-                                            class="ri-equalizer-fill me-1 align-bottom"></i>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                         Filters
                                     </button>
                                 </div>
@@ -98,19 +106,19 @@
                         <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active All py-3" data-bs-toggle="tab" id="All" href="#home1"
-                                    role="tab" aria-selected="true">
+                                   role="tab" aria-selected="true">
                                     <i class="ri-store-2-fill me-1 align-bottom"></i> Tổng vé đặt
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="Delivered" href="#delivered"
-                                    role="tab" aria-selected="false">
+                                   role="tab" aria-selected="false">
                                     <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Thành công
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Returns" data-bs-toggle="tab" id="Returns" href="#returns"
-                                    role="tab" aria-selected="false">
+                                   role="tab" aria-selected="false">
                                     <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> Hoàn vé
                                 </a>
                             </li>
@@ -125,22 +133,22 @@
                         <div class="table-responsive table-card mb-1">
                             <table class="table table-nowrap align-middle" id="orderTable">
                                 <thead class="text-muted table-light">
-                                    <tr class="text-uppercase">
-                                        <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="checkAll"
-                                                    value="option">
-                                            </div>
-                                        </th>
-                                        <th class="sort" data-sort="id">Mã Đơn Hàng</th>
-                                        <th class="sort" data-sort="date">Ngày khởi hành</th>
-                                        <th class="sort" data-sort="route_name">Tuyến đường</th>
-                                        <th class="sort" data-sort="amount">Số lượng</th>
-                                        <th class="sort" data-sort="total_price">Tổng giá</th>
-                                        <th class="sort" data-sort="payment">Phương thức</th>
-                                        <th class="sort" data-sort="status">Trạng thái</th>
-                                        <th class="sort" data-sort="city">Xem chi tiết</th>
-                                    </tr>
+                                <tr class="text-uppercase">
+                                    <th scope="col" style="width: 25px;">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="checkAll"
+                                                   value="option">
+                                        </div>
+                                    </th>
+                                    <th class="sort" data-sort="id">Mã Đơn Hàng</th>
+                                    <th class="sort" data-sort="date">Ngày khởi hành</th>
+                                    <th class="sort" data-sort="route_name">Tuyến đường</th>
+                                    <th class="sort" data-sort="amount">Số lượng</th>
+                                    <th class="sort" data-sort="total_price">Tổng giá</th>
+                                    <th class="sort" data-sort="payment">Phương thức</th>
+                                    <th class="sort" data-sort="status">Trạng thái</th>
+                                    <th class="sort" data-sort="city">Xem chi tiết</th>
+                                </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
                                     @foreach ($data as $ticketBooking)
@@ -185,14 +193,7 @@
                                                         </li>
                                                     @endif
 
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                        <a class="text-danger d-inline-block remove-item-btn"
-                                                            data-id="{{ $ticketBooking->id }}"
-                                                            href="javascript:void(0);">
-                                                            <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
+                                                    
                                                 </ul>
                                             </td>
                                         </tr>
@@ -200,16 +201,7 @@
                                 </tbody>
 
                             </table>
-                            <div class="noresult" style="display: none">
-                                <div class="text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                        colors="primary:#405189,secondary:#0ab39c"
-                                        style="width:75px;height:75px"></lord-icon>
-                                    <h5 class="mt-2">Sorry! No Result Found</h5>
-                                    <p class="text-muted">We've searched more than 150+ Orders We did not find any orders
-                                        for you search.</p>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="d-flex justify-content-end">
                             <div class="pagination-wrap hstack gap-2">
@@ -229,16 +221,17 @@
                             <div class="modal-content">
                                 <div class="modal-body p-5 text-center">
                                     <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                                        colors="primary:#405189,secondary:#f06548"
-                                        style="width:90px;height:90px"></lord-icon>
+                                               colors="primary:#405189,secondary:#f06548"
+                                               style="width:90px;height:90px"></lord-icon>
                                     <div class="mt-4 text-center">
                                         <h4>You are about to delete a order ?</h4>
                                         <p class="text-muted fs-15 mb-4">Deleting your order will remove all of your
                                             information from our database.</p>
                                         <div class="hstack gap-2 justify-content-center remove">
                                             <button class="btn btn-link link-success fw-medium text-decoration-none"
-                                                id="deleteRecord-close" data-bs-dismiss="modal"><i
-                                                    class="ri-close-line me-1 align-middle"></i> Close</button>
+                                                    id="deleteRecord-close" data-bs-dismiss="modal"><i
+                                                    class="ri-close-line me-1 align-middle"></i> Close
+                                            </button>
                                             <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
                                         </div>
                                     </div>
@@ -257,9 +250,9 @@
 
 @section('style-libs')
     <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
     <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
@@ -267,7 +260,7 @@
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -324,5 +317,56 @@
                 });
             });
         });
+        $(document).ready(function () {
+            // Lắng nghe sự kiện khi người dùng chọn tab
+            $('.nav-link').on('click', function () {
+                var tabId = $(this).attr('id');  // Lấy id của tab đang được chọn
+
+                var filteredData = [];
+
+                // Dựa trên tabId, bạn sẽ lọc các vé có trạng thái tương ứng
+                if (tabId === 'tab-all') {
+                    filteredData = allTicketData; // Hiển thị tất cả vé
+                } else if (tabId === 'tab-delivered') {
+                    filteredData = allTicketData.filter(function (ticket) {
+                        return ticket.status === 'paid'; // Trạng thái thành công
+                    });
+                } else if (tabId === 'tab-returns') {
+                    filteredData = allTicketData.filter(function (ticket) {
+                        return ticket.status === 'refunded'; // Trạng thái hoàn vé
+                    });
+                } else if (tabId === 'tab-cancelled') {
+                    filteredData = allTicketData.filter(function (ticket) {
+                        return ticket.status === 'cancelled'; // Trạng thái hủy
+                    });
+                }
+
+                // Cập nhật lại bảng dữ liệu theo trạng thái đã lọc
+                updateTable(filteredData);
+            });
+        });
+
+        function updateTable(data) {
+            var tableBody = $('#orderTable tbody');
+            tableBody.empty(); // Xóa dữ liệu cũ trong bảng
+
+            // Thêm dữ liệu mới vào bảng
+            data.forEach(function (ticket) {
+                var row = `
+            <tr>
+                <td>${ticket.order_code}</td>
+                <td>${ticket.date}</td>
+                <td>${ticket.route_name}</td>
+                <td>${ticket.total_tickets} Ghế</td>
+                <td>${ticket.total_price}</td>
+                <td>${ticket.paymentMethod}</td>
+                <td><span class="badge bg-${ticket.status === 'paid' ? 'success' : 'danger'}">${ticket.status}</span></td>
+                <td><a href="/tickets/${ticket.id}">Chi tiết</a></td>
+            </tr>
+        `;
+                tableBody.append(row);
+            });
+        }
+
     </script>
 @endsection
