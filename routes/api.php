@@ -75,3 +75,5 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::class, 'applyVoucher']);
 
 Route::get('promotions/{id}', [PromotionController::class, 'show']);
+Route::get('/my_ticket/{user_id}', [StopController::class, 'my_ticket'])->name('my_ticket');
+Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);
