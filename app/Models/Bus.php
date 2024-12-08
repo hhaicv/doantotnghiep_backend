@@ -30,4 +30,8 @@ class Bus extends Model
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }
+    public function trips()
+    {
+        return $this->hasMany(Trip::class, 'bus_id');
+    }
 }

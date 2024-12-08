@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    {{-- <a class="btn btn-primary mb-3" href="{{ route('admin.reviews.create') }}">Thêm mới</a> --}}
+                    {{-- <a class="btn btn-primary mb-3" href="{{ route('employee.reviews.create') }}">Thêm mới</a> --}}
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"

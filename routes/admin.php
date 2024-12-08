@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\ContactController;
@@ -18,16 +18,15 @@ use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
 
-
 use Illuminate\Support\Facades\Route;
 
-Route::get('admin/login', [AdminController::class, 'showAdminLoginForm'])->name('admin.login');
-Route::post('admin/login', [AdminController::class, 'adminLogin'])->name('admin.login.submit');
+Route::get('admin/login', [LoginAdminController::class, 'showAdminLoginForm'])->name('admin.login');
+Route::post('admin/login', [LoginAdminController::class, 'adminLogin'])->name('admin.login.submit');
 
 // Route cho admin (sử dụng middleware để bảo vệ các route)
 Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     // Route cho đăng xuất
-    Route::post('logout', [AdminController::class, 'logout'])->name('logout');
+    Route::post('logout', [LoginAdminController::class, 'logout'])->name('logout');
 
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'totalPrice'])->name('dashboard');
 
@@ -65,6 +64,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
+
 
 
     Route::resource('reviews', ReviewController::class);

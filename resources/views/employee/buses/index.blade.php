@@ -24,6 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
+                    <a class="btn btn-primary mb-3" href="{{ route('employee.buses.create') }}">Thêm mới xe</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -34,10 +35,9 @@
                                 <th>Hình ảnh</th>
                                 <th>Xe</th>
                                 <th>Tài xế</th>
-                                <th>Mã GPS</th>
                                 <th>SĐT</th>
-                                <th>Mô tả</th>
                                 <th>Trạng thái</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,20 +48,35 @@
                                             style="width: 170px;height: 100px;object-fit: cover"></td>
                                     <td>
                                         <p> {{ $item->license_plate }} - {{ $item->total_seats }} Chỗ</p>
-                                        {{ $item->name_bus }}
+                                        <p> {{ $item->name_bus }}</p>
+                                        <p> {{ $item->model }} </p>
                                     </td>
-                                    <td>{{ $item->model }}</td>
-                                    <td>{{ $item->gps_code }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ \Illuminate\Support\Str::limit($item->description, 20) }}</td>
+                                    <td>{{ $item->driver ? $item->driver->name : 'No Driver' }}</td>
+
+                                    <td>{{ $item->driver ? $item->driver->phone : 'No Phone' }}</td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" disabled
+                                            <input class="form-check-input" type="checkbox" role="switch"
                                                 id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
                                                 {{ $item->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
                                                 {{ $item->is_active ? 'On' : 'Off' }}
                                             </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="hstack gap-3 fs-15">
+                                            <a href="{{ route('employee.buses.edit', $item->id) }}" class="link-primary"><i
+                                                    class="ri-settings-4-line"></i></a>
+                                            <form id="deleteFormBuses{{ $item->id }}"
+                                                action="{{ route('employee.buses.destroy', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" style="border: none; background: white"
+                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
+                                                    <i class="ri-delete-bin-5-line"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -110,7 +125,7 @@
                 var isChecked = checkbox.checked ? 1 : 0;
                 var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-buses/${itemId}`, {
+                fetch(`/employee/status-buses/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

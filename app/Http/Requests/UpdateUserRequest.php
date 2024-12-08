@@ -32,6 +32,9 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name.required' => 'Tên tài khoản là bắt buộc.',
+            'email.required' => 'Email là bắt buộc.',
+            'email.email' => 'Email không hợp lệ.',
+            'email.unique' => 'Email đã tồn tại.',
             'phone.required' => 'Số điện thoại là bắt buộc.',
             'phone.digits_between' => 'Số điện thoại phải từ 10 đến 11 chữ số.',
             'address.required' => 'Địa chỉ là bắt buộc',

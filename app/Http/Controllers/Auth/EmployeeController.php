@@ -12,7 +12,7 @@ class EmployeeController extends Controller
 {
     public function showEmployeeLoginForm()
     {
-        return view('auth.employee_login'); 
+        return view('auth.employee_login');
     }
 
     public function employeeLogin(Request $request)
@@ -21,13 +21,13 @@ class EmployeeController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-    
+
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             /**
              * @var User $user
              */
             $user = Auth::user();
-    
+
             if ($user->isEmployee()) {
                 return redirect()->route('employee.dashboard');
             } else {
@@ -38,12 +38,15 @@ class EmployeeController extends Controller
                 ]);
             }
         }
-    
+
         // Đăng nhập không thành công
         return back()->withErrors([
             'email' => 'Thông tin đăng nhập không chính xác.',
         ]);
     }
-    
-
+    public function employeeLogout()
+    {
+        Auth::logout(); // Đăng xuất người dùng
+        return redirect()->route('employee.login')->with('success', 'Đăng xuất thành công!');
+    }
 }

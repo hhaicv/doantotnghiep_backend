@@ -24,6 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
+                    <a class="btn btn-primary mb-3" href="{{ route('employee.trips.create') }}">Thêm mới</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -37,6 +38,7 @@
                                 <th>Ghế</th>
                                 <th>Biển số xe</th>
                                 <th>Trạng thái</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,12 +52,27 @@
                                     <td>{{ $item->bus->license_plate }}</td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" disabled
+                                            <input class="form-check-input" type="checkbox" role="switch"
                                                 id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
                                                 {{ $item->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
                                                 {{ $item->is_active ? 'On' : 'Off' }}
                                             </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="hstack gap-3 fs-15">
+                                            <a href="{{ route('employee.trips.edit', $item->id) }}" class="link-primary"><i
+                                                    class="ri-settings-4-line"></i></a>
+                                            <form id="deleteFormTrip{{ $item->id }}"
+                                                action="{{ route('employee.trips.destroy', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" style="border: none; background: white"
+                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
+                                                    <i class="ri-delete-bin-5-line"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
