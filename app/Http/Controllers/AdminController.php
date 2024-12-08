@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAdminRequest;
@@ -17,7 +16,6 @@ class AdminController extends Controller
 
     public function index()
     {
-
         $admins = Admin::all();
         return view(self::PATH_VIEW . 'index', compact('admins'));
     }
@@ -42,19 +40,6 @@ class AdminController extends Controller
         } else {
             return redirect()->route('admin.admins.index')->with('failes', 'Không thể tạo tài khoản quản trị.');
         }
-    
-    
-        $data = $request->all();
-        $data['password'] = bcrypt($request->password);
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store(self::PATH_UPLOAD, 'public');
-        }
-        $admin = Admin::create($data);
-        if ($admin) {
-            return redirect()->route('admin.admins.index')->with('success', 'Tài khoản quản trị đã được tạo thành công.');
-        } else {
-            return redirect()->route('admin.admins.index')->with('failes', 'Không thể tạo tài khoản quản trị.');
-        }
     }
 
 
@@ -64,8 +49,7 @@ class AdminController extends Controller
         $model = Admin::findOrFail($id);
         $roles = Role::all();
 
-        return view(self::PATH_VIEW . 'edit', compact('model', 'roles')); 
-        return view(self::PATH_VIEW . 'edit', compact('model', 'roles')); 
+        return view(self::PATH_VIEW . 'edit', compact('model', 'roles'));
     }
 
     public function update(UpdateAdminRequest $request, $id)
@@ -102,8 +86,6 @@ class AdminController extends Controller
 
     public function destroy($id)
     {
-        // Tìm người dùng theo ID và xóa
-
         $admins = Admin::findOrFail($id);
         $admins->delete();
         if (request()->ajax()) {
@@ -114,11 +96,8 @@ class AdminController extends Controller
     }
 
 
-
     public function statusAdmin(Request $request, $id)
     {
-        // Tìm người dùng theo ID và cập nhật trạng thái
-
         $admins = Admin::findOrFail($id);
         $admins->is_active = $request->input('is_active');
         $admins->save();

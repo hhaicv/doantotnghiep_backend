@@ -19,6 +19,7 @@ use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
 
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin/login', [LoginAdminController::class, 'showAdminLoginForm'])->name('admin.login');
@@ -103,16 +104,14 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
     Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
 
-});
-
     Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply.voucher');
 
 
-    Route::get('/change_trip', [TicketBookingController::class, 'changeTrip'])->name('change_trip.get');
-    Route::post('/change_trip', [TicketBookingController::class, 'changeTrip'])->name('change_trip.post');
-    
+});
+
+   
 
 
-    Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
-    Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
+
+ 
 

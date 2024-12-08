@@ -637,9 +637,4 @@ class TicketBookingController extends Controller
             ], 500);
         }
     }
-
-    public function changeTrip()
-    {
-        return view('admin.tickets.changeTrip');
-    }
 }

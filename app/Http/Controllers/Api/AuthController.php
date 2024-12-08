@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\TicketBooking;
@@ -85,8 +85,6 @@ class AuthController extends Controller
             ]
         ]);
     }
-
-
 
     public function logout(Request $request)
     {
@@ -217,7 +215,3 @@ class AuthController extends Controller
     }
 }
 
-//"email": "anhtrieu147@gmail.com",
-//  "otp": "tUtf8L",
-//  "password": "12345678",
-//  "password_confirmation": "12345678"

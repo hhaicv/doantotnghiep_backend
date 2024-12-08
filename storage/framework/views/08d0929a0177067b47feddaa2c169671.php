@@ -124,7 +124,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Cancelled" data-bs-toggle="tab" id="Cancelled" href="#cancelled"
-                                   role="tab" aria-selected="false">
+                                    role="tab" aria-selected="false">
                                     <i class="ri-close-circle-line me-1 align-bottom"></i> Hủy
                                 </a>
                             </li>
@@ -206,15 +206,15 @@
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
+
                             </table>
                             <div class="noresult" style="display: none">
                                 <div class="text-center">
                                     <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                               colors="primary:#405189,secondary:#0ab39c"
-                                               style="width:75px;height:75px"></lord-icon>
+                                        colors="primary:#405189,secondary:#0ab39c"
+                                        style="width:75px;height:75px"></lord-icon>
                                     <h5 class="mt-2">Sorry! No Result Found</h5>
-                                    <p class="text-muted">We've searched more than 150+ Orders We did not find any
-                                        orders
+                                    <p class="text-muted">We've searched more than 150+ Orders We did not find any orders
                                         for you search.</p>
                                 </div>
                             </div>

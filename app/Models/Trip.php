@@ -23,6 +23,10 @@ class Trip extends Model
     ];
 
 
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
     public function stages()
     {
         return $this->hasMany(Stage::class, 'route_id', 'route_id'); // 'route_id' là khóa ngoại trong bảng 'stages' liên kết với 'route_id' trong bảng 'trips'
