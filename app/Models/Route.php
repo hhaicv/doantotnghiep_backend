@@ -34,4 +34,9 @@ class Route extends Model
     {
         return $this->belongsToMany(Promotion::class, 'promotion_route', 'route_id', 'promotion_id');
     }
+
+    public function trips()
+    {
+        return $this->hasMany(Trip::class, 'route_id');
+    }
 }

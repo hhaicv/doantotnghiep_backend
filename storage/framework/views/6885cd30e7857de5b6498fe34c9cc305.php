@@ -46,7 +46,7 @@
                 <input type="text" class="form-control" id="name_bus" name="name_bus" value="<?php echo e($model->name_bus); ?>">
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Tên tài xế</label>
+                <label for="fullnameInput" class="form-label">Hãng xe</label>
                 <input type="text" class="form-control" id="model" name="model" value="<?php echo e($model->model); ?>">
             </div>
             <div class="col-md-6">
@@ -82,8 +82,11 @@
             </div>
             <div class="col-md-6">
                 <label for="start_date">Số lượng ghế</label>
-                <input type="number" name="total_seats" id="total_seats" class="form-control"
-                    value="<?php echo e($model->total_seats); ?>">
+                <select class="form-select" name="total_seats" id="total_seats" aria-label="Default select example">
+                    <option value="34" <?php echo e($model->total_seats == 34 ? 'selected' : ''); ?>>34 Chỗ</option>
+                    <option value="40" <?php echo e($model->total_seats == 40 ? 'selected' : ''); ?>>40 Chỗ</option>
+                    <option value="45" <?php echo e($model->total_seats == 45 ? 'selected' : ''); ?>>45 Chỗ</option>
+                </select>
             </div>
             <div class="col-lg-12">
                 <div class="card">

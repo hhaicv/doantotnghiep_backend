@@ -82,6 +82,7 @@ class HomeController extends Controller
                 'route_name' => $trip->route->route_name,
                 'fare' => $stage ? $stage->fare : null,
                 'name_bus' => $trip->bus->name_bus,
+                'license_plate' => $trip->bus->license_plate,
                 'total_seats' => $trip->bus->total_seats,
                 'booked_seats_count' => $bookedSeatsCount,
                 'available_seats' => $trip->bus->total_seats - $bookedSeatsCount,

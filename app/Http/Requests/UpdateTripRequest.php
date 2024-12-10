@@ -11,7 +11,7 @@ class UpdateTripRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,15 +23,12 @@ class UpdateTripRequest extends FormRequest
     {
         return [
 
-            'start_time' => ['required'],
-            'end_time' => ['required'],
         ];
     }
     public function messages(): array
     {
         return [
-            'start_time' => 'Không để trống thời gian bắt đầu',
-            'end_time' => 'Không để trống thời gian kết thúc',
+          
         ];
     }
 }

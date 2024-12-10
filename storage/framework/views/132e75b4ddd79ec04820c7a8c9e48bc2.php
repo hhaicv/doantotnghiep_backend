@@ -10,16 +10,27 @@
         </div>
     </div>
     <?php if(session('success')): ?>
-        <div class="alert alert-success">
-            <?php echo e(session('success')); ?>
-
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "<?php echo e(session('success')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
-    <?php if(session('error')): ?>
-        <div class="alert alert-danger">
-            <?php echo e(session('error')); ?>
 
-        </div>
+    <?php if(session('failes')): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "<?php echo e(session('failes')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
 
     <div class="card">
@@ -102,20 +113,12 @@ unset($__errorArgs, $__bag); ?>
             <div class="col-md-6">
                 <div class="col-mt-3">
                     <label for="start_date">Số lượng ghế</label>
-                    <input type="number" name="total_seats" id="total_seats" class="form-control"
-                        value="<?php echo e(old('total_seats')); ?>" placeholder="Nhập số lượng ghế">
-                    <?php $__errorArgs = ['total_seats'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                        <span class="text-danger"><?php echo e($message); ?></span>
-                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                    <select class="form-select"  name="total_seats" id="total_seats" aria-label="Default select example">
+                        <option value="34">34 Chỗ</option>
+                        <option value="40">40 Chỗ</option>
+                        <option value="45">45 Chỗ</option>
+                    </select>
                 </div>
-                
             </div>
     </div>
     <div class="col-md-12">

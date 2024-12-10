@@ -1,9 +1,8 @@
-@extends('admin.layouts.mater')
-@section('title')
+<?php $__env->startSection('title'); ?>
     Cập nhật chuyến xe
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -12,73 +11,76 @@
         </div>
     </div>
 
-    @if (session('success'))
+    <?php if(session('success')): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'success',
                     title: 'Thành công',
-                    text: "{{ session('success') }}"
+                    text: "<?php echo e(session('success')); ?>"
                 });
             });
         </script>
-    @endif
+    <?php endif; ?>
 
-    @if (session('failes'))
+    <?php if(session('failes')): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Thất bại',
-                    text: "{{ session('failes') }}"
+                    text: "<?php echo e(session('failes')); ?>"
                 });
             });
         </script>
-    @endif
+    <?php endif; ?>
 
     <div class="card">
-        <form action="{{ route('admin.trips.update', $data) }}" method="POST" class="row g-3 p-5">
-            @csrf
-            @method('PUT')
+        <form action="<?php echo e(route('admin.trips.update', $data)); ?>" method="POST" class="row g-3 p-5">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
             <div class="col-md-5">
                 <label for="fullnameInput" class="form-label">Tuyến đường</label>
                 <select class="form-select" aria-label="Default select example" name="route_id">
-                    @foreach ($routes as $route)
-                        <option value="{{ $route->id }}" {{ $route->id == $data->route_id ? 'selected' : '' }}>
-                            {{ $route->route_name }}
+                    <?php $__currentLoopData = $routes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $route): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($route->id); ?>" <?php echo e($route->id == $data->route_id ? 'selected' : ''); ?>>
+                            <?php echo e($route->route_name); ?>
+
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="col-md-5">
                 <label for="fullnameInput" class="form-label">Xe</label>
                 <select class="form-select" aria-label="Default select example" name="bus_id">
-                    @foreach ($buses as $bus)
-                        <option value="{{ $bus->id }}" {{ $bus->id == $data->bus_id ? 'selected' : '' }}>
-                            {{ $bus->name_bus }} - {{ $bus->license_plate }}
+                    <?php $__currentLoopData = $buses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bus): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($bus->id); ?>" <?php echo e($bus->id == $data->bus_id ? 'selected' : ''); ?>>
+                            <?php echo e($bus->name_bus); ?> - <?php echo e($bus->license_plate); ?>
+
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="col-md-5">
                 <label for="fullnameInput" class="form-label">Tài xế</label>
                 <select class="form-select" aria-label="Default select example" name="driver_id">
-                    @foreach ($drivers as $driver)
-                        <option value="{{ $driver->id }}" {{ $driver->id == $data->bus->driver_id ? 'selected' : '' }}>
-                            {{ $driver->name }}
+                    <?php $__currentLoopData = $drivers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $driver): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($driver->id); ?>" <?php echo e($driver->id == $data->bus->driver_id ? 'selected' : ''); ?>>
+                            <?php echo e($driver->name); ?>
+
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="col-md-5">
                 <label for="exampleFormControlTextarea5" class="form-label">Thời gian khởi hành</label>
                 <input type="text" class="form-control" name="time_start" placeholder="hh:mm" id="cleave-time-format"
-                    value="{{ $data->time_start }}">
+                    value="<?php echo e($data->time_start); ?>">
             </div>
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ route('admin.trips.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="<?php echo e(route('admin.trips.index')); ?>" class="btn btn-success">Quay lại</a>
                 </div>
             </div>
         </form>
@@ -127,4 +129,6 @@
             blocks: [0, 3, 3, 4]
         }));
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/trips/edit.blade.php ENDPATH**/ ?>

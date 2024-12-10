@@ -9,6 +9,7 @@
             </div>
         </div>
     </div>
+    
     <?php if(session('success')): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -20,7 +21,6 @@
             });
         </script>
     <?php endif; ?>
-
     <?php if(session('failes')): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -72,7 +72,7 @@ unset($__errorArgs, $__bag); ?>
             <div class="col-md-6">
                 <label for="start_date">Ngày bắt đầu</label>
                 <input type="date" name="start_date" id="start_date" class="form-control"
-                    value ="<?php echo e(old('start_date')); ?>">
+                    value="<?php echo e(old('start_date')); ?>" min="<?php echo e(now()->toDateString()); ?>">
                 <?php $__errorArgs = ['start_date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -83,10 +83,11 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-            </div>
+            </div>            
             <div class="col-md-6">
                 <label for="end_date">Ngày kết thúc</label>
-                <input type="date" name="end_date" id="end_date" class="form-control" value ="<?php echo e(old('end_date')); ?>">
+                <input type="date" name="end_date" id="end_date" class="form-control" 
+                    value="<?php echo e(old('end_date')); ?>" min="<?php echo e(now()->toDateString()); ?>">
                 <?php $__errorArgs = ['end_date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -97,7 +98,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-            </div>
+            </div>            
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>

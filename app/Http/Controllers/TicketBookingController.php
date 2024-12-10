@@ -135,6 +135,9 @@ class TicketBookingController extends Controller
         $methods = PaymentMethod::query()->get();
 
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
+
+
+
         $seatCount = $trip->bus->total_seats;
 
         // Lấy danh sách ghế bị "lock" quá 15 phút
@@ -529,9 +532,9 @@ class TicketBookingController extends Controller
                 $query->where('status', $paymentStatus);
             }
         }
-
         // Lấy dữ liệu
-        $data = $query->get();
+        $data = $query->orderBy('id', 'desc')->get();
+
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }

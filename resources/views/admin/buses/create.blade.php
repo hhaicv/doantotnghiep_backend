@@ -86,13 +86,12 @@
             <div class="col-md-6">
                 <div class="col-mt-3">
                     <label for="start_date">Số lượng ghế</label>
-                    <input type="number" name="total_seats" id="total_seats" class="form-control"
-                        value="{{ old('total_seats') }}" placeholder="Nhập số lượng ghế">
-                    @error('total_seats')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <select class="form-select"  name="total_seats" id="total_seats" aria-label="Default select example">
+                        <option value="34">34 Chỗ</option>
+                        <option value="40">40 Chỗ</option>
+                        <option value="45">45 Chỗ</option>
+                    </select>
                 </div>
-                
             </div>
     </div>
     <div class="col-md-12">

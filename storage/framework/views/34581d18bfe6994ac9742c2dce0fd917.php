@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách tài xế</h5>
                     <a class="btn btn-primary mb-3" href="<?php echo e(route('admin.drivers.create')); ?>">Thêm mới tài xế</a>
                 </div>
                 <div class="card-body">

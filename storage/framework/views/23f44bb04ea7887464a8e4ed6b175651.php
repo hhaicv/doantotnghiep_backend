@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách tuyến đường</h5>
                     <a class="btn btn-primary mb-3" href="<?php echo e(route('admin.routes.create')); ?>">Thêm mới</a>
                 </div>
                 <div class="card-body">
@@ -33,6 +33,7 @@
                                 <th>Tên tuyến đường</th>
                                 <th>Các Chặng</th>
                                 <th>Chu Kỳ</th>
+                                <th>Số xe</th>
                                 <th>Giá Tuyến</th>
                                 <th>Chiều Dài</th>
                                 <th>Mô tả</th>
@@ -90,7 +91,7 @@
 
                                     <style>
                                          .modal-dialog {
-                                            margin-top: 70px; 
+                                            margin-top: 70px;
                                             max-width: 70%;
                                         }
                                         .map-container {
@@ -118,6 +119,7 @@
 
 
                                     <td><?php echo e($item->cycle); ?> phút</td>
+                                    <td><?php echo e($item->vehicle_count); ?> Xe</td>
                                     <td><?php echo e(number_format($item->route_price, 0, ',', '.')); ?> VND</td>
                                     <td><?php echo e(number_format($item->length, 0, ',', '.')); ?> KM</td>
                                     <td><?php echo e($item->description); ?></td>
