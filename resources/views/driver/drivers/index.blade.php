@@ -7,54 +7,42 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách chuyến xe của bạn</h5>
-                </div>
-                <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                           style="width:100%">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Thời gian khởi hành</th>
-                            <th>Ngày khởi hành</th>
-                            <th>Tuyến đường</th>
-                            <th>Xe</th>
-                            <th>Ghế</th>
-                            <th>Biển số xe</th>
-{{--                            <th>Trạng thái</th>--}}
-                            <th>Chi tiết</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($trips as $trip)
-                            <tr>
-                                <td>{{ $trip->id }}</td>
-                                <td>{{ \Carbon\Carbon::parse($trip->time_start)->format('H:i') }}</td>
-                                <td>{{ $trip->date }}</td>
-                                <td>{{ $trip->route->route_name }}</td>
-                                <td>{{ $trip->bus->name_bus }}</td>
-                                <td>{{ $trip->bus->total_seats }}</td>
-                                <td>{{ $trip->bus->license_plate }}</td>
-{{--                                <td>--}}
-{{--                                    <span class="{{ $trip->is_active ? 'text-success' : 'text-danger' }}">--}}
-{{--                                        {{ $trip->is_active ? 'Hoạt động' : 'CHưa đi' }}--}}
-{{--                                    </span>--}}
-{{--                                </td>--}}
-                                <td>
-                                    <a href="{{ route('drivers.show', $trip->id) }}" class="btn btn-primary btn-sm">
-                                        Xem chi tiết
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+            <div class="card-header">
+                <form method="GET" action="{{ route('drivers.index') }}">
+                    <label for="date">Chọn ngày:</label>
+                    <input type="date" id="date" name="date" value="{{ $date }}">
+                    <button type="submit">Lọc</button>
+                </form>
             </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Tuyến đường</th>
+                    <th>Số vé</th>
+                    <th>Tổng tiền</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($groupedTrips as $tripId => $trip)
+                    <tr>
+                        <td>{{ $trip['time_start'] }}</td>
+                        <td>{{ $trip['route_name'] }}</td>
+                        <td>{{ $trip['total_tickets'] }}</td>
+                        <td>{{ number_format($trip['total_price'], 0, ',', '.') }} VND</td>
+                        <td>
+                            <a href="{{ route('drivers.show', $tripId) }}" class="btn btn-primary btn-sm">Chi tiết</a>
+                        </td>
+                    </tr>
+                @endforeach
+
+                </tbody>
+            </table>
         </div>
     </div>
+
 
 @endsection
 @section('script-libs')

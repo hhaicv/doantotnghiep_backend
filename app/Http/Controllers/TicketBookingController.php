@@ -531,7 +531,7 @@ class TicketBookingController extends Controller
         }
 
         // Lấy dữ liệu
-        $data = $query->get();
+        $data = $query->orderByDesc('date')->get();
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }

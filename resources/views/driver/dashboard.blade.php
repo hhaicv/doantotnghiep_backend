@@ -33,27 +33,42 @@
     <div class="row mt-3">
         <div class="col-lg-12">
             <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Tỷ lệ lấp đầy các chuyến xe</h5>
+                </div>
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th>Chuyến</th>
-                            <th>Giá vé</th>
-                            <th>Ngày đi</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($tickets as $ticket)
+                    @if($busStats->isEmpty())
+                        <p>Không có dữ liệu chuyến đi nào.</p>
+                    @else
+                        <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                            <thead>
                             <tr>
-                                <td>{{ $ticket->route->route_name }}</td>
-                                <td>{{ number_format($ticket->total_price) }} VNĐ</td>
-                                <td>{{ \Carbon\Carbon::parse($ticket->date)->format('d/m/Y') }}</td>
+                                <th>Tên xe</th>
+                                <th>Tuyến</th>
+                                <th>Số ghế</th>
+                                <th>Số ghế đã bán</th>
+                                <th>Tỷ lệ lấp đầy (%)</th>
+                                <th>Doanh thu chuyến</th>
                             </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            @foreach($busStats as $busStat)
+                                <tr>
+                                    <td>{{ $busStat['name_bus'] }}</td>
+                                    <td>{{ $busStat['route'] }}</td>
+                                    <td>{{ $busStat['total_seats'] }}</td>
+                                    <td>{{ $busStat['soldSeats'] }}</td>
+                                    <td>{{ $busStat['fillRate'] }} %</td>
+                                    <td>{{ $busStat['totalRevenue'] }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
+
 @endsection

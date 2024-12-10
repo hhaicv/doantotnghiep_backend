@@ -55,7 +55,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">{{$driver->name}}</h6>
+{{--                        <h6 class="dropdown-header">{{$tickets->drivers->name}}</h6>--}}
                         <a href="{{ route('drivers.edit', Auth::guard('driver')->id()) }}" class="dropdown-item notify-item">
                             <i class="ri-user-settings-line align-middle fs-18 text-muted me-2"></i>
                             <span>Tài khoản</span>
