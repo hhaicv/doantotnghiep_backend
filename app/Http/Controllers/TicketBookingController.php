@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderTicket;
+use App\Events\SeatBooked;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
 use App\Models\PaymentMethod;
-
+use App\Models\Seat;
 use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
@@ -156,8 +157,16 @@ class TicketBookingController extends Controller
                 ->where('trip_id', $trip_id);
         })->get();
 
+
+        $seats = Seat::where('date', $date)
+            ->where('trip_id', $trip_id)
+            ->get();
+
+        $allSeats = $seats->merge($seatsBooked);
+
+
         $seatsStatus = [];
-        foreach ($seatsBooked as $seat) {
+        foreach ($allSeats as $seat) {
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
 
@@ -165,11 +174,43 @@ class TicketBookingController extends Controller
     }
 
 
+    public function updateStatus(Request $request)
+    {
+        $validated = $request->validate([
+            'seat_name' => 'required|string', // Đổi từ name_seat thành seat_name
+            'trip_id' => 'required', // Đổi từ name_seat thành seat_name
+            'date' => 'required', // Đổi từ name_seat thành seat_name
+            'status' => 'required|string|in:available,selected,booked,lock',
+        ]);
+
+        $seat = Seat::where('name_seat', $validated['seat_name'])->first();
+
+
+        $seat = new Seat();
+        $seat->name_seat = $validated['seat_name'];
+        $seat->trip_id = $validated['trip_id'];
+        $seat->date = $validated['date'];
+        $seat->status = $validated['status'];
+        $seat->save();
+
+
+        if ($seat) {
+            $seat->status = $validated['status'];
+            $seat->save();
+
+            // Phát sự kiện cập nhật trạng thái
+            broadcast(new SeatBooked($seat))->toOthers();
+
+            return response()->json(['success' => true, 'message' => 'Seat status updated successfully']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Seat not found'], 404);
+        }
+    }
+
+
 
     public function store(StoreTicketBookingRequest $request)
     {
-
-
         if ($request->id_change) {
             $booking = TicketBooking::findOrFail($request->id_change);
             $booking->delete();
@@ -336,6 +377,9 @@ class TicketBookingController extends Controller
                 $ticketBookingData['status'] = $request->input('payment_method_id') == 1
                     ? TicketBooking::PAYMENT_STATUS_PAID
                     : TicketBooking::PAYMENT_STATUS_UNPAID;
+                if ($request->id_change) {
+                    $ticketBookingData['total_price'] = $request->input('price');
+                }
 
                 $ticketBooking = TicketBooking::create($ticketBookingData);
 
@@ -607,6 +651,8 @@ class TicketBookingController extends Controller
         return view(self::PATH_VIEW . 'load', compact('methods', 'seatsStatus', 'seatCount', 'showTicket'));
     }
 
+
+ 
 
 
 

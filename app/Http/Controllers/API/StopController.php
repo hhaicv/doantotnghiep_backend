@@ -251,6 +251,8 @@ class StopController extends Controller
             'point_up' => $ticketBooking->location_start,
             'point_down' => $ticketBooking->location_end,
             'date_start' => $ticketBooking->date,
+            'code_voucher' => $ticketBooking->code_voucher,
+            'discount' => $ticketBooking->discount,
             'booking_date' => $ticketBooking->created_at->format('Y-m-d'),
             'name_seat' => $ticketBooking->ticketDetails->pluck('name_seat')->toArray(),
             'note' => $ticketBooking->note,
@@ -444,6 +446,8 @@ class StopController extends Controller
 
             'time_start' => $ticketBooking->trip->time_start ?? null,
             'date_start' => $ticketBooking->date ?? null,
+            'code_voucher' => $ticketBooking->code_voucher,
+            'discount' => $ticketBooking->discount,
             'ticket_details' => $ticketBooking->ticketDetails->map(function ($detail) {
                 return [
                     'ticket_code' => $detail->ticket_code,
@@ -510,7 +514,7 @@ class StopController extends Controller
             'end_point' => $endStop->stop_name ?? $ticketBooking->location_end,       // Tên điểm kết thúc
             'time_start' => $ticketBooking->trip->time_start ?? null,
             'date_start' => $ticketBooking->date,
-            'total_price' => $ticketBooking->total_price,
+            'total_price' => $ticketDetail->price,
             'status' => $ticketBooking->status,
             'ticket_code' => $ticketDetail->ticket_code,
             'seat' => $ticketDetail->name_seat,

@@ -61,38 +61,44 @@ class HomeController extends Controller
             ->paginate(5);
 
         // Map dữ liệu chuyến
-        $tripData = $trips->getCollection()->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
+        $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
             $stage = $trip->stages->first();
-
-            // Đếm số ghế đã đặt
             $bookedSeatsCount = 0;
 
             if ($trip->ticketBookings) {
-                // Đếm số ghế đã đặt dựa trên các ticket_booking_id
-                $bookedSeatsCount = TicketDetail::whereIn('ticket_booking_id', $trip->ticketBookings->pluck('id'))
-                    ->count();
+                // Đếm số ghế đã đặt theo chuyến và ngày
+                $bookedSeatsCount = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip) {
+                    $query->where('trip_id', $trip->id)
+                        ->where('date', $date);
+                })->count();
             }
 
-            return [
-                'bus_id' => $trip->bus->id,
-                'image' => $trip->bus->image,
-                'route_id' => $trip->route->id,
-                'trip_id' => $trip->id,
-                'time_start' => $trip->time_start,
-                'route_name' => $trip->route->route_name,
-                'fare' => $stage ? $stage->fare : null,
-                'name_bus' => $trip->bus->name_bus,
-                'license_plate' => $trip->bus->license_plate,
-                'total_seats' => $trip->bus->total_seats,
-                'booked_seats_count' => $bookedSeatsCount,
-                'available_seats' => $trip->bus->total_seats - $bookedSeatsCount,
-                'date' => $date,
-                'start_stop_name' => $startStopName,
-                'end_stop_name' => $endStopName,
-                'start_stop_id' => $startRouteId,
-                'end_stop_id' => $endRouteId,
-            ];
-        });
+            $availableSeats = $trip->bus->total_seats - $bookedSeatsCount;
+
+            if ($availableSeats > 0) {
+                return [
+                    'bus_id' => $trip->bus->id,
+                    'image' => $trip->bus->image,
+                    'route_id' => $trip->route->id,
+                    'trip_id' => $trip->id,
+                    'time_start' => $trip->time_start,
+                    'route_name' => $trip->route->route_name,
+                    'fare' => $stage ? $stage->fare : null,
+                    'name_bus' => $trip->bus->name_bus,
+                    'license_plate' => $trip->bus->license_plate,
+                    'total_seats' => $trip->bus->total_seats,
+                    'booked_seats_count' => $bookedSeatsCount,
+                    'available_seats' => $trip->bus->total_seats - $bookedSeatsCount,
+                    'date' => $date,
+                    'start_stop_name' => $startStopName,
+                    'end_stop_name' => $endStopName,
+                    'start_stop_id' => $startRouteId,
+                    'end_stop_id' => $endRouteId,
+                ];
+            }
+            return null;
+
+        })->filter();
 
         // Thay thế bộ sưu tập bằng dữ liệu đã map và thêm thông tin phân trang
         $paginatedTripData = [
