@@ -59,6 +59,10 @@ class StopController extends Controller
 
     public function store(StoreTicketBookingRequest $request)
     {
+        if ($request->id_change) {
+            $booking = TicketBooking::findOrFail($request->id_change);
+            $booking->delete();
+        }
         if ($request->has('payment_method_id') && $request->payment_method_id == 2) {
             $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             $partnerCode = 'MOMOBKUN20180529';
@@ -102,6 +106,9 @@ class StopController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $orderId;
+            if ($request->id_change) {
+                $ticketBookingData['total_price'] = $request->input('price');
+            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
@@ -177,6 +184,9 @@ class StopController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $vnp_TxnRef;
+            if ($request->id_change) {
+                $ticketBookingData['total_price'] = $request->input('price');
+            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
 
@@ -522,7 +532,7 @@ class StopController extends Controller
             return response()->json([
                 'status' => 'Thất bại',
                 'message' => 'ID người dùng không hợp lệ.',
-                'DỮ LIỆU' =>$user_id,
+                'DỮ LIỆU' => $user_id,
             ], 400);
         }
 
@@ -565,6 +575,83 @@ class StopController extends Controller
         ], 200);
     }
 
+
+    // Đổi chỗ
+    public function change($id)
+    {
+        $data = TicketBooking::query()
+            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod', 'ticketDetails'])
+            ->findOrFail($id);
+
+        $stops = Stop::query()->get();
+
+        $startStopName = Stop::where('id',  $data->id_start_stop)->value('stop_name');
+        $endStopName = Stop::where('id', $data->id_end_stop)->value('stop_name');
+
+        $nameSeats = $data->ticketDetails->pluck('name_seat')->toArray(); // Chuyển thành mảng
+        $mergedNameSeats = implode(", ", $nameSeats);
+
+        return response()->json([
+            'status' => 'Thành công',
+            'message' => 'Lấy thông tin vé thành công.',
+            'data' => $data,
+            'startStopName' => $startStopName,
+            'endStopName' => $endStopName,
+            'mergedNameSeats' => $mergedNameSeats,
+            'stops' => $stops,
+        ], 200);
+    }
+
+
+    public function load(Request $request)
+    {
+        $trip_id = $request->query('trip_id');
+        $date = $request->query('date');
+
+        $id_change = $request->query('id_change');
+
+
+
+        $showTicket = TicketBooking::query()->findOrFail($id_change);
+
+
+        $methods = PaymentMethod::query()->get();
+
+        $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
+        $seatCount = $trip->bus->total_seats;
+
+        // Lấy danh sách ghế bị "lock" quá 15 phút
+        TicketDetail::where('status', 'lock')
+            ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+                $query->where('date', $date)
+                    ->where('trip_id', $trip_id);
+            })
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+            ->delete();
+
+
+        // Lấy danh sách ghế đã đặt
+        $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+            $query->where('date', $date)
+                ->where('trip_id', $trip_id);
+        })->get();
+
+        $seatsStatus = [];
+        foreach ($seatsBooked as $seat) {
+            $seatsStatus[$seat->name_seat] = $seat->status;
+        }
+
+        return response()->json([
+            'status' => 'Thành công',
+            'message' => 'Lấy thông tin thành công.',
+            'methods' => $methods,
+            'seatsStatus' => $seatsStatus,
+            'seatCount' => $seatCount,
+            'showTicket' => $showTicket,
+
+        ], 200);
+
+    }
 
 
     /**

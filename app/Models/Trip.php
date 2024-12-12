@@ -49,4 +49,5 @@ class Trip extends Model
     {
         return $this->hasMany(TicketBooking::class, 'trip_id');
     }
+
 }

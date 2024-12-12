@@ -82,8 +82,11 @@
             </div>
             <div class="col-md-6">
                 <label for="start_date">Số lượng ghế</label>
-                <input type="number" name="total_seats" id="total_seats" class="form-control"
-                    value="{{ $model->total_seats }}">
+                <select class="form-select" name="total_seats" id="total_seats" aria-label="Default select example">
+                    <option value="34" {{ $model->total_seats == 34 ? 'selected' : '' }}>34 Chỗ</option>
+                    <option value="40" {{ $model->total_seats == 40 ? 'selected' : '' }}>40 Chỗ</option>
+                    <option value="45" {{ $model->total_seats == 45 ? 'selected' : '' }}>45 Chỗ</option>
+                </select>
             </div>
             <div class="col-lg-12">
                 <div class="card">

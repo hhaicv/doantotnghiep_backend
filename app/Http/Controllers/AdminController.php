@@ -19,8 +19,6 @@ class AdminController extends Controller
         $admins = Admin::all();
         return view(self::PATH_VIEW . 'index', compact('admins'));
     }
-    
-    
     public function create()
     {
         $roles = Role::all();

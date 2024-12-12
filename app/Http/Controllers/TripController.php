@@ -6,6 +6,7 @@ use App\Models\Trip;
 use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
 use App\Models\Bus;
+use App\Models\Driver;
 use App\Models\Route;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class TripController extends Controller
 
     public function index()
     {
-        $data = Trip::with(['route', 'bus'])->get();
+        $data = Trip::with(['route', 'bus', 'bus.driver'])->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -87,18 +88,80 @@ class TripController extends Controller
 
     public function edit(string $id)
     {
-        $data = Trip::query()->with(['bus', 'route'])->findOrFail($id);
-        $buses = Bus::query()->get();
+        $data = Trip::query()->with(['bus', 'route', 'bus.driver'])->findOrFail($id);
+
+        $buses = Bus::query()
+            ->where('is_active', false)
+            ->orWhere('id', $data->bus_id) // Đảm bảo tài xế hiện tại có mặt trong danh sách
+            ->get();
+
+        $drivers = Driver::query()
+            ->where('is_active', false)
+            ->orWhere('id', $data->bus->driver_id) // Đảm bảo tài xế hiện tại có mặt trong danh sách
+            ->get();
+
         $routes = Route::query()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'buses', 'routes'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'buses', 'routes', 'drivers'));
     }
 
 
     public function update(UpdateTripRequest $request, string $id)
     {
+
+
         $data = Trip::query()->findOrFail($id);
         $model = $request->all();
+
+        // Lưu lại thông tin ban đầu
+        $oldDriverId = $data->bus->driver_id ?? null;
+        $oldBusId = $data->bus_id;
+
+        // Cập nhật thông tin chuyến xe
         $res = $data->update($model);
+
+        // Xử lý trạng thái bus
+        if ($oldBusId && $oldBusId != $data->bus_id) {
+            $oldBus = Bus::find($oldBusId);
+            if ($oldBus) {
+                $oldBus->is_active = false;
+                $oldBus->save();
+            }
+        }
+        if ($data->bus_id) {
+            $newBus = Bus::find($data->bus_id);
+            if ($newBus) {
+                $newBus->is_active = true;
+                $newBus->save();
+            }
+        }
+
+        // Cập nhật tài xế nếu `driver_id` được cung cấp
+        if ($request->has('driver_id')) {
+            $newDriverId = $request->input('driver_id');
+            $bus = $data->bus;
+            if ($bus) {
+                $bus->driver_id = $newDriverId;
+                $bus->save();
+
+                // Xử lý tài xế cũ
+                if ($oldDriverId && $oldDriverId != $newDriverId) {
+                    $oldDriver = Driver::find($oldDriverId);
+                    if ($oldDriver) {
+                        $oldDriver->is_active = false;
+                        $oldDriver->save();
+                    }
+                }
+
+                // Kích hoạt tài xế mới
+                $newDriver = Driver::find($newDriverId);
+                if ($newDriver) {
+                    $newDriver->is_active = true;
+                    $newDriver->save();
+                }
+            }
+        } 
+
+        // Trả về kết quả
         if ($res) {
             return redirect()->back()->with('success', 'Chuyến xe được sửa thành công');
         } else {

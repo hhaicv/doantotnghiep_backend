@@ -57,14 +57,19 @@ Route::apiResource('buses', BusController::class);
 Route::apiResource('new-categories', NewCategoryController::class);
 Route::patch('new-categories/{id}/status', [NewCategoryController::class, 'statusNewCategory']);
 Route::apiResource('information', InformationController::class);
+
+
+
+
+
 Route::apiResource('stops', StopController::class);
 Route::apiResource('home', HomeController::class);
-
-// Các route cho thanh toán
-Route::get('/bill', [StopController::class, 'bill'])->name('bill');
+Route::get('/my_ticket/{user_id}', [StopController::class, 'my_ticket'])->name('my_ticket');
+Route::post('check', [StopController::class, 'check']);
+Route::get('/bill',         [StopController::class, 'bill'])->name('bill');
+Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);
 Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
 Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
-
 
 
 
@@ -74,7 +79,15 @@ Route::post('request-password-reset', [AuthController::class, 'requestPasswordRe
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::class, 'applyVoucher']);
 
+
 Route::get('promotions/{id}', [PromotionController::class, 'show']);
+
+
+// Đổi chuyến
+Route::get('/change/{id}', [StopController::class, 'change'])->name('change');
+Route::get('/load', [StopController::class, 'load'])->name('load');
+
+
 Route::get('/my_ticket/{user_id}', [StopController::class, 'my_ticket'])->name('my_ticket');
 Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);
 

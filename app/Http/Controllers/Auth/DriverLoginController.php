@@ -34,5 +34,4 @@ class DriverLoginController extends Controller
         Auth::guard('driver')->logout();
         return redirect()->route('driver.login')->with('success', 'Đăng xuất thành công!');
     }
-
 }

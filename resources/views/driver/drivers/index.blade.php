@@ -23,7 +23,7 @@
                             <th>Xe</th>
                             <th>Ghế</th>
                             <th>Biển số xe</th>
-{{--                            <th>Trạng thái</th>--}}
+                            <th>Trạng thái</th>
                             <th>Chi tiết</th>
                         </tr>
                         </thead>
@@ -37,11 +37,11 @@
                                 <td>{{ $trip->bus->name_bus }}</td>
                                 <td>{{ $trip->bus->total_seats }}</td>
                                 <td>{{ $trip->bus->license_plate }}</td>
-{{--                                <td>--}}
-{{--                                    <span class="{{ $trip->is_active ? 'text-success' : 'text-danger' }}">--}}
-{{--                                        {{ $trip->is_active ? 'Hoạt động' : 'CHưa đi' }}--}}
-{{--                                    </span>--}}
-{{--                                </td>--}}
+                                <td>
+                                    <span class="{{ $trip->is_active ? 'text-success' : 'text-danger' }}">
+                                        {{ $trip->is_active ? 'Hoạt động' : 'Chờ' }}
+                                    </span>
+                                </td>
                                 <td>
                                     <a href="{{ route('drivers.show', $trip->id) }}" class="btn btn-primary btn-sm">
                                         Xem chi tiết

@@ -48,9 +48,9 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Số vé: <span>{{ $ticket->total_tickets }}</span>
                                             </li>
-{{--                                            <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                                                PV đã thu: <span>{{ number_format($ticket->total_price / 2) }} VNĐ</span>--}}
-{{--                                            </li>--}}
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                PV đã thu: <span>{{ number_format($ticket->total_price / 2) }} VNĐ</span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>

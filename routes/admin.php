@@ -61,7 +61,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('promotions', PromotionController::class);
     Route::post('/status-promotion/{id}', [PromotionController::class, 'statusPromotion']);
     Route::resource('promotion_categories', PromotionCategoryController::class);
-   
+
 
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
@@ -70,7 +70,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
 
 
-    
+
 
     Route::resource('reviews', ReviewController::class);
     Route::get('/send-notification', [PromotionController::class, 'sendPromotionNotification']);
@@ -86,9 +86,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::get('/customers', [UserController::class, 'userIndex'])->name('customers'); // Danh sách khách hàng
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::post('/store', [UserController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); 
-        Route::put('/{id}', [UserController::class, 'update'])->name('update'); 
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); 
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
 
 
@@ -104,14 +104,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
     Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
 
+
     Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply.voucher');
 
-
 });
-
-   
-
-
-
- 
-
