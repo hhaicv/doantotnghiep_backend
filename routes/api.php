@@ -82,3 +82,9 @@ Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::cla
 
 Route::get('promotions/{id}', [PromotionController::class, 'show']);
 
+
+// Đổi chuyến
+Route::get('/change/{id}', [StopController::class, 'change'])->name('change');
+Route::get('/load', [StopController::class, 'load'])->name('load');
+
+
