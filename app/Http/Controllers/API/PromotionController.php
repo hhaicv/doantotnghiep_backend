@@ -16,6 +16,7 @@ use App\Models\Bus;
 use App\Models\Route;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,7 +26,8 @@ class PromotionController extends Controller
 
     public function index()
     {
-        $data = Promotion::with('users', 'routes')->get();
+        // $data = Promotion::with('users', 'routes')->get();
+        $data = PromotionCategory::with('promotions')->get();
         return response()->json(['success' => true, 'data' => $data]);
     }
 
@@ -246,52 +248,57 @@ class PromotionController extends Controller
         $voucherCode = $request->input('code');
         $routeId = $request->input('route_id');
         $userId = $request->input('user_id');
-        
+
         // Tìm mã khuyến mãi theo mã
         $promotion = Promotion::where('code', $voucherCode)
             ->where('status', 'open')
             ->first();
-        
+
         // Nếu không tìm thấy mã khuyến mãi
         if (!$promotion) {
             return response()->json(['success' => false, 'message' => 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.']);
         }
-    
-        // // Kiểm tra xem người dùng đã sử dụng mã này chưa
-        // $usedPromotion = $promotion->users()->where('user_id', $userId)->exists();
-        // if ($usedPromotion) {
-        //     return response()->json(['success' => false, 'message' => 'Bạn đã sử dụng mã khuyến mãi này.']);
-        // }
-    
+        $existingUser = DB::table('promotion_user')
+            ->where('user_id', $userId)
+            ->exists();
+
+        if (!$existingUser) {
+            return response()->json(['success' => false, 'message' => 'Bạn không được phép sử dụng mã khuyến mãi này.']);
+        }
+
+        $promotion = Promotion::where('code', $voucherCode)
+            ->where('status', 'open')
+            ->first();
+
+        if (!$promotion) {
+            return response()->json(['success' => false, 'message' => 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.']);
+        }
+
         // Kiểm tra xem mã khuyến mãi có áp dụng cho tuyến đường này không
         $appliesToRoute = $promotion->routes()->where('route_id', $routeId)->exists();
         if (!$appliesToRoute) {
             return response()->json(['success' => false, 'message' => 'Mã khuyến mãi không áp dụng cho tuyến đường đã chọn.']);
         }
-    
+
         // Kiểm tra số lượng khuyến mãi còn lại
         if ($promotion->count <= 0) {
             $promotion->update(['status' => 'closed']);
             return response()->json(['success' => false, 'message' => 'Mã khuyến mãi không còn khả dụng.']);
         }
-    
+
         // Kiểm tra ngày hết hạn khuyến mãi
         if (Carbon::now()->gt(Carbon::parse($promotion->end_date))) {
             $promotion->update(['status' => 'closed']);
             return response()->json(['success' => false, 'message' => 'Mã khuyến mãi đã hết hạn.']);
         }
-    
+
+
         // Giảm số lượng khuyến mãi và cập nhật trạng thái nếu cần
         $promotion->decrement('count');
         if ($promotion->count == 0) {
             $promotion->update(['status' => 'closed']);
         }
-    
-        // Liên kết mã khuyến mãi với người dùng
-        $promotion->users()->attach($userId); // Đảm bảo sử dụng attach nếu bạn đang dùng bảng trung gian
-    
+
         return response()->json(['success' => true, 'message' => 'Áp dụng mã khuyến mãi thành công.']);
     }
-    
-    
 }
