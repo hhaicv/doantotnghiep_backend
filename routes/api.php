@@ -77,3 +77,5 @@ Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::cla
 Route::get('promotions/{id}', [PromotionController::class, 'show']);
 Route::get('/my_ticket/{user_id}', [StopController::class, 'my_ticket'])->name('my_ticket');
 Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);
+
+Route::post('/voucher/apply', [PromotionController::class, 'applyVoucher'])->name('voucher.apply');

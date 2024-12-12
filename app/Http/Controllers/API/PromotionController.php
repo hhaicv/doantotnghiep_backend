@@ -1,148 +1,94 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Events\PromotionCreated;
+use App\Jobs\ActivatePromotionJob;
+use App\Jobs\DeactivatePromotionJob;
+use App\Mail\PromotionAdded;
 use App\Models\Promotion;
 use App\Http\Requests\StorePromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
-use App\Jobs\ActivatePromotionJob;
-use App\Jobs\DeactivatePromotionJob;
-use App\Models\User;
-use App\Models\Route;
 use App\Models\PromotionCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\PromotionAdded;
+use App\Models\Bus;
+use App\Models\Route;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class PromotionController extends Controller
 {
     const PATH_UPLOAD = 'promotions';
 
-    /**
-     * Danh sách khuyến mãi.
-     */
-    public function index( Request $request)
+    public function index()
     {
-        $userId = $request->input('user_id'); // Nhận `user_id` từ request
+        $data = Promotion::with('users', 'routes')->get();
+        return response()->json(['success' => true, 'data' => $data]);
+    }
 
-        if ($userId) {
-            // Lấy danh sách các mã khuyến mãi liên quan đến user đó
-            $promotions = Promotion::whereHas('users', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })->get();
-    
-            // Nếu user không có mã khuyến mãi, trả về tất cả mã còn lại
-            if ($promotions->isEmpty()) {
-                $promotions = Promotion::whereDoesntHave('users')->get();
-            }
-        } else {
-            // Nếu không có `user_id`, lấy tất cả các mã khuyến mãi
-            $promotions = Promotion::all();
-        }
-    
+    public function create()
+    {
+        $categories = PromotionCategory::all();
+        $routes = Route::all();
+        $buses = Bus::all();
+        $users = User::all();
+
         return response()->json([
             'success' => true,
-            'data' => $promotions,
+            'data' => compact('categories', 'routes', 'buses', 'users')
         ]);
     }
-    public function getByCategory(Request $request)
-    {
-      // Lấy user_id từ query string
-      $userId = $request->input('user_id');
 
-      // Kiểm tra xem có user_id không
-      if (!$userId) {
-          return response()->json([
-              'success' => false,
-              'message' => 'User ID là bắt buộc.',
-          ], 400);
-      }
-  
-      // Kiểm tra sự tồn tại của user
-      $user = User::find($userId);
-      if (!$user) {
-          return response()->json([
-              'success' => false,
-              'message' => 'User không tồn tại.',
-          ], 404);
-      }
-  
-      // Lấy tất cả danh mục với các khuyến mãi liên quan đến user_id
-      $categories = PromotionCategory::with(['promotions' => function ($query) use ($userId) {
-          // Lọc các khuyến mãi của user
-          $query->whereHas('users', function ($query) use ($userId) {
-              $query->where('user_id', $userId);
-          });
-      }])->get();
-  
-      // Kiểm tra nếu không có danh mục hoặc khuyến mãi nào
-      if ($categories->isEmpty()) {
-          return response()->json([
-              'success' => false,
-              'message' => 'Không tìm thấy danh mục hoặc khuyến mãi nào cho người dùng này.',
-          ], 404);
-      }
-  
-      // Trả về dữ liệu danh mục và các khuyến mãi liên quan
-      return response()->json([
-          'success' => true,
-          'data' => $categories,
-      ], 200);
-}
-    public function show($id)
-    {
-        $promotion = Promotion::find($id); // Chỉ lấy thông tin của khuyến mãi theo IDv
-
-        if (!$promotion) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Khuyến mãi không tồn tại.',
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $promotion,
-        ], 200);
-    }
-
-    /**
-     * Tạo khuyến mãi mới.
-     */
     public function store(StorePromotionRequest $request)
     {
         $data = $request->all();
-
-        // Xử lý ngày bắt đầu và ngày kết thúc
         $data['start_date'] = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : null;
         $data['end_date'] = $request->input('end_date') ? Carbon::parse($request->input('end_date')) : null;
 
-        // Lưu ảnh nếu có
         if ($request->hasFile('image')) {
             $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
         }
 
         $promotion = Promotion::create($data);
 
-        // Gắn quan hệ
-        $promotion->users()->attach($request->input('users', []));
-        $promotion->routes()->attach($request->input('routes', []));
-        if ($request->has('promotion_category_id')) {
-            $promotion->promotionCategory()->associate($request->input('promotion_category_id'));
-            $promotion->save();
+        if ($promotion->count == 0) {
+            $promotion->status = 'closed';
+        } elseif ($promotion->end_date && Carbon::now()->gte(Carbon::parse($promotion->end_date))) {
+            $promotion->status = 'closed';
+        } elseif ($promotion->start_date && Carbon::now()->lt(Carbon::parse($promotion->start_date))) {
+            $promotion->status = 'pending';
+        } else {
+            $promotion->status = 'open';
         }
 
-        // Gửi email nếu cần
+        $promotion->save();
+
+        if ($promotion->start_date) {
+            dispatch(new ActivatePromotionJob($promotion))->delay($promotion->start_date);
+        }
+
+        if ($promotion->end_date) {
+            dispatch(new DeactivatePromotionJob($promotion))->delay($promotion->end_date);
+        }
+
+        $userIds = $request->input('users', []);
+        $promotion->users()->attach($userIds);
+
+        $routeIds = $request->input('routes', []);
+        if (!empty($routeIds)) {
+            $promotion->routes()->attach($routeIds);
+        }
+
         if ($request->input('send_to_all')) {
             $users = User::all();
             foreach ($users as $user) {
                 Mail::to($user->email)->send(new PromotionAdded($promotion));
             }
         } else {
-            foreach ($request->input('users', []) as $userId) {
+            foreach ($userIds as $userId) {
                 $user = User::find($userId);
                 if ($user) {
                     Mail::to($user->email)->send(new PromotionAdded($promotion));
@@ -150,35 +96,34 @@ class PromotionController extends Controller
             }
         }
 
-        // Xử lý trạng thái khuyến mãi trực tiếp
-        if ($promotion->count == 0) {
-            $promotion->update(['status' => 'closed']);
-        } elseif ($promotion->start_date && Carbon::now()->lt(Carbon::parse($promotion->start_date))) {
-            $promotion->update(['status' => 'pending']);
-            ActivatePromotionJob::dispatch($promotion)->delay(Carbon::parse($promotion->start_date));
-        } else {
-            $promotion->update(['status' => 'open']);
+        if ($request->has('promotion_category_id') && $request->input('promotion_category_id')) {
+            $promotion->promotionCategory()->associate($request->input('promotion_category_id'));
+            $promotion->save();
         }
 
-        if ($promotion->end_date) {
-            DeactivatePromotionJob::dispatch($promotion)->delay(Carbon::parse($promotion->end_date));
-        }
+        event(new PromotionCreated($promotion));
+
+        return response()->json(['success' => true, 'message' => 'Tạo khuyến mãi thành công.', 'data' => $promotion]);
+    }
+
+    public function edit($id)
+    {
+        $data = Promotion::with('users', 'routes')->findOrFail($id);
+        $routes = Route::all();
+        $buses = Bus::all();
+        $users = User::all();
+        $categories = PromotionCategory::all();
 
         return response()->json([
             'success' => true,
-            'message' => 'Tạo khuyến mãi thành công.',
-            'data' => $promotion,
-        ], 201);
+            'data' => compact('data', 'routes', 'buses', 'users', 'categories')
+        ]);
     }
 
-    /**
-     * Cập nhật khuyến mãi.
-     */
     public function update(UpdatePromotionRequest $request, $id)
     {
         $promotion = Promotion::findOrFail($id);
         $data = $request->all();
-
         $data['start_date'] = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : null;
         $data['end_date'] = $request->input('end_date') ? Carbon::parse($request->input('end_date')) : null;
 
@@ -186,106 +131,167 @@ class PromotionController extends Controller
             if ($promotion->image) {
                 Storage::delete($promotion->image);
             }
+
             $data['image'] = Storage::put(self::PATH_UPLOAD, $request->file('image'));
         }
 
         $promotion->update($data);
 
-        // Gắn quan hệ
-        $promotion->users()->sync($request->input('users', []));
-        $promotion->routes()->sync($request->input('routes', []));
-        if ($request->has('promotion_category_id')) {
+        if ($promotion->start_date && Carbon::now()->lt(Carbon::parse($promotion->start_date))) {
+            dispatch(new ActivatePromotionJob($promotion))->delay($promotion->start_date);
+        }
+
+        if ($promotion->end_date && Carbon::now()->lt(Carbon::parse($promotion->end_date))) {
+            dispatch(new DeactivatePromotionJob($promotion))->delay($promotion->end_date);
+        }
+
+        if ($promotion->count == 0 && $promotion->status != 'closed') {
+            $promotion->status = 'closed';
+        } elseif ($promotion->end_date && Carbon::now()->gte(Carbon::parse($promotion->end_date))) {
+            $promotion->status = 'closed';
+        } elseif ($promotion->start_date && Carbon::now()->lt(Carbon::parse($promotion->start_date))) {
+            $promotion->status = 'pending';
+        } else {
+            $promotion->status = 'open';
+        }
+
+        if ($request->has('promotion_category_id') && $request->input('promotion_category_id')) {
             $promotion->promotionCategory()->associate($request->input('promotion_category_id'));
             $promotion->save();
         }
 
-        // Xử lý trạng thái khuyến mãi trực tiếp
-        if ($promotion->count == 0) {
-            $promotion->update(['status' => 'closed']);
-        } elseif ($promotion->start_date && Carbon::now()->lt(Carbon::parse($promotion->start_date))) {
-            $promotion->update(['status' => 'pending']);
-            ActivatePromotionJob::dispatch($promotion)->delay(Carbon::parse($promotion->start_date));
-        } else {
-            $promotion->update(['status' => 'open']);
-        }
+        $promotion->save();
+        $promotion->users()->sync($request->input('users', []));
+        $promotion->routes()->sync($request->input('routes', []));
 
-        if ($promotion->end_date) {
-            DeactivatePromotionJob::dispatch($promotion)->delay(Carbon::parse($promotion->end_date));
-        }
+        broadcast(new PromotionCreated($promotion))->toOthers();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Cập nhật khuyến mãi thành công.',
-            'data' => $promotion,
-        ], 200);
+        return response()->json(['success' => true, 'message' => 'Cập nhật khuyến mãi thành công.', 'data' => $promotion]);
     }
 
-    /**
-     * Xóa khuyến mãi.
-     */
     public function destroy($id)
     {
         $promotion = Promotion::findOrFail($id);
         $promotion->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Xóa khuyến mãi thành công.',
-        ], 200);
+        return response()->json(['success' => true, 'message' => 'Xóa khuyến mãi thành công.']);
     }
 
-    /**
-     * Áp dụng mã khuyến mãi.
-     */
-    public function applyPromotion(Request $request)
+    public function statusPromotion(Request $request, $id)
     {
-        $userId = $request->input('user_id');
-        $promoCode = $request->input('promo_code');
-        $routeId = $request->input('route_id'); // Tuyến đường
-    
-        // Kiểm tra thông tin đầu vào
-        if (!$userId || !$promoCode || !$routeId) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User ID, mã khuyến mãi, và tuyến đường là bắt buộc.'
-            ], 400);
-        }
-    
-        // Lấy mã khuyến mãi từ cơ sở dữ liệu
-        $promotion = Promotion::where('code', $promoCode)->first();
-    
+        $promotion = Promotion::findOrFail($id);
+        $promotion->new_customer_only = $request->input('new_customer_only');
+        $promotion->save();
+
+        return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái khuyến mãi thành công.']);
+    }
+
+    public function assignPromotionsToUser(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $promotionIds = $request->input('promotion_ids');
+        $user->promotions()->sync($promotionIds);
+
+        return response()->json(['success' => true, 'message' => 'Gán khuyến mãi cho người dùng thành công.']);
+    }
+
+    public function assignUsersToPromotion(Request $request, $promotionId)
+    {
+        $promotion = Promotion::findOrFail($promotionId);
+        $userIds = $request->input('user_ids');
+        $promotion->users()->sync($userIds);
+
+        return response()->json(['success' => true, 'message' => 'Gán người dùng vào khuyến mãi thành công.']);
+    }
+
+    public function sendPromotionNotification($userId = null)
+    {
+        $promotion = Promotion::latest()->first();
+
         if (!$promotion) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mã khuyến mãi không tồn tại.'
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Không tìm thấy khuyến mãi nào.'], 404);
         }
-    
-        // Kiểm tra xem mã khuyến mãi có được gán cho người dùng không
-        $isAssignedToUser = $promotion->users()->where('user_id', $userId)->exists();
-    
-        if (!$isAssignedToUser) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Bạn không có quyền sử dụng mã khuyến mãi này.'
-            ], 403);
-        }
-    
-        // Kiểm tra xem mã khuyến mãi có áp dụng cho tuyến đường không
-        $isAssignedToRoute = $promotion->routes()->where('route_id', $routeId)->exists();
-    
-        if (!$isAssignedToRoute) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mã khuyến mãi không áp dụng cho tuyến đường này.'
-            ], 403);
-        }
-    
-        // Logic áp dụng mã khuyến mãi (nếu cần)
+
+        $promotionData = [
+            'code' => $promotion->code,
+            'discount' => $promotion->discount,
+            'description' => $promotion->description,
+            'end_date' => $promotion->end_date,
+        ];
+
+        return response()->json(['success' => true, 'data' => $promotionData]);
+    }
+
+    public function showPromotions()
+    {
+        $promotions = Promotion::where('status', 1)
+            ->where('count', '>', 0)
+            ->whereDate('end_date', '>=', now())
+            ->get();
+
+        $expiredPromotions = Promotion::where('status', 1)
+            ->where('count', 0)
+            ->orWhereDate('end_date', '<', now())
+            ->get();
+
         return response()->json([
             'success' => true,
-            'message' => 'Mã khuyến mãi đã được áp dụng thành công!',
-            'data' => $promotion
+            'active_promotions' => $promotions,
+            'expired_promotions' => $expiredPromotions
         ]);
     }
+    public function applyVoucher(Request $request)
+    {
+        // Lấy thông tin từ request
+        $voucherCode = $request->input('code');
+        $routeId = $request->input('route_id');
+        $userId = $request->input('user_id');
+        
+        // Tìm mã khuyến mãi theo mã
+        $promotion = Promotion::where('code', $voucherCode)
+            ->where('status', 'open')
+            ->first();
+        
+        // Nếu không tìm thấy mã khuyến mãi
+        if (!$promotion) {
+            return response()->json(['success' => false, 'message' => 'Mã khuyến mãi không hợp lệ hoặc đã hết hạn.']);
+        }
+    
+        // // Kiểm tra xem người dùng đã sử dụng mã này chưa
+        // $usedPromotion = $promotion->users()->where('user_id', $userId)->exists();
+        // if ($usedPromotion) {
+        //     return response()->json(['success' => false, 'message' => 'Bạn đã sử dụng mã khuyến mãi này.']);
+        // }
+    
+        // Kiểm tra xem mã khuyến mãi có áp dụng cho tuyến đường này không
+        $appliesToRoute = $promotion->routes()->where('route_id', $routeId)->exists();
+        if (!$appliesToRoute) {
+            return response()->json(['success' => false, 'message' => 'Mã khuyến mãi không áp dụng cho tuyến đường đã chọn.']);
+        }
+    
+        // Kiểm tra số lượng khuyến mãi còn lại
+        if ($promotion->count <= 0) {
+            $promotion->update(['status' => 'closed']);
+            return response()->json(['success' => false, 'message' => 'Mã khuyến mãi không còn khả dụng.']);
+        }
+    
+        // Kiểm tra ngày hết hạn khuyến mãi
+        if (Carbon::now()->gt(Carbon::parse($promotion->end_date))) {
+            $promotion->update(['status' => 'closed']);
+            return response()->json(['success' => false, 'message' => 'Mã khuyến mãi đã hết hạn.']);
+        }
+    
+        // Giảm số lượng khuyến mãi và cập nhật trạng thái nếu cần
+        $promotion->decrement('count');
+        if ($promotion->count == 0) {
+            $promotion->update(['status' => 'closed']);
+        }
+    
+        // Liên kết mã khuyến mãi với người dùng
+        $promotion->users()->attach($userId); // Đảm bảo sử dụng attach nếu bạn đang dùng bảng trung gian
+    
+        return response()->json(['success' => true, 'message' => 'Áp dụng mã khuyến mãi thành công.']);
+    }
+    
+    
 }
