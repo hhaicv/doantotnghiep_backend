@@ -32,6 +32,8 @@ class TicketBooking extends Model
         "name",
         "phone",
         "email",
+        "code_voucher",
+        "discount",
         "payment_method_id",
         "order_code",
         "location_start",

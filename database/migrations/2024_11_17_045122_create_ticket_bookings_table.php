@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('id_start_stop'); // ID của điểm dừng bắt đầu
             $table->string('location_end'); // Địa điểm kết thúc
             $table->string('id_end_stop'); // ID của điểm dừng kết thúc
+            $table->string('code_voucher', 50)->nullable();
+            $table->integer('discount')->nullable();
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone');
