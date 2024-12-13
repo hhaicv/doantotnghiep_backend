@@ -100,6 +100,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/thanks', [TicketBookingController::class, 'thanks'])->name('thanks');
     Route::get('/momo_return', [TicketBookingController::class, 'momo_return'])->name('momo_return');
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
+    Route::get('/qr_code_return', [TicketBookingController::class, 'qr_code_return'])->name('qr_code_return');
 
     Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
     Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
