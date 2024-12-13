@@ -107,4 +107,10 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply.voucher');
 
+
+    // readtime ghế
+
+
+    // Route::post('/seat/update-status', [TicketBookingController::class, 'updateStatus']);
+
 });

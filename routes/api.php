@@ -87,4 +87,9 @@ Route::get('promotions/{id}', [PromotionController::class, 'show']);
 Route::get('/change/{id}', [StopController::class, 'change'])->name('change');
 Route::get('/load', [StopController::class, 'load'])->name('load');
 
+// tuyến nổi bật
+Route::get('/popular', [RouteController::class, 'popular'])->name('popular');
+
+
+
 
