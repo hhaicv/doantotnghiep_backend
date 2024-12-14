@@ -76,9 +76,10 @@ Route::get('/qrcode_return', [StopController::class, 'qrcode_return'])->name('qr
 
 Route::apiResource('promotions', PromotionController::class);
 Route::get('promotions/category/{categoryId}', [PromotionController::class, 'getByCategory']);
+Route::get('/promotion-detail/{id}', [PromotionController::class, 'showPromotionDetail']);
 Route::post('request-password-reset', [AuthController::class, 'requestPasswordReset']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
-Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::class, 'applyVoucher']);
+Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher']);
 
 
 Route::get('promotions/{id}', [PromotionController::class, 'show']);

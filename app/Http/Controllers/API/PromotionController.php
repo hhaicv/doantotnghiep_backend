@@ -26,9 +26,19 @@ class PromotionController extends Controller
 
     public function index()
     {
-        // $data = Promotion::with('users', 'routes')->get();
-        $data = PromotionCategory::with('promotions')->get();
-        return response()->json(['success' => true, 'data' => $data]);
+        // Lấy tất cả danh mục khuyến mãi có ít nhất một khuyến mãi "open" và kèm các khuyến mãi "open" bên trong
+        // Lấy tất cả danh mục khuyến mãi có trạng thái là 1 với các khuyến mãi "open" bên trong
+    $data = PromotionCategory::with(['promotions' => function($query) {
+        $query->where('status', 'open'); // Chỉ lấy các khuyến mãi có trạng thái "open"
+    }])
+    ->where('is_active', 1) // Lọc danh mục có trạng thái là 1
+    ->get();
+
+    // Trả về dữ liệu danh mục và các khuyến mãi "open"
+    return response()->json([
+        'success' => true,
+        'data' => $data
+    ]);
     }
 
     public function create()
@@ -226,22 +236,48 @@ class PromotionController extends Controller
 
     public function showPromotions()
     {
-        $promotions = Promotion::where('status', 1)
-            ->where('count', '>', 0)
-            ->whereDate('end_date', '>=', now())
+        // Lọc khuyến mãi có trạng thái là 'open'
+        $promotions = Promotion::where('status', 'open') // Chỉ lấy những khuyến mãi có trạng thái 'open'
+            ->where('count', '>', 0) // Chỉ lấy các khuyến mãi còn vé
+            ->whereDate('end_date', '>=', now()) // Ngày hết hạn chưa qua
             ->get();
 
-        $expiredPromotions = Promotion::where('status', 1)
-            ->where('count', 0)
-            ->orWhereDate('end_date', '<', now())
-            ->get();
-
+        // Trả về danh sách các khuyến mãi
         return response()->json([
             'success' => true,
-            'active_promotions' => $promotions,
-            'expired_promotions' => $expiredPromotions
+            'data' => $promotions
         ]);
     }
+    public function showPromotionDetail($id)
+    {
+        // Tìm khuyến mãi (promotion) theo id
+        $promotion = Promotion::with('routes', 'promotionCategory') // Eager load các mối quan hệ nếu cần
+            ->find($id);
+
+        // Kiểm tra nếu không tìm thấy khuyến mãi
+        if (!$promotion) {
+            return response()->json(['success' => false, 'message' => 'Khuyến mãi không tồn tại.'], 404);
+        }
+
+        // Trả về chi tiết khuyến mãi
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $promotion->id,
+                'title' => $promotion->title,
+                'image' => $promotion->image,
+                'voucher_code' => $promotion->code,
+                'discount' => $promotion->discount,
+                'description' => $promotion->description,
+                'content' => $promotion->content,
+                'start_date' => $promotion->start_date,
+                'end_date' => $promotion->end_date,
+                'status' => $promotion->status,
+                'count' => $promotion->count,
+            ]
+        ]);
+    }
+
     public function applyVoucher(Request $request)
     {
         // Lấy thông tin từ request

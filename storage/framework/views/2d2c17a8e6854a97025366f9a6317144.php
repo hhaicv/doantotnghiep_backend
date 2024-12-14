@@ -119,7 +119,7 @@
                 var isChecked = checkbox.checked ? 1 : 0;
                 var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-promotion-category/${itemId}`, {
+                fetch(`/admin/status-promotion_categories/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
