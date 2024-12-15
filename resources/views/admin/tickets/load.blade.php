@@ -447,6 +447,7 @@
                         <input type="hidden" name="fare" id="fare">
                         <input type="hidden" name="date" id="date">
                         <input type="hidden" name="name_seat" id="name_seat">
+                        
                         <input type="hidden" name="id_change" value="{{ $showTicket->id }}">
 
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">

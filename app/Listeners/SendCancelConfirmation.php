@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\TicketCancel;
+
+
+
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -23,6 +25,7 @@ class SendCancelConfirmation implements ShouldQueue
      */
     public function handle(TicketCancel $event): void
     {
+
         $cancel = $event->cancel;
 
         // Lấy thông tin cần thiết từ ticket
@@ -37,21 +40,17 @@ class SendCancelConfirmation implements ShouldQueue
         ];
 
         try {
-            // Gửi email
+            Log::info("Bắt đầu gửi email cho {$data['email']}.");
             Mail::send('cancel', ['data' => $data], function ($message) use ($data) {
                 $message->to($data['email'], $data['name'])
                     ->subject('Thông báo Hủy Đơn Hàng Thành Công');
             });
-
-            // Log khi gửi email thành công
-            Log::info("Email đã được gửi đến: {$data['email']}.");
+            Log::info("Email đã gửi thành công cho {$data['email']}.");
         } catch (\Exception $e) {
-            // Log chi tiết lỗi nếu gửi email thất bại
+            Log::info("Đã vào catch block.");
             Log::error("Lỗi khi gửi email cho {$data['email']}: " . $e->getMessage(), [
                 'exception' => $e,
                 'data' => $data,
-                'error_code' => $e->getCode(),
-                'stack_trace' => $e->getTraceAsString(),
             ]);
         }
     }

@@ -136,7 +136,6 @@
                                 <div>
                                     <input type="date" class="form-control" id="datepicker"
                                         min="<?php echo e(\Carbon\Carbon::today()->toDateString()); ?>" value="<?php echo e($data->date); ?>">
-
                                 </div>
                             </div>
                             <div class="col" style="margin-top: 51px; width: 105px !important;">

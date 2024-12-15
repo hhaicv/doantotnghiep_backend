@@ -1,11 +1,10 @@
-<!-- resources/views/emails/promotion_added.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Promotion Added</title>
+    <title>Thông báo hủy chuyến</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -98,17 +97,17 @@
         </div>
         <div class="content">
             <p>Kính gửi Quý khách hàng: </p>
-            <p>Chúng tôi xin thông báo rằng đơn hàng của bạn với mã <strong>{{ $ticket['order_code'] }}</strong> đã được
+            <p>Chúng tôi xin thông báo rằng đơn hàng của bạn với mã <strong>{{ $data['order_code'] }}</strong> đã được
                 hủy thành công.</p>
             <div class="promotion-info">
                 <p class="promotion-code">Thông tin đơn hàng</p>
-                <p><strong>Mã đơn hàng:</strong> {{ $ticket['order_code'] }}</p>
-                <p><strong>Tên khách hàng:</strong> {{ $ticket['name'] }}</p>
-                <p><strong>Số điện thoại:</strong> {{ $ticket['phone'] }}</p>
-                <p><strong>Email:</strong> {{ $ticket['email'] }}</p>
-                <p><strong>Số tài khoản:</strong> {{ $ticket['account_number'] }}</p>
-                <p><strong>Ngân hàng:</strong> {{ $ticket['bank'] }}</p>
-                <p><strong>Lý do hủy:</strong> {{ $ticket['reason'] }}</p>
+                <p><strong>Mã đơn hàng:</strong> {{ $data['order_code'] }}</p>
+                <p><strong>Tên khách hàng:</strong> {{ $data['name'] }}</p>
+                <p><strong>Số điện thoại:</strong> {{ $data['phone'] }}</p>
+                <p><strong>Email:</strong> {{ $data['email'] }}</p>
+                <p><strong>Số tài khoản:</strong> {{ $data['account_number'] }}</p>
+                <p><strong>Ngân hàng:</strong> {{ $data['bank'] }}</p>
+                <p><strong>Lý do hủy:</strong> {{ $data['reason'] }}</p>
             </div>
             <p>Chúng tôi rất tiếc về sự bất tiện này và hy vọng sẽ tiếp tục phục vụ bạn trong những lần đặt hàng tiếp
                 theo.</p>

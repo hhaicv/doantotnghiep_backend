@@ -29,7 +29,7 @@
                             <thead class="table-light text-muted">
                             <tr>
                                 <th scope="col">Thông tin vé</th>
-                                <th scope="col" class="text-center">Trạng thái</th>
+                                <th scope="col" class="text-center"></th>
                                 <th scope="col" class="text-end">Giá</th>
                             </tr>
                             </thead>
@@ -46,7 +46,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="text-warning fs-15">
-                                            <p class="text-muted mb-0">{{$ticketDetail->status}}</p>
+                                            <p class="text-muted mb-0"></p>
                                         </div>
                                     </td>
                                     <td class="text-end">{{ number_format($ticketDetail->price, 0, ',', '.') }} VNĐ</td>

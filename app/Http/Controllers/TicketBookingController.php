@@ -153,6 +153,25 @@ class TicketBookingController extends Controller
         //     ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
         //     ->delete();
 
+        // $expiredSeats = TicketDetail::where('status', 'lock')
+        //     ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+        //         $query->where('date', $date)
+        //             ->where('trip_id', $trip_id);
+        //     })
+        //     ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+        //     ->get();
+
+        // // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking
+        // if ($expiredSeats->isNotEmpty()) {
+        //     $ticketBooking = $expiredSeats->first()->ticketBooking;
+        //     if ($ticketBooking) {
+        //         $ticketBooking->update(['status' => TicketBooking::PAYMENT_STATUS_OVERDUE]);
+        //     }
+        // }
+
+        // // Xóa ghế bị "lock" quá 15 phút
+        // $expiredSeats->each->delete();
+
         $expiredSeats = TicketDetail::where('status', 'lock')
             ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
                 $query->where('date', $date)
@@ -169,8 +188,10 @@ class TicketBookingController extends Controller
             }
         }
 
-        // Xóa ghế bị "lock" quá 15 phút
-        $expiredSeats->each->delete();
+        // Cập nhật trạng thái ghế từ "lock" thành "available"
+        $expiredSeats->each(function ($seat) {
+            $seat->update(['status' => 'available']);
+        });
 
 
         // Lấy danh sách ghế đã đặt
@@ -472,7 +493,8 @@ class TicketBookingController extends Controller
             $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
             // Xóa các bản ghi tương ứng
             foreach ($ticketDetails as $ticketDetail) {
-                $ticketDetail->delete();
+                $ticketDetail->status = 'available';
+                $ticketDetail->save();
             }
             $data = Stop::query()->get();
             return redirect()
@@ -555,7 +577,8 @@ class TicketBookingController extends Controller
             $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
             // Xóa các bản ghi tương ứng
             foreach ($ticketDetails as $ticketDetail) {
-                $ticketDetail->delete();
+                $ticketDetail->status = 'available';
+                $ticketDetail->save();
             }
             $data = Stop::query()->get();
             return redirect()

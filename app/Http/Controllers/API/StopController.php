@@ -39,6 +39,25 @@ class StopController extends Controller
         //     ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
         //     ->delete();
 
+        // $expiredSeats = TicketDetail::where('status', 'lock')
+        //     ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+        //         $query->where('date', $date)
+        //             ->where('trip_id', $trip_id);
+        //     })
+        //     ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+        //     ->get();
+
+        // // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking
+        // if ($expiredSeats->isNotEmpty()) {
+        //     $ticketBooking = $expiredSeats->first()->ticketBooking;
+        //     if ($ticketBooking) {
+        //         $ticketBooking->update(['status' => TicketBooking::PAYMENT_STATUS_OVERDUE]);
+        //     }
+        // }
+
+        // // Xóa ghế bị "lock" quá 15 phút
+        // $expiredSeats->each->delete();
+
         $expiredSeats = TicketDetail::where('status', 'lock')
             ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
                 $query->where('date', $date)
@@ -55,9 +74,10 @@ class StopController extends Controller
             }
         }
 
-        // Xóa ghế bị "lock" quá 15 phút
-        $expiredSeats->each->delete();
-
+        // Cập nhật trạng thái ghế từ "lock" thành "available"
+        $expiredSeats->each(function ($seat) {
+            $seat->update(['status' => 'available']);
+        });
 
         // Lấy danh sách ghế đã đặt
         $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
@@ -257,6 +277,7 @@ class StopController extends Controller
         // Chuẩn bị dữ liệu cần trả về
         $driver = $ticketBooking->bus->driver;
         $ticketData = [
+            'ticket_booking_id' => $ticketBooking->id,
             'name' => $ticketBooking->name,
             'phone' => $ticketBooking->phone,
             'email' => $ticketBooking->email,
@@ -342,7 +363,8 @@ class StopController extends Controller
             $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
             // Xóa các bản ghi tương ứng
             foreach ($ticketDetails as $ticketDetail) {
-                $ticketDetail->delete();
+                $ticketDetail->status = 'available';
+                $ticketDetail->save();
             }
 
             return redirect()->to(env('FRONTEND_URL') . '/?' . http_build_query([
@@ -425,8 +447,14 @@ class StopController extends Controller
             $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
             // Xóa các bản ghi tương ứng
             foreach ($ticketDetails as $ticketDetail) {
-                $ticketDetail->delete();
+                $ticketDetail->status = 'available';
+                $ticketDetail->save();
             }
+            return redirect()->to(env('FRONTEND_URL') . '/?' . http_build_query([
+                'status' => 'faile',
+                'response_code' => $request->resultCode,
+                'message' => 'Thanh toán thất bại'
+            ]));
         }
     }
     public function show($order_code)
@@ -587,6 +615,7 @@ class StopController extends Controller
                 'status' => $ticketBooking->status,
                 'order_code' => $ticketBooking->order_code,
                 'total_tickets' => $ticketBooking->total_tickets,
+                'ticket_booking_id' => $ticketBooking->id,
             ];
         });
 

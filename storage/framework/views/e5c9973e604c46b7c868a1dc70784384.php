@@ -103,13 +103,17 @@
                                             </td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="<?php echo e(route('admin.tickets.show', $ticketBooking->id)); ?>"
-                                                            class="text-primary d-inline-block">
-                                                            <i class="ri-eye-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
+                                                
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                            data-bs-trigger="hover" data-bs-placement="top"
+                                                            title="View">
+                                                            <a href="<?php echo e(route('admin.tickets.show', $ticketBooking->id)); ?>"
+                                                                class="text-primary d-inline-block">
+                                                                <i class="ri-eye-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+
+
                                                     <?php
                                                         $bookingDate = \Carbon\Carbon::parse($ticketBooking->date);
                                                         $currentDate = \Carbon\Carbon::now();
@@ -159,7 +163,7 @@
                                                     aria-label="Close" id="close-modal"></button>
                                             </div>
                                             <form id="cancelForm"
-                                                action="<?php echo e(route('admin.cancel', ['id' => $ticketBooking->id])); ?>"
+                                                action="<?php echo e(route('admin.cancel.store', ['id' => $ticketBooking->id])); ?>"
                                                 method="POST">
                                                 <?php echo csrf_field(); ?>
                                                 <div class="modal-body">
