@@ -31,13 +31,32 @@ class StopController extends Controller
         $seatCount = $trip->bus->total_seats;
 
         // Lấy danh sách ghế bị "lock" quá 15 phút
-        TicketDetail::where('status', 'lock')
+        // TicketDetail::where('status', 'lock')
+        //     ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
+        //         $query->where('date', $date)
+        //             ->where('trip_id', $trip_id);
+        //     })
+        //     ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+        //     ->delete();
+
+        $expiredSeats = TicketDetail::where('status', 'lock')
             ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
                 $query->where('date', $date)
                     ->where('trip_id', $trip_id);
             })
             ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
-            ->delete();
+            ->get();
+
+        // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking
+        if ($expiredSeats->isNotEmpty()) {
+            $ticketBooking = $expiredSeats->first()->ticketBooking;
+            if ($ticketBooking) {
+                $ticketBooking->update(['status' => TicketBooking::PAYMENT_STATUS_OVERDUE]);
+            }
+        }
+
+        // Xóa ghế bị "lock" quá 15 phút
+        $expiredSeats->each->delete();
 
 
         // Lấy danh sách ghế đã đặt
@@ -654,7 +673,6 @@ class StopController extends Controller
             'showTicket' => $showTicket,
 
         ], 200);
-
     }
 
 

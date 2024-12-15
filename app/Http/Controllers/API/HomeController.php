@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
 use App\Models\Stop;
+use App\Models\TicketBooking;
 use App\Models\TicketDetail;
 use App\Models\Trip;
 use Illuminate\Http\Request;
@@ -21,7 +22,22 @@ class HomeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    // public function store(Request $request) {
+    //     try {
+    //         $data = $request->all();
+    //         $contact = TicketBooking::create($data);
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'data' => $contact
+    //         ], 201); // 201 Created
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Lỗi khi tạo yêu cầu: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
 
     /**
      * Display the specified resource.

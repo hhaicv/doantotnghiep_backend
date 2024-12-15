@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\CancleController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
@@ -69,6 +70,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
 
+    Route::resource('cancel', CancleController::class);
 
 
 
@@ -112,5 +114,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
 
     // Route::post('/seat/update-status', [TicketBookingController::class, 'updateStatus']);
+
+
+    Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
+
 
 });

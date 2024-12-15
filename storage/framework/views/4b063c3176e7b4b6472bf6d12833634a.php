@@ -84,13 +84,24 @@
                                 <select name="start_stop_id" class="form-control" id="input-from-stop-1">
                                     <option value="">Chọn điểm bắt đầu</option>
                                     <?php foreach ($stops as $stop) { ?>
-                                    <option value="<?php echo $stop['id']; ?>" <?php if ($stop['parent_id'] === null) {
+                                    <option value="<?php echo $stop['id']; ?>" <?php
+                                    // Nếu parent_id là null, disable option
+                                    if ($stop['parent_id'] === null) {
                                         echo 'disabled';
-                                    } ?> style="<?php if ($stop['parent_id'] === null) {
-                                        echo 'background-color: #f8f9fa;font-weight: 600;font-size: 14px;  color: #000000;';
-                                    } ?>">
+                                    }
+                                    // Nếu id của stop bằng id_start_stop, đánh dấu là được chọn
+                                    if ($stop['id'] == $data->id_start_stop) {
+                                        echo 'selected';
+                                    }
+                                    ?> style="<?php
+                                    // Nếu parent_id là null, thay đổi style cho option
+                                    if ($stop['parent_id'] === null) {
+                                        echo 'background-color: #f8f9fa;font-weight: 600;font-size: 14px; color: #000000;';
+                                    }
+                                    ?>">
                                         <?php echo $stop['stop_name']; ?>
                                     </option>
+
                                     <?php } ?>
                                 </select>
                             </div>
@@ -99,21 +110,33 @@
                                 <select name="end_stop_id" class="form-control" id="input-to-stop-1">
                                     <option value="">Chọn điểm kết thúc</option>
                                     <?php foreach ($stops as $stop) { ?>
-                                    <option value="<?php echo $stop['id']; ?>" <?php if ($stop['parent_id'] === null) {
+                                    <option value="<?php echo $stop['id']; ?>" <?php
+                                    // Disable nếu parent_id là null
+                                    if ($stop['parent_id'] === null) {
                                         echo 'disabled';
-                                    } ?> style="<?php if ($stop['parent_id'] === null) {
-                                        echo 'background-color: #f8f9fa;font-weight: 600;font-size: 14px;  color: #000000;';
-                                    } ?>">
+                                    }
+                                    // Chọn nếu id của stop bằng id_end_stop
+                                    if ($stop['id'] == $data->id_end_stop) {
+                                        echo 'selected';
+                                    }
+                                    ?> style="<?php
+                                    // Thay đổi style nếu parent_id là null
+                                    if ($stop['parent_id'] === null) {
+                                        echo 'background-color: #f8f9fa;font-weight: 600;font-size: 14px; color: #000000;';
+                                    }
+                                    ?>">
                                         <?php echo $stop['stop_name']; ?>
                                     </option>
                                     <?php } ?>
+
                                 </select>
                             </div>
                             <div class="col">
                                 <label for="fullnameInput" class="form-label mt-2">Ngày khởi hành</label>
                                 <div>
                                     <input type="date" class="form-control" id="datepicker"
-                                        min="<?php echo e(\Carbon\Carbon::today()->toDateString()); ?>">
+                                        min="<?php echo e(\Carbon\Carbon::today()->toDateString()); ?>" value="<?php echo e($data->date); ?>">
+
                                 </div>
                             </div>
                             <div class="col" style="margin-top: 51px; width: 105px !important;">

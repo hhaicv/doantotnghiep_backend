@@ -31,11 +31,12 @@
                 </div>
                 <div class="card-body border border-dashed border-end-0 border-start-0">
                     <form method="GET" action="<?php echo e(route('admin.ticket_list')); ?>">
+                        <?php echo csrf_field(); ?>
                         <div class="row g-3">
                             <div class="col-xxl-5 col-sm-6">
                                 <div class="search-box">
                                     <input type="text" class="form-control search" placeholder="Tìm theo mã đơn hàng"
-                                           name="order_code" value="<?php echo e(request('order_code')); ?>">
+                                        name="order_code" value="<?php echo e(request('order_code')); ?>">
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                             </div>
@@ -51,11 +52,11 @@
                             <div class="col-xxl-2 col-sm-4">
                                 <div>
                                     <select class="form-control" data-choices data-choices-search-false
-                                            name="payment_method_id" id="idStatus">
+                                        name="payment_method_id" id="idStatus">
                                         <option value="">Lọc theo thanh toán</option>
                                         <?php $__currentLoopData = App\Models\PaymentMethod::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option
-                                                value="<?php echo e($method->id); ?>" <?php echo e(request('payment_method_id') == $method->id ? 'selected' : ''); ?>>
+                                            <option value="<?php echo e($method->id); ?>"
+                                                <?php echo e(request('payment_method_id') == $method->id ? 'selected' : ''); ?>>
                                                 <?php echo e($method->name); ?>
 
                                             </option>
@@ -68,11 +69,11 @@
                             <div class="col-xxl-2 col-sm-4">
                                 <div>
                                     <select class="form-control" data-choices data-choices-search-false
-                                            name="payment_status" id="idPayment">
+                                        name="payment_status" id="idPayment">
                                         <option value="">Lọc theo trạng thái</option>
                                         <?php $__currentLoopData = App\Models\TicketBooking::PAYMENT_STATUSES; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option
-                                                value="<?php echo e($key); ?>" <?php echo e(request('payment_status') == $key ? 'selected' : ''); ?>>
+                                            <option value="<?php echo e($key); ?>"
+                                                <?php echo e(request('payment_status') == $key ? 'selected' : ''); ?>>
                                                 <?php echo e($status); ?>
 
                                             </option>
@@ -106,19 +107,19 @@
                         <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active All py-3" data-bs-toggle="tab" id="All" href="#home1"
-                                   role="tab" aria-selected="true">
+                                    role="tab" aria-selected="true">
                                     <i class="ri-store-2-fill me-1 align-bottom"></i> Tổng vé đặt
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Delivered" data-bs-toggle="tab" id="Delivered" href="#delivered"
-                                   role="tab" aria-selected="false">
+                                    role="tab" aria-selected="false">
                                     <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Thành công
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link py-3 Returns" data-bs-toggle="tab" id="Returns" href="#returns"
-                                   role="tab" aria-selected="false">
+                                    role="tab" aria-selected="false">
                                     <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> Hoàn vé
                                 </a>
                             </li>
@@ -133,22 +134,22 @@
                         <div class="table-responsive table-card mb-1">
                             <table class="table table-nowrap align-middle" id="orderTable">
                                 <thead class="text-muted table-light">
-                                <tr class="text-uppercase">
-                                    <th scope="col" style="width: 25px;">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="checkAll"
-                                                   value="option">
-                                        </div>
-                                    </th>
-                                    <th class="sort" data-sort="id">Mã Đơn Hàng</th>
-                                    <th class="sort" data-sort="date">Ngày khởi hành</th>
-                                    <th class="sort" data-sort="route_name">Tuyến đường</th>
-                                    <th class="sort" data-sort="amount">Số lượng</th>
-                                    <th class="sort" data-sort="total_price">Tổng giá</th>
-                                    <th class="sort" data-sort="payment">Phương thức</th>
-                                    <th class="sort" data-sort="status">Trạng thái</th>
-                                    <th class="sort" data-sort="city">Xem chi tiết</th>
-                                </tr>
+                                    <tr class="text-uppercase">
+                                        <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="checkAll"
+                                                    value="option">
+                                            </div>
+                                        </th>
+                                        <th class="sort" data-sort="id">Mã Đơn Hàng</th>
+                                        <th class="sort" data-sort="date">Ngày khởi hành</th>
+                                        <th class="sort" data-sort="route_name">Tuyến đường</th>
+                                        <th class="sort" data-sort="amount">Số lượng</th>
+                                        <th class="sort" data-sort="total_price">Tổng giá</th>
+                                        <th class="sort" data-sort="payment">Phương thức</th>
+                                        <th class="sort" data-sort="status">Trạng thái</th>
+                                        <th class="sort" data-sort="city">Xem chi tiết</th>
+                                    </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
                                     <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ticketBooking): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -184,7 +185,7 @@
                                                         $currentDate = \Carbon\Carbon::now();
                                                     ?>
 
-                                                    <?php if($bookingDate->greaterThan($currentDate)): ?>
+                                                    <?php if($bookingDate->greaterThan($currentDate) && $ticketBooking->status == App\Models\TicketBooking::PAYMENT_STATUS_PAID): ?>
                                                         <li class="list-inline-item" data-bs-toggle="tooltip">
                                                             <a href="<?php echo e(route('admin.change', $ticketBooking->id)); ?>"
                                                                 class="text-primary">
@@ -193,14 +194,131 @@
                                                         </li>
                                                     <?php endif; ?>
 
-
+                                                    <?php if($ticketBooking->cancel): ?>
+                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip"
+                                                            data-bs-trigger="hover" data-bs-placement="top"
+                                                            title="Edit">
+                                                            <a href="#showModal" data-bs-toggle="modal"
+                                                                class="text-primary d-inline-block edit-item-btn"
+                                                                data-id="<?php echo e($ticketBooking->id); ?>"
+                                                                data-order-code="<?php echo e($ticketBooking->order_code); ?>"
+                                                                data-name="<?php echo e($ticketBooking->cancel->name ?? ''); ?>"
+                                                                data-phone="<?php echo e($ticketBooking->cancel->phone ?? ''); ?>"
+                                                                data-email="<?php echo e($ticketBooking->cancel->email ?? ''); ?>"
+                                                                data-account-number="<?php echo e($ticketBooking->cancel->account_number ?? ''); ?>"
+                                                                data-bank="<?php echo e($ticketBooking->cancel->bank ?? ''); ?>"
+                                                                data-reason="<?php echo e($ticketBooking->cancel->reason ?? ''); ?>">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    <?php endif; ?>
                                                 </ul>
                                             </td>
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
+                                <!-- Modal -->
+                                <div class="modal fade" id="showModal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-light p-3">
+                                                <h5 class="modal-title" id="exampleModalLabel">Đơn xác nhận hủy
+                                                    đơn hàng</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close" id="close-modal"></button>
+                                            </div>
+                                            <form id="cancelForm"
+                                                action="<?php echo e(route('admin.cancel', ['id' => $ticketBooking->id])); ?>"
+                                                method="POST">
+                                                <?php echo csrf_field(); ?>
+                                                <div class="modal-body">
+                                                    <input type="hidden" id="id-field" name="ticket_booking_id" />
 
+                                                    <!-- Mã đơn hàng -->
+                                                    <div class="mb-3" id="modal-id">
+                                                        <label for="order_code" class="form-label">Mã đơn
+                                                            hàng</label>
+                                                        <input type="text" id="order_code" name="order_code"
+                                                            class="form-control" placeholder="Mã đơn hàng" readonly />
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="customername-field" class="form-label">Tên
+                                                            khách hàng</label>
+                                                        <input type="text" id="customername-field" name="name"
+                                                            class="form-control" placeholder="Tên khách hàng" required />
+                                                    </div>
+
+                                                    <div class="row gy-4 mb-3">
+                                                        <div class="col-md-6">
+                                                            <div>
+                                                                <label for="productname-field" class="form-label">Số điện
+                                                                    thoại</label>
+                                                                <input type="text" id="customername-field"
+                                                                    name="phone" class="form-control"
+                                                                    placeholder="Số điện thoại" required />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div>
+                                                                <label for="productname-field"
+                                                                    class="form-label">Email</label>
+                                                                <input type="email" id="customername-field"
+                                                                    name="email" class="form-control"
+                                                                    placeholder="Email" required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row gy-4 mb-3">
+                                                        <div class="col-md-6">
+                                                            <div>
+                                                                <label for="amount-field" class="form-label">Số
+                                                                    tài khoản</label>
+                                                                <input type="text" id="amount-field"
+                                                                    name="account_number" class="form-control"
+                                                                    placeholder="Số tài khoản" required />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div>
+                                                                <label for="amount-field" class="form-label">Ngân
+                                                                    hàng</label>
+                                                                <input type="text" id="amount-field"
+                                                                    name="bank"class="form-control"
+                                                                    placeholder="Ngân hàng" required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="date-field" class="form-label">Lý do
+                                                            hủy</label>
+                                                        <div class="form-floating mb-3">
+                                                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled" name="reason"
+                                                                style="height: 100px"></textarea>
+                                                            <label for="floatingTextarea2Disabled">Nội dung</label>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="hstack gap-2 justify-content-end">
+                                                        <button type="button" class="btn btn-light"
+                                                            data-bs-dismiss="modal">Hủy</button>
+                                                        <button type="submit" class="btn btn-success">Xác
+                                                            nhận</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end modal -->
                             </table>
+
 
                         </div>
                         <div class="d-flex justify-content-end">
@@ -215,31 +333,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Modal -->
-                    <div class="modal fade flip" id="deleteOrder" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-body p-5 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                                               colors="primary:#405189,secondary:#f06548"
-                                               style="width:90px;height:90px"></lord-icon>
-                                    <div class="mt-4 text-center">
-                                        <h4>You are about to delete a order ?</h4>
-                                        <p class="text-muted fs-15 mb-4">Deleting your order will remove all of your
-                                            information from our database.</p>
-                                        <div class="hstack gap-2 justify-content-center remove">
-                                            <button class="btn btn-link link-success fw-medium text-decoration-none"
-                                                    id="deleteRecord-close" data-bs-dismiss="modal"><i
-                                                    class="ri-close-line me-1 align-middle"></i> Close
-                                            </button>
-                                            <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end modal -->
+
                 </div>
             </div>
 
@@ -250,9 +344,9 @@
 
 <?php $__env->startSection('style-libs'); ?>
     <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
@@ -260,7 +354,7 @@
 
 <?php $__env->startSection('script-libs'); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -284,6 +378,45 @@
 
     <!-- ecommerce-order init js -->
     <script src="<?php echo e(asset('theme/admin/assets/js/pages/ecommerce-order.init.js')); ?>"></script>
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const editButtons = document.querySelectorAll(".edit-item-btn");
+
+            const cancelRoute = "<?php echo e(route('admin.cancel', ['id' => '__id__'])); ?>"; // Chứa URL tạm thời
+
+            editButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const id = this.getAttribute("data-id");
+                    const orderCode = this.getAttribute("data-order-code");
+                    const name = this.getAttribute("data-name");
+                    const phone = this.getAttribute("data-phone");
+                    const email = this.getAttribute("data-email");
+                    const accountNumber = this.getAttribute("data-account-number");
+                    const bank = this.getAttribute("data-bank");
+                    const reason = this.getAttribute("data-reason");
+
+                    // Gán giá trị vào modal
+                    document.getElementById("id-field").value = id;
+                    document.getElementById("order_code").value = orderCode;
+                    document.getElementById("customername-field").value = name;
+                    document.querySelector("input[name='phone']").value = phone;
+                    document.querySelector("input[name='email']").value = email;
+                    document.querySelector("input[name='account_number']").value = accountNumber;
+                    document.querySelector("input[name='bank']").value = bank;
+                    document.querySelector("textarea[name='reason']").value = reason;
+
+                    // Cập nhật lại URL của action của form
+                    const form = document.getElementById('cancelForm');
+                    form.action = cancelRoute.replace('__id__', id);
+                });
+            });
+        });
+    </script>
+
+
+
     <script>
         $(document).ready(function() {
             // Lắng nghe sự kiện click nút xóa
@@ -317,10 +450,10 @@
                 });
             });
         });
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Lắng nghe sự kiện khi người dùng chọn tab
-            $('.nav-link').on('click', function () {
-                var tabId = $(this).attr('id');  // Lấy id của tab đang được chọn
+            $('.nav-link').on('click', function() {
+                var tabId = $(this).attr('id'); // Lấy id của tab đang được chọn
 
                 var filteredData = [];
 
@@ -328,15 +461,15 @@
                 if (tabId === 'tab-all') {
                     filteredData = allTicketData; // Hiển thị tất cả vé
                 } else if (tabId === 'tab-delivered') {
-                    filteredData = allTicketData.filter(function (ticket) {
+                    filteredData = allTicketData.filter(function(ticket) {
                         return ticket.status === 'paid'; // Trạng thái thành công
                     });
                 } else if (tabId === 'tab-returns') {
-                    filteredData = allTicketData.filter(function (ticket) {
+                    filteredData = allTicketData.filter(function(ticket) {
                         return ticket.status === 'refunded'; // Trạng thái hoàn vé
                     });
                 } else if (tabId === 'tab-cancelled') {
-                    filteredData = allTicketData.filter(function (ticket) {
+                    filteredData = allTicketData.filter(function(ticket) {
                         return ticket.status === 'cancelled'; // Trạng thái hủy
                     });
                 }
@@ -351,7 +484,7 @@
             tableBody.empty(); // Xóa dữ liệu cũ trong bảng
 
             // Thêm dữ liệu mới vào bảng
-            data.forEach(function (ticket) {
+            data.forEach(function(ticket) {
                 var row = `
             <tr>
                 <td>${ticket.order_code}</td>
@@ -367,7 +500,6 @@
                 tableBody.append(row);
             });
         }
-
     </script>
 <?php $__env->stopSection(); ?>
 

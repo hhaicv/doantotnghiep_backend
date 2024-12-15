@@ -576,9 +576,7 @@
                                         <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú"
                                             rows="3">{{ old('note') }}</textarea>
                                     </div>
-
                                 </div>
-
                             </div>
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
@@ -692,7 +690,7 @@
                 }
 
                 // Cập nhật màu sắc cho ghế
-               if (status === 'booked') {
+                if (status === 'booked') {
                     button.style.backgroundColor = '#f5c170'; // Màu cho ghế đã đặt
                 } else if (status === 'lock') {
                     button.style.backgroundColor = '#e76966'; // Màu cho ghế bảo trì
