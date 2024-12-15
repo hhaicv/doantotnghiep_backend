@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form method="GET" action="{{ route('admin.ticket_list') }}">
+                    {{-- <form method="GET" action="{{ route('admin.ticket_list') }}">
                         @csrf
                         <div class="row g-3">
                             <div class="col-xxl-5 col-sm-6">
@@ -100,7 +100,7 @@
                             <!--end col-->
                         </div>
                         <!--end row-->
-                    </form>
+                    </form> --}}
                 </div>
                 <div class="card-body pt-0">
                     <div>

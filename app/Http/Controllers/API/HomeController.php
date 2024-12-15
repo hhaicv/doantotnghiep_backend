@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cancle;
 use App\Models\PaymentMethod;
 use App\Models\Stop;
 use App\Models\TicketBooking;
@@ -22,22 +23,24 @@ class HomeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request) {
-    //     try {
-    //         $data = $request->all();
-    //         $contact = TicketBooking::create($data);
 
-    //         return response()->json([
-    //             'success' => true,
-    //             'data' => $contact
-    //         ], 201); // 201 Created
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Lỗi khi tạo yêu cầu: ' . $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
+    // gửi request hủy chuyến lên db
+    public function store(Request $request) {
+        try {
+            $data = $request->all();
+            $model = Cancle::query()->create($data);
+
+            return response()->json([
+                'success' => true,
+                'data' => $model
+            ], 201); // 201 Created
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi tạo yêu cầu: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * Display the specified resource.

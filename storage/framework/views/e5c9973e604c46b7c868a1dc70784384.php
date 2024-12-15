@@ -30,77 +30,7 @@
                     </div>
                 </div>
                 <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form method="GET" action="<?php echo e(route('admin.ticket_list')); ?>">
-                        <?php echo csrf_field(); ?>
-                        <div class="row g-3">
-                            <div class="col-xxl-5 col-sm-6">
-                                <div class="search-box">
-                                    <input type="text" class="form-control search" placeholder="Tìm theo mã đơn hàng"
-                                        name="order_code" value="<?php echo e(request('order_code')); ?>">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-xxl-2 col-sm-6">
-                                <div>
-                                    <input type="date" name="date" class="form-control" value="<?php echo e(request('date')); ?>">
-                                </div>
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices data-choices-search-false
-                                        name="payment_method_id" id="idStatus">
-                                        <option value="">Lọc theo thanh toán</option>
-                                        <?php $__currentLoopData = App\Models\PaymentMethod::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($method->id); ?>"
-                                                <?php echo e(request('payment_method_id') == $method->id ? 'selected' : ''); ?>>
-                                                <?php echo e($method->name); ?>
-
-                                            </option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices data-choices-search-false
-                                        name="payment_status" id="idPayment">
-                                        <option value="">Lọc theo trạng thái</option>
-                                        <?php $__currentLoopData = App\Models\TicketBooking::PAYMENT_STATUSES; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($key); ?>"
-                                                <?php echo e(request('payment_status') == $key ? 'selected' : ''); ?>>
-                                                <?php echo e($status); ?>
-
-                                            </option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-xxl-1 col-sm-4">
-                                <!-- Nút Hủy Lọc -->
-                                <div class="mb-2">
-                                    <a href="<?php echo e(route('admin.ticket_list')); ?>" class="btn btn-primary w-100">Hủy lọc</a>
-                                </div>
-
-                                <!-- Nút Filters -->
-                                <div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                        Filters
-                                    </button>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </div>
-                        <!--end row-->
-                    </form>
+                    
                 </div>
                 <div class="card-body pt-0">
                     <div>
