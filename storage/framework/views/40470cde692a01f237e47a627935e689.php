@@ -428,6 +428,7 @@
                             <li><button style="background: #e76966;" type="submit"></button> <br> Ghế đã đặt</li>
                         </div>
                     </div>
+
                 </div>
                 <!-- end card body -->
             </div>
@@ -686,7 +687,6 @@ unset($__errorArgs, $__bag); ?>
         // Lặp qua từng ghế và cập nhật trạng thái
         document.querySelectorAll('.seat').forEach(function(button) {
             const seatName = button.getAttribute('data-name');
-            console.log(seatStatusArray);
 
             // Kiểm tra xem ghế có trong mảng trạng thái không
             if (seatStatusArray[seatName]) {
@@ -801,32 +801,26 @@ unset($__errorArgs, $__bag); ?>
         const fare = parseFloat(new URLSearchParams(window.location.search).get('fare')); // Lấy fare từ URL
         const maxSeats = 8; // Giới hạn số ghế tối đa
 
+
+
         document.querySelectorAll('.seat').forEach(function(button) {
             button.addEventListener('click', function() {
+                const seatName = button.getAttribute('data-name');
+                const tripId = button.getAttribute('data-trip-id');
                 const seatStatus = button.getAttribute('data-seat-status');
+                const userId = <?php echo json_encode(Auth::guard('admin')->id(), 15, 512) ?>;
+
 
                 if (seatStatus === 'available') {
                     // Kiểm tra số ghế đã chọn
                     if (selectedSeats.length < maxSeats) {
-                        button.classList.toggle('selected');
-                        const isSelected = button.classList.contains('selected');
+                        // Cập nhật trạng thái giao diện
+                        button.classList.add('selected');
+                        button.setAttribute('data-seat-status', 'selected');
+                        button.style.backgroundColor = '#9dc3fe'; // Màu nền cho ghế đã chọn
 
-                        // Cập nhật trạng thái ghế
-                        button.setAttribute('data-seat-status', isSelected ? 'selected' : 'available');
+                        selectedSeats.push(seatName); // Thêm ghế vào mảng
 
-                        // Cập nhật màu nền cho ghế đã chọn
-                        if (isSelected) {
-                            button.style.backgroundColor = '#9dc3fe'; // Màu nền cho ghế đã chọn
-                            const seatName = button.getAttribute('data-name'); // Lấy tên ghế từ data-name
-                            selectedSeats.push(seatName); // Thêm ghế đã chọn vào mảng
-                        } else {
-                            button.style.backgroundColor = ''; // Đặt lại màu nền khi bỏ chọn
-                            const seatName = button.getAttribute('data-name'); // Lấy tên ghế từ data-name
-                            selectedSeats = selectedSeats.filter(seat => seat !==
-                                seatName); // Xóa ghế khỏi mảng
-                        }
-
-                        // Cập nhật hiển thị ghế đã chọn
                         document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
                         document.getElementById('name_seat').value = selectedSeats.join(', ');
 
@@ -838,21 +832,42 @@ unset($__errorArgs, $__bag); ?>
                                 currency: 'VND'
                             });
                         document.getElementById("billinginfo-thucthu").value = totalPrice;
+                        // Gửi yêu cầu AJAX để cập nhật trạng thái trên server
+                        fetch('/admin/update-seat-status', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>', // Đảm bảo bạn đã cấu hình CSRF token
+                                },
+                                body: JSON.stringify({
+                                    name: seatName,
+                                    trip_id: tripId,
+                                    status: 'selected',
+                                    userId: userId,
+                                }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log('Cập nhật ghế thành công:', data.seat);
+                                } else {
+                                    alert('Cập nhật trạng thái thất bại. Vui lòng thử lại.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi cập nhật ghế:', error);
+                            });
                     } else {
                         alert('Bạn chỉ có thể chọn tối đa ' + maxSeats + ' ghế.');
                     }
                 } else if (seatStatus === 'selected') {
                     // Nếu ghế đã được chọn, bỏ chọn nó
-                    button.classList.remove('selected'); // Bỏ class 'selected'
-                    button.setAttribute('data-seat-status', 'available'); // Đặt lại trạng thái ghế
-
-                    // Đặt lại màu nền khi bỏ chọn
+                    button.classList.remove('selected');
+                    button.setAttribute('data-seat-status', 'available');
                     button.style.backgroundColor = '';
 
-                    const seatName = button.getAttribute('data-name'); // Lấy tên ghế từ data-name
                     selectedSeats = selectedSeats.filter(seat => seat !== seatName); // Xóa ghế khỏi mảng
 
-                    // Cập nhật hiển thị ghế đã chọn
                     document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
 
                     document.getElementById('name_seat').value = selectedSeats.join(', ');
@@ -865,6 +880,31 @@ unset($__errorArgs, $__bag); ?>
                             currency: 'VND'
                         });
                     document.getElementById("billinginfo-thucthu").value = totalPrice;
+                    // Gửi yêu cầu AJAX để cập nhật trạng thái về "available" trên server
+                    fetch('/admin/update-seat-status', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                            },
+                            body: JSON.stringify({
+                                name: seatName,
+                                trip_id: tripId,
+                                status: 'available',
+                                userId: userId,
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log('Ghế được cập nhật lại trạng thái available:', data.seat);
+                            } else {
+                                alert('Cập nhật trạng thái thất bại. Vui lòng thử lại.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi cập nhật trạng thái ghế:', error);
+                        });
                 } else if (seatStatus === 'booked') {
                     Swal.fire({
                         icon: 'warning',
@@ -883,6 +923,43 @@ unset($__errorArgs, $__bag); ?>
                     return;
                 }
             });
+        });
+    </script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//js.pusher.com/3.1/pusher.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
+
+    <script>
+        var pusher = new Pusher('8579e6baacda80044680', {
+            encrypted: true,
+            cluster: "ap1"
+        });
+
+        // Lắng nghe kênh và sự kiện
+        var channel = pusher.subscribe('seat-channel');
+
+        channel.bind('App\\Events\\SeatUpdatedEvent', function(data) {
+            const {
+                seat
+            } = data;
+            console.log(data);
+
+            // Cập nhật trạng thái ghế
+            const button = document.querySelector(`button[data-name="${seat.name}"]`);
+            if (button) {
+                if (seat.status === 'selected') {
+                    button.classList.add(seat.status);
+                    button.setAttribute('data-seat-status', seat.status);
+                    button.style.backgroundColor = '00FF00'; // Màu ghế đã mua
+                } else if (seat.status === 'available') {
+                    button.classList.remove('selected');
+                    button.setAttribute('data-seat-status', seat.status);
+                    button.style.backgroundColor = '';
+                }
+            }
         });
     </script>
 <?php $__env->stopSection(); ?>

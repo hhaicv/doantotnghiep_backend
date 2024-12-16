@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\SeatUpdatedEvent;
 use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
@@ -20,7 +21,8 @@ use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
 
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin/login', [LoginAdminController::class, 'showAdminLoginForm'])->name('admin.login');
@@ -114,6 +116,34 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
 
     // Route::post('/seat/update-status', [TicketBookingController::class, 'updateStatus']);
+
+    // Route::get('/', function () {
+    //     // Render the realtime seat management page
+    //     return view('realtime_seat');
+    // });
+
+    Route::post('/update-seat-status', function (Illuminate\Http\Request $request) {
+        $seatName = $request->input('name');
+        $seatStatus = $request->input('status');
+        $tripId = $request->input('trip_id');
+        $userId = $request->input('userId'); // Lấy user_id từ yêu cầu
+
+
+        // Xử lý cập nhật trạng thái ghế
+        $seat = [
+            'name' => $seatName,
+            'status' => $seatStatus,
+            'trip_id' => $tripId,
+            'userId' => $userId,
+
+        ];
+
+        // Phát sự kiện
+        event(new App\Events\SeatUpdatedEvent($seat));
+
+        return response()->json(['success' => true, 'seat' => $seat]);
+    });
+
 
 
     Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');

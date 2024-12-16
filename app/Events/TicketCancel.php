@@ -24,7 +24,6 @@ class TicketCancel
     public function __construct(Cancle $cancel)
     {
         $cancel = $this->cancel = $cancel;
-
     }
 
 

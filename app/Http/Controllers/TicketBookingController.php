@@ -72,10 +72,12 @@ class TicketBookingController extends Controller
         $endStopName = Stop::where('id', $endRouteId)->value('stop_name');
 
         // Lấy tất cả các chuyến có giai đoạn phù hợp
-        $trips = Trip::with(['bus', 'route', 'stages' => function ($query) use ($startRouteId, $endRouteId) {
+        $trips = Trip::with(['bus', 'route', 'stages', 'bus.driver' => function ($query) use ($startRouteId, $endRouteId) {
             $query->where('start_stop_id', $startRouteId)
                 ->where('end_stop_id', $endRouteId);
         }])
+
+
             ->whereHas('stages', function ($query) use ($startRouteId, $endRouteId) {
                 $query->where('start_stop_id', $startRouteId)
                     ->where('end_stop_id', $endRouteId);
@@ -86,7 +88,6 @@ class TicketBookingController extends Controller
             })
             ->orderBy('time_start', 'asc') // Sắp xếp theo time_start từ bé đến lớn
             ->get();
-
         // Map dữ liệu chuyến
         $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
             $stage = $trip->stages->first();
@@ -753,8 +754,6 @@ class TicketBookingController extends Controller
         $cancel = Cancle::where('ticket_booking_id', $id)->firstOrFail();
 
         event(new TicketCancel($cancel));
-
-
 
         $cancel->delete();
 
