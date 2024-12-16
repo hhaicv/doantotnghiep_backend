@@ -65,7 +65,7 @@ class HomeController extends Controller
         $endStopName = Stop::where('id', $endRouteId)->value('stop_name');
 
         // Lấy tất cả các chuyến có giai đoạn phù hợp
-        $trips = Trip::with(['bus', 'route', 'stages' ,'bus.driver' => function ($query) use ($startRouteId, $endRouteId) {
+        $trips = Trip::with(['bus', 'route', 'stages' ,'driver' => function ($query) use ($startRouteId, $endRouteId) {
             $query->where('start_stop_id', $startRouteId)
                 ->where('end_stop_id', $endRouteId);
         }])

@@ -43,7 +43,6 @@ class Trip extends Model
         return $this->belongsTo(Bus::class);
     }
 
-
     // Mối quan hệ với ticket_bookings
     public function ticketBookings()
     {
