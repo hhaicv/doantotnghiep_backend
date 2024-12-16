@@ -177,7 +177,7 @@ class TicketBookingController extends Controller
                 $query->where('date', $date)
                     ->where('trip_id', $trip_id);
             })
-            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(5))
             ->get();
 
         // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking

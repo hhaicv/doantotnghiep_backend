@@ -422,10 +422,10 @@
                             <li><button style="background: #9dc3fe;" type="submit"></button> <br> Ghế đang chọn</li>
                         </div>
                         <div class="col">
-                            <li><button style="background: #f5c170;" type="submit"></button> <br> Ghế đã đặt</li>
+                            <li><button style="background: #f5c170;" type="submit"></button> <br> Ghế đã mua</li>
                         </div>
                         <div class="col">
-                            <li><button style="background: #e76966;" type="submit"></button> <br> Ghế đã chọn</li>
+                            <li><button style="background: #e76966;" type="submit"></button> <br> Ghế đã đặt</li>
                         </div>
                     </div>
                 </div>
@@ -869,7 +869,7 @@ unset($__errorArgs, $__bag); ?>
                     Swal.fire({
                         icon: 'warning',
                         title: 'Thông báo',
-                        text: 'Ghế đã đươc đặt. Vui lòng chọn ghế khác!.',
+                        text: 'Ghế đã đươc mua. Vui lòng chọn ghế khác!.',
                         confirmButtonText: 'OK'
                     });
                     return;
@@ -877,7 +877,7 @@ unset($__errorArgs, $__bag); ?>
                     Swal.fire({
                         icon: 'warning',
                         title: 'Thông báo',
-                        text: 'Ghế đã chọn. Vui lòng chọn ghế khác!.',
+                        text: 'Ghế đã được đặt. Vui lòng chọn ghế khác!.',
                         confirmButtonText: 'OK'
                     });
                     return;

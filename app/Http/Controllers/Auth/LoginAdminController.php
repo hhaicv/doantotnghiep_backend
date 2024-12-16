@@ -12,7 +12,7 @@ class LoginAdminController extends Controller
 {
     public function showAdminLoginForm()
     {
-        return view('auth.admin_login'); 
+        return view('auth.admin_login');
     }
 
     public function adminLogin(Request $request)
@@ -22,13 +22,14 @@ class LoginAdminController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-    
+
         // Thử đăng nhập bằng guard 'admin'
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
             $admin = Auth::guard('admin')->user();
-    
+
             // Kiểm tra xem người dùng có phải là admin không
             if ($admin->name_role === 'admin') {
+
                 return redirect()->route('admin.dashboard');
             } else {
                 Auth::guard('admin')->logout();
@@ -37,7 +38,7 @@ class LoginAdminController extends Controller
                 ]);
             }
         }
-    
+
         // Đăng nhập không thành công
         return back()->withErrors([
             'email' => 'Thông tin đăng nhập không chính xác.',

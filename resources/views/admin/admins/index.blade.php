@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    
+
     @if (session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -69,7 +69,7 @@
                             @foreach ($admins as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px" height="100px"></td>
+                                    <td><img src="{{ Storage::url($item->image) }}" alt="" style="width: 80px;height: auto; object-fit: cover"></td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->name_role }}</td>

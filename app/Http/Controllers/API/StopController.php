@@ -12,7 +12,7 @@ use App\Models\TicketDetail;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class StopController extends Controller
@@ -254,6 +254,46 @@ class StopController extends Controller
                 'status' => 'success',
                 'redirect_url' => $vnp_Url
             ]);
+        }else {
+            return DB::transaction(function () use ($request) {
+                $ticketBookingData = $request->except('name_seat', 'fare');
+                $seatNames = explode(', ', $request->input('name_seat'));
+                $totalTickets = count($seatNames);
+
+                $orderCode = strtoupper(Str::random(8));
+                $ticketBookingData['order_code'] = $orderCode;
+                $ticketBookingData['total_tickets'] = $totalTickets;
+
+                // Thiết lập status của TicketBooking dựa trên payment_method_id
+                $ticketBookingData['status'] = $request->input('payment_method_id') == 1
+                    ? TicketBooking::PAYMENT_STATUS_PAID
+                    : TicketBooking::PAYMENT_STATUS_UNPAID;
+                if ($request->id_change) {
+                    $ticketBookingData['total_price'] = $request->input('price');
+                }
+
+                $ticketBooking = TicketBooking::create($ticketBookingData);
+
+                foreach ($seatNames as $seatName) {
+                    $ticketCode = $totalTickets == 1 ? $orderCode : strtoupper(Str::random(8));
+
+                    TicketDetail::create([
+                        'ticket_code' => $ticketCode,
+                        'ticket_booking_id' => $ticketBooking->id,
+                        'name_seat' => $seatName,
+                        'price' => $request->input('fare'),
+                        'status' => 'booked'
+                    ]);
+                }
+                event(new OrderTicket($ticketBooking));
+                $data = Stop::query()->get();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đặt vé thành công!',
+                    'data' => $data
+                ], 200); // 200 indicates a successful request
+
+            });
         }
     }
     public function bill(Request $request)

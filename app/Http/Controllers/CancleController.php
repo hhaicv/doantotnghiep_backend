@@ -34,7 +34,7 @@ class CancleController extends Controller
         $model = Cancle::query()->create($data);
         if ($model) {
             return redirect()->back()->with('success', 'Thêm liên hệ thành công');
-        } 
+        }
     }
 
     /**

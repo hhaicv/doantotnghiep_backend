@@ -25,7 +25,8 @@ class HomeController extends Controller
      */
 
     // gửi request hủy chuyến lên db
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         try {
             $data = $request->all();
             $model = Cancle::query()->create($data);
@@ -89,7 +90,9 @@ class HomeController extends Controller
                 $bookedSeatsCount = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip) {
                     $query->where('trip_id', $trip->id)
                         ->where('date', $date);
-                })->count();
+                })
+                    ->where('status', '!=', 'available') // Loại bỏ ghế có trạng thái 'available'
+                    ->count();
             }
 
             $availableSeats = $trip->bus->total_seats - $bookedSeatsCount;
@@ -116,7 +119,6 @@ class HomeController extends Controller
                 ];
             }
             return null;
-
         })->filter();
 
         // Thay thế bộ sưu tập bằng dữ liệu đã map và thêm thông tin phân trang
