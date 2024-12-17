@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách khuyến mãi</h5>
                     <a class="btn btn-primary mb-3" href="{{ route('admin.promotions.create') }}">Thêm mới khuyến mãi</a>
                 </div>
                 <div class="card-body">
@@ -32,13 +32,17 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Người dùng</th>
+                                {{-- <th>Người dùng</th> --}}
+                                <th>Tiêu đề</th>
+                                <th>Ảnh</th>
                                 <th>Mã giảm giá </th>
-                                <th>Mô tả</th>
                                 <th>Giảm giá</th>
+                                <th>Số lượng</th>
+                                <th>Trạng thái</th>
+                                <th>Mô tả</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày bắt kết thúc</th>
-                                <th>Dùng cho khách hàng mới</th>
+                                {{-- <th>Dùng cho khách hàng mới</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -46,17 +50,34 @@
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>
+                                    {{-- <td>
                                         @foreach($item->users as $user)
                                             {{ $user->name }}<br>
                                         @endforeach
-                                    </td>
-                                    <td>{{ $item->code }}</td>
+                                    </td> --}}
+                                    <td>{{ $item->title }}</td>
+                                    <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px"
+                                        height="100px"></td>
+                                        <td>{{ $item->code }}</td>
+                                        <td>{{ $item->discount }} % </td>
+                                        <td>{{ $item->count }}</td>
+                                        <td>
+                                            @if($item->status === 'open')
+                                                <span class="badge badge-success" style="background-color: #28a745; color: white;">Đang hoạt động</span>
+                                            @elseif($item->status === 'closed')
+                                                <span class="badge badge-danger" style="background-color: #dc3545; color: white;">Đã đóng</span>
+                                            @elseif($item->status === 'pending')
+                                                <span class="badge badge-warning" style="background-color: #ffc107; color: black;">Chưa kích hoạt</span>
+                                            @else
+                                                <span class="badge badge-secondary" style="background-color: #6c757d; color: white;">Không xác định</span>
+                                            @endif
+                                        </td>
+                                        
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
-                                    <td>{{ $item->discount }} % </td>
+                                   
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
-                                    <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td>
+                                    {{-- <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td> --}}
                                     <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('admin.promotions.edit', $item->id) }}"

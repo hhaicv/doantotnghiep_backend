@@ -1,14 +1,12 @@
 <?php
 
-use App\Http\Controllers\Auth\EmployeeController;
+use App\Http\Controllers\Auth\DriverLoginController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\HomeDriverController;
 use App\Http\Controllers\ProfileController;
 
 
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SeatController;
 
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,21 +20,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/driver', [DriverLoginController::class, 'showLogin'])->name('driver.login');
+Route::post('/driver', [DriverLoginController::class, 'driverLogin'])->name('driver.login.submit');
+Route::middleware('driver')->group(function () {
+    Route::post('/driver/logout', [DriverLoginController::class, 'driverLogout'])->name('driver.logout');
 
-    return view('welcome');
+    Route::get('/driver/dashboard', function () {
+        return view('driver.dashboard');
+    })->name('driver.dashboard');
+
+    Route::resource('drivers', HomeDriverController::class);
+    Route::get('/driver/dashboard', [HomeDriverController::class, 'showDashboard'])->name('driver.dashboard');
+    Route::get('/driver/showTicketDetail', [HomeDriverController::class, 'showTicket'])->name('driver.drivers.show');
+    Route::get('/driver/seats', [HomeDriverController::class, 'showSeats'])->name('driver.drivers.seats');
+    Route::patch('/seats/{seatId}/active', [HomeDriverController::class, 'updateSeatActiveStatus']);
+
 });
 
-
-Route::get('/home', function () {
-    return view('home');
-})->middleware(['auth', 'verified'])->name('home');
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__ . '/auth.php';

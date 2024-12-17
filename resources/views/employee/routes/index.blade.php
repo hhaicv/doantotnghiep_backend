@@ -24,6 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
+                    <a class="btn btn-primary mb-3" href="{{ route('employee.routes.create') }}">Thêm mới</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -38,6 +39,7 @@
                                 <th>Chiều Dài</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -88,6 +90,10 @@
                                     </div>
 
                                     <style>
+                                         .modal-dialog {
+                                            margin-top: 70px; 
+                                            max-width: 70%;
+                                        }
                                         .map-container {
                                             display: flex;
                                             align-items: center;
@@ -118,11 +124,26 @@
                                     <td>{{ $item->description }}</td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" disabled
+                                            <input class="form-check-input" type="checkbox" role="switch"
                                                 id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
                                                 {{ $item->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label"
                                                 for="SwitchCheck{{ $item->id }}">{{ $item->is_active ? 'On' : 'Off' }}</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="hstack gap-3 fs-15">
+                                            <a href="{{ route('employee.routes.edit', $item->id) }}" class="link-primary"><i
+                                                    class="ri-settings-4-line"></i></a>
+                                            <form id="deleteFormRoute{{ $item->id }}"
+                                                action="{{ route('employee.routes.destroy', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" style="border: none; background: white"
+                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
+                                                    <i class="ri-delete-bin-5-line"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -172,7 +193,7 @@
                 var isChecked = checkbox.checked ? 1 : 0;
                 var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-route/${itemId}`, {
+                fetch(`/employee/status-route/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

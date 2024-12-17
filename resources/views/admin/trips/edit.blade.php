@@ -1,27 +1,41 @@
 @extends('admin.layouts.mater')
 @section('title')
-    Cập nhật lại phân quyền
+    Cập nhật chuyến xe
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Cập nhật lại phân quyền</h4>
+                <h4 class="mb-sm-0">Cập nhật chuyến xe</h4>
             </div>
         </div>
     </div>
-  
+
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
     @endif
+
     <div class="card">
         <form action="{{ route('admin.trips.update', $data) }}" method="POST" class="row g-3 p-5">
             @csrf
@@ -36,21 +50,30 @@
                     @endforeach
                 </select>
             </div>
-
             <div class="col-md-5">
                 <label for="fullnameInput" class="form-label">Xe</label>
                 <select class="form-select" aria-label="Default select example" name="bus_id">
                     @foreach ($buses as $bus)
-                    <option value="{{ $bus->id }}" {{ $bus->id == $data->bus_id ? 'selected' : '' }}>
-                        {{ $bus->name_bus }} - {{ $bus->license_plate }}
-                    </option>
-                @endforeach
+                        <option value="{{ $bus->id }}" {{ $bus->id == $data->bus_id ? 'selected' : '' }}>
+                            {{ $bus->name_bus }} - {{ $bus->license_plate }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-5">
+                <label for="fullnameInput" class="form-label">Tài xế</label>
+                <select class="form-select" aria-label="Default select example" name="driver_id">
+                    @foreach ($drivers as $driver)
+                        <option value="{{ $driver->id }}" {{ $driver->id == $data->bus->driver_id ? 'selected' : '' }}>
+                            {{ $driver->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-5">
                 <label for="exampleFormControlTextarea5" class="form-label">Thời gian khởi hành</label>
-                <input type="text" class="form-control" name="departure_time" placeholder="hh:mm" id="cleave-time-format"
-                    value="{{ $data->departure_time }}">
+                <input type="text" class="form-control" name="time_start" placeholder="hh:mm" id="cleave-time-format"
+                    value="{{ $data->time_start }}">
             </div>
             <div class="col-12">
                 <div class="text-end">

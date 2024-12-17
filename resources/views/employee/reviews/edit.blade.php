@@ -1,4 +1,4 @@
-@extends('admin.layouts.mater')
+@extends('employee.layouts.mater')
 @section('title')
     Cập nhật lại đánh giá
 @endsection
@@ -31,7 +31,7 @@
         </div>
     @endif
     <div class="card">
-        <form action="{{ route('admin.reviews.update', $data) }}" method="POST" class="row g-3 p-5">
+        <form action="{{ route('employee.reviews.update', $data) }}" method="POST" class="row g-3 p-5">
             @csrf
             @method('PUT')
             <div class="col-md-5">
@@ -59,7 +59,7 @@
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ route('admin.reviews.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="{{ route('employee.reviews.index') }}" class="btn btn-success">Quay lại</a>
                 </div>
             </div>
         </form>

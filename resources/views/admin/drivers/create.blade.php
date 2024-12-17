@@ -13,18 +13,29 @@
         </div>
     </div>
 
-    <!-- Display Success or Error Messages -->
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
 
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
+    @endif
     <div class="card">
         <form action="{{ route('admin.drivers.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
@@ -63,12 +74,13 @@
                 <!-- Mật khẩu -->
                 <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Mật khẩu</label>
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu"
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu"
                         value="{{ old('password') }}">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
-                </div>
+                </div>                
+
                 <div class="mb-3">
                     <label for="license_number" class="form-label">Số bằng lái xe</label>
                     <input type="number" class="form-control" id="license_number" name="license_number"

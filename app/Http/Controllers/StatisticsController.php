@@ -16,31 +16,36 @@ class StatisticsController extends Controller
 {
     public function tripStatistical(Request $request)
     {
-        $conditions = [];
+        // Tạo query ban đầu
+        $query = TicketBooking::query();
 
         // Lọc theo từ khóa (tên chuyến)
         if ($request->has('keyword') && $request->keyword != '') {
-            $conditions[] = ['name', 'LIKE', '%' . $request->keyword . '%'];
+            $query->where('name', 'LIKE', '%' . $request->keyword . '%');
         }
 
         // Lọc theo loại (ngày, tuần, tháng, khoảng thời gian)
         if ($request->has('type') && $request->type != '') {
             if ($request->type == 'day') {
                 $from = $request->from ?: date('Y-m-d');
-                $conditions[] = ['created_at', 'DATE', date_format(date_create($from), "Y-m-d")];
+                $query->whereDate('created_at', $from);
             } elseif ($request->type == 'week') {
-                // Thêm xử lý lọc theo tuần
+                $week = $request->week ?: date('W'); // Lấy tuần hiện tại nếu không có giá trị
+                $year = $request->year ?: date('Y'); // Lấy năm hiện tại nếu không có giá trị
+                $query->whereRaw('YEARWEEK(created_at, 1) = YEARWEEK(?, 1)', [date("{$year}-W{$week}")]);
             } elseif ($request->type == 'month') {
-                // Thêm xử lý lọc theo tháng
+                $month = $request->month ?: date('m'); // Lấy tháng hiện tại nếu không có giá trị
+                $year = $request->year ?: date('Y');  // Lấy năm hiện tại nếu không có giá trị
+                $query->whereYear('created_at', $year)->whereMonth('created_at', $month);
             } elseif ($request->type == 'option') {
                 $from = $request->from ?: date('Y-m-d');
                 $to = $request->to ?: date('Y-m-d');
-                $conditions[] = ['created_at', 'BETWEEN', [$from, $to]];
+                $query->whereBetween('created_at', [$from, $to]);
             }
         }
 
-        $trips = TicketBooking::where($conditions)->get();
-
+        // Lấy danh sách chuyến theo các điều kiện lọc
+        $trips = $query->get();
 
         // Tính tổng vé và doanh thu
         $data = [
@@ -48,11 +53,13 @@ class StatisticsController extends Controller
             'total_revenue' => $trips->sum('total_price'),
         ];
 
-        $totalTickets = $trips->pluck('total_tickets')->toArray(); // Lấy dữ liệu total_tickets dưới dạng mảng
-        $totalRevenue = $trips->pluck('total_price')->toArray(); // Lấy dữ liệu total_price dưới dạng mảng
-//        dd($data,$totalTickets, $totalRevenue);
+        // Lấy dữ liệu chi tiết cho biểu đồ
+        $totalTickets = $trips->pluck('total_tickets')->toArray(); // Mảng số lượng vé
+        $totalRevenue = $trips->pluck('total_price')->toArray();   // Mảng doanh thu
+
         return view('admin.statistics.statistical_trip', compact('trips', 'data', 'totalTickets', 'totalRevenue'));
     }
+
 
 //    public function eggOpenStatistical(Request $request)
 //    {

@@ -13,18 +13,29 @@
         </div>
     </div>
 
-    <!-- Display Success or Error Messages -->
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
 
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
+    @endif
     <div class="card">
         <form action="{{ route('admin.drivers.update', $data) }}" method="POST" class="row g-3 p-5"
             enctype="multipart/form-data">
@@ -66,7 +77,7 @@
                 <!-- Mật khẩu -->
                 <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Mật khẩu</label>
-                    <input type="text" class="form-control" id="password" name="password" value="{{ old('password', $data->password) }}"
+                    <input type="password" class="form-control" id="password" name="password" value="{{ old('password', $data->password) }}"
                         placeholder="Nhập mật khẩu mới">
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>

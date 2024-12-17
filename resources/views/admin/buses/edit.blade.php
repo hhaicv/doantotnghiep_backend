@@ -14,15 +14,29 @@
 
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "{{ session('success') }}"
+                });
+            });
+        </script>
     @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+
+    @if (session('failes'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "{{ session('failes') }}"
+                });
+            });
+        </script>
     @endif
+
     <div class="card">
         <form action="{{ route('admin.buses.update', $model) }}" method="POST" class="row g-3 p-5"
             enctype="multipart/form-data">
@@ -33,7 +47,7 @@
                 <input type="text" class="form-control" id="name_bus" name="name_bus" value="{{ $model->name_bus }}">
             </div>
             <div class="col-md-6">
-                <label for="fullnameInput" class="form-label">Tên tài xế</label>
+                <label for="fullnameInput" class="form-label">Hãng xe</label>
                 <input type="text" class="form-control" id="model" name="model" value="{{ $model->model }}">
             </div>
             <div class="col-md-6">
@@ -68,8 +82,11 @@
             </div>
             <div class="col-md-6">
                 <label for="start_date">Số lượng ghế</label>
-                <input type="number" name="total_seats" id="total_seats" class="form-control"
-                    value="{{ $model->total_seats }}">
+                <select class="form-select" name="total_seats" id="total_seats" aria-label="Default select example">
+                    <option value="34" {{ $model->total_seats == 34 ? 'selected' : '' }}>34 Chỗ</option>
+                    <option value="40" {{ $model->total_seats == 40 ? 'selected' : '' }}>40 Chỗ</option>
+                    <option value="45" {{ $model->total_seats == 45 ? 'selected' : '' }}>45 Chỗ</option>
+                </select>
             </div>
             <div class="col-lg-12">
                 <div class="card">

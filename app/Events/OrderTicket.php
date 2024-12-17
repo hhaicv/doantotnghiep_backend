@@ -20,8 +20,6 @@ class OrderTicket
     public function __construct(TicketBooking $ticket)
     {
         $ticket = $this->ticket = $ticket->load(['bus.driver', 'route', 'trip', 'ticketDetails', 'paymentMethod']);
-
-   
     }
 
     /**

@@ -23,6 +23,11 @@ class Trip extends Model
     ];
 
 
+    public function driver()
+    {
+        return $this->hasOneThrough(Driver::class, Bus::class, 'id', 'id', 'bus_id', 'driver_id');
+    }
+
     public function stages()
     {
         return $this->hasMany(Stage::class, 'route_id', 'route_id'); // 'route_id' là khóa ngoại trong bảng 'stages' liên kết với 'route_id' trong bảng 'trips'
@@ -39,10 +44,10 @@ class Trip extends Model
         return $this->belongsTo(Bus::class);
     }
 
-
     // Mối quan hệ với ticket_bookings
     public function ticketBookings()
     {
         return $this->hasMany(TicketBooking::class, 'trip_id');
     }
+
 }

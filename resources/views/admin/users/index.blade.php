@@ -23,7 +23,7 @@ Danh sách tài khoản
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title mb-0">Danh sách</h5>
+                <h5 class="card-title mb-0">Danh sách nhân viên</h5>
                 <a class="btn btn-primary mb-3" href="{{ route('admin.users.create') }}">Thêm mới nhân viên</a>
             </div>
             <div class="card-body">
@@ -32,6 +32,7 @@ Danh sách tài khoản
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Hình ảnh</th>
                             <th>Tên</th>
                             <th>Quyền</th>
                             <th>Email</th>
@@ -46,6 +47,7 @@ Danh sách tài khoản
                         @foreach ($data as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
+                            <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px" height="100px"></td>
                             <td>{{ $item->name}}</td>
                             <td>{{ $item->type === 'employee' ? 'Nhân viên' : 'Khách hàng' }}</td>
                             <td>{{ $item->email}}</td>

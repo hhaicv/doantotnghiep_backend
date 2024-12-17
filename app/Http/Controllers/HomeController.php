@@ -9,34 +9,38 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    const PAYMENT_STATUS_PAID = 'paid'; // Đã thanh toán
+
     public function totalPrice()
     {
-        // Tính tổng doanh thu (total_price) và tổng số vé (total_tickets) trực tiếp
-        $totalRevenue = TicketBooking::sum('total_price');
-        $totalTickets = TicketBooking::sum('total_tickets');
-        $totalUser = User::where('type', 'user')->count();
-        $totalBus = Bus::count();
-
-        $monthlyData = TicketBooking::selectRaw('
-            SUM(total_price) as revenue,
-            COUNT(*) as total_tickets,
-            MONTH(created_at) as month
-        ')
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
+        $totalRevenue = TicketBooking::where('status', self::PAYMENT_STATUS_PAID)->sum('total_price');  // Tổng doanh thu cho các vé đã thanh toán
+        $totalTickets = TicketBooking::where('status', self::PAYMENT_STATUS_PAID)->sum('total_tickets');  // Tổng số vé đã thanh toán
+    
+        $totalUser = User::where('type', 'user')->count();  
+    
+        $totalBus = Bus::count();  
+    
+        $monthlyData = TicketBooking::where('status', self::PAYMENT_STATUS_PAID)
+            ->selectRaw('
+                SUM(total_price) as revenue,  
+                COUNT(*) as total_tickets,  
+                MONTH(created_at) as month 
+            ')
+            ->groupBy('month') 
+            ->orderBy('month', 'asc')  
             ->get();
-
-        $topRoutes = TicketBooking::with('route') // Giả sử có quan hệ 'route' trong model TicketBooking
-        ->selectRaw('route_id, COUNT(*) as count')
-            ->groupBy('route_id')
-            ->orderBy('count', 'desc')
-            ->take(5)
+    
+        $topRoutes = TicketBooking::where('status', self::PAYMENT_STATUS_PAID)
+            ->with('route') 
+            ->selectRaw('route_id, COUNT(*) as count') 
+            ->groupBy('route_id') 
+            ->orderBy('count', 'desc')  
+            ->take(5)  
             ->get();
-//        dd($topRoutes->toArray());
-
-        // Truyền dữ liệu vào view
-        return view('admin.dashboard', compact('totalRevenue', 'totalTickets', 'totalUser','monthlyData','totalBus','topRoutes'));
+    
+        return view('admin.dashboard', compact('totalRevenue', 'totalTickets', 'totalUser', 'monthlyData', 'totalBus', 'topRoutes'));
     }
+    
 
 
 }

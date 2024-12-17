@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Events\OrderTicket;
+use App\Events\TicketCancel;
+use App\Listeners\SendCancelConfirmation;
 use App\Listeners\SendNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderTicket::class=>[
             SendNotification::class
+        ],
+        TicketCancel::class => [
+            SendCancelConfirmation::class
         ]
     ];
 

@@ -21,8 +21,8 @@
                     <div class="product-img-slider sticky-side-div">
                         <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <img src="{{ Storage::url($data->thumbnail_image) }}" alt=""
+                                <div class="swiper-slide d-flex justify-content-center">
+                                    <img src="{{ Storage::url($data->thumbnail_image) }}" alt="" width="300px"
                                         class="img-fluid d-block" />
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h4>{{ $data->title }}</h4>
                             
-                            <a href="{{ route('admin.information.index') }}" class="btn btn-success">Danh sách</a>
+                            <a href="{{ route('admin.information.index') }}" class="btn btn-primary mb-3">Danh sách</a>
                             
                         </div>
                         
