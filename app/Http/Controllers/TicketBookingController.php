@@ -177,7 +177,7 @@ class TicketBookingController extends Controller
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
 
-        
+
         return view(self::PATH_VIEW . 'create', compact('methods', 'seatsStatus', 'seatCount'));
     }
 
