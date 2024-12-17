@@ -31,6 +31,10 @@ Route::middleware('driver')->group(function () {
 
     Route::resource('drivers', HomeDriverController::class);
     Route::get('/driver/dashboard', [HomeDriverController::class, 'showDashboard'])->name('driver.dashboard');
+    Route::get('/driver/showTicketDetail', [HomeDriverController::class, 'showTicket'])->name('driver.drivers.show');
+    Route::get('/driver/seats', [HomeDriverController::class, 'showSeats'])->name('driver.drivers.seats');
+    Route::patch('/seats/{seatId}/active', [HomeDriverController::class, 'updateSeatActiveStatus']);
+
 
 
 });

@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\updateDriverRequest;
+use App\Models\PaymentMethod;
 use App\Models\TicketBooking;
 use App\Models\TicketDetail;
 use App\Models\Trip;
@@ -14,7 +16,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 
-class HomeDriverController extends Controller{
+class HomeDriverController extends Controller
+{
 
     const PATH_UPLOAD = 'drivers';
 
@@ -22,10 +25,8 @@ class HomeDriverController extends Controller{
     {
         $driverId = auth('driver')->id();
 
-        // Lấy ngày từ request (hoặc mặc định là hôm nay)
         $date = $request->input('date', Carbon::now()->toDateString());
 
-        // Lấy danh sách vé theo tài xế và ngày
         $trips = TicketBooking::with(['bus', 'route', 'ticketDetails'])
             ->whereHas('bus', function ($query) use ($driverId) {
                 $query->where('driver_id', $driverId);
@@ -33,53 +34,59 @@ class HomeDriverController extends Controller{
             ->where('date', $date)
             ->get()
             ->groupBy(function ($trip) {
-                // Nhóm theo tuyến đường, thời gian khởi hành, và ngày
                 return $trip->route->route_name . '_' . $trip->time_start;
             });
 
-        // Chuẩn bị dữ liệu gộp lại cho từng nhóm
         $groupedTrips = $trips->map(function ($group) {
             return [
                 'route_name' => $group->first()->route->route_name,
                 'time_start' => $group->first()->time_start,
                 'total_tickets' => $group->sum(fn($trip) => $trip->ticketDetails->count()),
                 'total_price' => $group->sum(fn($trip) => $trip->ticketDetails->sum('price')),
-                'details' => $group, // Chi tiết từng chuyến trong nhóm
+                'details' => $group,
+                'tickets' => $group->flatMap(fn($trip) => $trip->ticketDetails),
+
             ];
         });
 
         return view('driver.drivers.index', compact('groupedTrips', 'date'));
     }
-
-    public function show($tripId)
+    public function showTicket(Request $request)
     {
         $driverId = auth('driver')->id();
 
-        // Lấy thông tin chuyến và tất cả vé thuộc chuyến đó
-        $tickets = TicketBooking::with(['bus.driver', 'route', 'ticketDetails'])
+        $date = $request->input('date', Carbon::now()->toDateString());
+
+        $trips = TicketBooking::with(['bus', 'route', 'ticketDetails', 'bus.driver'])
             ->whereHas('bus', function ($query) use ($driverId) {
                 $query->where('driver_id', $driverId);
             })
-            ->where('trip_id', $tripId) // Lọc theo trip_id (mã chuyến)
-            ->get();
+            ->where('date', $date)
+            ->get()
+            ->groupBy(function ($trip) {
+                return $trip->route->route_name . '_' . $trip->time_start;
+            });
 
-        // Kiểm tra nếu không có vé nào
-        if ($tickets->isEmpty()) {
-            abort(404, 'Không tìm thấy chuyến này.');
-        }
+        $groupedTrips = $trips->map(function ($group) {
+            return [
+                'route_name' => $group->first()->route->route_name,
+                'time_start' => $group->first()->time_start,
+                'total_tickets' => $group->sum(fn($trip) => $trip->ticketDetails->count()),
+                'total_price' => $group->sum(fn($trip) => $trip->ticketDetails->sum('price')),
+                'details' => $group,
+                'tickets' => $group->flatMap(fn($trip) => $trip->ticketDetails),
+                'driver_name' => $group->first()->bus->driver->name ?? 'N/A',
+                'bus_license_plate' => $group->first()->bus->license_plate ?? 'N/A',
+            ];
+        });
 
-        // Lấy thông tin chung của chuyến
-        $tripInfo = [
-            'route_name' => $tickets->first()->route->route_name,
-            'time_start' => $tickets->first()->time_start,
-            'date' => $tickets->first()->date,
-            'bus' => $tickets->first()->bus,
-            'total_tickets' => $tickets->sum(fn($ticket) => $ticket->ticketDetails->count()),
-            'total_price' => $tickets->sum(fn($ticket) => $ticket->ticketDetails->sum('price')),
-        ];
+//         dd($groupedTrips);
 
-        return view('driver.drivers.show', compact('tripInfo', 'tickets'));
+        return view('driver.drivers.show', compact('groupedTrips', 'date'));
     }
+
+
+
 
     public function edit($id)
     {
@@ -164,40 +171,71 @@ class HomeDriverController extends Controller{
 
         return view('driver.dashboard', compact('busStats', 'totalTrips', 'totalRevenue'));
     }
-//    public function showDashboard(Request $request)
-//    {
-//        $trip_id = $request->query('trip_id');
-//        $date = $request->query('date');
-//
-//
-//
-//        $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
-//        $seatCount = $trip->bus->total_seats;
-//
-//        // Lấy danh sách ghế bị "lock" quá 15 phút
-//        TicketDetail::where('status', 'lock')
-//            ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
-//                $query->where('date', $date)
-//                    ->where('trip_id', $trip_id);
-//            })
-//            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
-//            ->delete();
-//
-//
-//        // Lấy danh sách ghế đã đặt
-//        $seatsBooked = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
-//            $query->where('date', $date)
-//                ->where('trip_id', $trip_id);
-//        })->get();
-//
-//        $seatsStatus = [];
-//        foreach ($seatsBooked as $seat) {
-//            $seatsStatus[$seat->name_seat] = $seat->status;
-//        }
-//
-//        return view('driver.dashboard', compact('seatsStatus', 'seatCount'));
-//    }
 
+    public function showSeats(Request $request)
+    {
+        $driverId = Auth::guard('driver')->id();
+        $date = $request->query('date', Carbon::today()->toDateString());
+
+        // Lấy danh sách chuyến đi theo tài xế và ngày, kèm trạng thái ghế
+        $trips = Trip::with([
+            'bus',
+            'route',
+            'ticketBookings.ticketDetails' => function ($query) use ($date) {
+                $query->whereHas('ticketBooking', function ($q) use ($date) {
+                    $q->where('date', $date);
+                });
+            }
+        ])
+            ->whereHas('bus', function ($query) use ($driverId) {
+                $query->where('driver_id', $driverId);
+            })
+            ->whereHas('ticketBookings', function ($query) use ($date) {
+                $query->where('date', $date);
+            })
+            ->get();
+
+        // Tạo mảng trạng thái ghế và thông tin người đặt
+        $seatStatusFlat = $trips->flatMap(function ($trip) {
+            return $trip->ticketBookings->flatMap(function ($booking) {
+                return $booking->ticketDetails->mapWithKeys(function ($seat) {
+                    return [
+                        $seat->name_seat => [
+                            'id' => $seat->id,
+                            'status' => $seat->status,
+                            'phone' => $seat->ticketBooking->phone,
+                            'name' => $seat->ticketBooking->name,
+                            'email' => $seat->ticketBooking->email,
+                            'note' => $seat->ticketBooking->note,
+                            'is_active'=> $seat->is_active,
+                        ]
+                    ];
+                });
+            });
+        });
+
+//        dd($seatStatusFlat);
+
+        // Tổng số ghế của tất cả các xe trong chuyến đi (nếu cần tổng)
+        $totalSeatCount = $trips->sum(function ($trip) {
+            return $trip->bus->total_seats;
+        });
+
+        // Hoặc số ghế của từng xe trong mỗi chuyến đi
+        $seatCounts = $trips->mapWithKeys(function ($trip) {
+            return [$trip->id => $trip->bus->total_seats];
+        });
+
+        return view('driver.drivers.showDetail', compact('trips', 'date', 'totalSeatCount', 'seatCounts', 'seatStatusFlat'));
+    }
+    public function updateSeatActiveStatus($seatId, Request $request)
+    {
+        $seat = TicketDetail::findOrFail($seatId); // Lấy thông tin ghế dựa trên ID
+        $seat->is_active = $request->input('is_active'); // Cập nhật trạng thái is_active
+        $seat->save(); // Lưu vào cơ sở dữ liệu
+
+        return response()->json(['message' => 'Trạng thái ghế đã được cập nhật']);
+    }
 
 
 

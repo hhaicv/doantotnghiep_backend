@@ -37,4 +37,8 @@ class Driver extends Authenticatable
     {
         return $this->hasMany(Trip::class, 'driver_id');
     }
+    public function buses()
+    {
+        return $this->belongsToMany(Bus::class);
+    }
 }

@@ -7,42 +7,48 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="card-header">
-                <form method="GET" action="{{ route('drivers.index') }}">
-                    <label for="date">Chọn ngày:</label>
-                    <input type="date" id="date" name="date" value="{{ $date }}">
-                    <button type="submit">Lọc</button>
-                </form>
+            <div class="card">
+
+                <div class="card-header d-flex justify-content-between">
+                    <h5 class="card-title mb-0">Danh sách chuyến xe của bạn</h5>
+                    <div class="card-header">
+                        <form method="GET" action="{{ route('drivers.index') }}">
+                            <label for="date">Chọn ngày:</label>
+                            <input type="date" id="date" name="date" value="{{ $date }}">
+                            <button type="submit">Lọc</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                           style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>Tuyến đường</th>
+                            <th>Số vé</th>
+                            <th>Tổng tiền</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($groupedTrips as $tripId => $trip)
+                            <tr>
+                                <td>{{ $trip['time_start'] }}</td>
+                                <td>{{ $trip['route_name'] }}</td>
+                                <td>{{ $trip['total_tickets'] }}</td>
+                                <td>{{ number_format($trip['total_price'], 0, ',', '.') }} VND</td>
+                                <td>
+                                    <a href="{{ route('driver.drivers.show') }}">Xem chi tiết</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            <table>
-                <thead>
-                <tr>
-                    <th>Thời gian</th>
-                    <th>Tuyến đường</th>
-                    <th>Số vé</th>
-                    <th>Tổng tiền</th>
-                    <th>Hành động</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($groupedTrips as $tripId => $trip)
-                    <tr>
-                        <td>{{ $trip['time_start'] }}</td>
-                        <td>{{ $trip['route_name'] }}</td>
-                        <td>{{ $trip['total_tickets'] }}</td>
-                        <td>{{ number_format($trip['total_price'], 0, ',', '.') }} VND</td>
-                        <td>
-                            <a href="{{ route('drivers.show', $tripId) }}" class="btn btn-primary btn-sm">Chi tiết</a>
-                        </td>
-                    </tr>
-                @endforeach
-
-                </tbody>
-            </table>
         </div>
     </div>
-
 
 @endsection
 @section('script-libs')
