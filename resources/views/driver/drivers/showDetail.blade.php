@@ -1211,12 +1211,14 @@
                 });
         });
         document.getElementById('btn-cancel-ride').addEventListener('click', function () {
-            const seatId = this.getAttribute('data-seat-id');  // Lấy ID ghế từ thuộc tính data-seat-id
+            const seatId = this.getAttribute('value');  // Lấy ID ghế từ thuộc tính value của nút (nếu có)
 
-            if (!seatId) {
-                alert('Không tìm thấy ID ghế!');
+            if (!seatName) {
+                alert('Không tìm thấy ghế!');
                 return;
             }
+
+            // Gửi yêu cầu thông báo đến admin
             fetch(`/api/notify-admin/cancel-ride`, {
                 method: 'POST',
                 headers: {
@@ -1224,13 +1226,13 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: JSON.stringify({
+                    seatName: seatName,
                     seatId: seatId,
                     message: 'Khách hàng đã hủy chuyến và không lên xe.'
                 })
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Response Data:', data);  // Xem dữ liệu trả về
                     if (data.success) {
                         Swal.fire({
                             icon: 'success',
@@ -1238,6 +1240,7 @@
                             text: 'Khách hàng đã bỏ chuyến, thông báo đã gửi tới admin.',
                             confirmButtonText: 'OK'
                         }).then(() => {
+                            // Bạn có thể cập nhật lại giao diện hoặc làm gì đó sau khi gửi thông báo
                             this.disabled = true; // Vô hiệu hóa nút nếu cần
                             this.textContent = 'Đã Hủy Chuyến'; // Thay đổi văn bản nút
                         });
@@ -1251,7 +1254,7 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error); // Log lỗi chi tiết
+                    console.error('Error:', error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Lỗi',
@@ -1259,7 +1262,6 @@
                         confirmButtonText: 'OK'
                     });
                 });
-
         });
     </script>
 

@@ -252,8 +252,4 @@ class HomeDriverController extends Controller
         return response()->json(['message' => 'Trạng thái ghế đã được cập nhật']);
     }
 
-
-
-
-
 }
