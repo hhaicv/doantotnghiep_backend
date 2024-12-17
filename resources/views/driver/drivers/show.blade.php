@@ -8,15 +8,6 @@
     <div class="row">
         <div class="col-lg-12">
             <h1>Danh sách chuyến xe</h1>
-
-            <form method="GET" action="{{ route('driver.drivers.show') }}">
-                <div class="form-group">
-                    <label for="date">Chọn ngày:</label>
-                    <input type="date" class="form-control" id="date" name="date" value="{{ request()->input('date') }}">
-                </div>
-                <button type="submit" class="btn btn-primary">Lọc</button>
-            </form>
-
             <div class="mt-4">
                 @if ($groupedTrips->isEmpty())
                     <p>Không có dữ liệu chuyến xe nào.</p>

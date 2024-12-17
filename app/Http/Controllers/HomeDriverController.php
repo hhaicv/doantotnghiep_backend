@@ -128,54 +128,47 @@ class HomeDriverController extends Controller
     }
 
 
-    public function showDashboard()
+    public function showDashboard(Request $request)
     {
         $driverId = auth('driver')->id();
 
-        // Lấy danh sách vé của tài xế
+        // Lấy danh sách vé của tài xế và phân trang
         $tickets = TicketBooking::with(['bus.driver', 'route', 'ticketDetails'])
             ->whereHas('bus.driver', function ($query) use ($driverId) {
                 $query->where('id', $driverId);
             })
             ->orderByDesc('date')
-            ->get();
+            ->paginate(10); // Hiển thị 10 bản ghi mỗi trang
 
-        // Nhóm vé theo bus_id
-        $busStats = $tickets->groupBy('bus_id')->map(function ($group) {
-            $bus = $group->first()->bus; // Lấy thông tin bus từ vé đầu tiên trong nhóm
-            $route = $group->first()->route->route_name ?? 'Không xác định';
-            $capacity = $bus->total_seats;
-
-            // Tổng số vé bán
-            $soldSeats = $group->reduce(function ($carry, $ticket) {
-                return $carry + $ticket->ticketDetails->count();
-            }, 0);
-
-            // Tính tỷ lệ lấp đầy
-            $fillRate = ($soldSeats / $capacity) * 100;
-
-            return [
-                'name_bus' => $bus->name_bus ?? 'Không rõ tên xe',
-                'route' => $route,
-                'total_seats' => $capacity,
-                'soldSeats' => $soldSeats,
-                'fillRate' => round($fillRate, 2),
-                'totalRevenue' => $group->sum('total_price'),
-
-            ];
+        // Nhóm vé theo ngày
+        $tripStatsByDate = $tickets->groupBy('date')->map(function ($group) {
+            return $group->groupBy(function ($trip) {
+                return $trip->route->route_name . '_' . $trip->time_start;
+            })->map(function ($subGroup) {
+                return [
+                    'bus_name' => $subGroup->first()->bus->name_bus ?? 'Không rõ tên xe',
+                    'route' => $subGroup->first()->route->route_name ?? 'Không xác định',
+                    'total_seats' => $subGroup->first()->bus->total_seats,
+                    'soldSeats' => $subGroup->sum(fn($trip) => $trip->ticketDetails->count()),
+                    'fillRate' => round($subGroup->sum(fn($trip) => $trip->ticketDetails->count()) / $subGroup->first()->bus->total_seats * 100, 2),
+                    'totalRevenue' => $subGroup->sum(fn($trip) => $trip->total_price),
+                ];
+            });
         });
 
-        // Tính tổng số chuyến và tổng doanh thu
-        $totalTrips = $tickets->count();
-        $totalRevenue = $tickets->sum('total_price');
+        // Tính tổng số chuyến và doanh thu
+        $totalTrips = $tickets->total(); // Lấy tổng số bản ghi trong phân trang
+        $totalRevenue = $tickets->sum('total_price'); // Tổng doanh thu của tất cả vé
 
-        return view('driver.dashboard', compact('busStats', 'totalTrips', 'totalRevenue'));
+        return view('driver.dashboard', compact('tripStatsByDate', 'tickets', 'totalTrips', 'totalRevenue'));
     }
+
+
 
     public function showSeats(Request $request)
     {
         $driverId = Auth::guard('driver')->id();
-        $date = $request->query('date', Carbon::today()->toDateString());
+            $date = $request->query('date', Carbon::today()->toDateString());
 
         // Lấy danh sách chuyến đi theo tài xế và ngày, kèm trạng thái ghế
         $trips = Trip::with([
@@ -226,7 +219,29 @@ class HomeDriverController extends Controller
             return [$trip->id => $trip->bus->total_seats];
         });
 
-        return view('driver.drivers.showDetail', compact('trips', 'date', 'totalSeatCount', 'seatCounts', 'seatStatusFlat'));
+        $show = TicketBooking::with(['bus', 'route', 'ticketDetails'])
+            ->whereHas('bus', function ($query) use ($driverId) {
+                $query->where('driver_id', $driverId);
+            })
+            ->where('date', $date)
+            ->get()
+            ->groupBy(function ($trip) {
+                return $trip->route->route_name . '_' . $trip->time_start;
+            });
+
+        $groupedTrips = $show->map(function ($group) {
+            return [
+                'route_name' => $group->first()->route->route_name,
+                'time_start' => $group->first()->time_start,
+                'total_tickets' => $group->sum(fn($show) => $show->ticketDetails->count()),
+                'total_price' => $group->sum(fn($show) => $show->ticketDetails->sum('price')),
+                'details' => $group,
+                'tickets' => $group->flatMap(fn($show) => $show->ticketDetails),
+
+            ];
+        });
+
+        return view('driver.drivers.showDetail', compact('trips', 'date', 'totalSeatCount', 'seatCounts', 'seatStatusFlat','groupedTrips'));
     }
     public function updateSeatActiveStatus($seatId, Request $request)
     {

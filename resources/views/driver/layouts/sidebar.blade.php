@@ -40,8 +40,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ Request::routeIs(['drivers.index','drivers.show']) ? 'active' : 'drivers.show' }}">
-                    <a class="nav-link menu-link" href="{{ route('drivers.index') }}">
+                <li class="nav-item {{ Request::routeIs(['driver.drivers.seats','drivers.show']) ? 'active' : 'drivers.show' }}">
+                    <a class="nav-link menu-link" href="{{ route('driver.drivers.seats') }}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Danh sách chuyến</span>
                     </a>
                 </li>
