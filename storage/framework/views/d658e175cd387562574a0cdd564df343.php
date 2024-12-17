@@ -55,10 +55,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">Welcome Anna!</h6>
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+
+                        <a href="<?php echo e(route('drivers.edit', Auth::guard('driver')->id())); ?>" class="dropdown-item notify-item">
                             <i class="ri-user-settings-line align-middle fs-18 text-muted me-2"></i>
-                            <span>My account settings</span>
+                            <span>Tài khoản</span>
                         </a>
 
                         <a class="dropdown-item" href="#"

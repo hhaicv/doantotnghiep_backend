@@ -1209,59 +1209,6 @@
                     });
                 });
         });
-        document.getElementById('btn-cancel-ride').addEventListener('click', function () {
-            const seatId = this.getAttribute('value');  // Lấy ID ghế từ thuộc tính value của nút (nếu có)
-
-            if (!seatName) {
-                alert('Không tìm thấy ghế!');
-                return;
-            }
-
-            // Gửi yêu cầu thông báo đến admin
-            fetch(`/api/notify-admin/cancel-ride`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    seatName: seatName,
-                    seatId: seatId,
-                    message: 'Khách hàng đã hủy chuyến và không lên xe.'
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thông báo',
-                            text: 'Khách hàng đã bỏ chuyến, thông báo đã gửi tới admin.',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            // Bạn có thể cập nhật lại giao diện hoặc làm gì đó sau khi gửi thông báo
-                            this.disabled = true; // Vô hiệu hóa nút nếu cần
-                            this.textContent = 'Đã Hủy Chuyến'; // Thay đổi văn bản nút
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Lỗi',
-                            text: 'Đã xảy ra lỗi khi gửi thông báo.',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi',
-                        text: 'Đã xảy ra lỗi khi gửi thông báo.',
-                        confirmButtonText: 'OK'
-                    });
-                });
-        });
     </script>
 
 <?php $__env->stopSection(); ?>

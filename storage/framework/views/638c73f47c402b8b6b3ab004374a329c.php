@@ -40,8 +40,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item <?php echo e(Request::routeIs(['drivers.index','drivers.show']) ? 'active' : 'drivers.show'); ?>">
-                    <a class="nav-link menu-link" href="<?php echo e(route('drivers.index')); ?>">
+                <li class="nav-item <?php echo e(Request::routeIs(['driver.drivers.seats','drivers.show']) ? 'active' : 'drivers.show'); ?>">
+                    <a class="nav-link menu-link" href="<?php echo e(route('driver.drivers.seats')); ?>">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Danh sách chuyến</span>
                     </a>
                 </li>
