@@ -150,7 +150,6 @@
                                 <tbody class="list form-check-all">
                                     <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ticketBooking): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-
                                             <td class="id"><?php echo e($ticketBooking->order_code); ?></td>
                                             <td class="date"><?php echo e($ticketBooking->date); ?></td>
                                             <td class="route_name"><?php echo e($ticketBooking->route->route_name); ?></td>

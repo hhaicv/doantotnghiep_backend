@@ -127,7 +127,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         $seatStatus = $request->input('status');
         $tripId = $request->input('trip_id');
         $userId = $request->input('userId'); // Lấy user_id từ yêu cầu
-
+        $date = $request->input('date'); // Lấy user_id từ yêu cầu
 
         // Xử lý cập nhật trạng thái ghế
         $seat = [
@@ -135,7 +135,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
             'status' => $seatStatus,
             'trip_id' => $tripId,
             'userId' => $userId,
-
+            'date' => $date,
         ];
 
         // Phát sự kiện
