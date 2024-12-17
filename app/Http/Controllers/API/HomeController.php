@@ -65,7 +65,7 @@ class HomeController extends Controller
         $endStopName = Stop::where('id', $endRouteId)->value('stop_name');
 
         // Lấy tất cả các chuyến có giai đoạn phù hợp
-        $trips = Trip::with(['bus', 'route', 'stages' ,'driver' => function ($query) use ($startRouteId, $endRouteId) {
+        $trips = Trip::with(['bus', 'route', 'stages' => function ($query) use ($startRouteId, $endRouteId) {
             $query->where('start_stop_id', $startRouteId)
                 ->where('end_stop_id', $endRouteId);
         }])
@@ -96,7 +96,7 @@ class HomeController extends Controller
             }
 
             $availableSeats = $trip->bus->total_seats - $bookedSeatsCount;
-            $driver = $trip->bus->driver;
+
             if ($availableSeats > 0) {
                 return [
                     'bus_id' => $trip->bus->id,
@@ -110,13 +110,12 @@ class HomeController extends Controller
                     'license_plate' => $trip->bus->license_plate,
                     'total_seats' => $trip->bus->total_seats,
                     'booked_seats_count' => $bookedSeatsCount,
-                    'available_seats' => $trip->bus->total_seats - $bookedSeatsCount,
+                    'available_seats' => $availableSeats,
                     'date' => $date,
                     'start_stop_name' => $startStopName,
                     'end_stop_name' => $endStopName,
                     'start_stop_id' => $startRouteId,
                     'end_stop_id' => $endRouteId,
-                    'driver_phone' => $driver->phone,
                 ];
             }
             return null;
