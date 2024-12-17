@@ -81,7 +81,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('storage/app/public/stops/logofixpading 1.png') }}" alt="Company Logo"> <!-- Đường dẫn logo -->
+            {{-- <img src="{{ asset('storage/app/public/stops/logofixpading 1.png') }}" alt="Hong Nhung Logo"> --}}
+
             <h1>🎉 Khuyến mãi mới !</h1>
         </div>
         <div class="content">

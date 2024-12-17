@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderTicket;
+use App\Events\SeatBooked;
+use App\Events\TicketCancel;
+use App\Models\Cancle;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
+use App\Mail\TicketCancel as MailTicketCancel;
 use App\Models\PaymentMethod;
-
+use App\Models\Seat;
 use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
@@ -15,6 +19,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class TicketBookingController extends Controller
@@ -92,7 +97,9 @@ class TicketBookingController extends Controller
                 $bookedSeatsCount = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip) {
                     $query->where('trip_id', $trip->id)
                         ->where('date', $date);
-                })->count();
+                })
+                    ->where('status', '!=', 'available') // Loại bỏ ghế có trạng thái 'available'
+                    ->count();
             }
 
             $availableSeats = $trip->bus->total_seats - $bookedSeatsCount;
@@ -137,14 +144,26 @@ class TicketBookingController extends Controller
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
         $seatCount = $trip->bus->total_seats;
 
-        // Lấy danh sách ghế bị "lock" quá 15 phút
-        TicketDetail::where('status', 'lock')
+        $expiredSeats = TicketDetail::where('status', 'lock')
             ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
                 $query->where('date', $date)
                     ->where('trip_id', $trip_id);
             })
-            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
-            ->delete();
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(5))
+            ->get();
+
+        // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking
+        if ($expiredSeats->isNotEmpty()) {
+            $ticketBooking = $expiredSeats->first()->ticketBooking;
+            if ($ticketBooking) {
+                $ticketBooking->update(['status' => TicketBooking::PAYMENT_STATUS_OVERDUE]);
+            }
+        }
+
+        // Cập nhật trạng thái ghế từ "lock" thành "available"
+        $expiredSeats->each(function ($seat) {
+            $seat->update(['status' => 'available']);
+        });
 
 
         // Lấy danh sách ghế đã đặt
@@ -158,15 +177,12 @@ class TicketBookingController extends Controller
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
 
+
         return view(self::PATH_VIEW . 'create', compact('methods', 'seatsStatus', 'seatCount'));
     }
 
-
-
     public function store(StoreTicketBookingRequest $request)
     {
-
-
         if ($request->id_change) {
             $booking = TicketBooking::findOrFail($request->id_change);
             $booking->delete();
@@ -396,6 +412,7 @@ class TicketBookingController extends Controller
                 $ticketDetail->save();
             }
             $data = Stop::query()->get();
+            event(new OrderTicket($ticketBooking));
             return redirect()
                 ->route('admin.tickets.index')
                 ->with('success', 'Đặt vé thành công!')
@@ -407,7 +424,8 @@ class TicketBookingController extends Controller
             $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
             // Xóa các bản ghi tương ứng
             foreach ($ticketDetails as $ticketDetail) {
-                $ticketDetail->delete();
+                $ticketDetail->status = 'available';
+                $ticketDetail->save();
             }
             $data = Stop::query()->get();
             return redirect()
@@ -490,7 +508,8 @@ class TicketBookingController extends Controller
             $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
             // Xóa các bản ghi tương ứng
             foreach ($ticketDetails as $ticketDetail) {
-                $ticketDetail->delete();
+                $ticketDetail->status = 'available';
+                $ticketDetail->save();
             }
             $data = Stop::query()->get();
             return redirect()
@@ -502,7 +521,7 @@ class TicketBookingController extends Controller
 
     public function list(Request $request)
     {
-        $query = TicketBooking::with(['route', 'paymentMethod', 'trip']);
+        $query = TicketBooking::with(['route', 'paymentMethod', 'trip', 'cancel']);
 
         // Lọc theo ngày nếu có tham số 'date'
         if ($request->has('date') && $request->date) {
@@ -529,10 +548,8 @@ class TicketBookingController extends Controller
                 $query->where('status', $paymentStatus);
             }
         }
-
         // Lấy dữ liệu
-        $data = $query->orderByDesc('date')->get();
-
+        $data = $query->orderBy('id', 'desc')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -540,7 +557,15 @@ class TicketBookingController extends Controller
     {
 
         $showTicket = TicketBooking::query()
-            ->with(['trip', 'bus', 'route', 'user', 'paymentMethod', 'ticketDetails', 'bus.driver'])
+            ->with([
+                'trip',
+                'bus',
+                'route',
+                'user',
+                'paymentMethod',
+                'ticketDetails',
+                'bus.driver'
+            ])
             ->findOrFail($id);
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('showTicket'));
@@ -605,6 +630,11 @@ class TicketBookingController extends Controller
     }
 
 
+
+
+
+
+
     public function destroy(string $id)
     {
         try {
@@ -633,5 +663,33 @@ class TicketBookingController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function cancel(string $id)
+    {
+        $ticketBooking = TicketBooking::findOrFail($id);
+
+        $ticketBooking->status = TicketBooking::PAYMENT_STATUS_REFUNDED;
+        $ticketBooking->save();
+
+        // Lấy danh sách ghế liên quan đến đơn hàng
+        $ticketDetails = TicketDetail::where('ticket_booking_id', $ticketBooking->id)->get();
+
+        // Cập nhật trạng thái ghế từ 'lock' thành 'available'
+        foreach ($ticketDetails as $ticketDetail) {
+            $ticketDetail->status = 'available';
+            $ticketDetail->save();
+        }
+
+        $cancel = Cancle::where('ticket_booking_id', $id)->firstOrFail();
+
+        event(new TicketCancel($cancel));
+
+
+
+        $cancel->delete();
+
+
+        return redirect()->back();
     }
 }

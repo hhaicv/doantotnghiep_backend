@@ -36,7 +36,7 @@
                                 <th>Tuyến đường</th>
                                 <th>Xe</th>
                                 <th>Ghế</th>
-                                <th>Biển số xe</th>
+                                <th>Thông tin xe</th>
                                 <th>Trạng thái</th>
                                 <th>Action</th>
                             </tr>
@@ -49,7 +49,9 @@
                                     <td>{{ $item->route->route_name }}</td>
                                     <td>{{ $item->bus->name_bus }}</td>
                                     <td>{{ $item->bus->total_seats }}</td>
-                                    <td>{{ $item->bus->license_plate }}</td>
+                                    <td>
+                                        <p>Tài xế: {{ optional(optional($item->bus)->driver)->name  }}</p>
+                                        <p>Biển số: {{ $item->bus->license_plate }}</p></td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"

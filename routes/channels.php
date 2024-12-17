@@ -20,3 +20,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('vouchers', function () {
     return true; // Kênh công khai nên luôn trả về true
 });
+Broadcast::channel('promotions', function () {
+    return true; // Nếu cần bảo mật hơn, thêm điều kiện kiểm tra user tại đây.
+});
+Broadcast::channel('seat-updates', function ($user) {
+    return true; // Hoặc logic kiểm tra quyền
+});

@@ -10,6 +10,8 @@ class Route extends Model
 {
     use HasFactory;
 
+    
+
     use SoftDeletes;
     protected $fillable = [
         "route_name",
@@ -32,6 +34,11 @@ class Route extends Model
     }
     public function promotions()
     {
-        return $this->belongsToMany(Promotion::class, 'promotion_route');
+        return $this->belongsToMany(Promotion::class, 'promotion_route', 'route_id', 'promotion_id');
+    }
+
+    public function trips()
+    {
+        return $this->hasMany(Trip::class, 'route_id');
     }
 }

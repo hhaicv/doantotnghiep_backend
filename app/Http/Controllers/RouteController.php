@@ -18,23 +18,33 @@ class RouteController extends Controller
     public function index()
     {
         $stops = Stop::all(); // Lấy tất cả các điểm dừng
-        $data = Route::with(['stages.startStop', 'stages.endStop'])->get()->map(function ($route) {
-            // Gộp start_stop_id và end_stop_id vào một mảng duy nhất cho mỗi route
-            $stopIds = $route->stages->flatMap(function ($stage) {
-                return [$stage->start_stop_id, $stage->end_stop_id];
-            })
-                ->unique() // Loại bỏ các ID trùng lặp
-                ->sort() // Sắp xếp theo thứ tự tăng dần
-                ->values(); // Đặt lại các key để đảm bảo tuần tự
 
-            // Gán mảng đã xử lý vào thuộc tính stages của route để truyền vào view
-            $route->stages = $stopIds;
+        // Lấy dữ liệu route, số chuyến và số xe
+        $data = Route::with(['stages.startStop', 'stages.endStop'])
+            ->withCount('trips') // Đếm số chuyến mỗi tuyến
+            ->get()
+            ->map(function ($route) {
+                // Gộp start_stop_id và end_stop_id vào một mảng duy nhất
+                $stopIds = $route->stages->flatMap(function ($stage) {
+                    return [$stage->start_stop_id, $stage->end_stop_id];
+                })
+                    ->unique()
+                    ->sort()
+                    ->values();
 
-            return $route;
-        });
+                // Gán danh sách điểm dừng
+                $route->stages = $stopIds;
+
+                // Đếm số lượng xe dựa trên các chuyến (1 chuyến = 1 xe)
+                $route->vehicle_count = $route->trips_count;
+
+                return $route;
+            });
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'stops'));
     }
+
+
 
 
     /**

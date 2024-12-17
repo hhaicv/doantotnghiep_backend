@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Route;
 use App\Http\Requests\StoreRouteRequest;
 use App\Http\Requests\UpdateRouteRequest;
+use App\Models\TicketBooking;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class RouteController extends Controller
 {
+    const PAYMENT_STATUS_PAID = 'paid'; // Đã thanh toán
     /**
      * Display a listing of the resource.
      */
@@ -29,6 +31,29 @@ class RouteController extends Controller
             ], 500); // 500 Internal Server Error
         }
     }
+
+    public function popular(): JsonResponse
+    {
+        try {
+            $topRoutes = TicketBooking::where('status', self::PAYMENT_STATUS_PAID)
+            ->with('route')
+            ->selectRaw('route_id, COUNT(*) as count')
+            ->groupBy('route_id')
+            ->orderBy('count', 'desc')
+            ->take(3)
+            ->get();
+            return response()->json([
+                'success' => true,
+                'data' => $topRoutes
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi lấy danh sách tuyến: ' . $e->getMessage()
+            ], 500); // 500 Internal Server Error
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.

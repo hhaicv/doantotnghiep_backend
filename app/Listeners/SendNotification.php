@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
+
 class SendNotification implements ShouldQueue
 {
     public function __construct()
@@ -77,7 +78,6 @@ class SendNotification implements ShouldQueue
             Mail::send('mail', ['data' => $data, 'ticketDetails' => $ticketDetails], function ($message) use ($data, $qrPaths) {
                 $message->to($data['email'], $data['name'])
                     ->subject('Thông tin đơn hàng');
-
                 // Đính kèm mã QR vào email
                 foreach ($qrPaths as $qrPath) {
                     $message->attach($qrPath, [

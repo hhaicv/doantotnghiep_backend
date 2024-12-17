@@ -92,7 +92,7 @@
                     <a class="nav-link menu-link" href="#sidebarNewCategory" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarNewCategory">
                         <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Danh mục tin tức</span>
+                        <span data-key="t-layouts">Tin tức</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarNewCategory">
                         <ul class="nav nav-sm flex-column">
@@ -131,22 +131,22 @@
                     <a class="nav-link menu-link" href="#sidebarPromotion" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarPromotion">
                         <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Khuyến mại</span>
+                        <span data-key="t-layouts">Khuyến mãi</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarPromotion">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.promotions.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="{{ route('admin.promotion_categories.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách danh mục</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.promotions.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="{{ route('admin.promotions.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách khuyến mãi</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarReviews" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarReviews">
                         <i class="ri-layout-3-line"></i>
@@ -164,7 +164,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarContacts">

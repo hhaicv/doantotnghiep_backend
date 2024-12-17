@@ -1,12 +1,15 @@
 <?php
 
+use App\Events\SeatUpdatedEvent;
 use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\CancleController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\NewCategoryController;
+use App\Http\Controllers\PromotionCategoryController;
 use App\Http\Controllers\RoleController;
 
 use App\Http\Controllers\RouteController;
@@ -59,12 +62,18 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('promotions', PromotionController::class);
     Route::post('/status-promotion/{id}', [PromotionController::class, 'statusPromotion']);
+    Route::resource('promotion_categories', PromotionCategoryController::class);
+
 
     Route::resource('trips', TripController::class);
     Route::post('/status-trip/{id}', [TripController::class, 'statusTrip']);
 
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
+
+    Route::resource('cancel', CancleController::class);
+
+
 
     Route::resource('reviews', ReviewController::class);
     Route::get('/send-notification', [PromotionController::class, 'sendPromotionNotification']);
@@ -80,9 +89,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::get('/customers', [UserController::class, 'userIndex'])->name('customers'); // Danh sách khách hàng
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::post('/store', [UserController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); // Chỉnh sửa người dùng
-        Route::put('/{id}', [UserController::class, 'update'])->name('update'); // Cập nhật người dùng
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); // Xóa người dùng
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
 
 
@@ -97,5 +106,46 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::get('/change/{id}', [TicketBookingController::class, 'change'])->name('change');
     Route::get('/load', [TicketBookingController::class, 'load'])->name('load');
+
+
+    Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply.voucher');
+
+
+    // readtime ghế
+
+
+    // Route::post('/seat/update-status', [TicketBookingController::class, 'updateStatus']);
+
+    // Route::get('/', function () {
+    //     // Render the realtime seat management page
+    //     return view('realtime_seat');
+    // });
+
+    Route::post('/update-seat-status', function (Illuminate\Http\Request $request) {
+        $seatName = $request->input('name');
+        $seatStatus = $request->input('status');
+        $tripId = $request->input('trip_id');
+        $userId = $request->input('userId'); // Lấy user_id từ yêu cầu
+        $date = $request->input('date'); // Lấy user_id từ yêu cầu
+
+        // Xử lý cập nhật trạng thái ghế
+        $seat = [
+            'name' => $seatName,
+            'status' => $seatStatus,
+            'trip_id' => $tripId,
+            'userId' => $userId,
+            'date' => $date,
+        ];
+
+        // Phát sự kiện
+        event(new App\Events\SeatUpdatedEvent($seat));
+
+        return response()->json(['success' => true, 'seat' => $seat]);
+    });
+
+
+
+    Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
+
 
 });

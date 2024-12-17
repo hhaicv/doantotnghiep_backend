@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cancle;
 use App\Models\PaymentMethod;
 use App\Models\Stop;
+use App\Models\TicketBooking;
 use App\Models\TicketDetail;
 use App\Models\Trip;
 use Illuminate\Http\Request;
@@ -21,7 +23,25 @@ class HomeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+
+    // gửi request hủy chuyến lên db
+    public function store(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $model = Cancle::query()->create($data);
+
+            return response()->json([
+                'success' => true,
+                'data' => $model
+            ], 201); // 201 Created
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi tạo yêu cầu: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -45,7 +65,7 @@ class HomeController extends Controller
         $endStopName = Stop::where('id', $endRouteId)->value('stop_name');
 
         // Lấy tất cả các chuyến có giai đoạn phù hợp
-        $trips = Trip::with(['bus', 'route', 'stages' => function ($query) use ($startRouteId, $endRouteId) {
+        $trips = Trip::with(['bus', 'route', 'stages' ,'driver' => function ($query) use ($startRouteId, $endRouteId) {
             $query->where('start_stop_id', $startRouteId)
                 ->where('end_stop_id', $endRouteId);
         }])
@@ -61,37 +81,46 @@ class HomeController extends Controller
             ->paginate(5);
 
         // Map dữ liệu chuyến
-        $tripData = $trips->getCollection()->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
+        $tripData = $trips->map(function ($trip) use ($startStopName, $endStopName, $date, $startRouteId, $endRouteId) {
             $stage = $trip->stages->first();
-
-            // Đếm số ghế đã đặt
             $bookedSeatsCount = 0;
 
             if ($trip->ticketBookings) {
-                // Đếm số ghế đã đặt dựa trên các ticket_booking_id
-                $bookedSeatsCount = TicketDetail::whereIn('ticket_booking_id', $trip->ticketBookings->pluck('id'))
+                // Đếm số ghế đã đặt theo chuyến và ngày
+                $bookedSeatsCount = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip) {
+                    $query->where('trip_id', $trip->id)
+                        ->where('date', $date);
+                })
+                    ->where('status', '!=', 'available') // Loại bỏ ghế có trạng thái 'available'
                     ->count();
             }
 
-            return [
-                'bus_id' => $trip->bus->id,
-                'image' => $trip->bus->image,
-                'route_id' => $trip->route->id,
-                'trip_id' => $trip->id,
-                'time_start' => $trip->time_start,
-                'route_name' => $trip->route->route_name,
-                'fare' => $stage ? $stage->fare : null,
-                'name_bus' => $trip->bus->name_bus,
-                'total_seats' => $trip->bus->total_seats,
-                'booked_seats_count' => $bookedSeatsCount,
-                'available_seats' => $trip->bus->total_seats - $bookedSeatsCount,
-                'date' => $date,
-                'start_stop_name' => $startStopName,
-                'end_stop_name' => $endStopName,
-                'start_stop_id' => $startRouteId,
-                'end_stop_id' => $endRouteId,
-            ];
-        });
+            $availableSeats = $trip->bus->total_seats - $bookedSeatsCount;
+            $driver = $trip->bus->driver;
+            if ($availableSeats > 0) {
+                return [
+                    'bus_id' => $trip->bus->id,
+                    'image' => $trip->bus->image,
+                    'route_id' => $trip->route->id,
+                    'trip_id' => $trip->id,
+                    'time_start' => $trip->time_start,
+                    'route_name' => $trip->route->route_name,
+                    'fare' => $stage ? $stage->fare : null,
+                    'name_bus' => $trip->bus->name_bus,
+                    'license_plate' => $trip->bus->license_plate,
+                    'total_seats' => $trip->bus->total_seats,
+                    'booked_seats_count' => $bookedSeatsCount,
+                    'available_seats' => $trip->bus->total_seats - $bookedSeatsCount,
+                    'date' => $date,
+                    'start_stop_name' => $startStopName,
+                    'end_stop_name' => $endStopName,
+                    'start_stop_id' => $startRouteId,
+                    'end_stop_id' => $endRouteId,
+                    'driver_phone' => $driver->phone,
+                ];
+            }
+            return null;
+        })->filter();
 
         // Thay thế bộ sưu tập bằng dữ liệu đã map và thêm thông tin phân trang
         $paginatedTripData = [

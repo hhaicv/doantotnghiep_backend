@@ -82,7 +82,7 @@ class AuthController extends Controller
             ]
         ]);
     }
-
+    
     public function logout(Request $request)
     {
         if ($request->input('type') === 'all') {
