@@ -42,4 +42,8 @@ window.Echo.channel('promotions')
     .listen('.promotion.notification', (data) => {
         alert(`Thông báo khuyến mãi mới: ${data.promotionData.title}`);
     });
-  
+    Echo.channel('seat-channel')
+    .listen('SeatUpdatedEvent', (event) => {
+        console.log('Thông tin ghế đã được cập nhật:', event.seat);
+        // Cập nhật giao diện hoặc thực hiện các hành động khác tại đây
+    });

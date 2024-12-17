@@ -264,6 +264,7 @@
                 resultsBody.innerHTML = '<tr><td colspan="5">Không có chuyến nào.</td></tr>';
                 return;
             }
+            const userId = <?php echo json_encode(Auth::guard('admin')->id(), 15, 512) ?>;
 
             tripsArray.forEach(trip => {
                 const row = document.createElement('tr');
@@ -310,7 +311,8 @@
                         start_stop_id: trip.start_stop_id,
                         end_stop_id: trip.end_stop_id,
                         start_name: trip.start_stop_name,
-                        end_name: trip.end_stop_name
+                        end_name: trip.end_stop_name,
+                        user_id: userId,
                     };
                     const queryString = new URLSearchParams(orderDetails).toString();
                     window.location.href = `/employee/tickets/create?${queryString}`;

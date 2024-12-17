@@ -89,6 +89,33 @@ Route::get('promotions/{id}', [PromotionController::class, 'show']);
 Route::get('/change/{id}', [StopController::class, 'change'])->name('change');
 Route::get('/load', [StopController::class, 'load'])->name('load');
 
+// tuyến nổi bật
+Route::get('/popular', [RouteController::class, 'popular'])->name('popular');
+
+Route::post('/update-seat-status', function (Illuminate\Http\Request $request) {
+    $seatName = $request->input('name');
+    $seatStatus = $request->input('status');
+    $tripId = $request->input('trip_id');
+    $userId = $request->input('userId'); // Lấy user_id từ yêu cầu
+
+
+    // Xử lý cập nhật trạng thái ghế
+    $seat = [
+        'name' => $seatName,
+        'status' => $seatStatus,
+        'trip_id' => $tripId,
+        'userId' => $userId,
+
+    ];
+
+    // Phát sự kiện
+    event(new App\Events\SeatUpdatedEvent($seat));
+
+    return response()->json(['success' => true, 'seat' => $seat]);
+});
+
+
+
 
 Route::get('/my_ticket/{user_id}', [StopController::class, 'my_ticket'])->name('my_ticket');
 Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);

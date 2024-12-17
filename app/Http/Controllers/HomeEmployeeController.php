@@ -6,6 +6,7 @@ use App\Events\OrderTicket;
 use App\Events\PromotionCreated;
 use App\Http\Requests\StoreBannerRequest;
 use App\Http\Requests\StorePromotionRequest;
+use App\Http\Requests\StoreStopRequest;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateBannerRequest;
@@ -329,7 +330,7 @@ class HomeEmployeeController extends Controller
         return view('employee.stops.create', compact('parents'));
     }
 
-    public function storeStop(Request $request)
+    public function storeStop(StoreStopRequest $request)
     {
         $data = $request->except('image');
 

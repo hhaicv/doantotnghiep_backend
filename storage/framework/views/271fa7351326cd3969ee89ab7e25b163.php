@@ -204,7 +204,24 @@
                                                         </li>
                                                     <?php endif; ?>
 
-                                               
+                                                  <?php if($ticketBooking->cancel): ?>
+                                                  <li class="list-inline-item edit" data-bs-toggle="tooltip"
+                                                  data-bs-trigger="hover" data-bs-placement="top"
+                                                  title="Edit">
+                                                  <a href="#showModal" data-bs-toggle="modal"
+                                                      class="text-primary d-inline-block edit-item-btn"
+                                                      data-id="<?php echo e($ticketBooking->id); ?>"
+                                                      data-order-code="<?php echo e($ticketBooking->order_code); ?>"
+                                                      data-name="<?php echo e($ticketBooking->cancel->name ?? ''); ?>"
+                                                      data-phone="<?php echo e($ticketBooking->cancel->phone ?? ''); ?>"
+                                                      data-email="<?php echo e($ticketBooking->cancel->email ?? ''); ?>"
+                                                      data-account-number="<?php echo e($ticketBooking->cancel->account_number ?? ''); ?>"
+                                                      data-bank="<?php echo e($ticketBooking->cancel->bank ?? ''); ?>"
+                                                      data-reason="<?php echo e($ticketBooking->cancel->reason ?? ''); ?>">
+                                                      <i class="ri-pencil-fill fs-16"></i>
+                                                  </a>
+                                              </li>
+                                          <?php endif; ?>
                                                 </ul>
                                             </td>
                                         </tr>
@@ -223,7 +240,7 @@
                                             </div>
                                             <?php if(isset($ticketBooking)): ?>
                                                 <form id="cancelForm"
-                                                    
+                                                    action="<?php echo e(route('employee.cancel', ['id' => $ticketBooking->id])); ?>"
                                                     method="POST">
                                                     <?php echo csrf_field(); ?>
                                                     <div class="modal-body">
@@ -493,6 +510,40 @@
 
             });
         }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const editButtons = document.querySelectorAll(".edit-item-btn");
+
+            const cancelRoute = "<?php echo e(route('employee.cancel', ['id' => '__id__'])); ?>"; // Chứa URL tạm thời
+
+            editButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const id = this.getAttribute("data-id");
+                    const orderCode = this.getAttribute("data-order-code");
+                    const name = this.getAttribute("data-name");
+                    const phone = this.getAttribute("data-phone");
+                    const email = this.getAttribute("data-email");
+                    const accountNumber = this.getAttribute("data-account-number");
+                    const bank = this.getAttribute("data-bank");
+                    const reason = this.getAttribute("data-reason");
+
+                    // Gán giá trị vào modal
+                    document.getElementById("id-field").value = id;
+                    document.getElementById("order_code").value = orderCode;
+                    document.getElementById("customername-field").value = name;
+                    document.querySelector("input[name='phone']").value = phone;
+                    document.querySelector("input[name='email']").value = email;
+                    document.querySelector("input[name='account_number']").value = accountNumber;
+                    document.querySelector("input[name='bank']").value = bank;
+                    document.querySelector("textarea[name='reason']").value = reason;
+
+                    // Cập nhật lại URL của action của form
+                    const form = document.getElementById('cancelForm');
+                    form.action = cancelRoute.replace('__id__', id);
+                });
+            });
+        });
     </script>
 
 

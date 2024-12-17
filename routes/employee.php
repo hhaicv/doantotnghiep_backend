@@ -93,6 +93,7 @@ Route::middleware(['employee'])->prefix('employee')->as('employee.')->group(func
     Route::get('/tickets/create', [HomeEmployeeController::class, 'create'])->name('tickets_create');
     Route::get('/change/{id}', [HomeEmployeeController::class, 'change'])->name('tickets_change');
     Route::get('/load', [HomeEmployeeController::class, 'load'])->name('tickets_load');
+       
 
     Route::post('/store-tickets', [HomeEmployeeController::class, 'storeTicket'])->name('tickets.store');
 
@@ -104,4 +105,8 @@ Route::middleware(['employee'])->prefix('employee')->as('employee.')->group(func
     Route::get('/thanks', [HomeEmployeeController::class, 'thanks'])->name('thanks');
     Route::get('/momo_return', [HomeEmployeeController::class, 'momo_return'])->name('momo_return');
     Route::get('/vnpay_return', [TicketBookingController::class, 'vnpay_return'])->name('vnpay_return');
+
+    
+    Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
+
 });

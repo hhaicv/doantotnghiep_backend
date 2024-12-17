@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title'); ?>
     Danh sách tuyến đường
 <?php $__env->stopSection(); ?>

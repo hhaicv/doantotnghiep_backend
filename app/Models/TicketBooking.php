@@ -84,5 +84,8 @@ class TicketBooking extends Model
         return $this->hasMany(TicketDetail::class, 'ticket_booking_id');
     }
 
-
+    public function cancel()
+    {
+        return $this->hasOne(Cancle::class, 'ticket_booking_id');
+    }
 }

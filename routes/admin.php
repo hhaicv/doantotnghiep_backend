@@ -1,8 +1,10 @@
 <?php
 
+use App\Events\SeatUpdatedEvent;
 use App\Http\Controllers\Auth\LoginAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusController;
+use App\Http\Controllers\CancleController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InformationController;
@@ -19,7 +21,9 @@ use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
 
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin/login', [LoginAdminController::class, 'showAdminLoginForm'])->name('admin.login');
@@ -69,6 +73,7 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('tickets', TicketBookingController::class);
     Route::get('/list', [TicketBookingController::class, 'list'])->name('ticket_list');
 
+    Route::resource('cancel', CancleController::class);
 
 
 
@@ -107,5 +112,69 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
 
     Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher'])->name('apply.voucher');
+
+
+    // readtime ghế
+
+
+    // Route::post('/seat/update-status', [TicketBookingController::class, 'updateStatus']);
+
+    // Route::get('/', function () {
+    //     // Render the realtime seat management page
+    //     return view('realtime_seat');
+    // });
+
+    Route::post('/update-seat-status', function (Illuminate\Http\Request $request) {
+        $seatName = $request->input('name');
+        $seatStatus = $request->input('status');
+        $tripId = $request->input('trip_id');
+        $userId = $request->input('userId'); // Lấy user_id từ yêu cầu
+
+
+        // Xử lý cập nhật trạng thái ghế
+        $seat = [
+            'name' => $seatName,
+            'status' => $seatStatus,
+            'trip_id' => $tripId,
+            'userId' => $userId,
+
+        ];
+
+        // Phát sự kiện
+        event(new App\Events\SeatUpdatedEvent($seat));
+
+        return response()->json(['success' => true, 'seat' => $seat]);
+    });
+
+
+
+    Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
+
+    Route::post('/cancel-ticket', [TicketBookingController::class, 'requestCancelTicket']);
+    Route::get('/test-email', function () {
+        // Dữ liệu gửi email
+        $data = [
+            'name' => 'Nguyễn Văn A',
+            'email' => 'example@example.com',  // Thay bằng email thực tế bạn muốn gửi đến
+            'order_code' => 'ABC123',
+            'reason' => 'Lý do hủy vé',
+            'phone' => '0123456789',
+            'account_number' => '123456789',
+            'bank' => 'Ngân hàng XYZ'
+        ];
+
+        try {
+            // Gửi email với template 'cancel'
+            Mail::send('cancel', ['data' => $data], function ($message) use ($data) {
+                $message->to($data['email'], $data['name'])
+                        ->subject('Thông báo Hủy Đơn Hàng Thành Công');
+            });
+
+            return "Email đã được gửi thành công!";
+        } catch (\Exception $e) {
+            return "Lỗi khi gửi email: " . $e->getMessage();
+        }
+    });
+
 
 });

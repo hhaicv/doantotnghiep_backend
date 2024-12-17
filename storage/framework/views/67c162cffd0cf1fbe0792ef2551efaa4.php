@@ -24,7 +24,7 @@
         </div>
     <?php endif; ?>
     <div class="card">
-        <form action="<?php echo e(route('employee.stops', $data->id)); ?>" method="POST" enctype="multipart/form-data" class="row g-3 p-5" >
+        <form action="<?php echo e(route('employee.stops.update', $data->id)); ?>" method="POST" enctype="multipart/form-data" class="row g-3 p-5" >
             <?php echo csrf_field(); ?>
             <?php echo method_field('PUT'); ?>
             <div class="col-md-6">

@@ -21,8 +21,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate
-        action="{{ route('employee.routes.update', $data) }}" method="POST">
+    <form action="{{ route('employee.routes.update', $data->id) }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">

@@ -22,8 +22,7 @@
 
         </div>
     <?php endif; ?>
-    <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate
-        action="<?php echo e(route('employee.routes.update', $data)); ?>" method="POST">
+    <form action="<?php echo e(route('employee.routes.update', $data->id)); ?>" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
         <?php echo method_field('PUT'); ?>
         <div class="row">

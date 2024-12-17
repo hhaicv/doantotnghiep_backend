@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cancle;
 use App\Models\PaymentMethod;
 use App\Models\Stop;
+use App\Models\TicketBooking;
 use App\Models\TicketDetail;
 use App\Models\Trip;
 use Illuminate\Http\Request;
@@ -21,7 +23,25 @@ class HomeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+
+    // gửi request hủy chuyến lên db
+    public function store(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $model = Cancle::query()->create($data);
+
+            return response()->json([
+                'success' => true,
+                'data' => $model
+            ], 201); // 201 Created
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi tạo yêu cầu: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -45,7 +65,7 @@ class HomeController extends Controller
         $endStopName = Stop::where('id', $endRouteId)->value('stop_name');
 
         // Lấy tất cả các chuyến có giai đoạn phù hợp
-        $trips = Trip::with(['bus', 'route', 'stages' => function ($query) use ($startRouteId, $endRouteId) {
+        $trips = Trip::with(['bus', 'route', 'stages' ,'driver' => function ($query) use ($startRouteId, $endRouteId) {
             $query->where('start_stop_id', $startRouteId)
                 ->where('end_stop_id', $endRouteId);
         }])
@@ -70,11 +90,13 @@ class HomeController extends Controller
                 $bookedSeatsCount = TicketDetail::whereHas('ticketBooking', function ($query) use ($date, $trip) {
                     $query->where('trip_id', $trip->id)
                         ->where('date', $date);
-                })->count();
+                })
+                    ->where('status', '!=', 'available') // Loại bỏ ghế có trạng thái 'available'
+                    ->count();
             }
 
             $availableSeats = $trip->bus->total_seats - $bookedSeatsCount;
-
+            $driver = $trip->bus->driver;
             if ($availableSeats > 0) {
                 return [
                     'bus_id' => $trip->bus->id,
@@ -94,10 +116,10 @@ class HomeController extends Controller
                     'end_stop_name' => $endStopName,
                     'start_stop_id' => $startRouteId,
                     'end_stop_id' => $endRouteId,
+                    'driver_phone' => $driver->phone,
                 ];
             }
             return null;
-
         })->filter();
 
         // Thay thế bộ sưu tập bằng dữ liệu đã map và thêm thông tin phân trang
