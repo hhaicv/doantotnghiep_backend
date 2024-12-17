@@ -18,7 +18,7 @@
                     <div class="d-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Order #{{$showTicket->order_code}}</h5>
                         <div class="flex-shrink-0">
-                            <a href="{{ route('employee.tickets.edit', $showTicket->id) }}" class="btn btn-success btn-sm"><i
+                            <a href="{{ route('employee.tickets', $showTicket->id) }}" class="btn btn-success btn-sm"><i
                                     class="ri-download-2-fill align-middle me-1"></i> Hóa đơn</a>
                         </div>
                     </div>

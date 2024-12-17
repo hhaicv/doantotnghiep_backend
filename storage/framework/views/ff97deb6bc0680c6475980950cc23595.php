@@ -113,20 +113,12 @@ unset($__errorArgs, $__bag); ?>
             <div class="col-md-6">
                 <div class="col-mt-3">
                     <label for="start_date">Số lượng ghế</label>
-                    <input type="number" name="total_seats" id="total_seats" class="form-control"
-                        value="<?php echo e(old('total_seats')); ?>" placeholder="Nhập số lượng ghế">
-                    <?php $__errorArgs = ['total_seats'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                        <span class="text-danger"><?php echo e($message); ?></span>
-                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                    <select class="form-select"  name="total_seats" id="total_seats" aria-label="Default select example">
+                        <option value="34">34 Chỗ</option>
+                        <option value="40">40 Chỗ</option>
+                        <option value="45">45 Chỗ</option>
+                    </select>
                 </div>
-                
             </div>
     </div>
     <div class="col-md-12">
@@ -154,7 +146,7 @@ unset($__errorArgs, $__bag); ?>
     <div class="col-12">
         <div class="text-end">
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="<?php echo e(route('admin.buses.index')); ?>" class="btn btn-success">Quay lại</a>
+            <a href="<?php echo e(route('admin.buses')); ?>" class="btn btn-success">Quay lại</a>
         </div>
     </div>
     </form>

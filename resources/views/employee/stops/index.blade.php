@@ -103,10 +103,10 @@ Danh sách điểm dừng
                             </td>
                             <td>
                                 <div class="hstack gap-3 fs-15">
-                                    <a href="{{ route('employee.stops.edit', $child->id) }}"
+                                    <a href="{{ route('employee.stops', $child->id) }}"
                                         class="link-primary"><i class="ri-settings-4-line"></i></a>
                                     <form id="deleteFormStop{{ $child->id }}"
-                                        action="{{ route('employee.stops.destroy', $child->id) }}"
+                                        action="{{ route('employee.stops', $child->id) }}"
                                         method="post">
                                         @csrf
                                         @method('DELETE')

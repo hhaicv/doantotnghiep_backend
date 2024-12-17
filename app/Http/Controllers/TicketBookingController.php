@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderTicket;
-use App\Events\SeatBooked;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
 use App\Http\Requests\UpdateTicketBookingRequest;
 use App\Models\PaymentMethod;
-use App\Models\Seat;
+
 use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;
@@ -136,9 +135,6 @@ class TicketBookingController extends Controller
         $methods = PaymentMethod::query()->get();
 
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
-
-
-
         $seatCount = $trip->bus->total_seats;
 
         // Lấy danh sách ghế bị "lock" quá 15 phút
@@ -157,16 +153,8 @@ class TicketBookingController extends Controller
                 ->where('trip_id', $trip_id);
         })->get();
 
-
-        $seats = Seat::where('date', $date)
-            ->where('trip_id', $trip_id)
-            ->get();
-
-        $allSeats = $seats->merge($seatsBooked);
-
-
         $seatsStatus = [];
-        foreach ($allSeats as $seat) {
+        foreach ($seatsBooked as $seat) {
             $seatsStatus[$seat->name_seat] = $seat->status;
         }
 
@@ -174,43 +162,11 @@ class TicketBookingController extends Controller
     }
 
 
-    public function updateStatus(Request $request)
-    {
-        $validated = $request->validate([
-            'seat_name' => 'required|string', // Đổi từ name_seat thành seat_name
-            'trip_id' => 'required', // Đổi từ name_seat thành seat_name
-            'date' => 'required', // Đổi từ name_seat thành seat_name
-            'status' => 'required|string|in:available,selected,booked,lock',
-        ]);
-
-        $seat = Seat::where('name_seat', $validated['seat_name'])->first();
-
-
-        $seat = new Seat();
-        $seat->name_seat = $validated['seat_name'];
-        $seat->trip_id = $validated['trip_id'];
-        $seat->date = $validated['date'];
-        $seat->status = $validated['status'];
-        $seat->save();
-
-
-        if ($seat) {
-            $seat->status = $validated['status'];
-            $seat->save();
-
-            // Phát sự kiện cập nhật trạng thái
-            broadcast(new SeatBooked($seat))->toOthers();
-
-            return response()->json(['success' => true, 'message' => 'Seat status updated successfully']);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Seat not found'], 404);
-        }
-    }
-
-
 
     public function store(StoreTicketBookingRequest $request)
     {
+
+
         if ($request->id_change) {
             $booking = TicketBooking::findOrFail($request->id_change);
             $booking->delete();
@@ -363,88 +319,7 @@ class TicketBookingController extends Controller
             $vnp_Url = $endpoint . "?" . http_build_query($vnp_Data);
 
             return redirect($vnp_Url); // Chuyển hướng tới VNPay để thanh toán
-        } 
-        else if ($request->has('payment_method_id') && $request->payment_method_id == 4) {
-            // VNPAY payment logic
-            $endpoint = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";  // URL thanh toán VNPay
-            $vnp_TmnCode = '6H9JFR7W';  // Mã Merchant của bạn
-            $vnp_HashSecret = 'WIGT3LVWWHQZVTK33YR4OHCG5CWPK8R0';  // Mã bí mật của bạn
-
-            // Các tham số thanh toán
-            $vnp_Amount = $request->total_price * 100;  // Số tiền thanh toán (VND, nhân với 100)
-            $vnp_OrderInfo = "Thanh toán qua VNpay";
-            $vnp_OrderType = 'billpayment';
-            $vnp_ReturnUrl = route('admin.vnpay_return');  // URL trả về sau khi thanh toán
-            $vnp_TxnRef = time();  // Mã giao dịch duy nhất
-
-            // Tạo dữ liệu để gửi lên VNPay
-            $vnp_Data = [
-                "vnp_Version" => "2.1.0",
-                "vnp_Command" => "pay",
-                "vnp_TmnCode" => $vnp_TmnCode,
-                "vnp_Amount" => $vnp_Amount,
-                "vnp_Locale" => "vn",
-                "vnp_CurrCode" => "VND",
-                "vnp_TxnRef" => $vnp_TxnRef,
-                "vnp_OrderInfo" => $vnp_OrderInfo,
-                "vnp_OrderType" => $vnp_OrderType,
-                "vnp_ReturnUrl" => $vnp_ReturnUrl,
-                "vnp_IpAddr" => request()->ip(),
-                "vnp_CreateDate" => date('YmdHis')
-            ];
-
-            // Sắp xếp các tham số theo thứ tự alphabet
-            ksort($vnp_Data);
-
-            // Tạo chuỗi dữ liệu hash
-            $hashString = '';
-            foreach ($vnp_Data as $key => $value) {
-                // Đảm bảo không có tham số vnp_SecureHash trong chuỗi này
-                if ($value != "") {
-                    $hashString .= urlencode($key) . "=" . urlencode($value) . "&";
-                }
-            }
-            // Loại bỏ dấu "&" cuối chuỗi
-
-            $hashString = rtrim($hashString, '&');
-
-            // Tạo chữ ký bảo mật (HMAC SHA512)
-            $vnp_SecureHash = hash_hmac('sha512', $hashString, $vnp_HashSecret);
-
-            $vnp_Data['vnp_SecureHash'] = $vnp_SecureHash;  // Thêm chữ ký vào tham số
-
-            $ticketBookingData = $request->except('name_seat', 'fare');
-            $seatNames = explode(', ', $request->input('name_seat'));
-            $totalTickets = count($seatNames);
-
-            $orderCode = $vnp_TxnRef;
-            if ($request->id_change) {
-                $ticketBookingData['total_price'] = $request->input('price');
-            }
-            $ticketBookingData['order_code'] = $orderCode;
-            $ticketBookingData['total_tickets'] = $totalTickets;
-
-            $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
-
-            $ticketBooking = TicketBooking::create($ticketBookingData);
-
-            foreach ($seatNames as $seatName) {
-                $ticketCode = $totalTickets == 1 ? $orderCode : strtoupper(Str::random(8));
-
-                TicketDetail::create([
-                    'ticket_code' => $ticketCode,
-                    'ticket_booking_id' => $ticketBooking->id,
-                    'name_seat' => $seatName,
-                    'price' => $request->input('fare'),
-                    'status' => 'lock'
-                ]);
-            }
-
-            // Xây dựng URL redirect sang VNPay
-            $vnp_Url = $endpoint . "?" . http_build_query($vnp_Data);
-
-            return redirect($vnp_Url); // Chuyển hướng tới VNPay để thanh toán
-        }else {
+        } else {
             return DB::transaction(function () use ($request) {
                 $ticketBookingData = $request->except('name_seat', 'fare');
                 $seatNames = explode(', ', $request->input('name_seat'));
@@ -458,9 +333,6 @@ class TicketBookingController extends Controller
                 $ticketBookingData['status'] = $request->input('payment_method_id') == 1
                     ? TicketBooking::PAYMENT_STATUS_PAID
                     : TicketBooking::PAYMENT_STATUS_UNPAID;
-                if ($request->id_change) {
-                    $ticketBookingData['total_price'] = $request->input('price');
-                }
 
                 $ticketBooking = TicketBooking::create($ticketBookingData);
 
@@ -657,9 +529,9 @@ class TicketBookingController extends Controller
                 $query->where('status', $paymentStatus);
             }
         }
-        // Lấy dữ liệu
-        $data = $query->orderBy('id', 'desc')->get();
 
+        // Lấy dữ liệu
+        $data = $query->orderByDesc('date')->get();
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
@@ -731,11 +603,6 @@ class TicketBookingController extends Controller
 
         return view(self::PATH_VIEW . 'load', compact('methods', 'seatsStatus', 'seatCount', 'showTicket'));
     }
-
-
- 
-
-
 
 
     public function destroy(string $id)

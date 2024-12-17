@@ -73,7 +73,7 @@
                                         </div>
                                     </td>
                                     <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                                    <td>
+                                    {{-- <td>
                                         <div class="hstack gap-3 fs-15">
                                             <!-- <form id="deleteFormContacts{{ $item->id }}"
                                                 action="{{ route('employee.contacts.destroy', $item->id) }}" method="post">
@@ -85,7 +85,7 @@
                                                 </button>
                                             </form> -->
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

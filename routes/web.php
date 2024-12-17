@@ -37,6 +37,19 @@ Route::middleware('driver')->group(function () {
     Route::get('/driver/dashboard', [HomeDriverController::class, 'showDashboard'])->name('driver.dashboard');
 });
 
+Route::get('/driver', [DriverLoginController::class, 'showLogin'])->name('driver.login');
+Route::post('/driver', [DriverLoginController::class, 'driverLogin'])->name('driver.login.submit');
+Route::middleware('driver')->group(function () {
+    Route::post('/logout', [DriverLoginController::class, 'driverLogout'])->name('driver.logout');
+
+    Route::get('/driver/dashboard', function () {
+        return view('driver.dashboard');
+    })->name('driver.dashboard');
+
+    Route::resource('drivers', HomeDriverController::class);
+    Route::get('/driver/dashboard', [HomeDriverController::class, 'showDashboard'])->name('driver.dashboard');
+});
+
 
 require __DIR__ . '/auth.php';
 

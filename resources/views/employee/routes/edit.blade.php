@@ -162,7 +162,7 @@
 
                 <div class="text-end mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ route('employee.routes.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="{{ route('employee.routes') }}" class="btn btn-success">Quay lại</a>
                 </div>
 
                 <style>

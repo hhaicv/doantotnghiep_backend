@@ -49,20 +49,20 @@
                     <div class="collapse menu-dropdown" id="sidebarExecutive">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('employee.buses.index') }}" class="nav-link" data-key="t-buses">Danh
+                                <a href="{{ route('employee.buses') }}" class="nav-link" data-key="t-buses">Danh
                                     sách xe</a>
                             </li>
                             
                             <li class="nav-item">
-                                <a href="{{ route('employee.stops.index') }}" class="nav-link" data-key="t-stops">Điểm
+                                <a href="{{ route('employee.stops') }}" class="nav-link" data-key="t-stops">Điểm
                                     dừng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('employee.routes.index') }}" class="nav-link" data-key="t-routes">Tuyến
+                                <a href="{{ route('employee.routes') }}" class="nav-link" data-key="t-routes">Tuyến
                                     đường</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('employee.trips.index') }}" class="nav-link" data-key="t-trips">Danh sách chuyến</a>
+                                <a href="{{ route('employee.trips') }}" class="nav-link" data-key="t-trips">Danh sách chuyến</a>
                             </li>
                         </ul>
                     </div>
@@ -76,7 +76,7 @@
                     <div class="collapse menu-dropdown" id="sidebarTickets">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('employee.tickets.index') }}" class="nav-link"
+                                <a href="{{ route('employee.tickets') }}" class="nav-link"
                                     data-key="t-horizontal">Tạo vé</a>
                             </li>
                             <li class="nav-item">
@@ -95,35 +95,17 @@
                     <div class="collapse menu-dropdown" id="sidebarPromotion">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('employee.promotions.index') }}" class="nav-link"
+                                <a href="{{ route('employee.promotions') }}" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('employee.promotions.create') }}" class="nav-link"
+                                <a href="{{ route('employee.promotions') }}" class="nav-link"
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarReviews" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarReviews">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Đánh giá</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarReviews">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('employee.reviews.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('employee.reviews.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarContacts">
@@ -134,6 +116,22 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('employee.contacts') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarBanner" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarBanner">
+                        <i class="ri-layout-3-line"></i>
+                        <span data-key="t-layouts">Banner</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarBanner">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('employee.banners' ) }}" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>

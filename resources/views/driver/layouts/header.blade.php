@@ -67,9 +67,9 @@
                             <span class="align-middle" data-key="t-logout">{{ __('Logout') }}</span>
                         </a>
 
-                        <form id="logout-form" method="POST" action="{{ route('driver.logout') }}" style="display: none;">
+                        {{-- <form id="logout-form" method="POST" action="{{ route('driver.logout') }}" style="display: none;">
                             @csrf
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
             </div>
