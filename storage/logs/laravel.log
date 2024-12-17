@@ -2484,3 +2484,14 @@
 #54 D:\\laragon\\www\\doantotnghiep\\public\\index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #55 {main}
 "} 
+[2024-12-17 16:34:12] local.INFO: Broadcasting [App\Events\SeatUpdatedEvent] on channels [seat-channel] with payload:
+{
+    "seat": {
+        "name": "A1",
+        "status": "selected",
+        "trip_id": "157",
+        "userId": 2,
+        "date": "2024-12-18"
+    },
+    "socket": null
+}  
