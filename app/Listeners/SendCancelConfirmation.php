@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SendCancelConfirmation implements ShouldQueue
+
 {
     /**
      * Create the event listener.
@@ -38,6 +39,7 @@ class SendCancelConfirmation implements ShouldQueue
             'account_number' => $cancel->account_number,
             'bank' => $cancel->bank,
         ];
+        Log::info("Chạy vào đây rồi nhé hihihihihihihhiihhi.");
 
         try {
             Log::info("Bắt đầu gửi email cho {$data['email']}.");

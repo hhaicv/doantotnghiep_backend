@@ -5,22 +5,22 @@
         <!-- Dark Logo-->
         <a href="" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('theme/admin/assets/images/logo-removebg-preview.png') }}" alt=""
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
                     height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/admin/assets/images/logo-removebg-preview.png') }}" alt=""
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
                     height="17">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/admin/assets/images/logo-removebg-preview.png') }}" alt=""
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
                     height="50">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/admin/assets/images/logo-removebg-preview.png') }}" alt=""
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
                     height="100">
             </span>
         </a>
@@ -32,14 +32,14 @@
 
     <div id="scrollbar">
         <div class="container-fluid">
-            {{-- // div cấm xóa --}}
+            
             <div id="two-column-menu">
 
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
+                    <a class="nav-link menu-link" href="<?php echo e(route('admin.dashboard')); ?>">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
                 </li>
@@ -54,19 +54,19 @@
                     <div class="collapse menu-dropdown" id="sidebarExecutive">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.buses.index') }}" class="nav-link" data-key="t-buses">Danh
+                                <a href="<?php echo e(route('admin.buses.index')); ?>" class="nav-link" data-key="t-buses">Danh
                                     sách xe</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.stops.index') }}" class="nav-link" data-key="t-stops">Điểm
+                                <a href="<?php echo e(route('admin.stops.index')); ?>" class="nav-link" data-key="t-stops">Điểm
                                     dừng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.routes.index') }}" class="nav-link" data-key="t-routes">Tuyến
+                                <a href="<?php echo e(route('admin.routes.index')); ?>" class="nav-link" data-key="t-routes">Tuyến
                                     đường</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.trips.index') }}" class="nav-link" data-key="t-trips">Danh sách
+                                <a href="<?php echo e(route('admin.trips.index')); ?>" class="nav-link" data-key="t-trips">Danh sách
                                     chuyến</a>
                             </li>
                         </ul>
@@ -81,11 +81,11 @@
                     <div class="collapse menu-dropdown" id="sidebarTickets">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.tickets.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.tickets.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Tạo vé</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.ticket_list') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.ticket_list')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh sách vé</a>
                             </li>
                         </ul>
@@ -100,11 +100,11 @@
                     <div class="collapse menu-dropdown" id="sidebarNewCategory">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.new_categories.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.new_categories.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh sách danh mục</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.information.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.information.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh
                                     sách tin tức</a>
                             </li>
@@ -120,11 +120,11 @@
                     <div class="collapse menu-dropdown" id="sidebarBanners">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.banners.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.banners.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.banners.create') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.banners.create')); ?>" class="nav-link"
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
@@ -139,35 +139,17 @@
                     <div class="collapse menu-dropdown" id="sidebarPromotion">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.promotion_categories.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.promotion_categories.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh sách danh mục</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.promotions.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.promotions.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh sách khuyến mãi</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarReviews" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarReviews">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Đánh giá</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarReviews">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.reviews.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.reviews.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> --}}
+                
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarContacts">
@@ -177,11 +159,11 @@
                     <div class="collapse menu-dropdown" id="sidebarContacts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.contacts.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.contacts.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.contacts.create') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.contacts.create')); ?>" class="nav-link"
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
@@ -196,19 +178,19 @@
                     <div class="collapse menu-dropdown" id="sidebarUsers">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.admins.index') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.admins.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Admin</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.users.employees') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.users.employees')); ?>" class="nav-link"
                                     data-key="t-horizontal">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.drivers.index') }}" class="nav-link" data-key="t-buses">Tài
+                                <a href="<?php echo e(route('admin.drivers.index')); ?>" class="nav-link" data-key="t-buses">Tài
                                     xế</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.users.customers') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.users.customers')); ?>" class="nav-link"
                                     data-key="t-horizontal">Khách Hàng</a>
                             </li>
                         </ul>
@@ -225,34 +207,13 @@
                     <div class="collapse menu-dropdown" id="sidebarStatistical">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.statistics.tripStatistical') }}" class="nav-link"
+                                <a href="<?php echo e(route('admin.statistics.tripStatistical')); ?>" class="nav-link"
                                     data-key="t-horizontal">Thống kê vé đặt</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                {{-- <hr>
-                <li class="menu-title"><span data-key="t-menu">Quản trị</span></li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAdmins" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarAdmins">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Tài khoản quản trị</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAdmins">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.admins.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Tài khoản quản trị</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.roles.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách phân quyền</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <hr> --}}
+                
             </ul>
         </div>
     </div>
@@ -263,3 +224,4 @@
 
 
 <!-- Left Sidebar End -->
+<?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/layouts/sidebar.blade.php ENDPATH**/ ?>
