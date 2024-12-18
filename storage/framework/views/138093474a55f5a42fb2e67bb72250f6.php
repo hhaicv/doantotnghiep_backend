@@ -22,7 +22,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách điểm dừng</h5>
-                    <a class="btn btn-primary mb-3" href="<?php echo e(route('employee.stops.create')); ?>">Thêm mới điểm dừng</a>
+                    
                 </div>
                 <div class="card-body">
 
@@ -65,21 +65,7 @@
                                                 for="SwitchCheck<?php echo e($parent->id); ?>"><?php echo e($parent->is_active ? 'On' : 'Off'); ?></label>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <a href="<?php echo e(route('employee.stops.edit', $parent->id)); ?>" class="link-primary"><i
-                                                    class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormStop<?php echo e($parent->id); ?>"
-                                                action="<?php echo e(route('employee.stops.destroy', $parent->id)); ?>" method="post">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="button" style="border: none; background: #d5d8e2"
-                                                    class="link-danger" onclick="confirmDelete(<?php echo e($parent->id); ?>)">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    
                                 </tr>
 
                                 
@@ -105,23 +91,7 @@
                                                         for="SwitchCheck<?php echo e($child->id); ?>"><?php echo e($child->is_active ? 'On' : 'Off'); ?></label>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="hstack gap-3 fs-15">
-                                                    <a href="<?php echo e(route('employee.stops.edit', $child->id)); ?>"
-                                                        class="link-primary"><i class="ri-settings-4-line"></i></a>
-                                                    <form id="deleteFormStop<?php echo e($child->id); ?>"
-                                                        action="<?php echo e(route('employee.stops.destroy', $child->id)); ?>"
-                                                        method="post">
-                                                        <?php echo csrf_field(); ?>
-                                                        <?php echo method_field('DELETE'); ?>
-                                                        <button type="button" style="border: none; background: white"
-                                                            class="link-danger"
-                                                            onclick="confirmDelete(<?php echo e($child->id); ?>)">
-                                                            <i class="ri-delete-bin-5-line"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
+                                            
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php endif; ?>

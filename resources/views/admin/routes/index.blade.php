@@ -91,16 +91,18 @@
                                     </div>
 
                                     <style>
-                                         .modal-dialog {
+                                        .modal-dialog {
                                             margin-top: 70px;
                                             max-width: 70%;
                                         }
+
                                         .map-container {
                                             display: flex;
                                             align-items: center;
                                             gap: 10px;
                                             flex-wrap: wrap;
                                         }
+
                                         .stop {
                                             background-color: #f0f8ff;
                                             border: 1px solid #007bff;
@@ -111,13 +113,12 @@
                                             min-width: 150px;
                                             text-align: center;
                                         }
+
                                         .arrow {
                                             font-size: 24px;
                                             line-height: 1;
                                         }
                                     </style>
-
-
 
                                     <td>{{ $item->cycle }} phút</td>
                                     <td>{{ $item->vehicle_count }} Xe</td>
@@ -137,15 +138,19 @@
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('admin.routes.edit', $item->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormRoute{{ $item->id }}"
-                                                action="{{ route('admin.routes.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
+                                            @if (!$item->has_related_data)
+                                                <form id="deleteFormRoute{{ $item->id }}"
+                                                    action="{{ route('admin.routes.destroy', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" style="border: none; background: white"
+                                                        class="link-danger" onclick="confirmDelete({{ $item->id }})">
+                                                        <i class="ri-delete-bin-5-line"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+
+
                                         </div>
                                     </td>
                                 </tr>

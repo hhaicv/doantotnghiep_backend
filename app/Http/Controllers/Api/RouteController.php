@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Route;
 use App\Http\Requests\StoreRouteRequest;
 use App\Http\Requests\UpdateRouteRequest;
+use App\Models\Stop;
 use App\Models\TicketBooking;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -35,13 +36,37 @@ class RouteController extends Controller
     public function popular(): JsonResponse
     {
         try {
+            // Lấy các tuyến phổ biến cùng với thông tin route
             $topRoutes = TicketBooking::where('status', self::PAYMENT_STATUS_PAID)
-            ->with('route')
-            ->selectRaw('route_id, COUNT(*) as count')
-            ->groupBy('route_id')
-            ->orderBy('count', 'desc')
-            ->take(3)
-            ->get();
+                ->with('route') // Nạp trước quan hệ route
+                ->selectRaw('route_id, COUNT(*) as count')
+                ->groupBy('route_id')
+                ->orderBy('count', 'desc')
+                ->take(3)
+                ->get();
+
+            // Lặp qua các tuyến để thêm thông tin start_stop và end_stop
+            $topRoutes = $topRoutes->map(function ($item) {
+                // Lấy start_route_id và end_route_id từ route
+                $startStop = Stop::find($item->route->start_route_id ?? null);
+                $endStop = Stop::find($item->route->end_route_id ?? null);
+
+                return [
+                    'route_id' => $item->route_id,
+                    'count' => $item->count,
+                    'route_name' => $item->route->route_name ?? null,
+                    'start_stop' => $startStop->stop_name ?? null,
+                    'start_route_id'=>$item->route->start_route_id ?? null,
+                    'end_route_id'=>$item->route->end_route_id ?? null,
+                    'end_stop' => $endStop->stop_name ?? null,
+                    'cycle'=>$item->route->cycle ?? null,
+                    'route_price'=>$item->route->route_price ?? null,
+                    'length'=>$item->route->length ?? null,
+                ];
+
+            });
+
+            // Trả về kết quả
             return response()->json([
                 'success' => true,
                 'data' => $topRoutes
@@ -53,6 +78,7 @@ class RouteController extends Controller
             ], 500); // 500 Internal Server Error
         }
     }
+
 
 
     /**

@@ -11,16 +11,27 @@
     </div>
 
     <?php if(session('success')): ?>
-        <div class="alert alert-success">
-            <?php echo e(session('success')); ?>
-
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "<?php echo e(session('success')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
-    <?php if(session('error')): ?>
-        <div class="alert alert-danger">
-            <?php echo e(session('error')); ?>
 
-        </div>
+    <?php if(session('failes')): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "<?php echo e(session('failes')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
 
     <div class="card">

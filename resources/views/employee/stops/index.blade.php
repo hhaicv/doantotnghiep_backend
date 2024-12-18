@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách điểm dừng</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('employee.stops.create') }}">Thêm mới điểm dừng</a>
+                    {{-- <a class="btn btn-primary mb-3" href="{{ route('employee.stops.create') }}">Thêm mới điểm dừng</a> --}}
                 </div>
                 <div class="card-body">
 
@@ -66,7 +66,7 @@
                                                 for="SwitchCheck{{ $parent->id }}">{{ $parent->is_active ? 'On' : 'Off' }}</label>
                                         </div>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('employee.stops.edit', $parent->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
@@ -80,7 +80,7 @@
                                                 </button>
                                             </form>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
 
                                 {{-- Vòng lặp qua các điểm dừng con của điểm dừng cha --}}
@@ -105,7 +105,7 @@
                                                         for="SwitchCheck{{ $child->id }}">{{ $child->is_active ? 'On' : 'Off' }}</label>
                                                 </div>
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 <div class="hstack gap-3 fs-15">
                                                     <a href="{{ route('employee.stops.edit', $child->id) }}"
                                                         class="link-primary"><i class="ri-settings-4-line"></i></a>
@@ -121,7 +121,7 @@
                                                         </button>
                                                     </form>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 @endif

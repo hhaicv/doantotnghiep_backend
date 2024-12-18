@@ -68,15 +68,18 @@
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('admin.buses.edit', $item->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormBuses{{ $item->id }}"
-                                                action="{{ route('admin.buses.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
+                                            @if (!$item->has_related_data)
+                                                <form id="deleteFormBuses{{ $item->id }}"
+                                                    action="{{ route('admin.buses.destroy', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" style="border: none; background: white"
+                                                        class="link-danger" onclick="confirmDelete({{ $item->id }})">
+                                                        <i class="ri-delete-bin-5-line"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+
                                         </div>
                                     </td>
                                 </tr>
@@ -184,5 +187,3 @@
         }
     </script>
 @endsection
-
-

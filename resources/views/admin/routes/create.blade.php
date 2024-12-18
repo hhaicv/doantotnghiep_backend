@@ -33,7 +33,7 @@
             });
         </script>
     @endif
-    
+
     <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate
         action="{{ route('admin.routes.store') }}" method="POST">
         @csrf

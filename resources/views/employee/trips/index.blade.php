@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('employee.trips.create') }}">Thêm mới</a>
+                    {{-- <a class="btn btn-primary mb-3" href="{{ route('employee.trips.create') }}">Thêm mới</a> --}}
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -60,7 +60,7 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('employee.trips.edit', $item->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
@@ -74,7 +74,7 @@
                                                 </button>
                                             </form>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

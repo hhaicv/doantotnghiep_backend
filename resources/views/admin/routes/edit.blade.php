@@ -186,7 +186,16 @@
                 </style>
 
                 <script>
-                    let stopIndex = 2; // Bắt đầu với điểm dừng thứ 2
+                    let stopIndex = 2; // Mặc định bắt đầu với chỉ số 2
+
+                    // Tính toán giá trị stopIndex dựa trên các phần tử hiện có
+                    document.querySelectorAll('[id^="input-from-stop-"]').forEach((element) => {
+                        const currentIndex = parseInt(element.id.replace('input-from-stop-', ''));
+                        if (currentIndex >= stopIndex) {
+                            stopIndex = currentIndex + 1; // Tăng chỉ số stopIndex lên 1
+                        }
+                    });
+
                     function addStop() {
                         // Tạo HTML mới cho điểm dừng
                         let stopHtml = `
