@@ -195,7 +195,6 @@
                                                     </li>
                                                     <?php endif; ?>
 
-
                                                     <?php
                                                         $bookingDate = \Carbon\Carbon::parse($ticketBooking->date);
                                                         $currentDate = \Carbon\Carbon::now();

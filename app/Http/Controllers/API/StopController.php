@@ -658,6 +658,7 @@ class StopController extends Controller
                 'order_code' => $ticketBooking->order_code,
                 'total_tickets' => $ticketBooking->total_tickets,
                 'ticket_booking_id' => $ticketBooking->id,
+                'pay_url' => $ticketBooking->pay_url ?? null,
             ];
         });
 
