@@ -10,12 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-<<<<<<< HEAD
 class SendCancelConfirmation 
-=======
-class SendCancelConfirmation
-
->>>>>>> 129dcd65bf63265b69e7512772929ddd0ca9f660
 {
     /**
      * Create the event listener.

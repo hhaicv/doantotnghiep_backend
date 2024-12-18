@@ -38,7 +38,7 @@ Danh sách tài khoản
                             <th>Số điện thoại</th>
                             <th>Địa chỉ</th>
                             <th>Trạng Thái</th>
-                            <th>Ngày tạo</th>                  
+                            <th>Ngày tạo</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -125,7 +125,7 @@ Danh sách tài khoản
             console.log(itemId);
 
 
-            fetch(`/admin/status-roles/${itemId}`, {
+            fetch(`/admin/status-users/${itemId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

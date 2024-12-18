@@ -22,6 +22,8 @@ class AdminController extends Controller
     public function create()
     {
         $roles = Role::all();
+
+        // Trả về view thêm mới tài khoản
         return view(self::PATH_VIEW . 'create', compact('roles'));
     }
 
@@ -44,6 +46,7 @@ class AdminController extends Controller
 
     public function edit($id)
     {
+        // Tìm người dùng theo ID
         $model = Admin::findOrFail($id);
         $roles = Role::all();
 

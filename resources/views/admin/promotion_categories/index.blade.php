@@ -42,8 +42,8 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td> 
-                                    <td>{{ $item->name }}</td>   
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
                                     <td>
                                         <div class="form-check form-switch">
@@ -118,7 +118,7 @@
                 var isChecked = checkbox.checked ? 1 : 0;
                 var itemId = checkbox.getAttribute('data-id');
 
-                fetch(`/admin/status-promotion_categories/${itemId}`, {
+                fetch(`/admin/status-promotion-categories/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

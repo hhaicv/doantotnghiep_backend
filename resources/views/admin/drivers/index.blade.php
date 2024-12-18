@@ -69,15 +69,17 @@
                                                     class="ri-file-paper-2-fill"></i></a>
                                             <a href="{{ route('admin.drivers.edit', $item->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormDriver{{ $item->id }}"
-                                                action="{{ route('admin.drivers.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete({{ $item->id }})">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
+                                            @if (!$item->has_related_data)
+                                                <form id="deleteFormDriver{{ $item->id }}"
+                                                      action="{{ route('admin.drivers.destroy', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" style="border: none; background: white"
+                                                            class="link-danger" onclick="confirmDelete({{ $item->id }})">
+                                                        <i class="ri-delete-bin-5-line"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

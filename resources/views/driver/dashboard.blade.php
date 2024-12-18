@@ -29,29 +29,52 @@
         </div>
     </div>
 
-    <!-- Hiển thị danh sách vé nếu cần -->
+    <!-- Hiển thị danh sách các chuyến đi theo ngày -->
     <div class="row mt-3">
         <div class="col-lg-12">
             <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Tỷ lệ lấp đầy các chuyến xe theo ngày</h5>
+{{--                        <form method="GET" action="{{ route('driver.dashboard') }}">--}}
+{{--                            <label for="date">Chọn ngày:</label>--}}
+{{--                            <input type="date" id="date" name="date" value="{{ $date }}">--}}
+{{--                            <button type="submit">Lọc</button>--}}
+{{--                        </form>--}}
+                </div>
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th>Chuyến</th>
-                            <th>Giá vé</th>
-                            <th>Ngày đi</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($tickets as $ticket)
-                            <tr>
-                                <td>{{ $ticket->route->route_name }}</td>
-                                <td>{{ number_format($ticket->total_price) }} VNĐ</td>
-                                <td>{{ \Carbon\Carbon::parse($ticket->time_start)->format('d/m/Y H:i') }}</td>
-                            </tr>
+                    @if($tripStatsByDate->isEmpty())
+                        <p>Không có dữ liệu chuyến đi nào.</p>
+                    @else
+                        @foreach($tripStatsByDate as $date => $routes)
+                            <h5>Ngày: <strong>{{ $date }}</strong></h5>
+                            <table class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Tuyến</th>
+                                    <th>Số ghế</th>
+                                    <th>Số ghế đã bán</th>
+                                    <th>Tỷ lệ lấp đầy (%)</th>
+                                    <th>Doanh thu chuyến</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($routes as $route)
+                                    <tr>
+                                        <td>{{ $route['route'] }}</td>
+                                        <td>{{ $route['total_seats'] }}</td>
+                                        <td>{{ $route['soldSeats'] }}</td>
+                                        <td>{{ $route['fillRate'] }}%</td>
+                                        <td>{{ number_format($route['totalRevenue'], 0, ',', '.') }} VNĐ</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                         @endforeach
-                        </tbody>
-                    </table>
+                        <!-- Hiển thị liên kết phân trang -->
+                        <div class="mt-3">
+                            {{ $tickets->links('pagination::bootstrap-4') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

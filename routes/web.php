@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\DriverLoginController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\HomeDriverController;
+use App\Http\Controllers\ProfileController;
 
 
 
@@ -18,16 +20,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-
-    return view('welcome');
-});
-
-
 Route::get('/driver', [DriverLoginController::class, 'showLogin'])->name('driver.login');
 Route::post('/driver', [DriverLoginController::class, 'driverLogin'])->name('driver.login.submit');
 Route::middleware('driver')->group(function () {
-    Route::post('/logout', [DriverLoginController::class, 'driverLogout'])->name('driver.logout');
+    Route::post('/driver/logout', [DriverLoginController::class, 'driverLogout'])->name('driver.logout');
 
     Route::get('/driver/dashboard', function () {
         return view('driver.dashboard');
@@ -35,6 +31,12 @@ Route::middleware('driver')->group(function () {
 
     Route::resource('drivers', HomeDriverController::class);
     Route::get('/driver/dashboard', [HomeDriverController::class, 'showDashboard'])->name('driver.dashboard');
+    Route::get('/driver/showTicketDetail', [HomeDriverController::class, 'showTicket'])->name('driver.drivers.show');
+    Route::get('/driver/seats', [HomeDriverController::class, 'showSeats'])->name('driver.drivers.seats');
+    Route::patch('/seats/{seatId}/active', [HomeDriverController::class, 'updateSeatActiveStatus']);
+    Route::patch('/api/seats/{seat}/book', [HomeDriverController::class, 'bookSeat']);
+
+
 });
 
 Route::get('/driver', [DriverLoginController::class, 'showLogin'])->name('driver.login');
@@ -52,6 +54,3 @@ Route::middleware('driver')->group(function () {
 
 
 require __DIR__ . '/auth.php';
-
-
-

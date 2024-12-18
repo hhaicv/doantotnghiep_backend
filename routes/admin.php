@@ -21,6 +21,7 @@ use App\Http\Controllers\TicketBookingController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\UserController;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -65,6 +66,8 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('promotions', PromotionController::class);
     Route::post('/status-promotion/{id}', [PromotionController::class, 'statusPromotion']);
     Route::resource('promotion_categories', PromotionCategoryController::class);
+    Route::post('/status-promotion-categories/{id}', [PromotionCategoryController::class, 'statusPromotionCategory']);
+
 
 
     Route::resource('trips', TripController::class);
@@ -95,11 +98,14 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::put('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
+    Route::post('/status-users/{id}', [UserController::class, 'statusUser']);
 
 
     Route::get('/statistics-trip', [StatisticsController::class, 'tripStatistical'])->name('statistics.tripStatistical');
 
     Route::resource('admins', App\Http\Controllers\AdminController::class);
+    Route::post('/status-admins/{id}', [App\Http\Controllers\AdminController::class, 'statusAdmin']);
+
 
     Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
     Route::get('/thanks', [TicketBookingController::class, 'thanks'])->name('thanks');

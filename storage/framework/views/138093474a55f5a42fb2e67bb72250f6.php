@@ -57,10 +57,37 @@
 
                                     </td>
                                     <td>
+<<<<<<< HEAD:storage/framework/views/138093474a55f5a42fb2e67bb72250f6.php
                                         <span class="<?php echo e($parent->is_active ? 'text-success' : 'text-danger'); ?>">
                                             <?php echo e($parent->is_active ? 'On' : 'Off'); ?>
 
                                         </span>
+=======
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="SwitchCheck<?php echo e($parent->id); ?>" data-id="<?php echo e($parent->id); ?>"
+                                                <?php echo e($parent->is_active ? 'checked' : ''); ?>>
+                                            <label class="form-check-label"
+                                                for="SwitchCheck<?php echo e($parent->id); ?>"><?php echo e($parent->is_active ? 'On' : 'Off'); ?></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="hstack gap-3 fs-15">
+                                            <a href="<?php echo e(route('admin.stops.edit', $parent->id)); ?>" class="link-primary"><i
+                                                    class="ri-settings-4-line"></i></a>
+                                            <?php if(!$parent->has_related_data): ?>
+                                                <form id="deleteFormStop<?php echo e($parent->id); ?>"
+                                                      action="<?php echo e(route('admin.stops.destroy', $parent->id)); ?>" method="post">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
+                                                    <button type="button" style="border: none; background: white"
+                                                            class="link-danger" onclick="confirmDelete(<?php echo e($parent->id); ?>)">
+                                                        <i class="ri-delete-bin-5-line"></i>
+                                                    </button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </div>
+>>>>>>> 00d932d92ec2e7811d6a9802dad8cb71d0036e50:storage/framework/views/a4ad1e3843ada8ae1e6cce40cddd5ecf.php
                                     </td>
                                     
                                 </tr>
@@ -80,10 +107,39 @@
 
                                             </td>
                                             <td>
+<<<<<<< HEAD:storage/framework/views/138093474a55f5a42fb2e67bb72250f6.php
                                                 <span class="<?php echo e($child->is_active ? 'text-success' : 'text-danger'); ?>">
                                                     <?php echo e($child->is_active ? 'On' : 'Off'); ?>
 
                                                 </span>
+=======
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        id="SwitchCheck<?php echo e($child->id); ?>" data-id="<?php echo e($child->id); ?>"
+                                                        <?php echo e($child->is_active ? 'checked' : ''); ?>>
+                                                    <label class="form-check-label"
+                                                        for="SwitchCheck<?php echo e($child->id); ?>"><?php echo e($child->is_active ? 'On' : 'Off'); ?></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="hstack gap-3 fs-15">
+                                                    <a href="<?php echo e(route('admin.stops.edit', $child->id)); ?>"
+                                                        class="link-primary"><i class="ri-settings-4-line"></i></a>
+                                                    <?php if(!$child->has_related_data): ?>
+                                                    <form id="deleteFormStop<?php echo e($child->id); ?>"
+                                                        action="<?php echo e(route('admin.stops.destroy', $child->id)); ?>"
+                                                        method="post">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('DELETE'); ?>
+                                                        <button type="button" style="border: none; background: white"
+                                                            class="link-danger"
+                                                            onclick="confirmDelete(<?php echo e($child->id); ?>)">
+                                                            <i class="ri-delete-bin-5-line"></i>
+                                                        </button>
+                                                    </form>
+                                                    <?php endif; ?>
+                                                </div>
+>>>>>>> 00d932d92ec2e7811d6a9802dad8cb71d0036e50:storage/framework/views/a4ad1e3843ada8ae1e6cce40cddd5ecf.php
                                             </td>
                                             
                                         </tr>
@@ -197,4 +253,9 @@
         }
     </script>
 <?php $__env->stopSection(); ?>
+<<<<<<< HEAD:storage/framework/views/138093474a55f5a42fb2e67bb72250f6.php
 <?php echo $__env->make('employee.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH L:\laragon\www\doantotnghiep\resources\views/employee/stops/index.blade.php ENDPATH**/ ?>
+=======
+
+<?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/stops/index.blade.php ENDPATH**/ ?>
+>>>>>>> 00d932d92ec2e7811d6a9802dad8cb71d0036e50:storage/framework/views/a4ad1e3843ada8ae1e6cce40cddd5ecf.php

@@ -86,4 +86,12 @@ class PromotionCategoryController extends Controller
 
         return redirect()->route('admin.promotion_categories.index')->with('success', 'Category deleted successfully');
     }
+    public function statusPromotionCategory(Request $request, $id)
+    {
+        $procategory = PromotionCategory::findOrFail($id);
+        $procategory->is_active = $request->input('is_active');
+        $procategory->save();
+
+        return response()->json(['success' => true]);
+    }
 }
