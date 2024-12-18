@@ -10,7 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class SendCancelConfirmation 
+class SendCancelConfirmation
+
 {
     /**
      * Create the event listener.
@@ -24,8 +25,9 @@ class SendCancelConfirmation
      * Handle the event.
      */
     public function handle(TicketCancel $event): void
-{
-    $cancel = $event->cancel;
+    {
+
+        $cancel = $event->cancel;
 
         // Lấy thông tin cần thiết từ ticket
         $data = [
@@ -39,21 +41,19 @@ class SendCancelConfirmation
         ];
         Log::info("Chạy vào đây rồi nhé hihihihihihihhiihhi.");
 
-    try {
-        Log::info("Bắt đầu gửi email cho {$data['email']}.");
-
-        // Gửi email
-        Mail::send('cancel', ['data' => $data], function ($message) use ($data) {
-            $message->to($data['email'], $data['name'])
+        try {
+            Log::info("Bắt đầu gửi email cho {$data['email']}.");
+            Mail::send('cancel', ['data' => $data], function ($message) use ($data) {
+                $message->to($data['email'], $data['name'])
                     ->subject('Thông báo Hủy Đơn Hàng Thành Công');
-        });
-
-        Log::info("Email đã gửi thành công cho {$data['email']}."); // Log khi gửi thành công
-    } catch (\Exception $e) {
-        Log::error("Lỗi khi gửi email cho {$data['email']}: " . $e->getMessage(), [
-            'exception' => $e,
-            'data' => $data
-        ]);
+            });
+            Log::info("Email đã gửi thành công cho {$data['email']}.");
+        } catch (\Exception $e) {
+            Log::info("Đã vào catch block.");
+            Log::error("Lỗi khi gửi email cho {$data['email']}: " . $e->getMessage(), [
+                'exception' => $e,
+                'data' => $data,
+            ]);
+        }
     }
-}
 }

@@ -154,33 +154,8 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
 
 
-    // Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
+    Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
 
-    // Route::post('/cancel-ticket', [TicketBookingController::class, 'requestCancelTicket']);
-    Route::get('/test-email', function () {
-        // Dữ liệu gửi email
-        $data = [
-            'name' => 'Nguyễn Văn A',
-            'email' => 'example@example.com',  // Thay bằng email thực tế bạn muốn gửi đến
-            'order_code' => 'ABC123',
-            'reason' => 'Lý do hủy vé',
-            'phone' => '0123456789',
-            'account_number' => '123456789',
-            'bank' => 'Ngân hàng XYZ'
-        ];
-
-        try {
-            // Gửi email với template 'cancel'
-            Mail::send('cancel', ['data' => $data], function ($message) use ($data) {
-                $message->to($data['email'], $data['name'])
-                        ->subject('Thông báo Hủy Đơn Hàng Thành Công');
-            });
-
-            return "Email đã được gửi thành công!";
-        } catch (\Exception $e) {
-            return "Lỗi khi gửi email: " . $e->getMessage();
-        }
-    });
 
 
 });
