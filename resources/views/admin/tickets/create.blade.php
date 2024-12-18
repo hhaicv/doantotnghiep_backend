@@ -477,7 +477,6 @@
                                     <button class="nav-link fs-15 p-3" id="pills-bill-address-tab"
                                         data-bs-toggle="pill" data-bs-target="#pills-bill-address" type="button"
                                         role="tab" aria-controls="pills-bill-address" aria-selected="false">
-
                                         <i
                                             class="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
                                         Thông tin người đặt
