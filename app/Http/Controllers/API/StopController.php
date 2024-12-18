@@ -63,7 +63,7 @@ class StopController extends Controller
                 $query->where('date', $date)
                     ->where('trip_id', $trip_id);
             })
-            ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(13))
             ->get();
 
         // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking
@@ -143,6 +143,7 @@ class StopController extends Controller
             $orderCode = $orderId;
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
+            $ticketBookingData['pay_url'] = $jsonResult['payUrl'];
 
 
             $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
@@ -209,6 +210,7 @@ class StopController extends Controller
             $vnp_SecureHash = hash_hmac('sha512', $hashString, $vnp_HashSecret);
 
             $vnp_Data['vnp_SecureHash'] = $vnp_SecureHash;  // Thêm chữ ký vào tham số
+            $vnp_Url = $endpoint . "?" . http_build_query($vnp_Data);
 
             // Lưu thông tin đơn hàng vào cơ sở dữ liệu
             $ticketBookingData = $request->except('name_seat', 'fare');
@@ -218,6 +220,7 @@ class StopController extends Controller
             $orderCode = $vnp_TxnRef;
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
+            $ticketBookingData['pay_url'] = $vnp_Url;
 
             // Thiết lập status của TicketBooking dựa trên payment_method_id
             $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
@@ -238,7 +241,6 @@ class StopController extends Controller
             }
 
             // Xây dựng URL redirect sang VNPay
-            $vnp_Url = $endpoint . "?" . http_build_query($vnp_Data);
 
             return response()->json([
                 'status' => 'success',
@@ -646,6 +648,7 @@ class StopController extends Controller
                 'order_code' => $ticketBooking->order_code,
                 'total_tickets' => $ticketBooking->total_tickets,
                 'ticket_booking_id' => $ticketBooking->id,
+                'pay_url' => $ticketBooking->pay_url ?? null,
             ];
         });
 
