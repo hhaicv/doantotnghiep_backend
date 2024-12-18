@@ -12,19 +12,31 @@
     </div>
 
     <?php if(session('success')): ?>
-        <div class="alert alert-success">
-            <?php echo e(session('success')); ?>
-
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: "<?php echo e(session('success')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
-    <?php if(session('error')): ?>
-        <div class="alert alert-danger">
-            <?php echo e(session('error')); ?>
 
-        </div>
+    <?php if(session('failes')): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: "<?php echo e(session('failes')); ?>"
+                });
+            });
+        </script>
     <?php endif; ?>
     <div class="card">
-        <form action="<?php echo e(route('admin.stops.update', $data->id)); ?>" method="POST" class="row g-3 p-5">
+        <form action="<?php echo e(route('admin.stops.update', $data->id)); ?>" method="POST" enctype="multipart/form-data"
+            class="row g-3 p-5">
             <?php echo csrf_field(); ?>
             <?php echo method_field('PUT'); ?>
             <div class="col-md-6">
@@ -199,4 +211,5 @@
         renderChoiceLimit: 5
     });
 </script>
+
 <?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/stops/edit.blade.php ENDPATH**/ ?>

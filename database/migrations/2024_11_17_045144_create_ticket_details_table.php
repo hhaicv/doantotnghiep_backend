@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name_seat'); // Số ghế được đặt
             $table->decimal('price', 10, 2); // Giá vé cho ghế
             $table->enum('status', ['available', 'selected','booked', 'lock'])->default('available');
+            $table->boolean('is_active')->default(false);
             $table->timestamps(); // Thời gian tạo và cập nhật
 
             // Khóa ngoại

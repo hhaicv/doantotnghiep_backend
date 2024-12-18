@@ -67,15 +67,18 @@
                                         <div class="hstack gap-3 fs-15">
                                             <a href="<?php echo e(route('admin.buses.edit', $item->id)); ?>" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormBuses<?php echo e($item->id); ?>"
-                                                action="<?php echo e(route('admin.buses.destroy', $item->id)); ?>" method="post">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete(<?php echo e($item->id); ?>)">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
+                                            <?php if(!$item->has_related_data): ?>
+                                                <form id="deleteFormBuses<?php echo e($item->id); ?>"
+                                                    action="<?php echo e(route('admin.buses.destroy', $item->id)); ?>" method="post">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
+                                                    <button type="button" style="border: none; background: white"
+                                                        class="link-danger" onclick="confirmDelete(<?php echo e($item->id); ?>)">
+                                                        <i class="ri-delete-bin-5-line"></i>
+                                                    </button>
+                                                </form>
+                                            <?php endif; ?>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -183,7 +186,5 @@
         }
     </script>
 <?php $__env->stopSection(); ?>
-
-
 
 <?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/buses/index.blade.php ENDPATH**/ ?>

@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách</h5>
+                    <h5 class="card-title mb-0">Danh sách điểm dừng</h5>
                     <a class="btn btn-primary mb-3" href="<?php echo e(route('admin.stops.create')); ?>">Thêm mới điểm dừng</a>
                 </div>
                 <div class="card-body">
@@ -52,8 +52,10 @@
                                     <td>
                                         <strong><?php echo e($parent->stop_name); ?></strong>
                                     </td>
+                                    <td>
+                                        <?php echo e(\Illuminate\Support\Str::limit(strip_tags($parent->description), 50)); ?>
 
-                                    <td><?php echo e(\Illuminate\Support\Str::limit($parent->description, 50)); ?></td>
+                                    </td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch"
@@ -90,7 +92,10 @@
                                                     height="80px">
                                             </td>
                                             <td><span style="margin-left: 20px;">↳ <?php echo e($child->stop_name); ?></span></td>
-                                            <td><?php echo e(\Illuminate\Support\Str::limit($child->description, 50)); ?></td>
+                                            <td>
+                                                <?php echo e(\Illuminate\Support\Str::limit(strip_tags($child->description), 50)); ?>
+
+                                            </td>
                                             <td>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" role="switch"
@@ -228,5 +233,4 @@
         }
     </script>
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/stops/index.blade.php ENDPATH**/ ?>
