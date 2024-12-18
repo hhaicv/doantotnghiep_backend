@@ -114,7 +114,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link py-3 Cancelled" data-bs-toggle="tab" id="tab-refunded" href="#refunded"
+                                <a class="nav-link py-3 Cancelled" data-bs-toggle="tab" id="Cancelled" href="#cancelled"
                                     role="tab" aria-selected="false">
                                     <i class="ri-close-circle-line me-1 align-bottom"></i> Hủy
                                 </a>
@@ -132,6 +132,7 @@
                                 </a>
                             </li>
                         </ul>
+
                         <div class="table-responsive table-card mb-1">
                             <table class="table table-nowrap align-middle" id="orderTable">
                                 <thead class="text-muted table-light">

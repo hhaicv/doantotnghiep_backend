@@ -544,7 +544,6 @@
                                 aria-labelledby="pills-bill-address-tab">
                                 <div>
                                     <h5 class="mb-1">Thông tin khách hàng</h5>
-                                    <p class="text-muted mb-4">Vui lòng nhập đầy đủ thông tin</p>
                                 </div>
                                 <div>
                                     <div class="row">
