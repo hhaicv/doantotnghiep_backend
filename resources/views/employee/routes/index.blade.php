@@ -39,7 +39,6 @@
                                 <th>Chiều Dài</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,7 +90,7 @@
 
                                     <style>
                                          .modal-dialog {
-                                            margin-top: 70px; 
+                                            margin-top: 70px;
                                             max-width: 70%;
                                         }
                                         .map-container {

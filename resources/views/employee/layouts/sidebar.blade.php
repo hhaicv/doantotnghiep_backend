@@ -34,13 +34,13 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                <li class="nav-item">
+                <li class="nav-item {{ Request::routeIs('employee.dashboard') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="{{ route('employee.dashboard') }}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
                 </li>
                 <hr>
-                <li class="nav-item">
+                <li class="nav-item {{ Request::routeIs('employee.buses','employee.stops','employee.routes','employee.trips') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="#sidebarExecutive" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarExecutive">
                         <i data-feather="trello"></i>
@@ -52,7 +52,7 @@
                                 <a href="{{ route('employee.buses') }}" class="nav-link" data-key="t-buses">Danh
                                     sách xe</a>
                             </li>
-                            
+
                             <li class="nav-item">
                                 <a href="{{ route('employee.stops') }}" class="nav-link" data-key="t-stops">Điểm
                                     dừng</a>
@@ -67,7 +67,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ Request::routeIs('employee.tickets','employee.ticket_list') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="#sidebarTickets" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarTickets">
                         <i class="ri-ticket-2-fill"></i>
@@ -86,7 +86,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ Request::routeIs('employee.promotions') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="#sidebarPromotion" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarPromotion">
                         <i class="ri-layout-3-line"></i>
@@ -98,12 +98,12 @@
                                 <a href="{{ route('employee.promotions') }}" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
-                           
+
                         </ul>
                     </div>
                 </li>
-                
-                <li class="nav-item">
+
+                <li class="nav-item {{ Request::routeIs('employee.contacts') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarContacts">
                         <i class="ri-layout-3-line"></i>
@@ -119,7 +119,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ Request::routeIs('employee.banners') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="#sidebarBanner" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarBanner">
                         <i class="ri-layout-3-line"></i>
@@ -134,7 +134,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ Request::routeIs('employee.Information') ? 'active' : '' }}">
                     <a class="nav-link menu-link" href="#sidebarInformation" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarInformation">
                         <i class="ri-layout-3-line"></i>

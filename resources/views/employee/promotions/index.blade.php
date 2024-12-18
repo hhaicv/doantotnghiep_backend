@@ -42,7 +42,6 @@
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày bắt kết thúc</th>
                                 {{-- <th>Dùng cho khách hàng mới</th> --}}
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,9 +70,9 @@
                                                 <span class="badge badge-secondary" style="background-color: #6c757d; color: white;">Không xác định</span>
                                             @endif
                                         </td>
-                                        
+
                                     <td>{{ \Illuminate\Support\Str::limit($item->description, 50) }}</td>
-                                   
+
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
                                     {{-- <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td> --}}

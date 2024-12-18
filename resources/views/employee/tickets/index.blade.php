@@ -317,7 +317,7 @@
                         user_id: userId,
                     };
                     const queryString = new URLSearchParams(orderDetails).toString();
-                    window.location.href = `/admin/tickets/create?${queryString}`;
+                    window.location.href = `/employee/tickets/create?${queryString}`;
                 };
                 actionCell.appendChild(actionButton);
 

@@ -37,7 +37,6 @@
                                 <th>Tài xế</th>
                                 <th>SĐT</th>
                                 <th>Trạng thái</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

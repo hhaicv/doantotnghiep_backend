@@ -37,7 +37,6 @@
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày kết thúc</th>
                                 <th>Trạng thái</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

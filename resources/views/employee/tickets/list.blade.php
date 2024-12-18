@@ -527,7 +527,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const editButtons = document.querySelectorAll(".edit-item-btn");
 
-            const cancelRoute = "{{ route('admin.cancel', ['id' => '__id__']) }}"; // Chứa URL tạm thời
+            const cancelRoute = "{{ route('employee.cancel', ['id' => '__id__']) }}"; // Chứa URL tạm thời
 
             editButtons.forEach(button => {
                 button.addEventListener("click", function() {

@@ -39,7 +39,6 @@
                                 <th>Tên điểm dừng</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
-                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -38,7 +38,6 @@
                                 <th>Ghế</th>
                                 <th>Biển số xe</th>
                                 <th>Trạng thái</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

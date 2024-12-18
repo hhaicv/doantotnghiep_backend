@@ -48,7 +48,6 @@
                                 <th>Nội dung</th>
                                 <th>Trạng thái</th>
                                 <th>Ngày tạo</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
