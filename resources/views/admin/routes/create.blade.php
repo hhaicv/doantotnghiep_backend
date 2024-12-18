@@ -1,16 +1,15 @@
 @extends('admin.layouts.mater')
 @section('title')
-    Cập nhật tuyến đường
+    Thêm mới tuyến đường
 @endsection
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Cập nhật tuyến đường</h4>
+                <h4 class="mb-sm-0">Thêm mới tuyến đường</h4>
             </div>
         </div>
     </div>
-
     @if (session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -34,10 +33,10 @@
             });
         </script>
     @endif
+
     <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate
-        action="{{ route('admin.routes.update', $data) }}" method="POST">
+        action="{{ route('admin.routes.store') }}" method="POST">
         @csrf
-        @method('PUT')
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -45,14 +44,15 @@
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label">Tên tuyến đường</label>
                             <input type="text" class="form-control mt-2" name="route_name"
-                                value="{{ $data->route_name }}">
+                                placeholder="Nhập tên tuyến đường" value="{{ old('route_name') }}">
                             @error('route_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label">Chu Kì</label>
-                            <input type="number" class="form-control mt-2" name="cycle" value="{{ $data->cycle }}">
+                            <input type="number" class="form-control mt-2" name="cycle" placeholder="Nhập chu kì"
+                                value="{{ old('cycle') }}">
                             @error('cycle')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -63,34 +63,34 @@
                                 onchange="updateEndStops()">
                                 <option value="">Chọn điểm bắt đầu</option>
                                 <?php foreach ($stops as $stop) { ?>
-                                <option value="<?php echo $stop['id']; ?>"
-                                    {{ old('start_route_id', $data->start_route_id) == $stop->id ? 'selected' : '' }}>
-                                    <?php echo $stop['stop_name']; ?></option>
+                                <option value="<?php echo $stop['id']; ?>" <?php echo old('start_route_id') == $stop['id'] ? 'selected' : ''; ?>>
+                                    <?php echo $stop['stop_name']; ?>
+                                </option>
                                 <?php } ?>
                             </select>
                         </div>
+
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Điểm kết thúc</label>
                             <select name="end_route_id" class="form-control" id="input-to-stop-1">
                                 <option value="">Chọn điểm kết thúc</option>
                                 <?php foreach ($stops as $stop) { ?>
-                                <option value="<?php echo $stop['id']; ?>"
-                                    {{ old('end_route_id', $data->end_route_id) == $stop->id ? 'selected' : '' }}>
-                                    <?php echo $stop['stop_name']; ?></option>
+                                <option value="<?php echo $stop['id']; ?>"<?php echo old('end_route_id') == $stop['id'] ? 'selected' : ''; ?>><?php echo $stop['stop_name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Giá Tuyến</label>
-                            <input type="number" class="form-control mt-2" name="route_price"
-                                value="{{ $data->route_price }}">
+                            <input type="number" class="form-control mt-2" name="route_price" placeholder="Nhập gias tuyến"
+                                value="{{ old('route_price') }}">
                             @error('route_price')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="fullnameInput" class="form-label mt-2">Chiều dài</label>
-                            <input type="number" class="form-control mt-2" name="length" value="{{ $data->length }}">
+                            <input type="number" class="form-control mt-2" name="length"
+                                placeholder="Nhập chiều dài tuyến đường" value="{{ old('length') }}">
                             @error('length')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -102,7 +102,11 @@
                                 </div>
                                 <div class="card-body">
                                     <textarea rows="5" style="width: 100%;border: 1px solid rgb(201, 200, 200); border-radius: 5px; padding: 10px"
-                                        name="description"><?php echo $data->description; ?></textarea>
+                                        name="description" placeholder=" Viết mô tả xe ở đây...">{{ old('description') }}</textarea>
+
+                                    @error('description')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -119,58 +123,46 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="stops-container">
-                                <?php foreach ($stages as $index => $stage) { ?>
                                 <div class="stop-item">
                                     <div class="row">
-                                        <input type="hidden" name="stage_ids[]" value="{{ $stage->id }}" />
-
                                         <div class="col">
-                                            <label class="form-label pb-2" for="input-from-stop-{{ $index + 1 }}">Điểm
-                                                đi {{ $index + 1 }}</label>
+                                            <label class="form-label pb-2" for="input-from-stop-1">Điểm đi 1</label>
                                             <select name="start_stop_id[]" class="form-control from-stop"
-                                                style="width: 90%;" id="input-from-stop-{{ $index + 1 }}"
-                                                onchange="filterToStops(this)">
+                                                style="width: 90%;" id="input-from-stop-1" onchange="filterToStops(this)">
                                                 <?php foreach ($stops as $stop) { ?>
-                                                <option value="<?php echo $stop['id']; ?>" <?php echo $stop['id'] == $stage->start_stop_id ? 'selected' : ''; ?>>
-                                                    <?php echo $stop['stop_name']; ?>
-                                                </option>
+                                                <option value="<?php echo $stop['id']; ?>"><?php echo $stop['stop_name']; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label class="form-label pb-2" for="input-to-stop-{{ $index + 1 }}">Điểm
-                                                đến
-                                                {{ $index + 1 }}</label>
+                                            <label class="form-label pb-2" for="input-to-stop-1">Điểm đến 1</label>
                                             <select name="end_stop_id[]" class="form-control to-stop" style="width: 90%;"
-                                                id="input-to-stop-{{ $index + 1 }}">
+                                                id="input-to-stop-1">
                                                 <?php foreach ($stops as $stop) { ?>
-                                                <option value="<?php echo $stop['id']; ?>" <?php echo $stop['id'] == $stage->end_stop_id ? 'selected' : ''; ?>>
-                                                    <?php echo $stop['stop_name']; ?>
-                                                </option>
+                                                <option value="<?php echo $stop['id']; ?>"><?php echo $stop['stop_name']; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label class="form-label pb-2"
-                                                for="input-price-{{ $index + 1 }}">Giá</label>
+                                            <label class="form-label pb-2" for="input-price-1">Giá</label>
                                             <input type="number" name="fare[]" placeholder="Giá vé"
-                                                class="form-control" style="width: 90%;"
-                                                id="input-price-{{ $index + 1 }}" value="<?php echo $stage->fare; ?>" />
+                                                value="{{ old('fare.0') }}" class="form-control" style="width: 90%;"
+                                                id="input-price-1" />
+                                            @error('fare.0')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
+
                                         <div class="col-1">
-                                            <button type="button" style="margin-top: 35px" class="btn btn-danger"
-                                                onclick="removeStop(this)">Xóa</button>
                                         </div>
                                     </div>
                                 </div>
-                                <?php } ?>
                             </div>
                         </div>
                         <div class="mt-3">
                             <button type="button" class="btn btn-primary" onclick="addStop()">Thêm chặng</button>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="text-end mb-3">
@@ -257,6 +249,28 @@
 
                     // Gọi hàm ẩn nút "Xóa" ban đầu
                     toggleRemoveButtons();
+                </script>
+
+                <script>
+                    function updateEndStops() {
+                        var startStop = document.getElementById("input-from-stop-1");
+                        var endStop = document.getElementById("input-to-stop-1");
+                        var selectedStart = startStop.value;
+
+                        // Xóa tất cả các tùy chọn trong điểm kết thúc
+                        endStop.innerHTML = '<option value="">Chọn điểm kết thúc</option>';
+
+                        // Lặp lại tất cả các tùy chọn từ điểm bắt đầu
+                        Array.from(startStop.options).forEach(option => {
+                            if (option.value !== selectedStart && option.value !== "") {
+                                // Thêm tùy chọn vào điểm kết thúc nếu nó không phải là điểm bắt đầu đã chọn
+                                var newOption = document.createElement("option");
+                                newOption.value = option.value;
+                                newOption.text = option.text;
+                                endStop.appendChild(newOption);
+                            }
+                        });
+                    }
                 </script>
 
 

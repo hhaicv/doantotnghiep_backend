@@ -6,6 +6,8 @@ use App\Models\Bus;
 use App\Http\Requests\StoreBusRequest;
 use App\Http\Requests\UpdateBusRequest;
 use App\Models\Driver;
+use App\Models\TicketBooking;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,10 +18,35 @@ class BusController extends Controller
 
     public function index()
     {
+        // Lấy dữ liệu từ bảng Bus và liên kết với driver
         $data = Bus::with('driver')->get();
+
+        // Kiểm tra mối quan hệ với dữ liệu khác (chuyến hoặc vé)
+        foreach ($data as $bus) {
+            $bus->has_related_data = $this->hasRelatedData($bus->id);
+        }
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
+
+    private function hasRelatedData($busId)
+    {
+        $hasRelatedData = false;
+
+        // Kiểm tra bảng vé (Ticket)
+        if (TicketBooking::where('bus_id', $busId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+        // Kiểm tra bảng chuyến (Trip)
+        if (Trip::where('bus_id', $busId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+
+        return $hasRelatedData;
+    }
+
 
     public function create()
     {

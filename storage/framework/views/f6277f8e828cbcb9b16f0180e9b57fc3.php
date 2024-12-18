@@ -1,8 +1,7 @@
-@extends('admin.layouts.mater')
-@section('title')
+<?php $__env->startSection('title'); ?>
     Đổi chỗ
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -449,8 +448,8 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="{{ route('admin.tickets.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                    <form action="<?php echo e(route('admin.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">
                         <input type="hidden" name="route_id" id="route_id">
@@ -459,7 +458,7 @@
                         <input type="hidden" name="date" id="date">
                         <input type="hidden" name="name_seat" id="name_seat">
 
-                        <input type="hidden" name="id_change" value="{{ $showTicket->id }}">
+                        <input type="hidden" name="id_change" value="<?php echo e($showTicket->id); ?>">
 
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
                             <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
@@ -553,10 +552,17 @@
                                                 <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
                                                 <input type="text" name="phone" class="form-control"
                                                     id="billinginfo-phone" placeholder="Nhập số điện thoại"
-                                                    value="{{ $showTicket->phone }}">
-                                                @error('phone')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                    value="<?php echo e($showTicket->phone); ?>">
+                                                <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -564,10 +570,17 @@
                                                 <label for="billinginfo-name" class="form-label">Họ tên</label>
                                                 <input type="text" name="name" class="form-control"
                                                     id="billinginfo-name" placeholder="Nhập họ tên"
-                                                    value="{{ $showTicket->name }}">
-                                                @error('name')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                    value="<?php echo e($showTicket->name); ?>">
+                                                <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -578,14 +591,14 @@
                                                         class="text-muted">(Optional)</span></label>
                                                 <input type="email" name="email" class="form-control"
                                                     id="billinginfo-email" placeholder="Nhập email"
-                                                    value="{{ $showTicket->email }}">
+                                                    value="<?php echo e($showTicket->email); ?>">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="billinginfo-address" class="form-label">Ghi chú</label>
                                         <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú"
-                                            rows="3">{{ old('note') }}</textarea>
+                                            rows="3"><?php echo e(old('note')); ?></textarea>
                                     </div>
 
                                 </div>
@@ -612,7 +625,7 @@
                                         <div class="mb-3">
                                             <label for="billinginfo-dathu" class="form-label">Đã thu</label>
                                             <input type="text" class="form-control" id="billinginfo-dathu"
-                                                value="{{ number_format($showTicket->total_price, 0, ',', '.') }}"
+                                                value="<?php echo e(number_format($showTicket->total_price, 0, ',', '.')); ?>"
                                                 oninput="calculateRefund()">
                                         </div>
                                     </div>
@@ -621,9 +634,16 @@
                                             <label for="billinginfo-tralai" class="form-label">Tổng tiền</label>
                                             <input type="text" class="form-control" name="total_price"
                                                 id="billinginfo-tralai" readonly>
-                                            @error('total_price')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <?php $__errorArgs = ['total_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <span class="text-danger"><?php echo e($message); ?></span>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -683,7 +703,7 @@
 
     <script>
         // Giả sử bạn đã nhận được mảng trạng thái ghế từ máy chủ
-        const seatStatusArray = @json($seatsStatus);
+        const seatStatusArray = <?php echo json_encode($seatsStatus, 15, 512) ?>;
 
         // Lặp qua từng ghế và cập nhật trạng thái
         document.querySelectorAll('.seat').forEach(function(button) {
@@ -845,7 +865,7 @@
         const fare = parseFloat(new URLSearchParams(window.location.search).get('fare')); // Lấy fare từ URL
         const maxSeats = 8; // Giới hạn số ghế tối đa
 
-        const userId = @json(Auth::guard('admin')->id());
+        const userId = <?php echo json_encode(Auth::guard('admin')->id(), 15, 512) ?>;
 
         document.querySelectorAll('.seat').forEach(function(button) {
             button.addEventListener('click', function() {
@@ -893,7 +913,7 @@
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Đảm bảo bạn đã cấu hình CSRF token
+                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>', // Đảm bảo bạn đã cấu hình CSRF token
                                 },
                                 body: JSON.stringify({
                                     name: seatName,
@@ -942,7 +962,7 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                             },
                             body: JSON.stringify({
                                 name: seatName,
@@ -1015,4 +1035,6 @@
             }
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/tickets/load.blade.php ENDPATH**/ ?>

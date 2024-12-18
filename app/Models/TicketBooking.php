@@ -88,4 +88,6 @@ class TicketBooking extends Model
     {
         return $this->hasOne(Cancle::class, 'ticket_booking_id');
     }
+
+  
 }
