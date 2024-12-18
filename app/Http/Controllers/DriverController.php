@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bus;
 use App\Models\Driver;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +20,21 @@ class DriverController extends Controller
     public function index()
     {
         $data = Driver::all();
+        foreach ($data as $driver) {
+            $driver->has_related_data = $this->hasRelatedData($driver->id);
+        }
         return view(self::PATH_VIEW . 'index', compact('data'));
+    }
+    private function hasRelatedData($driverId)
+    {
+        $hasRelatedData = false;
+
+        // Kiểm tra bảng Bus (dựa vào cột driver_id trực tiếp)
+        if (Bus::where('driver_id', $driverId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+        return $hasRelatedData;
     }
 
     public function create()
@@ -99,21 +115,32 @@ class DriverController extends Controller
 
     public function destroy(string $id)
     {
-        $driver = Driver::findOrFail($id);
+        $driver = Driver::query()->findOrFail($id);
+
+        if ($driver->bus_id) {
+            $bus = Bus::find($driver->bus_id);
+            if ($bus) {
+                $bus->is_active = false; // Đặt trạng thái tài xế là không hoạt động
+                $bus->save(); // Lưu thay đổi
+            }
+        }
 
         // Xóa ảnh đại diện nếu có
         if ($driver->profile_image && Storage::exists($driver->profile_image)) {
             Storage::delete($driver->profile_image);
         }
 
-        $deleted = $driver->delete();
+        $driver->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => $deleted]);
+            return response()->json(['success' => true]);
         }
 
         return redirect()->route('admin.drivers.index')->with('success', 'Tài xế đã được xóa thành công.');
     }
+
+
+
 
     public function statusDriver(Request $request, string $id)
     {

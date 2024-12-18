@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stage;
+use App\Models\TicketBooking;
 use App\Models\Trip;
 use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
@@ -17,7 +19,27 @@ class TripController extends Controller
     public function index()
     {
         $data = Trip::with(['route', 'bus', 'bus.driver'])->get();
+        foreach ($data as $trip) {
+            $trip->has_related_data = $this->hasRelatedData($trip->id);
+        }
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+    }
+    private function hasRelatedData($tripId)
+    {
+        $hasRelatedData = false;
+
+        // Kiểm tra bảng vé (Ticket)
+        if (TicketBooking::where('trip_id', $tripId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+        // Kiểm tra bảng chuyến (Trip)
+        if (Trip::where('bus_id', $tripId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+        return $hasRelatedData;
     }
 
     /**
@@ -159,7 +181,7 @@ class TripController extends Controller
                     $newDriver->save();
                 }
             }
-        } 
+        }
 
         // Trả về kết quả
         if ($res) {
@@ -170,7 +192,14 @@ class TripController extends Controller
     }
     public function destroy(string $id)
     {
+        // Tìm chuyến đi
         $trip = Trip::query()->findOrFail($id);
+
+        // Kiểm tra nếu có dữ liệu liên quan
+        if ($this->hasRelatedData($id)) {
+            return redirect()->route('admin.trips.index')->with('error', 'Chuyến đi có dữ liệu liên quan, không thể xóa.');
+        }
+
         $bus_id = $trip->bus_id; // Lưu lại ID của xe trước khi xóa chuyến đi
         $trip->delete();
 
@@ -180,15 +209,18 @@ class TripController extends Controller
             // Nếu xe không còn chuyến đi nào, cập nhật lại trạng thái thành không hoạt động
             $bus = Bus::find($bus_id);
             if ($bus) {
-                $bus->is_active = 0;
+                $bus->is_active = false;
                 $bus->save();
             }
         }
 
+        // Kiểm tra nếu là yêu cầu AJAX
         if (request()->ajax()) {
             return response()->json(['success' => true]);
         }
-        return redirect()->route('admin.banners.index')->with('success', 'Chuyến đi đã xóa thành công');
+
+        // Chuyển hướng về danh sách trips với thông báo thành công
+        return redirect()->route('admin.trips.index')->with('success', 'Chuyến đi đã xóa thành công');
     }
 
     public function statusTrip(Request $request, $id)

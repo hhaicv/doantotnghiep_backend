@@ -70,15 +70,17 @@
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('admin.stops.edit', $parent->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormStop{{ $parent->id }}"
-                                                action="{{ route('admin.stops.destroy', $parent->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" style="border: none; background: #d5d8e2"
-                                                    class="link-danger" onclick="confirmDelete({{ $parent->id }})">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
+                                            @if (!$parent->has_related_data)
+                                                <form id="deleteFormStop{{ $parent->id }}"
+                                                      action="{{ route('admin.stops.destroy', $parent->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" style="border: none; background: white"
+                                                            class="link-danger" onclick="confirmDelete({{ $parent->id }})">
+                                                        <i class="ri-delete-bin-5-line"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
