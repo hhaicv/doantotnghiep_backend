@@ -154,9 +154,9 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
 
 
 
-    Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
+    // Route::post('/cancel/{id}', [TicketBookingController::class, 'cancel'])->name('cancel');
 
-    Route::post('/cancel-ticket', [TicketBookingController::class, 'requestCancelTicket']);
+    // Route::post('/cancel-ticket', [TicketBookingController::class, 'requestCancelTicket']);
     Route::get('/test-email', function () {
         // Dữ liệu gửi email
         $data = [

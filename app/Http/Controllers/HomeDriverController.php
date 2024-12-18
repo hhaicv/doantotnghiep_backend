@@ -10,10 +10,13 @@ use App\Models\Trip;
 use Illuminate\Http\Request;
 use App\Models\Driver;
 use App\Models\Bus;
+use App\Models\Stop;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 
 class HomeDriverController extends Controller
@@ -21,36 +24,36 @@ class HomeDriverController extends Controller
 
     const PATH_UPLOAD = 'drivers';
 
-    public function index(Request $request)
-    {
-        $driverId = auth('driver')->id();
+    // public function index(Request $request)
+    // {
+    //     $driverId = auth('driver')->id();
 
-        $date = $request->input('date', Carbon::now()->toDateString());
+    //     $date = $request->input('date', Carbon::now()->toDateString());
 
-        $trips = TicketBooking::with(['bus', 'route', 'ticketDetails'])
-            ->whereHas('bus', function ($query) use ($driverId) {
-                $query->where('driver_id', $driverId);
-            })
-            ->where('date', $date)
-            ->get()
-            ->groupBy(function ($trip) {
-                return $trip->route->route_name . '_' . $trip->time_start;
-            });
+    //     $trips = TicketBooking::with(['bus', 'route', 'ticketDetails'])
+    //         ->whereHas('bus', function ($query) use ($driverId) {
+    //             $query->where('driver_id', $driverId);
+    //         })
+    //         ->where('date', $date)
+    //         ->get()
+    //         ->groupBy(function ($trip) {
+    //             return $trip->route->route_name . '_' . $trip->time_start;
+    //         });
 
-        $groupedTrips = $trips->map(function ($group) {
-            return [
-                'route_name' => $group->first()->route->route_name,
-                'time_start' => $group->first()->time_start,
-                'total_tickets' => $group->sum(fn($trip) => $trip->ticketDetails->count()),
-                'total_price' => $group->sum(fn($trip) => $trip->ticketDetails->sum('price')),
-                'details' => $group,
-                'tickets' => $group->flatMap(fn($trip) => $trip->ticketDetails),
+    //     $groupedTrips = $trips->map(function ($group) {
+    //         return [
+    //             'route_name' => $group->first()->route->route_name,
+    //             'time_start' => $group->first()->time_start,
+    //             'total_tickets' => $group->sum(fn($trip) => $trip->ticketDetails->count()),
+    //             'total_price' => $group->sum(fn($trip) => $trip->ticketDetails->sum('price')),
+    //             'details' => $group,
+    //             'tickets' => $group->flatMap(fn($trip) => $trip->ticketDetails),
 
-            ];
-        });
+    //         ];
+    //     });
 
-        return view('driver.drivers.index', compact('groupedTrips', 'date'));
-    }
+    //     return view('driver.drivers.index', compact('groupedTrips', 'date'));
+    // }
     public function showTicket(Request $request)
     {
         $driverId = auth('driver')->id();
@@ -141,7 +144,7 @@ class HomeDriverController extends Controller
             ->where('status', 'paid')
             ->orderByDesc('date')
             ->paginate(10); // Hiển thị 10 bản ghi mỗi trang
-//        dd($tickets);
+        //        dd($tickets);
 
         // Nhóm vé theo ngày
         $tripStatsByDate = $tickets->groupBy('date')->map(function ($group) {
@@ -194,6 +197,7 @@ class HomeDriverController extends Controller
             ->get();
 
 
+
         // Tạo mảng trạng thái ghế và thông tin người đặt
         $prices = []; // Biến ngoài scope để lưu tất cả giá trị price
 
@@ -202,7 +206,7 @@ class HomeDriverController extends Controller
                 return $booking->ticketDetails->mapWithKeys(function ($seat) use (&$prices) {
                     // Lưu giá trị price vào mảng $prices
                     $prices[] = $seat->price;
-        
+
                     return [
                         $seat->name_seat => [
                             'id' => $seat->id,
@@ -219,12 +223,6 @@ class HomeDriverController extends Controller
             });
         });
 
-        // dd($prices);
-        
-        // Biến $prices chứa tất cả các giá trị price
-        
-
-            //    dd($seatStatusFlat);
 
         // Tổng số ghế của tất cả các xe trong chuyến đi (nếu cần tổng)
         $totalSeatCount = $trips->sum(function ($trip) {
@@ -256,12 +254,18 @@ class HomeDriverController extends Controller
                 'total_price' => $group->sum(fn($show) => $show->ticketDetails->sum('price')),
                 'details' => $group,
                 'tickets' => $group->flatMap(fn($show) => $show->ticketDetails),
+                'bus_id' => $group->first()->bus_id,
+                'route_id' => $group->first()->route_id,
+
 
             ];
         });
+        $firstTripId = $show->first()?->pluck('trip_id')->first(); // This will return the first trip_id or null if no trips are found
+
+        $stops = Stop::query()->get();
 
 
-        return view('driver.drivers.showDetail', compact('trips','methods', 'date', 'totalSeatCount', 'seatCounts', 'seatStatusFlat', 'groupedTrips'));
+        return view('driver.drivers.showDetail', compact('trips', 'methods', 'date', 'totalSeatCount', 'seatCounts', 'seatStatusFlat', 'groupedTrips', 'stops', 'firstTripId'));
     }
     public function updateSeatActiveStatus($seatId, Request $request)
     {
@@ -285,5 +289,79 @@ class HomeDriverController extends Controller
         $seat->save();
 
         return response()->json(['success' => true, 'message' => 'Ghế đã được đặt.']);
+    }
+
+
+    public function listPrice(Request $request)
+    {
+        $data = $request->validate([
+            'start_stop_id' => 'required|integer',
+            'end_stop_id' => 'required|integer',
+            'trip_id' => 'required|integer', // Thêm trip_id vào yêu cầu
+        ]);
+
+        $startRouteId = $data['start_stop_id'];
+        $endRouteId = $data['end_stop_id'];
+        $tripId = $data['trip_id']; // Lấy trip_id
+
+        // Lấy chuyến cụ thể theo trip_id và start_stop_id, end_stop_id
+        $trip = Trip::with(['bus', 'route', 'stages' => function ($query) use ($startRouteId, $endRouteId) {
+            $query->where('start_stop_id', $startRouteId)
+                ->where('end_stop_id', $endRouteId);
+        }])->where('id', $tripId) // Lọc theo trip_id
+            ->whereHas('stages', function ($query) use ($startRouteId, $endRouteId) {
+                $query->where('start_stop_id', $startRouteId)
+                    ->where('end_stop_id', $endRouteId);
+            })
+            ->first();
+
+        if (!$trip) {
+            return response()->json(['message' => 'Chuyến xe không tồn tại hoặc không hợp lệ.'], 404);
+        }
+
+        // Lấy giai đoạn của chuyến xe
+        $stage = $trip->stages->first();
+        $fare = $stage ? $stage->fare : null; // Lấy giá vé từ giai đoạn nếu có
+
+        return response()->json([
+            'fare' => $fare,
+        ]);
+    }
+
+
+    public function submit(Request $request)
+    {
+        return DB::transaction(function () use ($request) {
+            $ticketBookingData = $request->except('name_seat', 'fare');
+            $seatNames = explode(', ', $request->input('name_seat'));
+            $totalTickets = count($seatNames);
+
+            $orderCode = strtoupper(Str::random(8));
+            $ticketBookingData['name'] =  $request->input('hoten');
+            $ticketBookingData['phone'] =  $request->input('sdt');
+            $ticketBookingData['order_code'] = $orderCode;
+            $ticketBookingData['total_tickets'] = $totalTickets;
+
+            // Thiết lập status của TicketBooking dựa trên payment_method_id
+            $ticketBookingData['status'] = $request->input('payment_method_id') == 1
+                ? TicketBooking::PAYMENT_STATUS_PAID
+                : TicketBooking::PAYMENT_STATUS_UNPAID;
+
+            $ticketBooking = TicketBooking::create($ticketBookingData);
+
+            foreach ($seatNames as $seatName) {
+                $ticketCode = $totalTickets == 1 ? $orderCode : strtoupper(Str::random(8));
+
+                TicketDetail::create([
+                    'ticket_code' => $ticketCode,
+                    'ticket_booking_id' => $ticketBooking->id,
+                    'name_seat' => $seatName,
+                    'price' => $request->input('fare'),
+                    'status' => 'booked'
+                ]);
+            }
+            return redirect()->back()->with('success', 'Bạn tạo vé thành công');
+
+        });
     }
 }

@@ -19,9 +19,9 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\User::class)->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('payment_method_id');
             $table->string('order_code', 10)->unique();
-            $table->string('location_start'); // Địa điểm bắt đầu
+            $table->string('location_start')->nullable(); // Địa điểm bắt đầu
             $table->string('id_start_stop'); // ID của điểm dừng bắt đầu
-            $table->string('location_end'); // Địa điểm kết thúc
+            $table->string('location_end')->nullable(); // Địa điểm kết thúc
             $table->string('id_end_stop'); // ID của điểm dừng kết thúc
             $table->string('code_voucher', 50)->nullable();
             $table->integer('discount')->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->date('date'); // Ngày đặt vé
             $table->decimal('total_price', 10, 2); // Tổng giá tiền cho tất cả các ghế
             $table->integer('total_tickets');
-
+            $table->text('pay_url')->nullable();
             $table->string('status')->default(\App\Models\TicketBooking::PAYMENT_STATUS_UNPAID);
 
             $table->timestamps(); // Thời gian tạo và cập nhật
