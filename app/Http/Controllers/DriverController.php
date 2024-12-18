@@ -46,10 +46,8 @@ class DriverController extends Controller
     {
         $data = $request->except('profile_image', 'password');
 
-        // Mã hóa mật khẩu
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
+
+        $data['password'] = bcrypt($request->password);
 
         // Xử lý ảnh đại diện (profile_image)
         if ($request->hasFile('profile_image')) {
@@ -89,9 +87,8 @@ class DriverController extends Controller
         }
 
         // Cập nhật mật khẩu nếu có
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
+        $data['password'] = bcrypt($request->password);
+
 
         // Xử lý ảnh đại diện
         if ($request->hasFile('profile_image')) {

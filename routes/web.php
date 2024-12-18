@@ -36,7 +36,8 @@ Route::middleware('driver')->group(function () {
     Route::patch('/seats/{seatId}/active', [HomeDriverController::class, 'updateSeatActiveStatus']);
     Route::patch('/api/seats/{seat}/book', [HomeDriverController::class, 'bookSeat']);
 
-
+    Route::get('/listPrice', [HomeDriverController::class, 'listPrice']);
+    Route::post('/driver/submit', [HomeDriverController::class, 'submit'])->name('submit');
 });
 
 

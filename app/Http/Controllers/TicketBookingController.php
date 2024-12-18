@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderTicket;
-use App\Events\SeatBooked;
 use App\Events\TicketCancel;
 use App\Models\Cancle;
 use App\Models\TicketBooking;
 use App\Http\Requests\StoreTicketBookingRequest;
-use App\Http\Requests\UpdateTicketBookingRequest;
-use App\Mail\TicketCancel as MailTicketCancel;
 use App\Models\PaymentMethod;
-use App\Models\Seat;
 use App\Models\Stop;
 use App\Models\TicketDetail;
 use App\Models\Trip;

@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('route_id');
             $table->unsignedBigInteger('bus_id');
-            $table->time('departure_time');
-            $table->enum('direction', ['outbound', 'return']); // Thêm cột direction
+            $table->time('time_start');
             $table->timestamps();
             $table->softDeletes();
             $table->boolean('is_active')->default(false);
