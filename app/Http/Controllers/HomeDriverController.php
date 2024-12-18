@@ -139,6 +139,7 @@ class HomeDriverController extends Controller
             })
             ->orderByDesc('date')
             ->paginate(10); // Hiển thị 10 bản ghi mỗi trang
+//        dd($tickets);
 
         // Nhóm vé theo ngày
         $tripStatsByDate = $tickets->groupBy('date')->map(function ($group) {
