@@ -150,7 +150,6 @@
                                 <tbody class="list form-check-all">
                                     <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ticketBooking): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-
                                             <td class="id"><?php echo e($ticketBooking->order_code); ?></td>
                                             <td class="date"><?php echo e($ticketBooking->date); ?></td>
                                             <td class="route_name"><?php echo e($ticketBooking->route->route_name); ?></td>
@@ -477,29 +476,29 @@
 
             <!-- Change Action (Conditionally Rendered) -->
             ${new Date(ticket.date) > new Date() && ticket.status === 'paid' ? `
-                                  <li class="list-inline-item" data-bs-toggle="tooltip" title="Change">
-                                    <a href="/admin/change/${ticket.id}" class="text-primary">
-                                      <i class="ri-exchange-fill"></i>
-                                    </a>
-                                  </li>
-                                ` : ''}
+                                      <li class="list-inline-item" data-bs-toggle="tooltip" title="Change">
+                                        <a href="/admin/change/${ticket.id}" class="text-primary">
+                                          <i class="ri-exchange-fill"></i>
+                                        </a>
+                                      </li>
+                                    ` : ''}
 
             <!-- Edit Action (Conditionally Rendered) -->
          ${ticket.cancel ? `
-                      <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                        <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn"
-                           data-id="${ticket.id}"
-                           data-order-code="${ticket.order_code}"
-                           data-name="${ticket.cancel.name}"
-                           data-phone="${ticket.cancel.phone}"
-                           data-email="${ticket.cancel.email}"
-                           data-account-number="${ticket.cancel.account_number}"
-                           data-bank="${ticket.cancel.bank}"
-                           data-reason="${ticket.cancel.reason}">
-                          <i class="ri-pencil-fill fs-16"></i>
-                        </a>
-                      </li>
-                    ` : ''}
+                          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                            <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn"
+                               data-id="${ticket.id}"
+                               data-order-code="${ticket.order_code}"
+                               data-name="${ticket.cancel.name}"
+                               data-phone="${ticket.cancel.phone}"
+                               data-email="${ticket.cancel.email}"
+                               data-account-number="${ticket.cancel.account_number}"
+                               data-bank="${ticket.cancel.bank}"
+                               data-reason="${ticket.cancel.reason}">
+                              <i class="ri-pencil-fill fs-16"></i>
+                            </a>
+                          </li>
+                        ` : ''}
           </ul>
         </td>
 
