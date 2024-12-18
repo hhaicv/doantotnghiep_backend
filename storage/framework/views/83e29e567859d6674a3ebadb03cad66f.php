@@ -94,7 +94,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarNewCategory" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarNewCategory">
-                        <i class="ri-layout-3-line"></i>
+                        <i class="fas fa-bullhorn"></i>
                         <span data-key="t-layouts">Tin tức</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarNewCategory">
@@ -114,7 +114,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarBanners" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarBanners">
-                        <i class="ri-layout-3-line"></i>
+                        <i class="fas fa-file-image"></i>
                         <span data-key="t-layouts">Banner</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarBanners">
@@ -133,7 +133,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarPromotion" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarPromotion">
-                        <i class="ri-layout-3-line"></i>
+                        <i class="fas fa-comment-dollar"></i>
                         <span data-key="t-layouts">Khuyến mãi</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarPromotion">
@@ -153,7 +153,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarContacts">
-                        <i class="ri-layout-3-line"></i>
+                        <i class="far fa-envelope-open"></i>
                         <span data-key="t-layouts">Liên Hệ</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarContacts">
@@ -172,7 +172,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarUsers" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarUsers">
-                        <i class="ri-layout-3-line"></i>
+                        <i class="fas fa-address-book	"></i>
                         <span data-key="t-layouts">Tài khoản</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarUsers">
