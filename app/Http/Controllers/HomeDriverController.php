@@ -61,7 +61,7 @@ class HomeDriverController extends Controller
             ->whereHas('bus', function ($query) use ($driverId) {
                 $query->where('driver_id', $driverId);
             })
-            ->where('status','paid')
+            ->where('status', 'paid')
             ->where('date', $date)
             ->get()
             ->groupBy(function ($trip) {
@@ -81,7 +81,7 @@ class HomeDriverController extends Controller
             ];
         });
 
-//         dd($groupedTrips);
+        //         dd($groupedTrips);
 
         return view('driver.drivers.show', compact('groupedTrips', 'date'));
     }
@@ -138,7 +138,7 @@ class HomeDriverController extends Controller
             ->whereHas('bus.driver', function ($query) use ($driverId) {
                 $query->where('id', $driverId);
             })
-            ->where('status','paid')
+            ->where('status', 'paid')
             ->orderByDesc('date')
             ->paginate(10); // Hiển thị 10 bản ghi mỗi trang
 
@@ -170,7 +170,9 @@ class HomeDriverController extends Controller
     public function showSeats(Request $request)
     {
         $driverId = Auth::guard('driver')->id();
-            $date = $request->query('date', Carbon::today()->toDateString());
+        $date = $request->query('date', Carbon::today()->toDateString());
+
+        $methods = PaymentMethod::query()->get();
 
         // Lấy danh sách chuyến đi theo tài xế và ngày, kèm trạng thái ghế
         $trips = Trip::with([
@@ -186,14 +188,20 @@ class HomeDriverController extends Controller
                 $query->where('driver_id', $driverId);
             })
             ->whereHas('ticketBookings', function ($query) use ($date) {
-                $query->where('date', $date)->where('status','paid');
+                $query->where('date', $date)->where('status', 'paid');
             })
             ->get();
 
+
         // Tạo mảng trạng thái ghế và thông tin người đặt
-        $seatStatusFlat = $trips->flatMap(function ($trip) {
-            return $trip->ticketBookings->flatMap(function ($booking) {
-                return $booking->ticketDetails->mapWithKeys(function ($seat) {
+        $prices = []; // Biến ngoài scope để lưu tất cả giá trị price
+
+        $seatStatusFlat = $trips->flatMap(function ($trip) use (&$prices) { // Sử dụng biến ngoài scope
+            return $trip->ticketBookings->flatMap(function ($booking) use (&$prices) {
+                return $booking->ticketDetails->mapWithKeys(function ($seat) use (&$prices) {
+                    // Lưu giá trị price vào mảng $prices
+                    $prices[] = $seat->price;
+        
                     return [
                         $seat->name_seat => [
                             'id' => $seat->id,
@@ -202,14 +210,20 @@ class HomeDriverController extends Controller
                             'name' => $seat->ticketBooking->name,
                             'email' => $seat->ticketBooking->email,
                             'note' => $seat->ticketBooking->note,
-                            'is_active'=> $seat->is_active,
+                            'price' => $seat->price,
+                            'is_active' => $seat->is_active,
                         ]
                     ];
                 });
             });
         });
 
-//        dd($seatStatusFlat);
+        // dd($prices);
+        
+        // Biến $prices chứa tất cả các giá trị price
+        
+
+            //    dd($seatStatusFlat);
 
         // Tổng số ghế của tất cả các xe trong chuyến đi (nếu cần tổng)
         $totalSeatCount = $trips->sum(function ($trip) {
@@ -225,7 +239,7 @@ class HomeDriverController extends Controller
             ->whereHas('bus', function ($query) use ($driverId) {
                 $query->where('driver_id', $driverId);
             })
-            ->where('status','paid')
+            ->where('status', 'paid')
             ->where('date', $date)
             ->get()
             ->groupBy(function ($trip) {
@@ -236,6 +250,7 @@ class HomeDriverController extends Controller
             return [
                 'route_name' => $group->first()->route->route_name,
                 'time_start' => $group->first()->time_start,
+                'date' => $group->first()->date,
                 'total_tickets' => $group->sum(fn($show) => $show->ticketDetails->count()),
                 'total_price' => $group->sum(fn($show) => $show->ticketDetails->sum('price')),
                 'details' => $group,
@@ -244,7 +259,8 @@ class HomeDriverController extends Controller
             ];
         });
 
-        return view('driver.drivers.showDetail', compact('trips', 'date', 'totalSeatCount', 'seatCounts', 'seatStatusFlat','groupedTrips'));
+
+        return view('driver.drivers.showDetail', compact('trips','methods', 'date', 'totalSeatCount', 'seatCounts', 'seatStatusFlat', 'groupedTrips'));
     }
     public function updateSeatActiveStatus($seatId, Request $request)
     {
@@ -254,5 +270,19 @@ class HomeDriverController extends Controller
 
         return response()->json(['message' => 'Trạng thái ghế đã được cập nhật']);
     }
+    public function bookSeat(Request $request, $seatName)
+    {
+        $seat = TicketDetail::where('name_seat', $seatName)->first();
 
+        if (!$seat) {
+            return response()->json(['success' => false, 'message' => 'Ghế không tồn tại.'], 404);
+        }
+
+        // Cập nhật trạng thái ghế
+        $seat->status = 'booked';
+        $seat->is_active = 1; // Đặt ghế ở trạng thái đang hoạt động
+        $seat->save();
+
+        return response()->json(['success' => true, 'message' => 'Ghế đã được đặt.']);
+    }
 }

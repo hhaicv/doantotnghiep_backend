@@ -6,12 +6,13 @@
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h5 class="card-title mb-0">Danh sách chuyến xe của bạn</h5>
-                <div class="card-header">
-                    <form method="GET" action="<?php echo e(route('driver.drivers.seats')); ?>">
+                <div class="header" >
+                    <form method="GET"  style="display: flex; justify-content-between;" action="<?php echo e(route('driver.drivers.seats')); ?>">
                         <label for="date">Chọn ngày:</label>
-                        <input type="date" id="date" name="date" value="<?php echo e($date); ?>">
+                        <input type="date" id="date" name="date" class="form-control" value="<?php echo e($date); ?>">
                         <button type="submit" class="btn btn-primary">Lọc</button>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -929,20 +930,98 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
-                        <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fs-15 p-3" id="pills-bill-address-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-bill-address" type="button" role="tab"
-                                        aria-controls="pills-bill-address" aria-selected="false">
-                                    <i class="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                                    Thông tin người đặt
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="tab-content">
-                        <div class="tab-pane fade" id="pills-bill-address" role="tabpanel"
+                    <form action="<?php echo e(route('admin.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="trip_id" id="trip_id">
+                        <input type="hidden" name="bus_id" id="bus_id">
+                        <input type="hidden" name="route_id" id="route_id">
+                        <input type="hidden" name="time_start" id="time_start">
+                        <input type="hidden" name="fare" id="fare">
+                        <input type="hidden" name="date" id="date">
+                        <input type="hidden" name="name_seat" id="name_seat">
+
+                        <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
+                            <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link fs-15 p-3 active" id="pills-bill-info-tab"
+                                        data-bs-toggle="pill" data-bs-target="#pills-bill-info" type="button"
+                                        role="tab" aria-controls="pills-bill-info" aria-selected="true">
+                                        <i
+                                            class="ri-truck-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                                        Thông tin chuyến
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link fs-15 p-3" id="pills-bill-address-tab"
+                                        data-bs-toggle="pill" data-bs-target="#pills-bill-address" type="button"
+                                        role="tab" aria-controls="pills-bill-address" aria-selected="false">
+
+                                        <i
+                                            class="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                                        Thông tin người đặt
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link fs-15 p-3" id="pills-payment-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-payment" type="button" role="tab"
+                                        aria-controls="pills-payment" aria-selected="false">
+                                        <i
+                                            class="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
+                                        Thanh toán
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="pills-bill-info" role="tabpanel"
+                                aria-labelledby="pills-bill-info-tab">
+                                <div>
+                                <?php $__currentLoopData = $groupedTrips; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tripId => $trip): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <h4 class="mb-1" id="route-info"><?php echo e($trip['route_name']); ?></h4>
+                                <span class="fs-5" id="time-info"><?php echo e($trip['date']); ?></span>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                   
+                                </div>
+                                <hr>
+                                <div class="mt-4">
+                                    <div class="row gy-3">
+                                        <div class="col-4">
+                                            <p class="fs-5">Ghế đã chọn: </p>
+                                            <p class="fs-5">Tổng tiền: </p>
+                                            <p class="fs-5">Điểm đi:<span style="color: red">*</span></p>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <p class="fs-5">Điểm đến:<span style="color: red">*</span></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="fs-5" id="selected-seats">...</p>
+                                            <p class="fs-5" id="total-price">...</p>
+                                            <select name="location_start" class="form-select"
+                                                aria-label="Default select example">
+                                                <option value="Dọc đường">Dọc đường</option>
+                                            </select>
+                                            <select name="id_start_stop" class="form-select mt-2"
+                                                aria-label="Default select example" id="start-stop">
+                                                <!-- ID và tên sẽ được cập nhật ở đây -->
+                                            </select>
+                                            <select name="location_end" class="form-select mt-3"
+                                                aria-label="Default select example">
+                                                <option value="Tại bến">Tại bến</option>
+                                                <option value="Dọc đường">Dọc đường</option>
+                                            </select>
+                                            <select name="id_end_stop" class="form-select mt-2"
+                                                aria-label="Default select example" id="end-stop">
+                                                <!-- ID và tên sẽ được cập nhật ở đây -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end tab pane -->
+
+                            <div class="tab-pane fade" id="pills-bill-address" role="tabpanel"
                              aria-labelledby="pills-bill-address-tab">
                             <div>
                                 <div class="row">
@@ -951,7 +1030,7 @@
                                             <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
                                             <input type="text" name="phone" class="form-control"
                                                    id="billinginfo-phone"
-                                                   value="<?php echo e(old('phone')); ?>" disabled>
+                                                   value="<?php echo e(old('phone')); ?>" >
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -959,7 +1038,7 @@
                                             <label for="billinginfo-name" class="form-label">Họ tên</label>
                                             <input type="text" name="name" class="form-control"
                                                    id="billinginfo-name"
-                                                   value="<?php echo e(old('name')); ?>" disabled>
+                                                   value="<?php echo e(old('name')); ?>" >
                                         </div>
                                     </div>
                                 </div>
@@ -969,26 +1048,103 @@
                                             <label for="billinginfo-email" class="form-label">Email <span
                                                     class="text-muted">(Optional)</span></label>
                                             <input type="email" name="email" class="form-control"
-                                                   id="billinginfo-email" disabled>
+                                                   id="billinginfo-email" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="billinginfo-address" class="form-label">Ghi chú</label>
                                     <textarea class="form-control" name="note" id="billinginfo-address"
-                                              rows="3" disabled><?php echo e(old('note')); ?></textarea>
+                                              rows="3" ><?php echo e(old('note')); ?></textarea>
                                 </div>
                                 <div class="d-flex align-items-start gap-3 mt-4">
-
-                                    <button type="button" class="btn btn-primary btn-label right ms-auto nexttab fs-5" id="btn-up-seat" data-seat-id="1">
+                                 <button type="button" class="btn btn-primary btn-label right ms-auto nexttab fs-5" id="btn-up-seat" data-seat-id="1">
                                         Đã Lên Xe
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- end tab pane -->
-                    </div>
-                    <!-- end tab content -->
+                            <div class="tab-pane fade" id="pills-payment" role="tabpanel"
+                                aria-labelledby="pills-payment-tab">
+                                <div>
+                                    <h5 class="mb-1">Thông tin thanh toán</h5>
+                                    <p class="text-muted mb-4">Vui long nhập đầy đủ thông tin</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label for="billinginfo-thucthu" class="form-label">Thực thu</label>
+                                            <input type="text" name="total_price" class="form-control"
+                                                id="billinginfo-thucthu" readonly>
+                                            <?php $__errorArgs = ['total_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <span class="text-danger"><?php echo e($message); ?></span>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="billinginfo-dathu" class="form-label">Đã thu</label>
+                                            <input type="text" class="form-control" id="billinginfo-dathu"
+                                                oninput="calculateRefund()">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="billinginfo-tralai" class="form-label">Trả lại</label>
+                                            <input type="text" class="form-control" id="billinginfo-tralai"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-3">
+                                            <label for="billinginfo-email" class="form-label">Hình thức thanh
+                                                toán</label>
+                                            <select name="payment_method_id" class="form-select"
+                                                aria-label="Default select example">
+                                                <?php foreach ($methods as $method) { ?>
+                                                <option value="<?php echo $method['id']; ?>"><?php echo $method['name']; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-check mb-3" id="emailCheckboxContainer"
+                                            style="display: none;">
+                                            <input class="form-check-input" type="checkbox" id="formCheckEmail"
+                                                checked>
+                                            <label class="form-check-label" for="formCheckEmail">
+                                                Gửi vé điện tử qua Email
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex align-items-start gap-3 mt-4">
+
+                                    <button type="submit" class="btn btn-primary btn-label right ms-auto nexttab fs-5"
+                                        data-nexttab="pills-finish-tab"><i
+                                            class="ri-coins-fill label-icon align-middle fs-16 ms-2"></i>Thu tiền</button>
+
+                                </div>
+                            </div>
+
+                            <!-- end tab pane -->
+                        </div>
+                        <!-- end tab content -->
+                    </form>
                 </div>
                 <!-- end card body -->
             </div>
@@ -1034,182 +1190,184 @@
         <?php endif; ?>
     </div>
     <script>
-        // Cập nhật mảng trạng thái ghế
-        const seatStatusArray = <?php echo json_encode($seatStatusFlat, 15, 512) ?>;
-        // Cập nhật trạng thái ghế
+    // Dữ liệu trạng thái ghế
+    const seatStatusArray = <?php echo json_encode($seatStatusFlat, 15, 512) ?>;
+
+    // Hàm cập nhật trạng thái ghế dựa trên dữ liệu ban đầu
+    function updateSeatStatus() {
         document.querySelectorAll('.seat').forEach(function (button) {
             const seatName = button.getAttribute('data-name');
-            // Kiểm tra xem ghế có trong mảng trạng thái không
             if (seatStatusArray[seatName]) {
                 const { status, is_active } = seatStatusArray[seatName];
-                // Cập nhật trạng thái ghế
-                button.setAttribute('data-seat-status', status); // Cập nhật thuộc tính status
-                button.setAttribute('data-is-active', is_active); // Cập nhật thuộc tính is_active
-                // Thay đổi màu sắc hoặc trạng thái dựa trên is_active
+                button.setAttribute('data-seat-status', status);
+                button.setAttribute('data-is-active', is_active);
+
                 if (is_active === true) {
-                    button.classList.remove('selected'); // Xóa lớp selected nếu không phải
-                    button.style.backgroundColor = '#14f80b'; // Màu xanh lá cho ghế đang hoạt động
-                    button.classList.add('active'); // Thêm lớp active (nếu cần)
+                    button.classList.remove('selected');
+                    button.style.backgroundColor = '#14f80b'; // Xanh lá
+                    button.classList.add('active');
                 } else {
-                    // Thay đổi màu sắc dựa trên trạng thái `status`
                     if (status === 'booked') {
-                        button.classList.add('booked'); // Thêm lớp booked
-                        button.classList.remove('selected'); // Bỏ lớp selected nếu có
+                        button.classList.add('booked');
                         button.style.backgroundColor = '#f5c170'; // Màu cho ghế đã đặt
                     } else if (status === 'lock') {
-                        button.classList.add('lock'); // Thêm lớp lock
-                        button.classList.remove('available'); // Bỏ lớp available nếu có
-                        button.classList.remove('booked'); // Bỏ lớp booked nếu có
-                        button.style.backgroundColor = '#ff0000'; // Màu đỏ cho ghế bị khoá
+                        button.classList.add('lock');
+                        button.style.backgroundColor = '#ff0000'; // Màu đỏ
                     } else if (status === 'selected') {
-                        button.style.backgroundColor = '#9dc3fe'; // Màu xanh dương nhạt cho ghế đã chọn
+                        button.style.backgroundColor = '#9dc3fe'; // Màu xanh dương nhạt
                     } else {
-                        // Trạng thái mặc định (available)
                         button.classList.remove('booked', 'selected', 'lock', 'active');
-                        button.style.backgroundColor = ''; // Màu mặc định
+                        button.style.backgroundColor = ''; // Mặc định
                     }
                 }
             }
         });
-        // Xử lý click cho ghế
-        document.querySelectorAll('.seat').forEach(function (button) {
-            button.addEventListener('click', function () {
-                const seatStatus = button.getAttribute('data-seat-status');
-                const seatName = button.getAttribute('data-name'); // Lấy tên ghế từ data-name
-                if (seatStatus === 'available') {
-                    // Kiểm tra số ghế đã chọn
-                    if (selectedSeats.length < maxSeats) {
-                        button.classList.toggle('selected');
-                        const isSelected = button.classList.contains('selected');
-                        // Cập nhật trạng thái ghế
-                        button.setAttribute('data-seat-status', isSelected ? 'selected' : 'available');
-                        // Cập nhật màu nền cho ghế đã chọn
-                        if (isSelected) {
-                            button.style.backgroundColor = '#9dc3fe'; // Màu nền cho ghế đã chọn
-                            selectedSeats.push(seatName); // Thêm ghế đã chọn vào mảng
-                        } else {
-                            button.style.backgroundColor = ''; // Đặt lại màu nền khi bỏ chọn
-                            selectedSeats = selectedSeats.filter(seat => seat !== seatName); // Xóa ghế khỏi mảng
-                        }
-                        // Cập nhật hiển thị ghế đã chọn
-                        document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
-                        document.getElementById('name_seat').value = selectedSeats.join(', ');
-                        // Cập nhật trạng thái "đã lên xe" cho ghế nếu đã chọn
-                        selectedSeats.forEach(seat => {
-                            const seatButton = document.querySelector(`button[data-name="${seat}"]`);
-                            seatButton.setAttribute('data-seat-status', 'selected');
+    }
 
-                            // Cập nhật trường is_active trong cơ sở dữ liệu
-                            fetch(`/api/seats/${seat}/active`, {
-                                method: 'PATCH', // Hoặc 'PUT' tuỳ vào cách bạn thiết kế API
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({is_active: 1})
-                            }).then(response => {
-                                if (!response.ok) {
-                                    console.error('Failed to update seat status');
-                                }
-                            });
-                        });
+    // Cập nhật trạng thái ghế lúc tải trang
+    updateSeatStatus();
+
+    // Mảng lưu ghế được chọn
+    let selectedSeats = [];
+    const maxSeats = 5; // Giới hạn số ghế được chọn
+    let totalPrice = 0; // Tổng giá tiền của ghế đã chọn
+
+
+    // Xử lý sự kiện khi người dùng click vào ghế
+    document.querySelectorAll('.seat').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const seatStatus = button.getAttribute('data-seat-status');
+            const seatName = button.getAttribute('data-name');
+
+            if (seatStatus === 'available') {
+                if (selectedSeats.length < maxSeats) {
+                    button.classList.toggle('selected');
+                    const isSelected = button.classList.contains('selected');
+                    button.setAttribute('data-seat-status', isSelected ? 'selected' : 'available');
+                    if (isSelected) {
+                        button.style.backgroundColor = '#9dc3fe';
+                        selectedSeats.push(seatName);
                     } else {
-                        alert('Bạn chỉ có thể chọn tối đa ' + maxSeats + ' ghế.');
+                        button.style.backgroundColor = '';
+                        selectedSeats = selectedSeats.filter(seat => seat !== seatName);
                     }
-                } else if (seatStatus === 'selected') {
-                    // Nếu ghế đã được chọn, bỏ chọn nó
-                    button.classList.remove('selected'); // Bỏ class 'selected'
-                    button.setAttribute('data-seat-status', 'available'); // Đặt lại trạng thái ghế
-                    // Đặt lại màu nền khi bỏ chọn
-                    button.style.backgroundColor = '';
-                    selectedSeats = selectedSeats.filter(seat => seat !== seatName); // Xóa ghế khỏi mảng
-                    // Cập nhật hiển thị ghế đã chọn
                     document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
                     document.getElementById('name_seat').value = selectedSeats.join(', ');
-                    // Cập nhật trường is_active trong cơ sở dữ liệu
-                    fetch(`/api/seats/${seatName}/active`, {
-                        method: 'PATCH', // Hoặc 'PUT' tuỳ vào cách bạn thiết kế API
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({is_active: 0})
-                    }).then(response => {
-                        if (!response.ok) {
-                            console.error('Failed to update seat status');
-                        }
-                    });
-                } else if (seatStatus === 'booked') {
-                    // Hiển thị thông tin người đặt nếu ghế đã đặt
-                    const bookingInfo = seatStatusArray[seatName];
-                    console.log(bookingInfo);
-                    document.getElementById('billinginfo-name').value = bookingInfo.name;
-                    document.getElementById('billinginfo-phone').value = bookingInfo.phone;
-                    document.getElementById('billinginfo-email').value = bookingInfo.email;
-                    document.getElementById('billinginfo-address').value = bookingInfo.note;
-                    document.getElementById('btn-up-seat').value = bookingInfo.id;
-                    // Chuyển tab sang thông tin người đặt
-                    document.querySelector('#pills-bill-address-tab').click(); // Click vào tab thông tin người đặt
-                    return;
-                }
-            });
-        });
-        document.getElementById('btn-up-seat').addEventListener('click', function () {
-            const seatId = this.getAttribute('value');  // Lấy ID ghế từ thuộc tính value của nút
-            if (!seatId) {
-                alert('Không tìm thấy ID ghế!');
-                return;
-            }
-            // Gửi yêu cầu cập nhật trạng thái is_active của ghế
-            fetch(`/seats/${seatId}/active`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    is_active: 1  // Hoặc 0 tùy theo logic bạn muốn
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        // Hiển thị thông báo thành công
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thành công',
-                            text: data.message,  // Hiển thị thông báo từ API
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Reload trang sau khi bấm OK
-                                window.location.reload(); // Tự động reload trang
+
+                    selectedSeats.forEach(seat => {
+                        const seatButton = document.querySelector(`button[data-name="${seat}"]`);
+                        seatButton.setAttribute('data-seat-status', 'selected');
+                        fetch(`/api/seats/${seat}/active`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ is_active: 1 })
+                        }).then(response => {
+                            if (!response.ok) {
+                                console.error('Failed to update seat status');
                             }
                         });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Thất bại',
-                            text: 'Cập nhật thất bại!',
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            // Reload trang nếu cần
-                            window.location.reload(); // Tự động reload trang
-                        });
+                    });
+                } else {
+                    alert('Bạn chỉ có thể chọn tối đa ' + maxSeats + ' ghế.');
+                }
+            } else if (seatStatus === 'selected') {
+                button.classList.remove('selected');
+                button.setAttribute('data-seat-status', 'available');
+                button.style.backgroundColor = '';
+                selectedSeats = selectedSeats.filter(seat => seat !== seatName);
+                document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
+                document.getElementById('name_seat').value = selectedSeats.join(', ');
+
+                fetch(`/api/seats/${seatName}/active`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ is_active: 0 })
+                }).then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to update seat status');
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                });
+            } else if (seatStatus === 'booked') {
+                const bookingInfo = seatStatusArray[seatName];
+                document.getElementById('billinginfo-name').value = bookingInfo.name;
+                document.getElementById('billinginfo-phone').value = bookingInfo.phone;
+                document.getElementById('billinginfo-email').value = bookingInfo.email;
+                document.getElementById('billinginfo-address').value = bookingInfo.note;
+                document.getElementById('btn-up-seat').value = bookingInfo.id;
+                document.querySelector('#pills-bill-address-tab').click();
+                return;
+            }
+        });
+    });
+    function calculateRefund() {
+            const thucThu = parseInt(document.getElementById('billinginfo-thucthu').value.replace(/\./g, '')) || 0;
+            const daThu = parseInt(document.getElementById('billinginfo-dathu').value.replace(/\./g, '')) || 0;
+            const traLai = daThu - thucThu;
+
+            document.getElementById('billinginfo-tralai').value = formatVND(Math.max(traLai, 0));
+        }
+
+        function formatVND(number) {
+            return number.toLocaleString('vi-VN') + ' đ';
+        }
+
+    // Xử lý cập nhật ghế qua nút cập nhật
+    document.getElementById('btn-up-seat').addEventListener('click', function () {
+        const seatId = this.getAttribute('value');
+        if (!seatId) {
+            alert('Không tìm thấy ID ghế!');
+            return;
+        }
+        fetch(`/seats/${seatId}/active`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ is_active: 1 })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: data.message,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi',
-                        text: 'Đã xảy ra lỗi khi cập nhật.',
+                        title: 'Thất bại',
+                        text: 'Cập nhật thất bại!',
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        // Reload trang sau khi bấm OK
-                        window.location.reload(); // Tự động reload trang
+                        window.location.reload();
                     });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đã xảy ra lỗi khi cập nhật.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.reload();
                 });
-        });
-    </script>
+            });
+    });
+</script>
+
 
 <?php $__env->stopSection(); ?>
 
