@@ -4102,3 +4102,8 @@
 #54 L:\\laragon\\www\\doantotnghiep\\public\\index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #55 {main}
 "} 
+[2024-12-18 18:06:15] local.INFO: Email đã được gửi đến: letronglong26012004@gmail.com.  
+[2024-12-18 18:06:19] local.INFO: Email đã được gửi đến: letronglong26012004@gmail.com.  
+[2024-12-18 18:06:22] local.INFO: Email đã được gửi đến: letronglong26012004@gmail.com.  
+[2024-12-18 18:06:25] local.INFO: Email đã được gửi đến: letronglong26012004@gmail.com.  
+[2024-12-18 18:06:33] local.INFO: Email đã được gửi đến: letronglong26012004@gmail.com.  

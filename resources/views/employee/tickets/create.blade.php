@@ -452,7 +452,7 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="{{ route('admin.tickets.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('employee.tickets.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">

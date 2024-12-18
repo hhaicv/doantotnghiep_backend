@@ -448,7 +448,7 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="<?php echo e(route('admin.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?php echo e(route('employee.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">
