@@ -98,10 +98,7 @@
                                 <a href="{{ route('employee.promotions') }}" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('employee.promotions') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
+                           
                         </ul>
                     </div>
                 </li>

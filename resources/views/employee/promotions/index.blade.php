@@ -24,7 +24,6 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách khuyến mãi</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('employee.promotions.create') }}">Thêm mới khuyến mãi</a>
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -78,7 +77,7 @@
                                     <td>{{ $item->start_date }}</td>
                                     <td>{{ $item->end_date }}</td>
                                     {{-- <td>{{ $item->new_customer_only ? 'On' : 'Off' }}</td> --}}
-                                    <td>
+                                    {{-- <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('employee.promotions.edit', $item->id) }}"
                                                 class="link-primary"><i class="ri-settings-4-line"></i></a>
@@ -93,7 +92,7 @@
                                                 </button>
                                             </form>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

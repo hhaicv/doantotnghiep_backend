@@ -22,7 +22,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="<?php echo e(route('employee.buses.create')); ?>">Thêm mới xe</a>
+                    
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -63,21 +63,7 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <a href="<?php echo e(route('employee.buses.edit', $item->id)); ?>" class="link-primary"><i
-                                                    class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormBuses<?php echo e($item->id); ?>"
-                                                action="<?php echo e(route('employee.buses.destroy', $item->id)); ?>" method="post">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete(<?php echo e($item->id); ?>)">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
