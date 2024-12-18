@@ -80,7 +80,7 @@
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Cập nhật</button>
-                    <a href="{{ route('employee.stops.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="{{ route('employee.stops') }}" class="btn btn-success">Quay lại</a>
                 </div>
             </div>
         </form>

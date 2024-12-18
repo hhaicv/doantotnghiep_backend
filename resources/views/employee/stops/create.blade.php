@@ -22,7 +22,7 @@
         </div>
     @endif
     <div class="card">
-        <form action="{{ route('employee.stops.store') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
+        <form action="{{ route('employee.stops') }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
             @csrf
             <div class="col-md-6">
                 <label for="fullnameInput" class="form-label">Tên điểm dừng</label>
@@ -71,7 +71,7 @@
 
             <div class="col-12 text-end">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{{ route('employee.stops.index') }}" class="btn btn-success">Quay lại</a>
+                <a href="{{ route('employee.stops') }}" class="btn btn-success">Quay lại</a>
             </div>
         </form>
 

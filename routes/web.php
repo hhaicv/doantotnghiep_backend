@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/driver', [DriverLoginController::class, 'showLogin'])->name('driver.login');
 Route::post('/driver', [DriverLoginController::class, 'driverLogin'])->name('driver.login.submit');
 Route::middleware('driver')->group(function () {
@@ -39,6 +38,5 @@ Route::middleware('driver')->group(function () {
     Route::get('/listPrice', [HomeDriverController::class, 'listPrice']);
     Route::post('/driver/submit', [HomeDriverController::class, 'submit'])->name('submit');
 });
-
 
 require __DIR__ . '/auth.php';

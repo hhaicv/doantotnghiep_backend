@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="{{ route('employee.buses.create') }}">Thêm mới xe</a>
+                    {{-- <a class="btn btn-primary mb-3" href="{{ route('employee.buses.create') }}">Thêm mới xe</a> --}}
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -55,16 +55,11 @@
 
                                     <td>{{ $item->driver ? $item->driver->phone : 'No Phone' }}</td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="SwitchCheck{{ $item->id }}" data-id="{{ $item->id }}"
-                                                {{ $item->is_active ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="SwitchCheck{{ $item->id }}">
-                                                {{ $item->is_active ? 'On' : 'Off' }}
-                                            </label>
-                                        </div>
+                                        <span class="{{ $item->is_active ? 'text-success' : 'text-danger' }}">
+                                            {{ $item->is_active ? 'On' : 'Off' }}
+                                        </span>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <div class="hstack gap-3 fs-15">
                                             <a href="{{ route('employee.buses.edit', $item->id) }}" class="link-primary"><i
                                                     class="ri-settings-4-line"></i></a>
@@ -78,7 +73,7 @@
                                                 </button>
                                             </form>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

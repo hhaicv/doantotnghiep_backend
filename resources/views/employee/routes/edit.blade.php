@@ -21,8 +21,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate
-        action="{{ route('employee.routes.update', $data) }}" method="POST">
+    <form action="{{ route('employee.routes.update', $data->id) }}" method="POST" class="row g-3 p-5" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -162,7 +161,7 @@
 
                 <div class="text-end mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ route('employee.routes.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="{{ route('employee.routes') }}" class="btn btn-success">Quay lại</a>
                 </div>
 
                 <style>

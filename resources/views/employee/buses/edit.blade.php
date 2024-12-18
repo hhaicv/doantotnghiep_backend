@@ -85,7 +85,7 @@
             <div class="col-12">
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{ route('employee.buses.index') }}" class="btn btn-success">Quay lại</a>
+                    <a href="{{ route('employee.buses') }}" class="btn btn-success">Quay lại</a>
                 </div>
             </div>
         </form>

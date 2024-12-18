@@ -67,9 +67,9 @@ class PromotionCategoryController extends Controller
         $model = $request->all();
         $res = $data->update($model);
         if ($res) {
-            return redirect()->back()->with('success', 'Danh mục tin tức được sửa thành công');
+            return redirect()->back()->with('success', 'Danh mục khuyến mãi được sửa thành công');
         } else {
-            return redirect()->back()->with('danger', 'Danh mục tin tức không sửa thành công');
+            return redirect()->back()->with('danger', 'Danh mục khuyến mãi không sửa thành công');
         }
     }
 

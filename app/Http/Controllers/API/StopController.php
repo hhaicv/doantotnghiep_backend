@@ -98,10 +98,6 @@ class StopController extends Controller
 
     public function store(StoreTicketBookingRequest $request)
     {
-        if ($request->id_change) {
-            $booking = TicketBooking::findOrFail($request->id_change);
-            $booking->delete();
-        }
         if ($request->has('payment_method_id') && $request->payment_method_id == 2) {
             $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             $partnerCode = 'MOMOBKUN20180529';
@@ -145,9 +141,6 @@ class StopController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $orderId;
-            if ($request->id_change) {
-                $ticketBookingData['total_price'] = $request->input('price');
-            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
             $ticketBookingData['pay_url'] = $jsonResult['payUrl'];
@@ -225,9 +218,6 @@ class StopController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $vnp_TxnRef;
-            if ($request->id_change) {
-                $ticketBookingData['total_price'] = $request->input('price');
-            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
             $ticketBookingData['pay_url'] = $vnp_Url;
@@ -625,7 +615,7 @@ class StopController extends Controller
             return response()->json([
                 'status' => 'Thất bại',
                 'message' => 'ID người dùng không hợp lệ.',
-                'DỮ LIỆU' => $user_id,
+                'DỮ LIỆU' =>$user_id,
             ], 400);
         }
 

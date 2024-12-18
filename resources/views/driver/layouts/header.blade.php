@@ -10,24 +10,24 @@
                         </span>
                         <span class="logo-lg">
                             <img src="{{ asset('theme/admin/assets/images/logo-dark.png') }}" alt=""
-                                height="17">
+                                 height="17">
                         </span>
                     </a>
 
                     <a href="index.html" class="logo logo-light">
                         <span class="logo-sm">
                             <img src="{{ asset('theme/admin/assets/images/logo-sm.png') }}" alt=""
-                                height="22">
+                                 height="22">
                         </span>
                         <span class="logo-lg">
                             <img src="{{ asset('theme/admin/assets/images/logo-light.png') }}" alt=""
-                                height="17">
+                                 height="17">
                         </span>
                     </a>
                 </div>
 
                 <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
-                    id="topnav-hamburger-icon">
+                        id="topnav-hamburger-icon">
                     <span class="hamburger-icon">
                         <span></span>
                         <span></span>
@@ -41,10 +41,10 @@
             <div class="d-flex align-items-center">
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                            aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user"
-                                src=" {{ asset('theme/admin/assets/images/users/ebe4.j') }}" alt="Header Avatar">
+                                 src=" {{ asset('theme/admin/assets/images/users/ebe4.j') }}" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                                 </span>
@@ -55,14 +55,14 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-{{--                        <h6 class="dropdown-header">{{$tickets->drivers->name}}</h6>--}}
+                        {{--                        <h6 class="dropdown-header">{{$tickets->drivers->name}}</h6>--}}
                         <a href="{{ route('drivers.edit', Auth::guard('driver')->id()) }}" class="dropdown-item notify-item">
                             <i class="ri-user-settings-line align-middle fs-18 text-muted me-2"></i>
                             <span>Tài khoản</span>
                         </a>
 
                         <a class="dropdown-item" href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle" data-key="t-logout">{{ __('Logout') }}</span>
                         </a>

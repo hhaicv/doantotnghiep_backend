@@ -179,6 +179,8 @@ class TicketBookingController extends Controller
 
     public function store(StoreTicketBookingRequest $request)
     {
+
+
         if ($request->id_change) {
             $booking = TicketBooking::findOrFail($request->id_change);
             $booking->delete();
@@ -546,6 +548,7 @@ class TicketBookingController extends Controller
                 $query->where('status', $paymentStatus);
             }
         }
+
         // Lấy dữ liệu
         $data = $query->orderBy('id', 'desc')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
@@ -683,11 +686,27 @@ class TicketBookingController extends Controller
 
         event(new TicketCancel($cancel));
 
-
-
         $cancel->delete();
 
 
         return redirect()->back();
     }
+    public function requestCancelTicket(Request $request)
+{
+    // Lưu yêu cầu hủy vé vào CSDL
+    $cancel = Cancle::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'order_code' => $request->order_code,
+        'reason' => $request->reason,
+        'phone' => $request->phone,
+        'account_number' => $request->account_number,
+        'bank' => $request->bank,
+    ]);
+
+    // Phát sóng sự kiện hủy vé
+    event(new TicketCancel($cancel));
+
+    return response()->json(['message' => 'Yêu cầu hủy vé đã được gửi. Email xác nhận sẽ được gửi tới bạn.']);
+}
 }

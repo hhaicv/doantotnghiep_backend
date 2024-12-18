@@ -72,14 +72,16 @@ Route::get('/bill',         [StopController::class, 'bill'])->name('bill');
 Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);
 Route::get('/momo_return', [StopController::class, 'momo_return'])->name('momo_return');
 Route::get('/vnpay_return', [StopController::class, 'vnpay_return'])->name('vnpay_return');
+Route::get('/qrcode_return', [StopController::class, 'qrcode_return'])->name('qrcode_return');
 
 
 
 Route::apiResource('promotions', PromotionController::class);
 Route::get('promotions/category/{categoryId}', [PromotionController::class, 'getByCategory']);
+Route::get('/promotion-detail/{id}', [PromotionController::class, 'showPromotionDetail']);
 Route::post('request-password-reset', [AuthController::class, 'requestPasswordReset']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
-Route::post('/apply-voucher', [App\Http\Controllers\API\PromotionController::class, 'applyVoucher']);
+Route::post('/apply-voucher', [PromotionController::class, 'applyVoucher']);
 
 
 Route::get('promotions/{id}', [PromotionController::class, 'show']);
@@ -117,3 +119,7 @@ Route::post('/update-seat-status', function (Illuminate\Http\Request $request) {
 
 
 
+Route::get('/my_ticket/{user_id}', [StopController::class, 'my_ticket'])->name('my_ticket');
+Route::get('/ticket-booking/{order_code}', [StopController::class, 'show']);
+
+Route::post('/voucher/apply', [PromotionController::class, 'applyVoucher'])->name('voucher.apply');
