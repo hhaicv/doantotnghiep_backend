@@ -30,7 +30,7 @@ class Stage extends Model
     {
         return $this->belongsTo(Trip::class, 'route_id'); // Hoặc 'trip_id' nếu có trường này
     }
-    
+
     public function startStop()
     {
         return $this->belongsTo(Stop::class, 'start_stop_id');

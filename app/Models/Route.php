@@ -10,7 +10,7 @@ class Route extends Model
 {
     use HasFactory;
 
-    
+
 
     use SoftDeletes;
     protected $fillable = [
@@ -41,4 +41,5 @@ class Route extends Model
     {
         return $this->hasMany(Trip::class, 'route_id');
     }
+
 }

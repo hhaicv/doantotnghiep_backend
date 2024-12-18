@@ -34,6 +34,8 @@ Route::middleware('driver')->group(function () {
     Route::get('/driver/showTicketDetail', [HomeDriverController::class, 'showTicket'])->name('driver.drivers.show');
     Route::get('/driver/seats', [HomeDriverController::class, 'showSeats'])->name('driver.drivers.seats');
     Route::patch('/seats/{seatId}/active', [HomeDriverController::class, 'updateSeatActiveStatus']);
+    Route::patch('/api/seats/{seat}/book', [HomeDriverController::class, 'bookSeat']);
+
 
 });
 

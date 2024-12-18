@@ -7,11 +7,13 @@ use App\Http\Requests\StoreRouteRequest;
 use App\Http\Requests\UpdateRouteRequest;
 use App\Models\Stage;
 use App\Models\Stop;
+use App\Models\TicketBooking;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
 class RouteController extends Controller
 {
-    const PATH_VIEW = 'admin.routess.';
+    const PATH_VIEW = 'admin.routes.';
     /**
      * Display a listing of the resource.
      */
@@ -38,10 +40,34 @@ class RouteController extends Controller
                 // Đếm số lượng xe dựa trên các chuyến (1 chuyến = 1 xe)
                 $route->vehicle_count = $route->trips_count;
 
+                $route->has_related_data = $this->hasRelatedData($route->id);
+
+
                 return $route;
             });
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'stops'));
+    }
+
+
+
+    // Hàm kiểm tra mối quan hệ với các bảng khác (Route, Trip, Stage)
+    private function hasRelatedData($routeId)
+    {
+        $hasRelatedData = false;
+
+        // Kiểm tra bảng vé (Ticket)
+        if (TicketBooking::where('route_id', $routeId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+        // Kiểm tra bảng chuyến (Trip)
+        if (Trip::where('route_id', $routeId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+
+        return $hasRelatedData;
     }
 
 

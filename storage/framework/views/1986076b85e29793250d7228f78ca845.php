@@ -1,19 +1,18 @@
-@extends('driver.layouts.mater')
-@section('title')
+<?php $__env->startSection('title'); ?>
     Đặt vé
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h5 class="card-title mb-0">Danh sách chuyến xe của bạn</h5>
                 <div class="header" >
-                    <form method="GET"  style="display: flex; justify-content-between;" action="{{ route('driver.drivers.seats') }}">
+                    <form method="GET"  style="display: flex; justify-content-between;" action="<?php echo e(route('driver.drivers.seats')); ?>">
                         <label for="date">Chọn ngày:</label>
-                        <input type="date" id="date" name="date" class="form-control" value="{{ $date }}">
+                        <input type="date" id="date" name="date" class="form-control" value="<?php echo e($date); ?>">
                         <button type="submit" class="btn btn-primary">Lọc</button>
                     </form>
-
+                    
                 </div>
             </div>
         </div>
@@ -42,19 +41,19 @@
         }
 
     </style>
-    @if ($trips->isEmpty())
+    <?php if($trips->isEmpty()): ?>
         <h2 style="text-align: center">Không có dữ liệu chuyến xe nào.</h2>
-    @else
+    <?php else: ?>
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
-                    @foreach ($trips as $trip)
-                        @php
+                    <?php $__currentLoopData = $trips; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trip): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
                             $seatCount = $trip->bus->total_seats;
-                        @endphp
+                        ?>
                         <div class="card-body checkout-tab">
 
-                            @if ($seatCount == 40)
+                            <?php if($seatCount == 40): ?>
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="pt-3 fw-semibold">Tầng 1</h5>
@@ -346,7 +345,7 @@
                                         </li>
                                     </div>
                                 </div>
-                            @elseif ($seatCount == 34)
+                            <?php elseif($seatCount == 34): ?>
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="pt-3 fw-semibold">Tầng 1</h5>
@@ -626,7 +625,7 @@
                                         </li>
                                     </div>
                                 </div>
-                            @elseif ($seatCount == 45)
+                            <?php elseif($seatCount == 45): ?>
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="pt-3 fw-semibold">Tầng 1</h5>
@@ -898,9 +897,9 @@
                                         </li>
                                     </div>
                                 </div>
-                            @else
+                            <?php else: ?>
                                 <div class="alert alert-warning">Chuyến đi này có số ghế không xác định</div>
-                            @endif
+                            <?php endif; ?>
                             <div class="row mt-2 p-2" style="background: #ecedf1 !important;">
                                 <div class="col">
                                     <li>
@@ -922,7 +921,7 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <!-- end card body -->
             </div>
             <!-- end card -->
@@ -931,8 +930,8 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="{{ route('admin.tickets.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                    <form action="<?php echo e(route('admin.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">
                         <input type="hidden" name="route_id" id="route_id">
@@ -978,11 +977,11 @@
                             <div class="tab-pane fade show active" id="pills-bill-info" role="tabpanel"
                                 aria-labelledby="pills-bill-info-tab">
                                 <div>
-                                @foreach ($groupedTrips as $tripId => $trip)
-                                <h4 class="mb-1" id="route-info">{{ $trip['route_name'] }}</h4>
-                                <span class="fs-5" id="time-info">{{$trip['date'] }}</span>
-                            @endforeach
-
+                                <?php $__currentLoopData = $groupedTrips; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tripId => $trip): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <h4 class="mb-1" id="route-info"><?php echo e($trip['route_name']); ?></h4>
+                                <span class="fs-5" id="time-info"><?php echo e($trip['date']); ?></span>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                   
                                 </div>
                                 <hr>
                                 <div class="mt-4">
@@ -1031,7 +1030,7 @@
                                             <label for="billinginfo-phone" class="form-label">Số điện thoại</label>
                                             <input type="text" name="phone" class="form-control"
                                                    id="billinginfo-phone"
-                                                   value="{{ old('phone') }}" >
+                                                   value="<?php echo e(old('phone')); ?>" >
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -1039,7 +1038,7 @@
                                             <label for="billinginfo-name" class="form-label">Họ tên</label>
                                             <input type="text" name="name" class="form-control"
                                                    id="billinginfo-name"
-                                                   value="{{ old('name') }}" >
+                                                   value="<?php echo e(old('name')); ?>" >
                                         </div>
                                     </div>
                                 </div>
@@ -1056,7 +1055,7 @@
                                 <div class="mb-3">
                                     <label for="billinginfo-address" class="form-label">Ghi chú</label>
                                     <textarea class="form-control" name="note" id="billinginfo-address"
-                                              rows="3" >{{ old('note') }}</textarea>
+                                              rows="3" ><?php echo e(old('note')); ?></textarea>
                                 </div>
                                 <div class="d-flex align-items-start gap-3 mt-4">
                                  <button type="button" class="btn btn-primary btn-label right ms-auto nexttab fs-5" id="btn-up-seat" data-seat-id="1">
@@ -1077,9 +1076,16 @@
                                             <label for="billinginfo-thucthu" class="form-label">Thực thu</label>
                                             <input type="text" name="total_price" class="form-control"
                                                 id="billinginfo-thucthu" readonly>
-                                            @error('total_price')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <?php $__errorArgs = ['total_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <span class="text-danger"><?php echo e($message); ?></span>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -1164,28 +1170,28 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($groupedTrips as $tripId => $trip)
+                            <?php $__currentLoopData = $groupedTrips; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tripId => $trip): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td>{{ $trip['time_start'] }}</td>
-                                    <td>{{ $trip['route_name'] }}</td>
-                                    <td>{{ $trip['total_tickets'] }}</td>
-                                    <td>{{ number_format($trip['total_price'], 0, ',', '.') }} VND</td>
+                                    <td><?php echo e($trip['time_start']); ?></td>
+                                    <td><?php echo e($trip['route_name']); ?></td>
+                                    <td><?php echo e($trip['total_tickets']); ?></td>
+                                    <td><?php echo e(number_format($trip['total_price'], 0, ',', '.')); ?> VND</td>
                                     <td>
-                                        <a href="{{ route('driver.drivers.show', ['date' => request()->input('date'), 'trip_id' => $tripId]) }}">Xem chi tiết</a>
+                                        <a href="<?php echo e(route('driver.drivers.show', ['date' => request()->input('date'), 'trip_id' => $tripId])); ?>">Xem chi tiết</a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
     </div>
     <script>
     // Dữ liệu trạng thái ghế
-    const seatStatusArray = @json($seatStatusFlat);
+    const seatStatusArray = <?php echo json_encode($seatStatusFlat, 15, 512) ?>;
 
     // Hàm cập nhật trạng thái ghế dựa trên dữ liệu ban đầu
     function updateSeatStatus() {
@@ -1363,4 +1369,6 @@
 </script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('driver.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/driver/drivers/showDetail.blade.php ENDPATH**/ ?>
