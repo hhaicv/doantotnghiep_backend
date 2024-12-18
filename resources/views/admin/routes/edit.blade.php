@@ -22,7 +22,6 @@
             });
         </script>
     @endif
-
     @if (session('failes'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {

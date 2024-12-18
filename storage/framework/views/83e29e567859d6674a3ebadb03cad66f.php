@@ -5,19 +5,23 @@
         <!-- Dark Logo-->
         <a href="" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt="" height="22">
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
+                    height="22">
             </span>
             <span class="logo-lg">
-                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt="" height="17">
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
+                    height="17">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="" class="logo logo-light">
             <span class="logo-sm">
-                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt="" height="50">
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
+                    height="50">
             </span>
             <span class="logo-lg">
-                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt="" height="100">
+                <img src="<?php echo e(asset('theme/admin/assets/images/logo-removebg-preview.png')); ?>" alt=""
+                    height="100">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -40,6 +44,7 @@
                     </a>
                 </li>
                 <hr>
+                <li class="menu-title"><span data-key="t-menu">Quản trị</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarExecutive" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarExecutive">
@@ -53,9 +58,6 @@
                                     sách xe</a>
                             </li>
                             <li class="nav-item">
-                                <a href="<?php echo e(route('admin.drivers.index')); ?>" class="nav-link" data-key="t-buses">Tài xế</a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="<?php echo e(route('admin.stops.index')); ?>" class="nav-link" data-key="t-stops">Điểm
                                     dừng</a>
                             </li>
@@ -64,7 +66,8 @@
                                     đường</a>
                             </li>
                             <li class="nav-item">
-                                <a href="<?php echo e(route('admin.trips.index')); ?>" class="nav-link" data-key="t-trips">Danh sách chuyến</a>
+                                <a href="<?php echo e(route('admin.trips.index')); ?>" class="nav-link" data-key="t-trips">Danh sách
+                                    chuyến</a>
                             </li>
                         </ul>
                     </div>
@@ -175,55 +178,42 @@
                     <div class="collapse menu-dropdown" id="sidebarUsers">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="<?php echo e(route('admin.users.employees')); ?>" class="nav-link" data-key="t-horizontal">Danh sách Nhân viên</a>
+                                <a href="<?php echo e(route('admin.admins.index')); ?>" class="nav-link"
+                                    data-key="t-horizontal">Admin</a>
                             </li>
                             <li class="nav-item">
-                                <a href="<?php echo e(route('admin.users.customers')); ?>" class="nav-link" data-key="t-horizontal">Danh sách Khách Hàng</a>
+                                <a href="<?php echo e(route('admin.users.employees')); ?>" class="nav-link"
+                                    data-key="t-horizontal">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a href="<?php echo e(route('admin.users.index')); ?>" class="nav-link" data-key="t-horizontal">Danh sách Tất cả Người dùng</a>
+                                <a href="<?php echo e(route('admin.drivers.index')); ?>" class="nav-link" data-key="t-buses">Tài
+                                    xế</a>
                             </li>
-
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.users.customers')); ?>" class="nav-link"
+                                    data-key="t-horizontal">Khách Hàng</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
                 <hr>
                 <li class="menu-title"><span data-key="t-menu">Thống kê</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarStatistical" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarAdmins">
+                    <a class="nav-link menu-link" href="#sidebarStatistical" data-bs-toggle="collapse"
+                        role="button" aria-expanded="false" aria-controls="sidebarAdmins">
                         <i class="ri-layout-3-line"></i>
                         <span data-key="t-layouts">Thống kê</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarStatistical">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="<?php echo e(route('admin.statistics.tripStatistical')); ?>" class="nav-link" data-key="t-horizontal">Thống kê vé đặt</a>
+                                <a href="<?php echo e(route('admin.statistics.tripStatistical')); ?>" class="nav-link"
+                                    data-key="t-horizontal">Thống kê vé đặt</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <hr>
-                <li class="menu-title"><span data-key="t-menu">Quản trị</span></li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAdmins" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarAdmins">
-                        <i class="ri-layout-3-line"></i>
-                        <span data-key="t-layouts">Tài khoản quản trị</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAdmins">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.admins.index')); ?>" class="nav-link" data-key="t-horizontal">Tài khoản quản trị</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.roles.index')); ?>" class="nav-link"
-                                    data-key="t-horizontal">Danh sách phân quyền</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <hr>
+                
             </ul>
         </div>
     </div>

@@ -97,17 +97,17 @@
         </div>
         <div class="content">
             <p>Kính gửi Quý khách hàng: </p>
-            <p>Chúng tôi xin thông báo rằng đơn hàng của bạn với mã <strong><?php echo e($ticket['order_code']); ?></strong> đã được
+            <p>Chúng tôi xin thông báo rằng đơn hàng của bạn với mã <strong><?php echo e($data['order_code']); ?></strong> đã được
                 hủy thành công.</p>
             <div class="promotion-info">
                 <p class="promotion-code">Thông tin đơn hàng</p>
-                <p><strong>Mã đơn hàng:</strong> <?php echo e($ticket['order_code']); ?></p>
-                <p><strong>Tên khách hàng:</strong> <?php echo e($ticket['name']); ?></p>
-                <p><strong>Số điện thoại:</strong> <?php echo e($ticket['phone']); ?></p>
-                <p><strong>Email:</strong> <?php echo e($ticket['email']); ?></p>
-                <p><strong>Số tài khoản:</strong> <?php echo e($ticket['account_number']); ?></p>
-                <p><strong>Ngân hàng:</strong> <?php echo e($ticket['bank']); ?></p>
-                <p><strong>Lý do hủy:</strong> <?php echo e($ticket['reason']); ?></p>
+                <p><strong>Mã đơn hàng:</strong> <?php echo e($data['order_code']); ?></p>
+                <p><strong>Tên khách hàng:</strong> <?php echo e($data['name']); ?></p>
+                <p><strong>Số điện thoại:</strong> <?php echo e($data['phone']); ?></p>
+                <p><strong>Email:</strong> <?php echo e($data['email']); ?></p>
+                <p><strong>Số tài khoản:</strong> <?php echo e($data['account_number']); ?></p>
+                <p><strong>Ngân hàng:</strong> <?php echo e($data['bank']); ?></p>
+                <p><strong>Lý do hủy:</strong> <?php echo e($data['reason']); ?></p>
             </div>
             <p>Chúng tôi rất tiếc về sự bất tiện này và hy vọng sẽ tiếp tục phục vụ bạn trong những lần đặt hàng tiếp
                 theo.</p>
