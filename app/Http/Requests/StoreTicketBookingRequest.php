@@ -23,8 +23,9 @@ class StoreTicketBookingRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'total_price' => ['required'],
+            'total_price' => ['required', 'numeric', 'min:1'],
             'phone' => ['required'],
+            'name_seat' => ['required'], // Bắt buộc phải có tên ghế
         ];
     }
     public function messages(): array
@@ -32,7 +33,10 @@ class StoreTicketBookingRequest extends FormRequest
         return [
             'name.required' => 'Cần phải nhập tên hành khách.',
             'total_price.required' => 'Bạn cần chọn ghế để thanh toán.',
+            'total_price.numeric' => 'Giá tổng cần phải là số.',
+            'total_price.min' => 'Bạn cần chọn ít nhất một ghế để thanh toán.',
             'phone.required' => 'Cần phải nhập số điện thoại.',
+            'name_seat.required' => 'Bạn cần chọn ghế.',
         ];
     }
 }

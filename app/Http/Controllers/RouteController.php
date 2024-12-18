@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class RouteController extends Controller
 {
-    const PATH_VIEW = 'admin.routess.';
+    const PATH_VIEW = 'admin.routes.';
     /**
      * Display a listing of the resource.
      */
@@ -40,12 +40,8 @@ class RouteController extends Controller
 
                 return $route;
             });
-
         return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'stops'));
     }
-
-
-
 
     /**
      * Show the form for creating a new resource.

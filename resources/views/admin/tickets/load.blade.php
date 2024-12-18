@@ -44,17 +44,17 @@
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A1" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A2" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A3" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A4" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A5" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A6" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button style="visibility: hidden;" type="submit"></button></li>
@@ -63,21 +63,21 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button class="seat" data-name="A19" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A7" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A8" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A9" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A10" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A11" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A12" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button style="visibility: hidden;" type="submit"></button></li>
@@ -86,21 +86,21 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button class="seat" data-name="A20" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A13" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A14" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A15" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A16" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A17" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A18" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                     </div>
                     <hr>
@@ -110,17 +110,17 @@
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="B1" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" data-date="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B2" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" data-date="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B3" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" data-date="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B4" data-trip-id="2" data-seat-status="selected"
-                                    data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" data-date="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B5" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" data-date="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B6" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                                    data-seat-floor="2" data-date="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button style="visibility: hidden;" type="submit"></button></li>
@@ -128,22 +128,22 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
-                            <li><button class="seat" data-name="B19" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B19" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
                         </div>
                         <div class="col">
-                            <li><button class="seat" data-name="B7" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B8" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B9" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B10" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B11" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B12" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B7" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B8" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B9" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B10" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B11" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B12" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button style="visibility: hidden;" type="submit"></button></li>
@@ -151,22 +151,22 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
-                            <li><button class="seat" data-name="B20" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B20" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
                         </div>
                         <div class="col">
-                            <li><button class="seat" data-name="B13" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B14" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B15" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B16" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B17" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B18" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B13" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B14" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B15" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B16" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B17" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B18" data-date="1" data-trip-id="2"
+                                    data-seat-status="available" data-seat-floor="2" type="submit"></button></li>
                         </div>
                     </div>
                     <?php elseif ($seatCount == 34): ?>
@@ -176,17 +176,17 @@
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A1" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A2" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A3" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A4" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A5" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A6" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button style="visibility: hidden;" type="submit"></button></li>
@@ -198,15 +198,15 @@
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A7" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A8" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A9" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A10" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A11" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                         </div>
                         <div class="col">
@@ -219,17 +219,17 @@
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A12" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A13" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A14" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A15" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A16" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A17" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                     </div>
                     <hr>
@@ -238,18 +238,18 @@
                             <h5 class="pt-3 fw-semibold">Tầng 2</h5>
                         </div>
                         <div class="col">
-                            <li><button class="seat" data-name="B1" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B2" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B3" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B4" data-trip-id="2" data-seat-status="selected"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B5" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B6" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B1" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B2" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B3" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B4" data-trip-id="1" data-seat-status="selected"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B5" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B6" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button style="visibility: hidden;" type="submit"></button></li>
@@ -260,16 +260,16 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                         </div>
                         <div class="col">
-                            <li><button class="seat" data-name="B7" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B8" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B9" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B10" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B11" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B7" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B8" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B9" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B10" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B11" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                         </div>
                         <div class="col">
@@ -281,18 +281,18 @@
                             <li><button style="visibility: hidden;" type="submit"></button></li>
                         </div>
                         <div class="col">
-                            <li><button class="seat" data-name="B12" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B13" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B14" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B15" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B16" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
-                            <li><button class="seat" data-name="B17" data-trip-id="2" data-seat-status="available"
-                                    data-seat-floor="2" type="submit"></button></li>
+                            <li><button class="seat" data-name="B12" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B13" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B14" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B15" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B16" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
+                            <li><button class="seat" data-name="B17" data-trip-id="1" data-seat-status="available"
+                                    data-seat-floor="1" data-date="1" type="submit"></button></li>
                         </div>
                     </div>
                     <?php elseif ($seatCount == 45): ?>
@@ -302,51 +302,51 @@
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="A1" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A2" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A3" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A4" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A5" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A6" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A7" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A8" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A9" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A10" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="A11" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="B1" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B2" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B3" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B4" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B5" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B6" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B7" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B8" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B9" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B10" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="B11" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
 
@@ -365,51 +365,61 @@
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="D1" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D2" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D3" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D4" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D5" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D6" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D7" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D8" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D9" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D10" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="D11" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                         </div>
                         <div class="col">
                             <li><button class="seat" data-name="E1" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button></li>
                             <li><button class="seat" data-name="E2" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E3" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E4" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E5" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E6" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E7" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E8" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E9" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E10" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                             <li><button class="seat" data-name="E11" data-trip-id="1" data-seat-status="available"
-                                    data-seat-floor="1" type="submit"></button></li>
+                                    data-seat-floor="1" data-date="1" data-user-id="1" type="submit"></button>
+                            </li>
                         </div>
                     </div>
 
@@ -429,6 +439,7 @@
                             <li><button style="background: #e76966;" type="submit"></button> <br> Ghế đã đặt</li>
                         </div>
                     </div>
+
                 </div>
                 <!-- end card body -->
             </div>
@@ -462,9 +473,9 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link fs-15 p-3" id="pills-bill-address-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-bill-address" type="button" role="tab"
-                                        aria-controls="pills-bill-address" aria-selected="false">
+                                    <button class="nav-link fs-15 p-3" id="pills-bill-address-tab"
+                                        data-bs-toggle="pill" data-bs-target="#pills-bill-address" type="button"
+                                        role="tab" aria-controls="pills-bill-address" aria-selected="false">
 
                                         <i
                                             class="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
@@ -590,8 +601,8 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="billinginfo-thucthu" class="form-label">Thực thu</label>
-                                            <input type="text" class="form-control" name="price" id="billinginfo-thucthu"
-                                                readonly>
+                                            <input type="text" class="form-control" name="price"
+                                                id="billinginfo-thucthu" readonly>
 
                                         </div>
                                     </div>
@@ -610,6 +621,9 @@
                                             <label for="billinginfo-tralai" class="form-label">Tổng tiền</label>
                                             <input type="text" class="form-control" name="total_price"
                                                 id="billinginfo-tralai" readonly>
+                                            @error('total_price')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -660,6 +674,13 @@
         </div>
 
     </div>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//js.pusher.com/3.1/pusher.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
+
     <script>
         // Giả sử bạn đã nhận được mảng trạng thái ghế từ máy chủ
         const seatStatusArray = @json($seatsStatus);
@@ -804,37 +825,58 @@
         seatButtons.forEach(button => {
             button.setAttribute('data-trip-id', tripId);
         });
+        const user_Id = params.get('user_id');
+
+        // Gán user_id vào các nút ghế
+        const userButtons = document.querySelectorAll('button[data-user-id]');
+        userButtons.forEach(button => {
+            button.setAttribute('data-user-id', user_Id);
+        });
+
+        const date = params.get('date');
+
+        // Gán date vào các nút ghế
+        const dateButtons = document.querySelectorAll('button[data-date]');
+        dateButtons.forEach(button => {
+            button.setAttribute('data-date', date);
+        });
 
         let selectedSeats = []; // Mảng lưu trữ ghế đã chọn
         const fare = parseFloat(new URLSearchParams(window.location.search).get('fare')); // Lấy fare từ URL
         const maxSeats = 8; // Giới hạn số ghế tối đa
 
+        const userId = @json(Auth::guard('admin')->id());
+
         document.querySelectorAll('.seat').forEach(function(button) {
             button.addEventListener('click', function() {
+                const seatName = button.getAttribute('data-name');
+                const tripId = button.getAttribute('data-trip-id');
                 const seatStatus = button.getAttribute('data-seat-status');
+                const seatUserId = button.getAttribute('data-user-id'); // Lấy userId từ ghế
+                const seatDate = button.getAttribute('data-date'); // Lấy userId từ ghế
 
+
+
+                if (seatStatus === 'selected' && seatUserId && seatUserId !== String(userId)) {
+                    // console.log(`Ghế ${seatName} đã được chọn bởi userId ${seatUserId}`);
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Thông báo',
+                        text: `Ghế này đã được chọn bởi người khác!`,
+                        confirmButtonText: 'OK',
+                    });
+                    return; // Ngăn không cho người dùng thao tác
+                }
                 if (seatStatus === 'available') {
                     // Kiểm tra số ghế đã chọn
                     if (selectedSeats.length < maxSeats) {
-                        button.classList.toggle('selected');
-                        const isSelected = button.classList.contains('selected');
+                        // Cập nhật trạng thái giao diện
+                        button.classList.add('selected');
+                        button.setAttribute('data-seat-status', 'selected');
+                        button.style.backgroundColor = '#9dc3fe'; // Màu nền cho ghế đã chọn
 
-                        // Cập nhật trạng thái ghế
-                        button.setAttribute('data-seat-status', isSelected ? 'selected' : 'available');
+                        selectedSeats.push(seatName); // Thêm ghế vào mảng
 
-                        // Cập nhật màu nền cho ghế đã chọn
-                        if (isSelected) {
-                            button.style.backgroundColor = '#9dc3fe'; // Màu nền cho ghế đã chọn
-                            const seatName = button.getAttribute('data-name'); // Lấy tên ghế từ data-name
-                            selectedSeats.push(seatName); // Thêm ghế đã chọn vào mảng
-                        } else {
-                            button.style.backgroundColor = ''; // Đặt lại màu nền khi bỏ chọn
-                            const seatName = button.getAttribute('data-name'); // Lấy tên ghế từ data-name
-                            selectedSeats = selectedSeats.filter(seat => seat !==
-                                seatName); // Xóa ghế khỏi mảng
-                        }
-
-                        // Cập nhật hiển thị ghế đã chọn
                         document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
                         document.getElementById('name_seat').value = selectedSeats.join(', ');
 
@@ -846,21 +888,43 @@
                                 currency: 'VND'
                             });
                         document.getElementById("billinginfo-thucthu").value = totalPrice;
+                        // Gửi yêu cầu AJAX để cập nhật trạng thái trên server
+                        fetch('/admin/update-seat-status', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Đảm bảo bạn đã cấu hình CSRF token
+                                },
+                                body: JSON.stringify({
+                                    name: seatName,
+                                    trip_id: tripId,
+                                    status: 'selected',
+                                    userId: userId,
+                                    date: seatDate
+                                }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log('Cập nhật ghế thành công:', data.seat);
+                                } else {
+                                    alert('Cập nhật trạng thái thất bại. Vui lòng thử lại.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi cập nhật ghế:', error);
+                            });
                     } else {
                         alert('Bạn chỉ có thể chọn tối đa ' + maxSeats + ' ghế.');
                     }
                 } else if (seatStatus === 'selected') {
                     // Nếu ghế đã được chọn, bỏ chọn nó
-                    button.classList.remove('selected'); // Bỏ class 'selected'
-                    button.setAttribute('data-seat-status', 'available'); // Đặt lại trạng thái ghế
-
-                    // Đặt lại màu nền khi bỏ chọn
+                    button.classList.remove('selected');
+                    button.setAttribute('data-seat-status', 'available');
                     button.style.backgroundColor = '';
 
-                    const seatName = button.getAttribute('data-name'); // Lấy tên ghế từ data-name
                     selectedSeats = selectedSeats.filter(seat => seat !== seatName); // Xóa ghế khỏi mảng
 
-                    // Cập nhật hiển thị ghế đã chọn
                     document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
 
                     document.getElementById('name_seat').value = selectedSeats.join(', ');
@@ -873,6 +937,32 @@
                             currency: 'VND'
                         });
                     document.getElementById("billinginfo-thucthu").value = totalPrice;
+                    // Gửi yêu cầu AJAX để cập nhật trạng thái về "available" trên server
+                    fetch('/admin/update-seat-status', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({
+                                name: seatName,
+                                trip_id: tripId,
+                                status: 'available',
+                                userId: userId,
+                                date: seatDate
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log('Ghế được cập nhật lại trạng thái available:', data.seat);
+                            } else {
+                                alert('Cập nhật trạng thái thất bại. Vui lòng thử lại.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi cập nhật trạng thái ghế:', error);
+                        });
                 } else if (seatStatus === 'booked') {
                     Swal.fire({
                         icon: 'warning',
@@ -891,6 +981,38 @@
                     return;
                 }
             });
+        });
+        var pusher = new Pusher('8579e6baacda80044680', {
+            encrypted: true,
+            cluster: "ap1"
+        });
+
+        // Lắng nghe kênh và sự kiện
+        var channel = pusher.subscribe('seat-channel');
+
+        channel.bind('App\\Events\\SeatUpdatedEvent', function(data) {
+            const {
+                seat
+            } = data;
+
+            console.log(seat);
+
+
+            // Cập nhật trạng thái ghế
+            const button = document.querySelector(`button[data-name="${seat.name}"]`);
+            if (button) {
+                if (seat.status === 'selected' && seat.date === date && seat.trip_id === tripId) {
+                    button.classList.add(seat.status);
+                    button.setAttribute('data-seat-status', seat.status);
+                    button.setAttribute('data-user-id', seat.userId);
+                    button.style.backgroundColor = '00FF00'; // Màu ghế đã mua
+                } else if (seat.status === 'available') {
+                    button.classList.remove('selected');
+                    button.setAttribute('data-seat-status', seat.status);
+                    button.setAttribute('data-user-id', seat.userId);
+                    button.style.backgroundColor = '';
+                }
+            }
         });
     </script>
 @endsection

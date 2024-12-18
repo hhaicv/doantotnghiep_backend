@@ -97,7 +97,7 @@ Route::post('/update-seat-status', function (Illuminate\Http\Request $request) {
     $seatStatus = $request->input('status');
     $tripId = $request->input('trip_id');
     $userId = $request->input('userId'); // Lấy user_id từ yêu cầu
-
+    $date = $request->input('date'); // Lấy user_id từ yêu cầu
 
     // Xử lý cập nhật trạng thái ghế
     $seat = [
@@ -105,7 +105,7 @@ Route::post('/update-seat-status', function (Illuminate\Http\Request $request) {
         'status' => $seatStatus,
         'trip_id' => $tripId,
         'userId' => $userId,
-
+        'date' => $date,
     ];
 
     // Phát sự kiện
