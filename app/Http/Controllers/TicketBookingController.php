@@ -149,7 +149,7 @@ class TicketBookingController extends Controller
                 $query->where('date', $date)
                     ->where('trip_id', $trip_id);
             })
-            ->where('updated_at', '<=', Carbon::now()->subMinutes(5))
+            ->where('updated_at', '<=', Carbon::now()->subMinutes(13))
             ->get();
 
         // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking
@@ -236,7 +236,7 @@ class TicketBookingController extends Controller
             }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
-
+            $ticketBookingData['pay_url'] = $jsonResult['payUrl'];
 
             $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
 
@@ -304,6 +304,8 @@ class TicketBookingController extends Controller
 
             $vnp_Data['vnp_SecureHash'] = $vnp_SecureHash;  // Thêm chữ ký vào tham số
 
+            $vnp_Url = $endpoint . "?" . http_build_query($vnp_Data);
+
             $ticketBookingData = $request->except('name_seat', 'fare');
             $seatNames = explode(', ', $request->input('name_seat'));
             $totalTickets = count($seatNames);
@@ -314,7 +316,7 @@ class TicketBookingController extends Controller
             }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
-
+            $ticketBookingData['pay_url'] = $vnp_Url;
             $ticketBookingData['status'] = TicketBooking::PAYMENT_STATUS_UNPAID;
 
             $ticketBooking = TicketBooking::create($ticketBookingData);
@@ -332,7 +334,7 @@ class TicketBookingController extends Controller
             }
 
             // Xây dựng URL redirect sang VNPay
-            $vnp_Url = $endpoint . "?" . http_build_query($vnp_Data);
+
 
             return redirect($vnp_Url); // Chuyển hướng tới VNPay để thanh toán
         } else {
