@@ -21,8 +21,13 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
+<<<<<<< HEAD:storage/framework/views/af9fbe24871f22bde758048ee14e12a9.php
                     <h5 class="card-title mb-0">Danh sách</h5>
                     <a class="btn btn-primary mb-3" href="<?php echo e(route('employee.trips.create')); ?>">Thêm mới</a>
+=======
+                    <h5 class="card-title mb-0">Danh sách phân quyền</h5>
+                    <a class="btn btn-primary mb-3" href="<?php echo e(route('admin.roles.create')); ?>">Thêm mới phân quyền</a>
+>>>>>>> 678c797cb3952a46f01e1dac2a954d2a43c78350:storage/framework/views/f2bc9e9b61b1d90b806f7c1577dfa576.php
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"

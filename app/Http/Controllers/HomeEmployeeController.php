@@ -24,6 +24,7 @@ use App\Models\Bus;
 use App\Models\Contact;
 use App\Models\Driver;
 use App\Models\Information;
+use App\Models\NewCategory;
 use App\Models\Promotion;
 use App\Models\PromotionCategory;
 use App\Models\Review;
@@ -166,10 +167,20 @@ class HomeEmployeeController extends Controller
         return view('employee.reviews.index', compact('data'));
     }
 
+
     public function information()
     {
         $data = Information::all();
         return view('employee.information.index', compact('data'));
+    }
+
+    public function showInformation(string $id)
+    {
+        $data = Information::query()->findOrFail($id);
+        $data->increment('views_count');
+        $newCategories = NewCategory::all(); 
+
+        return view('employee.information.show', compact('data','newCategories'));
     }
 
     public function routes()

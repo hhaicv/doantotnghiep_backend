@@ -98,6 +98,10 @@ Route::middleware(['employee'])->prefix('employee')->as('employee.')->group(func
     Route::post('/store-tickets', [HomeEmployeeController::class, 'storeTicket'])->name('tickets.store');
 
     Route::get('/reviews', [HomeEmployeeController::class, 'reviews'])->name('reviews');
+
+    Route::get('/Information', [HomeEmployeeController::class, 'Information'])->name('Information');
+
+    Route::get('/show/{id}', [HomeEmployeeController::class, 'showInformation'])->name('information.show');
     Route::get('/send-notification', [HomeEmployeeController::class, 'sendPromotionNotification']);
 
     Route::get('/fetch-trips', [HomeEmployeeController::class, 'store'])->name('fetch.trips');
