@@ -38,14 +38,14 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                <li class="nav-item">
+                <li class="nav-item {{ Request::routeIs(['admin.dashboard']) ? 'active' : 'admin.dashboard' }}">
                     <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
                 </li>
                 <hr>
                 <li class="menu-title"><span data-key="t-menu">Quản trị</span></li>
-                <li class="nav-item">
+                <li class="nav-item  {{ Request::routeIs(['admin.buses.index','admin.stops.index','admin.routes.index','admin.trips.index']) ? 'active' : 'admin.buses.index' }}">
                     <a class="nav-link menu-link" href="#sidebarExecutive" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarExecutive">
                         <i data-feather="trello"></i>

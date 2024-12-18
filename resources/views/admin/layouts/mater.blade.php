@@ -130,6 +130,9 @@
             cursor: pointer;
             padding: 5px 10px;
         }
+        .nav-item.active .nav-link {
+            color: #ffcd39;
+        }
     </style>
 
 </head>

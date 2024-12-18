@@ -111,6 +111,7 @@
                                                 <div class="hstack gap-3 fs-15">
                                                     <a href="{{ route('admin.stops.edit', $child->id) }}"
                                                         class="link-primary"><i class="ri-settings-4-line"></i></a>
+                                                    @if (!$child->has_related_data)
                                                     <form id="deleteFormStop{{ $child->id }}"
                                                         action="{{ route('admin.stops.destroy', $child->id) }}"
                                                         method="post">
@@ -122,6 +123,7 @@
                                                             <i class="ri-delete-bin-5-line"></i>
                                                         </button>
                                                     </form>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

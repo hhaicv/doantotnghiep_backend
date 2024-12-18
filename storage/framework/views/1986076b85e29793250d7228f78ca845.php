@@ -12,7 +12,7 @@
                         <input type="date" id="date" name="date" class="form-control" value="<?php echo e($date); ?>">
                         <button type="submit" class="btn btn-primary">Lọc</button>
                     </form>
-                    
+
                 </div>
             </div>
         </div>
@@ -981,7 +981,7 @@
                                 <h4 class="mb-1" id="route-info"><?php echo e($trip['route_name']); ?></h4>
                                 <span class="fs-5" id="time-info"><?php echo e($trip['date']); ?></span>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                   
+
                                 </div>
                                 <hr>
                                 <div class="mt-4">

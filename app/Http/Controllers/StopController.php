@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stage;
 use App\Models\Stop;
 use App\Http\Requests\StoreStopRequest;
 use App\Http\Requests\UpdateStopRequest;
@@ -27,6 +28,22 @@ class StopController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
+    private function hasRelatedData($stopId)
+    {
+        $hasRelatedData = false;
+
+        // Kiểm tra bảng chuyến (Trip)
+        if (Stop::where('parent_id', $stopId)->exists()) {
+            $hasRelatedData = true;
+        }
+        if (Stage::where('start_stop_id', $stopId)->exists()) {
+            $hasRelatedData = true;
+        }
+
+        return $hasRelatedData;
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -36,18 +53,7 @@ class StopController extends Controller
         $parents = Stop::whereNull('parent_id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('parents'));
     }
-    private function hasRelatedData($stopId)
-    {
-        $hasRelatedData = false;
 
-        // Kiểm tra bảng chuyến (Trip)
-        if (Stop::where('parent_id', $stopId)->exists()) {
-            $hasRelatedData = true;
-        }
-
-
-        return $hasRelatedData;
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -123,12 +129,8 @@ class StopController extends Controller
         $stop = Stop::query()->findOrFail($id);
 
         // Kiểm tra nếu `Stop` có liên kết với các `Stop` con
-        if ($stop->children()->exists()) {
-            $children = $stop->children;
-            foreach ($children as $child) {
-                $child->is_active = false; // Đặt trạng thái `Stop` con là không hoạt động
-                $child->save(); // Lưu thay đổi
-            }
+        if ($stop->children()->exists() || $this->hasRelatedData($stop->id)) {
+            return response()->json(['error' => 'Không thể xóa điểm dừng này vì nó đang được sử dụng.'], 400);
         }
 
         // Xóa ảnh đại diện nếu có
@@ -144,6 +146,7 @@ class StopController extends Controller
 
         return redirect()->route('admin.stops.index')->with('success', 'Trạm đã được xóa thành công.');
     }
+
 
 
     public function statusStop(Request $request, $id)

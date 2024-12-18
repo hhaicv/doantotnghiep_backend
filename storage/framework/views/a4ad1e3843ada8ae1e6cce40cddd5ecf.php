@@ -111,6 +111,7 @@
                                                 <div class="hstack gap-3 fs-15">
                                                     <a href="<?php echo e(route('admin.stops.edit', $child->id)); ?>"
                                                         class="link-primary"><i class="ri-settings-4-line"></i></a>
+                                                    <?php if(!$child->has_related_data): ?>
                                                     <form id="deleteFormStop<?php echo e($child->id); ?>"
                                                         action="<?php echo e(route('admin.stops.destroy', $child->id)); ?>"
                                                         method="post">
@@ -122,6 +123,7 @@
                                                             <i class="ri-delete-bin-5-line"></i>
                                                         </button>
                                                     </form>
+                                                    <?php endif; ?>
                                                 </div>
                                             </td>
                                         </tr>
