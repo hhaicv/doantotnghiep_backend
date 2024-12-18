@@ -138,4 +138,6 @@ class UserController extends Controller
         $users = User::where('type', 'user')->get(); // Lấy danh sách người dùng
         return view(self::PATH_VIEW . 'users', compact('users'));
     }
+
+
 }

@@ -69,7 +69,7 @@
                             @foreach ($admins as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><img src="{{ Storage::url($item->image) }}" alt="" style="width: 80px;height: auto; object-fit: cover"></td>
+                                    <td><img width="100px" height="70px" src="{{ Storage::url($item->image) }}"></td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->name_role }}</td>
@@ -164,7 +164,7 @@
                 console.log(itemId);
 
 
-                fetch(`/admin/status-roles/${itemId}`, {
+                fetch(`/admin/status-admins/${itemId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

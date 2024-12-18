@@ -38,6 +38,9 @@ class TripController extends Controller
         if (Trip::where('bus_id', $tripId)->exists()) {
             $hasRelatedData = true;
         }
+        if (Trip::where('route_id', $tripId)->exists()) {
+            $hasRelatedData = true;
+        }
 
         return $hasRelatedData;
     }

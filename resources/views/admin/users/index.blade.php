@@ -126,7 +126,7 @@ Danh sách tài khoản
             console.log(itemId);
 
 
-            fetch(`/admin/status-roles/${itemId}`, {
+            fetch(`/admin/status-users/${itemId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

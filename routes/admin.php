@@ -93,11 +93,14 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
         Route::put('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
+    Route::post('/status-users/{id}', [UserController::class, 'statusUser']);
 
 
     Route::get('/statistics-trip', [StatisticsController::class, 'tripStatistical'])->name('statistics.tripStatistical');
 
     Route::resource('admins', App\Http\Controllers\AdminController::class);
+    Route::post('/status-admins/{id}', [App\Http\Controllers\AdminController::class, 'statusAdmin']);
+
 
     Route::get('/fetch-trips', [TicketBookingController::class, 'uploadTicket'])->name('fetch.trips');
     Route::get('/thanks', [TicketBookingController::class, 'thanks'])->name('thanks');
