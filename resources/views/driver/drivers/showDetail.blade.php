@@ -41,12 +41,12 @@
         }
 
     </style>
+    @if ($trips->isEmpty())
+        <h2 style="text-align: center">Không có dữ liệu chuyến xe nào.</h2>
+    @else
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
-                @if ($trips->isEmpty())
-                    <h2 style="text-align: center">Không có dữ liệu chuyến xe nào.</h2>
-                @else
                     @foreach ($trips as $trip)
                         @php
                             $seatCount = $trip->bus->total_seats;
@@ -922,7 +922,6 @@
                             </div>
                         </div>
                     @endforeach
-                @endif
                     <!-- end card body -->
             </div>
             <!-- end card -->
@@ -981,7 +980,7 @@
                                               rows="3" disabled>{{ old('note') }}</textarea>
                                 </div>
                                 <div class="d-flex align-items-start gap-3 mt-4">
-                                    <button id="btn-cancel-ride" data-seat-id="seat-123" class="btn btn-danger" type="button">Bỏ chuyến</button>
+{{--                                    <button id="btn-cancel-ride" data-seat-id="seat-123" class="btn btn-danger" type="button">Bỏ chuyến</button>--}}
                                     <button type="button" class="btn btn-primary btn-label right ms-auto nexttab fs-5" id="btn-up-seat" data-seat-id="1">
                                         Đã Lên Xe
                                     </button>
@@ -1033,6 +1032,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
     <script>
         // Cập nhật mảng trạng thái ghế

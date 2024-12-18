@@ -40,12 +40,12 @@
         }
 
     </style>
+    <?php if($trips->isEmpty()): ?>
+        <h2 style="text-align: center">Không có dữ liệu chuyến xe nào.</h2>
+    <?php else: ?>
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
-                <?php if($trips->isEmpty()): ?>
-                    <h2 style="text-align: center">Không có dữ liệu chuyến xe nào.</h2>
-                <?php else: ?>
                     <?php $__currentLoopData = $trips; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trip): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php
                             $seatCount = $trip->bus->total_seats;
@@ -921,7 +921,6 @@
                             </div>
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <?php endif; ?>
                     <!-- end card body -->
             </div>
             <!-- end card -->
@@ -980,7 +979,7 @@
                                               rows="3" disabled><?php echo e(old('note')); ?></textarea>
                                 </div>
                                 <div class="d-flex align-items-start gap-3 mt-4">
-                                    <button id="btn-cancel-ride" data-seat-id="seat-123" class="btn btn-danger" type="button">Bỏ chuyến</button>
+
                                     <button type="button" class="btn btn-primary btn-label right ms-auto nexttab fs-5" id="btn-up-seat" data-seat-id="1">
                                         Đã Lên Xe
                                     </button>
@@ -1032,6 +1031,7 @@
                 </div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
     <script>
         // Cập nhật mảng trạng thái ghế

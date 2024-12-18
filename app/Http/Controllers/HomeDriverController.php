@@ -61,6 +61,7 @@ class HomeDriverController extends Controller
             ->whereHas('bus', function ($query) use ($driverId) {
                 $query->where('driver_id', $driverId);
             })
+            ->where('status','paid')
             ->where('date', $date)
             ->get()
             ->groupBy(function ($trip) {
@@ -137,6 +138,7 @@ class HomeDriverController extends Controller
             ->whereHas('bus.driver', function ($query) use ($driverId) {
                 $query->where('id', $driverId);
             })
+            ->where('status','paid')
             ->orderByDesc('date')
             ->paginate(10); // Hiển thị 10 bản ghi mỗi trang
 
@@ -184,7 +186,7 @@ class HomeDriverController extends Controller
                 $query->where('driver_id', $driverId);
             })
             ->whereHas('ticketBookings', function ($query) use ($date) {
-                $query->where('date', $date);
+                $query->where('date', $date)->where('status','paid');
             })
             ->get();
 
@@ -223,6 +225,7 @@ class HomeDriverController extends Controller
             ->whereHas('bus', function ($query) use ($driverId) {
                 $query->where('driver_id', $driverId);
             })
+            ->where('status','paid')
             ->where('date', $date)
             ->get()
             ->groupBy(function ($trip) {
