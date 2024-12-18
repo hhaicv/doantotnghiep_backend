@@ -124,8 +124,9 @@
 
                         <div id="file-preview">
                             @if ($data->profile_image)
-                                <img src="{{ Storage::url($data->profile_image) }}" alt="Ảnh đã tải lên" width="200px"
-                                    height="150px">
+                                <div class="mb-3" id="current-image">
+                                    <img src="{{ Storage::url($data->profile_image) }}" alt="Current image" width="200" height="150px">
+                                </div>
                             @endif
                         </div>
                     </div>

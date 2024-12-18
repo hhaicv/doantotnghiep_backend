@@ -29,7 +29,6 @@ class updateDriverRequest extends FormRequest
             'phone' => ['required','string','max:10'],
             'license_number' => ['required','string','max:50'],
             'address' => ['required','string','max:255'],
-            'profile_image' => ['required','image','mimes:jpg,jpeg,png'], // Thêm quy tắc cho trường image
         ];
     }
 
@@ -64,9 +63,6 @@ class updateDriverRequest extends FormRequest
             'address.string' => 'Địa chỉ phải là chuỗi ký tự.',
             'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
 
-            'profile_image.required' => 'Vui lòng nhập file ảnh.',
-            'profile_image.image' => 'Tệp tải lên phải là ảnh.',
-            'profile_image.mimes' => 'Ảnh phải có định dạng jpg, jpeg, hoặc png.',
         ];
     }
 }
