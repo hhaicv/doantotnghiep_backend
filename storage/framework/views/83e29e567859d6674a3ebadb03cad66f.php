@@ -38,7 +38,7 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                <li class="nav-item <?php echo e(Request::routeIs(['admin.dashboard']) ? 'active' : 'admin.dashboard'); ?>">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.dashboard']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="<?php echo e(route('admin.dashboard')); ?>">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
@@ -72,7 +72,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.tickets.index','admin.ticket_list','admin.tickets.create','admin.tickets.show']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="#sidebarTickets" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarTickets">
                         <i class="ri-ticket-2-fill"></i>
@@ -91,7 +91,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.new_categories.index','admin.information.index']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="#sidebarNewCategory" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarNewCategory">
                         <i class="fas fa-bullhorn"></i>
@@ -111,7 +111,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.banners.index','admin.banners.create']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="#sidebarBanners" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarBanners">
                         <i class="fas fa-file-image"></i>
@@ -130,7 +130,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.promotion_categories.index','admin.promotions.index']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="#sidebarPromotion" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarPromotion">
                         <i class="fas fa-comment-dollar"></i>
@@ -150,7 +150,7 @@
                     </div>
                 </li>
                 
-                <li class="nav-item">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.contacts.index','admin.contacts.create']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarContacts">
                         <i class="far fa-envelope-open"></i>
@@ -169,7 +169,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.admins.index','admin.users.employees','admin.drivers.index','admin.users.customers']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="#sidebarUsers" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarUsers">
                         <i class="fas fa-address-book	"></i>
@@ -198,7 +198,7 @@
                 </li>
                 <hr>
                 <li class="menu-title"><span data-key="t-menu">Thống kê</span></li>
-                <li class="nav-item">
+                <li class="nav-item <?php echo e(Request::routeIs(['admin.statistics.tripStatistical']) ? 'active' : ''); ?>">
                     <a class="nav-link menu-link" href="#sidebarStatistical" data-bs-toggle="collapse"
                         role="button" aria-expanded="false" aria-controls="sidebarAdmins">
                         <i class="ri-layout-3-line"></i>
