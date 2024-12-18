@@ -19,6 +19,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', function () {
+
+    return view('welcome');
+});
 Route::get('/driver', [DriverLoginController::class, 'showLogin'])->name('driver.login');
 Route::post('/driver', [DriverLoginController::class, 'driverLogin'])->name('driver.login.submit');
 Route::middleware('driver')->group(function () {

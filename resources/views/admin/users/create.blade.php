@@ -117,7 +117,7 @@
                 @enderror
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6" style="display: none">
                 <label for="isActiveInput" class="form-label">Kích hoạt</label>
                 <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1"
                     {{ old('is_active') ? 'checked' : '' }}>

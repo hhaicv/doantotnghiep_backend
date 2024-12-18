@@ -30,33 +30,6 @@ class StopController extends Controller
         $trip = Trip::with(['bus', 'route'])->findOrFail($trip_id);
         $seatCount = $trip->bus->total_seats;
 
-        // Lấy danh sách ghế bị "lock" quá 15 phút
-        // TicketDetail::where('status', 'lock')
-        //     ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
-        //         $query->where('date', $date)
-        //             ->where('trip_id', $trip_id);
-        //     })
-        //     ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
-        //     ->delete();
-
-        // $expiredSeats = TicketDetail::where('status', 'lock')
-        //     ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
-        //         $query->where('date', $date)
-        //             ->where('trip_id', $trip_id);
-        //     })
-        //     ->where('updated_at', '<=', Carbon::now()->subMinutes(1))
-        //     ->get();
-
-        // // Nếu có ghế hết hạn, cập nhật trạng thái của ticketBooking
-        // if ($expiredSeats->isNotEmpty()) {
-        //     $ticketBooking = $expiredSeats->first()->ticketBooking;
-        //     if ($ticketBooking) {
-        //         $ticketBooking->update(['status' => TicketBooking::PAYMENT_STATUS_OVERDUE]);
-        //     }
-        // }
-
-        // // Xóa ghế bị "lock" quá 15 phút
-        // $expiredSeats->each->delete();
 
         $expiredSeats = TicketDetail::where('status', 'lock')
             ->whereHas('ticketBooking', function ($query) use ($date, $trip_id) {
@@ -98,6 +71,10 @@ class StopController extends Controller
 
     public function store(StoreTicketBookingRequest $request)
     {
+        if ($request->id_change) {
+            $booking = TicketBooking::findOrFail($request->id_change);
+            $booking->delete();
+        }
         if ($request->has('payment_method_id') && $request->payment_method_id == 2) {
             $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             $partnerCode = 'MOMOBKUN20180529';
@@ -141,6 +118,9 @@ class StopController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $orderId;
+            if ($request->id_change) {
+                $ticketBookingData['total_price'] = $request->input('price');
+            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
             $ticketBookingData['pay_url'] = $jsonResult['payUrl'];
@@ -218,6 +198,9 @@ class StopController extends Controller
             $totalTickets = count($seatNames);
 
             $orderCode = $vnp_TxnRef;
+            if ($request->id_change) {
+                $ticketBookingData['total_price'] = $request->input('price');
+            }
             $ticketBookingData['order_code'] = $orderCode;
             $ticketBookingData['total_tickets'] = $totalTickets;
             $ticketBookingData['pay_url'] = $vnp_Url;
@@ -615,7 +598,7 @@ class StopController extends Controller
             return response()->json([
                 'status' => 'Thất bại',
                 'message' => 'ID người dùng không hợp lệ.',
-                'DỮ LIỆU' =>$user_id,
+                'DỮ LIỆU' => $user_id,
             ], 400);
         }
 

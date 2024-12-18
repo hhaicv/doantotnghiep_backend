@@ -28,14 +28,14 @@
             <div class="col-md-6">
                 <label for="codeInput" class="form-label">Tên tiêu đề</label>
                 <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập tên tiêu đề">
-                @error('title')
+                @error('name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="col-md-6">
                 <label for="codeInput" class="form-label">Mô tả</label>
                 <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Nhập mô tả">
-                @error('title')
+                @error('description')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
