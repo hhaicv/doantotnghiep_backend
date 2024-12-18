@@ -149,9 +149,7 @@
                                 </thead>
                                 <tbody class="list form-check-all">
                                     <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ticketBooking): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                 
                                         <tr>
-
                                             <td class="id"><?php echo e($ticketBooking->order_code); ?></td>
                                             <td class="date"><?php echo e($ticketBooking->date); ?></td>
                                             <td class="route_name"><?php echo e($ticketBooking->route->route_name); ?></td>
@@ -183,7 +181,7 @@
 
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="<?php echo e(route('employee.show', $ticketBooking->id)); ?>"
+                                                         <a href="<?php echo e(route('employee.ticket_list', $ticketBooking->id)); ?>"
                                                             class="text-primary d-inline-block">
                                                             <i class="ri-eye-fill fs-16"></i>
                                                         </a>
@@ -203,7 +201,6 @@
                                                             </a>
                                                         </li>
                                                     <?php endif; ?>
-
                                                   <?php if($ticketBooking->cancel): ?>
                                                   <li class="list-inline-item edit" data-bs-toggle="tooltip"
                                                   data-bs-trigger="hover" data-bs-placement="top"

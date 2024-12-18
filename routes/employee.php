@@ -88,7 +88,7 @@ Route::middleware(['employee'])->prefix('employee')->as('employee.')->group(func
 
     Route::get('/tickets', [HomeEmployeeController::class, 'tickets'])->name('tickets');
     Route::get('/list', [HomeEmployeeController::class, 'listtickets'])->name('ticket_list');
-    Route::get('/show/{id}', [HomeEmployeeController::class, 'show'])->name('show');
+    Route::get('/show/{id}', [HomeEmployeeController::class, 'show'])->name('show');;
     Route::post('/upload-ticket', [HomeEmployeeController::class, 'uploadTicket'])->name('tickets.upload');
     Route::get('/tickets/create', [HomeEmployeeController::class, 'create'])->name('tickets_create');
     Route::get('/change/{id}', [HomeEmployeeController::class, 'change'])->name('tickets_change');

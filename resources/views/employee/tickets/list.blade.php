@@ -163,9 +163,7 @@
                                 </thead>
                                 <tbody class="list form-check-all">
                                     @foreach ($data as $ticketBooking)
-                                 
                                         <tr>
-
                                             <td class="id">{{ $ticketBooking->order_code }}</td>
                                             <td class="date">{{ $ticketBooking->date }}</td>
                                             <td class="route_name">{{ $ticketBooking->route->route_name }}</td>
@@ -196,7 +194,7 @@
 
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="{{ route('employee.show', $ticketBooking->id) }}"
+                                                         <a href="{{ route('employee.ticket_list', $ticketBooking->id) }}"
                                                             class="text-primary d-inline-block">
                                                             <i class="ri-eye-fill fs-16"></i>
                                                         </a>
@@ -216,7 +214,6 @@
                                                             </a>
                                                         </li>
                                                     @endif
-
                                                   @if ($ticketBooking->cancel)
                                                   <li class="list-inline-item edit" data-bs-toggle="tooltip"
                                                   data-bs-trigger="hover" data-bs-placement="top"

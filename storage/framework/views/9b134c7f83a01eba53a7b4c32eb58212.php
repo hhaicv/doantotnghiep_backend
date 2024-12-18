@@ -53,15 +53,10 @@
 
                                     <td><?php echo e($item->driver ? $item->driver->phone : 'No Phone'); ?></td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="SwitchCheck<?php echo e($item->id); ?>" data-id="<?php echo e($item->id); ?>"
-                                                <?php echo e($item->is_active ? 'checked' : ''); ?>>
-                                            <label class="form-check-label" for="SwitchCheck<?php echo e($item->id); ?>">
-                                                <?php echo e($item->is_active ? 'On' : 'Off'); ?>
+                                        <span class="<?php echo e($item->is_active ? 'text-success' : 'text-danger'); ?>">
+                                            <?php echo e($item->is_active ? 'On' : 'Off'); ?>
 
-                                            </label>
-                                        </div>
+                                        </span>
                                     </td>
                                     
                                 </tr>

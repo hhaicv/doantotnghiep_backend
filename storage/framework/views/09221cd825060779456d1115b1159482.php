@@ -122,29 +122,12 @@
                                     <td><?php echo e(number_format($item->length, 0, ',', '.')); ?> KM</td>
                                     <td><?php echo e($item->description); ?></td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="SwitchCheck<?php echo e($item->id); ?>" data-id="<?php echo e($item->id); ?>"
-                                                <?php echo e($item->is_active ? 'checked' : ''); ?>>
-                                            <label class="form-check-label"
-                                                for="SwitchCheck<?php echo e($item->id); ?>"><?php echo e($item->is_active ? 'On' : 'Off'); ?></label>
-                                        </div>
+                                        <span class="<?php echo e($item->is_active ? 'text-success' : 'text-danger'); ?>">
+                                            <?php echo e($item->is_active ? 'On' : 'Off'); ?>
+
+                                        </span>
                                     </td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <a href="<?php echo e(route('employee.routes.edit', $item->id)); ?>" class="link-primary"><i
-                                                    class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormRoute<?php echo e($item->id); ?>"
-                                                action="<?php echo e(route('employee.routes.destroy', $item->id)); ?>" method="post">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete(<?php echo e($item->id); ?>)">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>

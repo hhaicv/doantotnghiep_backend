@@ -57,13 +57,10 @@
 
                                     </td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="SwitchCheck<?php echo e($parent->id); ?>" data-id="<?php echo e($parent->id); ?>"
-                                                <?php echo e($parent->is_active ? 'checked' : ''); ?>>
-                                            <label class="form-check-label"
-                                                for="SwitchCheck<?php echo e($parent->id); ?>"><?php echo e($parent->is_active ? 'On' : 'Off'); ?></label>
-                                        </div>
+                                        <span class="<?php echo e($parent->is_active ? 'text-success' : 'text-danger'); ?>">
+                                            <?php echo e($parent->is_active ? 'On' : 'Off'); ?>
+
+                                        </span>
                                     </td>
                                     
                                 </tr>
@@ -83,13 +80,10 @@
 
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="SwitchCheck<?php echo e($child->id); ?>" data-id="<?php echo e($child->id); ?>"
-                                                        <?php echo e($child->is_active ? 'checked' : ''); ?>>
-                                                    <label class="form-check-label"
-                                                        for="SwitchCheck<?php echo e($child->id); ?>"><?php echo e($child->is_active ? 'On' : 'Off'); ?></label>
-                                                </div>
+                                                <span class="<?php echo e($child->is_active ? 'text-success' : 'text-danger'); ?>">
+                                                    <?php echo e($child->is_active ? 'On' : 'Off'); ?>
+
+                                                </span>
                                             </td>
                                             
                                         </tr>

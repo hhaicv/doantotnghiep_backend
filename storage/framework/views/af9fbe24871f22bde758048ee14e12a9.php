@@ -21,13 +21,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-<<<<<<< HEAD:storage/framework/views/af9fbe24871f22bde758048ee14e12a9.php
                     <h5 class="card-title mb-0">Danh sách</h5>
-                    <a class="btn btn-primary mb-3" href="<?php echo e(route('employee.trips.create')); ?>">Thêm mới</a>
-=======
-                    <h5 class="card-title mb-0">Danh sách phân quyền</h5>
-                    <a class="btn btn-primary mb-3" href="<?php echo e(route('admin.roles.create')); ?>">Thêm mới phân quyền</a>
->>>>>>> 678c797cb3952a46f01e1dac2a954d2a43c78350:storage/framework/views/f2bc9e9b61b1d90b806f7c1577dfa576.php
+                    
                 </div>
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
@@ -54,31 +49,12 @@
                                     <td><?php echo e($item->bus->total_seats); ?></td>
                                     <td><?php echo e($item->bus->license_plate); ?></td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="SwitchCheck<?php echo e($item->id); ?>" data-id="<?php echo e($item->id); ?>"
-                                                <?php echo e($item->is_active ? 'checked' : ''); ?>>
-                                            <label class="form-check-label" for="SwitchCheck<?php echo e($item->id); ?>">
-                                                <?php echo e($item->is_active ? 'On' : 'Off'); ?>
+                                        <span class="<?php echo e($item->is_active ? 'text-success' : 'text-danger'); ?>">
+                                            <?php echo e($item->is_active ? 'On' : 'Off'); ?>
 
-                                            </label>
-                                        </div>
+                                        </span>
                                     </td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <a href="<?php echo e(route('employee.trips.edit', $item->id)); ?>" class="link-primary"><i
-                                                    class="ri-settings-4-line"></i></a>
-                                            <form id="deleteFormTrip<?php echo e($item->id); ?>"
-                                                action="<?php echo e(route('employee.trips.destroy', $item->id)); ?>" method="post">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="button" style="border: none; background: white"
-                                                    class="link-danger" onclick="confirmDelete(<?php echo e($item->id); ?>)">
-                                                    <i class="ri-delete-bin-5-line"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>

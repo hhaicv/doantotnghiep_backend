@@ -58,13 +58,9 @@
                                         {{ \Illuminate\Support\Str::limit(strip_tags($parent->description), 50) }}
                                     </td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="SwitchCheck{{ $parent->id }}" data-id="{{ $parent->id }}"
-                                                {{ $parent->is_active ? 'checked' : '' }}>
-                                            <label class="form-check-label"
-                                                for="SwitchCheck{{ $parent->id }}">{{ $parent->is_active ? 'On' : 'Off' }}</label>
-                                        </div>
+                                        <span class="{{ $parent->is_active ? 'text-success' : 'text-danger' }}">
+                                            {{ $parent->is_active ? 'On' : 'Off' }}
+                                        </span>
                                     </td>
                                     {{-- <td>
                                         <div class="hstack gap-3 fs-15">
@@ -97,13 +93,9 @@
                                                 {{ \Illuminate\Support\Str::limit(strip_tags($child->description), 50) }}
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="SwitchCheck{{ $child->id }}" data-id="{{ $child->id }}"
-                                                        {{ $child->is_active ? 'checked' : '' }}>
-                                                    <label class="form-check-label"
-                                                        for="SwitchCheck{{ $child->id }}">{{ $child->is_active ? 'On' : 'Off' }}</label>
-                                                </div>
+                                                <span class="{{ $child->is_active ? 'text-success' : 'text-danger' }}">
+                                                    {{ $child->is_active ? 'On' : 'Off' }}
+                                                </span>
                                             </td>
                                             {{-- <td>
                                                 <div class="hstack gap-3 fs-15">
