@@ -43,6 +43,7 @@ class TicketBooking extends Model
         "note",
         "time_start",
         "date",
+        "pay_url",
         "status",
         "total_price",
         "total_tickets"
@@ -89,5 +90,5 @@ class TicketBooking extends Model
         return $this->hasOne(Cancle::class, 'ticket_booking_id');
     }
 
-  
+
 }
