@@ -1,4 +1,4 @@
-@extends('admin.layouts.mater')
+@extends('employee.layouts.mater')
 @section('title')
     Đổi chỗ
 @endsection

@@ -194,7 +194,7 @@
 
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                         <a href="{{ route('employee.ticket_list', $ticketBooking->id) }}"
+                                                        <a href="{{ route('employee.ticket_list', $ticketBooking->id) }}"
                                                             class="text-primary d-inline-block">
                                                             <i class="ri-eye-fill fs-16"></i>
                                                         </a>
@@ -214,24 +214,25 @@
                                                             </a>
                                                         </li>
                                                     @endif
-                                                  @if ($ticketBooking->cancel)
-                                                  <li class="list-inline-item edit" data-bs-toggle="tooltip"
-                                                  data-bs-trigger="hover" data-bs-placement="top"
-                                                  title="Edit">
-                                                  <a href="#showModal" data-bs-toggle="modal"
-                                                      class="text-primary d-inline-block edit-item-btn"
-                                                      data-id="{{ $ticketBooking->id }}"
-                                                      data-order-code="{{ $ticketBooking->order_code }}"
-                                                      data-name="{{ $ticketBooking->cancel->name ?? '' }}"
-                                                      data-phone="{{ $ticketBooking->cancel->phone ?? '' }}"
-                                                      data-email="{{ $ticketBooking->cancel->email ?? '' }}"
-                                                      data-account-number="{{ $ticketBooking->cancel->account_number ?? '' }}"
-                                                      data-bank="{{ $ticketBooking->cancel->bank ?? '' }}"
-                                                      data-reason="{{ $ticketBooking->cancel->reason ?? '' }}">
-                                                      <i class="ri-pencil-fill fs-16"></i>
-                                                  </a>
-                                              </li>
-                                          @endif
+
+                                                    @if ($ticketBooking->cancel)
+                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip"
+                                                            data-bs-trigger="hover" data-bs-placement="top"
+                                                            title="Edit">
+                                                            <a href="#showModal" data-bs-toggle="modal"
+                                                                class="text-primary d-inline-block edit-item-btn"
+                                                                data-id="{{ $ticketBooking->id }}"
+                                                                data-order-code="{{ $ticketBooking->order_code }}"
+                                                                data-name="{{ $ticketBooking->cancel->name ?? '' }}"
+                                                                data-phone="{{ $ticketBooking->cancel->phone ?? '' }}"
+                                                                data-email="{{ $ticketBooking->cancel->email ?? '' }}"
+                                                                data-account-number="{{ $ticketBooking->cancel->account_number ?? '' }}"
+                                                                data-bank="{{ $ticketBooking->cancel->bank ?? '' }}"
+                                                                data-reason="{{ $ticketBooking->cancel->reason ?? '' }}">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                 </ul>
                                             </td>
                                         </tr>
@@ -488,29 +489,29 @@
 
             <!-- Change Action (Conditionally Rendered) -->
             ${new Date(ticket.date) > new Date() && ticket.status === 'paid' ? `
-                                  <li class="list-inline-item" data-bs-toggle="tooltip" title="Change">
-                                    <a href="/admin/change/${ticket.id}" class="text-primary">
-                                      <i class="ri-exchange-fill"></i>
-                                    </a>
-                                  </li>
-                                ` : ''}
+                                      <li class="list-inline-item" data-bs-toggle="tooltip" title="Change">
+                                        <a href="/admin/change/${ticket.id}" class="text-primary">
+                                          <i class="ri-exchange-fill"></i>
+                                        </a>
+                                      </li>
+                                    ` : ''}
 
             <!-- Edit Action (Conditionally Rendered) -->
          ${ticket.cancel ? `
-                      <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                        <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn"
-                           data-id="${ticket.id}"
-                           data-order-code="${ticket.order_code}"
-                           data-name="${ticket.cancel.name}"
-                           data-phone="${ticket.cancel.phone}"
-                           data-email="${ticket.cancel.email}"
-                           data-account-number="${ticket.cancel.account_number}"
-                           data-bank="${ticket.cancel.bank}"
-                           data-reason="${ticket.cancel.reason}">
-                          <i class="ri-pencil-fill fs-16"></i>
-                        </a>
-                      </li>
-                    ` : ''}
+                          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                            <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn"
+                               data-id="${ticket.id}"
+                               data-order-code="${ticket.order_code}"
+                               data-name="${ticket.cancel.name}"
+                               data-phone="${ticket.cancel.phone}"
+                               data-email="${ticket.cancel.email}"
+                               data-account-number="${ticket.cancel.account_number}"
+                               data-bank="${ticket.cancel.bank}"
+                               data-reason="${ticket.cancel.reason}">
+                              <i class="ri-pencil-fill fs-16"></i>
+                            </a>
+                          </li>
+                        ` : ''}
           </ul>
         </td>
 
@@ -521,11 +522,12 @@
             });
         }
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const editButtons = document.querySelectorAll(".edit-item-btn");
 
-            const cancelRoute = "{{ route('employee.cancel', ['id' => '__id__']) }}"; // Chứa URL tạm thời
+            const cancelRoute = "{{ route('admin.cancel', ['id' => '__id__']) }}"; // Chứa URL tạm thời
 
             editButtons.forEach(button => {
                 button.addEventListener("click", function() {
@@ -555,6 +557,4 @@
             });
         });
     </script>
-
-
 @endsection

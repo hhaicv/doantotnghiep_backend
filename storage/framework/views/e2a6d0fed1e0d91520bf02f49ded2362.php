@@ -448,7 +448,7 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="<?php echo e(route('employee.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?php echo e(route('admin.tickets.store')); ?>" method="POST" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">
@@ -600,7 +600,9 @@ unset($__errorArgs, $__bag); ?>
                                         <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú"
                                             rows="3"><?php echo e(old('note')); ?></textarea>
                                     </div>
+
                                 </div>
+
                             </div>
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
@@ -612,8 +614,8 @@ unset($__errorArgs, $__bag); ?>
                                     <div class="col">
                                         <div class="mb-3">
                                             <label for="billinginfo-thucthu" class="form-label">Thực thu</label>
-                                            <input type="text" class="form-control" name="price" id="billinginfo-thucthu"
-                                                readonly>
+                                            <input type="text" class="form-control" name="price"
+                                                id="billinginfo-thucthu" readonly>
 
                                         </div>
                                     </div>
@@ -632,6 +634,16 @@ unset($__errorArgs, $__bag); ?>
                                             <label for="billinginfo-tralai" class="form-label">Tổng tiền</label>
                                             <input type="text" class="form-control" name="total_price"
                                                 id="billinginfo-tralai" readonly>
+                                            <?php $__errorArgs = ['total_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <span class="text-danger"><?php echo e($message); ?></span>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -688,6 +700,7 @@ unset($__errorArgs, $__bag); ?>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
+
     <script>
         // Giả sử bạn đã nhận được mảng trạng thái ghế từ máy chủ
         const seatStatusArray = <?php echo json_encode($seatsStatus, 15, 512) ?>;
@@ -695,6 +708,7 @@ unset($__errorArgs, $__bag); ?>
         // Lặp qua từng ghế và cập nhật trạng thái
         document.querySelectorAll('.seat').forEach(function(button) {
             const seatName = button.getAttribute('data-name');
+            console.log(seatStatusArray);
 
             // Kiểm tra xem ghế có trong mảng trạng thái không
             if (seatStatusArray[seatName]) {
@@ -895,7 +909,7 @@ unset($__errorArgs, $__bag); ?>
                             });
                         document.getElementById("billinginfo-thucthu").value = totalPrice;
                         // Gửi yêu cầu AJAX để cập nhật trạng thái trên server
-                        fetch('/admin/update-seat-status', {
+                        fetch('/employee/update-seat-status', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -944,7 +958,7 @@ unset($__errorArgs, $__bag); ?>
                         });
                     document.getElementById("billinginfo-thucthu").value = totalPrice;
                     // Gửi yêu cầu AJAX để cập nhật trạng thái về "available" trên server
-                    fetch('/admin/update-seat-status', {
+                    fetch('/employee/update-seat-status', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -1022,4 +1036,5 @@ unset($__errorArgs, $__bag); ?>
         });
     </script>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('employee.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH L:\laragon\www\doantotnghiep\resources\views/employee/tickets/load.blade.php ENDPATH**/ ?>

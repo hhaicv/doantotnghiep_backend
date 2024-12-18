@@ -157,7 +157,7 @@
                             <div class="col-md-2">
                                 <label for="fullnameInput" class="form-label mt-2">Ngày khởi hành</label>
                                 <div>
-                                    <input type="date" class="form-control" id="datepicker">
+                                    <input type="date" class="form-control" id="datepicker" min="<?php echo e(\Carbon\Carbon::today()->toDateString()); ?>">
                                 </div>
                             </div>
                             <div class="col" style="margin-top: 51px; width: 105px !important;">
@@ -315,7 +315,7 @@
                         user_id: userId,
                     };
                     const queryString = new URLSearchParams(orderDetails).toString();
-                    window.location.href = `/employee/tickets/create?${queryString}`;
+                    window.location.href = `/admin/tickets/create?${queryString}`;
                 };
                 actionCell.appendChild(actionButton);
 

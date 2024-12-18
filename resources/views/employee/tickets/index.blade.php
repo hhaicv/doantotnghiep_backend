@@ -159,7 +159,7 @@
                             <div class="col-md-2">
                                 <label for="fullnameInput" class="form-label mt-2">Ngày khởi hành</label>
                                 <div>
-                                    <input type="date" class="form-control" id="datepicker">
+                                    <input type="date" class="form-control" id="datepicker" min="{{ \Carbon\Carbon::today()->toDateString() }}">
                                 </div>
                             </div>
                             <div class="col" style="margin-top: 51px; width: 105px !important;">
@@ -266,6 +266,7 @@
                 resultsBody.innerHTML = '<tr><td colspan="5">Không có chuyến nào.</td></tr>';
                 return;
             }
+            const userId = @json(Auth::guard('admin')->id());
 
             tripsArray.forEach(trip => {
                 const row = document.createElement('tr');
@@ -312,10 +313,11 @@
                         start_stop_id: trip.start_stop_id,
                         end_stop_id: trip.end_stop_id,
                         start_name: trip.start_stop_name,
-                        end_name: trip.end_stop_name
+                        end_name: trip.end_stop_name,
+                        user_id: userId,
                     };
                     const queryString = new URLSearchParams(orderDetails).toString();
-                    window.location.href = `/employee/tickets/create?${queryString}`;
+                    window.location.href = `/admin/tickets/create?${queryString}`;
                 };
                 actionCell.appendChild(actionButton);
 

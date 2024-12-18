@@ -187,7 +187,7 @@
                 });
                 return;
             }
-            fetch(`/admin/fetch-trips?start_stop_id=${startStopId}&end_stop_id=${endStopId}&date=${date}`)
+            fetch(`/employee/fetch-trips?start_stop_id=${startStopId}&end_stop_id=${endStopId}&date=${date}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Có lỗi xảy ra khi tìm kiếm chuyến.");

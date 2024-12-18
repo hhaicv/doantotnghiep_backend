@@ -185,7 +185,7 @@
                 });
                 return;
             }
-            fetch(`/admin/fetch-trips?start_stop_id=${startStopId}&end_stop_id=${endStopId}&date=${date}`)
+            fetch(`/employee/fetch-trips?start_stop_id=${startStopId}&end_stop_id=${endStopId}&date=${date}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Có lỗi xảy ra khi tìm kiếm chuyến.");
@@ -314,4 +314,5 @@
     <!--list pagination js-->
     <script src="<?php echo e(asset('theme/admin/assets/libs/list.pagination.js/list.pagination.min.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('employee.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH L:\laragon\www\doantotnghiep\resources\views/employee/tickets/change.blade.php ENDPATH**/ ?>

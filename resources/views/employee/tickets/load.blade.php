@@ -449,7 +449,7 @@
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body checkout-tab">
-                    <form action="{{ route('employee.tickets.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.tickets.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="trip_id" id="trip_id">
                         <input type="hidden" name="bus_id" id="bus_id">
@@ -459,7 +459,7 @@
                         <input type="hidden" name="date" id="date">
                         <input type="hidden" name="name_seat" id="name_seat">
 
-                        <input type="hidden" name="id_change" value="<?php echo e($showTicket->id); ?>">
+                        <input type="hidden" name="id_change" value="{{ $showTicket->id }}">
 
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
                             <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
@@ -587,7 +587,9 @@
                                         <textarea class="form-control" name="note" id="billinginfo-address" placeholder="Nhập ghi chú"
                                             rows="3">{{ old('note') }}</textarea>
                                     </div>
+
                                 </div>
+
                             </div>
                             <div class="tab-pane fade" id="pills-payment" role="tabpanel"
                                 aria-labelledby="pills-payment-tab">
@@ -619,16 +621,9 @@
                                             <label for="billinginfo-tralai" class="form-label">Tổng tiền</label>
                                             <input type="text" class="form-control" name="total_price"
                                                 id="billinginfo-tralai" readonly>
-                                            <?php $__errorArgs = ['total_price'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                <span class="text-danger"><?php echo e($message); ?></span>
-                                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
+                                            @error('total_price')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -693,6 +688,7 @@ unset($__errorArgs, $__bag); ?>
         // Lặp qua từng ghế và cập nhật trạng thái
         document.querySelectorAll('.seat').forEach(function(button) {
             const seatName = button.getAttribute('data-name');
+            console.log(seatStatusArray);
 
             // Kiểm tra xem ghế có trong mảng trạng thái không
             if (seatStatusArray[seatName]) {
@@ -849,7 +845,7 @@ unset($__errorArgs, $__bag); ?>
         const fare = parseFloat(new URLSearchParams(window.location.search).get('fare')); // Lấy fare từ URL
         const maxSeats = 8; // Giới hạn số ghế tối đa
 
-        const userId = <?php echo json_encode(Auth::guard('admin')->id(), 15, 512) ?>;
+        const userId = @json(Auth::guard('admin')->id());
 
         document.querySelectorAll('.seat').forEach(function(button) {
             button.addEventListener('click', function() {
@@ -893,11 +889,11 @@ unset($__errorArgs, $__bag); ?>
                             });
                         document.getElementById("billinginfo-thucthu").value = totalPrice;
                         // Gửi yêu cầu AJAX để cập nhật trạng thái trên server
-                        fetch('/admin/update-seat-status', {
+                        fetch('/employee/update-seat-status', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>', // Đảm bảo bạn đã cấu hình CSRF token
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Đảm bảo bạn đã cấu hình CSRF token
                                 },
                                 body: JSON.stringify({
                                     name: seatName,
@@ -942,11 +938,11 @@ unset($__errorArgs, $__bag); ?>
                         });
                     document.getElementById("billinginfo-thucthu").value = totalPrice;
                     // Gửi yêu cầu AJAX để cập nhật trạng thái về "available" trên server
-                    fetch('/admin/update-seat-status', {
+                    fetch('/employee/update-seat-status', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },
                             body: JSON.stringify({
                                 name: seatName,
@@ -1019,6 +1015,4 @@ unset($__errorArgs, $__bag); ?>
             }
         });
     </script>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('admin.layouts.mater', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\doantotnghiep\resources\views/admin/tickets/load.blade.php ENDPATH**/ ?>
+@endsection

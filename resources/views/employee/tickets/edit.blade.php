@@ -20,8 +20,8 @@
                         <div class="card-header border-bottom-dashed p-4">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    <img src="{{ asset('theme/employee/assets/images/logo-removebg-preview.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="120">
-                                    <img src="{{ asset('theme/employee/assets/images/logo-removebg-preview.png') }}" class="card-logo card-logo-light" alt="logo light" height="120">
+                                    <img src="{{ asset('theme/admin/assets/images/logo-removebg-preview.png') }}" class="card-logo card-logo-dark" alt="logo dark" height="120">
+                                    <img src="{{ asset('theme/admin/assets/images/logo-removebg-preview.png') }}" class="card-logo card-logo-light" alt="logo light" height="120">
                                     <div class="mt-sm-5 mt-4">
                                         <h6 class="text-muted text-uppercase fw-semibold">Địa chỉ</h6>
                                         <p class="text-muted mb-1" id="address-details">Hà Nội , Việt Nam</p>
@@ -90,7 +90,7 @@
                                         <tr class="table-active">
                                             <th scope="col" style="width: 50px;">#</th>
                                             <th scope="col">Thông tin vé</th>
-                                            <th scope="col" class="text-center">Trạng thái</th>
+                                            <th scope="col" class="text-center"></th>
                                             <th scope="col" class="text-end">Giá</th>
                                         </tr>
                                     </thead>
@@ -109,7 +109,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="text-warning fs-15">
-                                                    <p class="text-muted mb-0">{{$ticketDetail->status}}</p>
+                                                    <p class="text-muted mb-0"></p>
                                                 </div>
                                             </td>
                                             <td class="text-end">{{ number_format($ticketDetail->price, 0, ',', '.') }} VNĐ</td>
