@@ -180,10 +180,10 @@
                                 <a href="{{ route('admin.contacts.index') }}" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.contacts.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="{{ route('admin.contacts.create') }}" class="nav-link"--}}
+{{--                                    data-key="t-horizontal">Thêm mới</a>--}}
+{{--                            </li>--}}
                         </ul>
                     </div>
                 </li>

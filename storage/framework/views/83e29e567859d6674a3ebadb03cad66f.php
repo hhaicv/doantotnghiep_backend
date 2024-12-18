@@ -162,10 +162,10 @@
                                 <a href="<?php echo e(route('admin.contacts.index')); ?>" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.contacts.create')); ?>" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
+
+
+
+
                         </ul>
                     </div>
                 </li>

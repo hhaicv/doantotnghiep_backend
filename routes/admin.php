@@ -63,6 +63,8 @@ Route::middleware(['admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('promotions', PromotionController::class);
     Route::post('/status-promotion/{id}', [PromotionController::class, 'statusPromotion']);
     Route::resource('promotion_categories', PromotionCategoryController::class);
+    Route::post('/status-promotion-categories/{id}', [PromotionCategoryController::class, 'statusPromotionCategory']);
+
 
 
     Route::resource('trips', TripController::class);
